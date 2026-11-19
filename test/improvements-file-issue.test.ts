@@ -1,4 +1,4 @@
-import { execFileSync, spawnSync } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -7,6 +7,26 @@ import { describe, expect, test } from "vitest";
 import { escapesRepo } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
+
+type CliResult = { status: number | null; stdout: string; stderr: string };
+
+function runFiler(args: string[], env?: NodeJS.ProcessEnv): Promise<CliResult> {
+  return new Promise((resolve) => {
+    execFile(
+      process.execPath,
+      ["scripts/improvements-file-issue.mjs", ...args],
+      { cwd: ROOT, encoding: "utf8", env },
+      (error, stdout, stderr) => {
+        const status = error && typeof error === "object" && "code" in error && typeof error.code === "number"
+          ? error.code
+          : error
+            ? null
+            : 0;
+        resolve({ status, stdout, stderr });
+      }
+    );
+  });
+}
 
 // Fixtures live inside the repo, not in os.tmpdir(). The filer refuses to post a finding that
 // resolves outside the repository, so an out-of-tree fixture would be blocked by THAT gate before
@@ -19,7 +39,7 @@ mkdirSync(FIXTURE_ROOT, { recursive: true });
 // against a fixture. Pointing them at a live finding file coupled the suite to the improvements
 // queue: retiring that finding — the normal, expected end of its lifecycle — turned the build red
 // for a reason that had nothing to do with the template.
-function withFixtureFinding<T>(body: (findingPath: string) => T): T {
+async function withFixtureFinding<T>(body: (findingPath: string) => Promise<T>): Promise<T> {
   const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-template-test-"));
   try {
     const finding = path.join(dir, "sd-998-template-fixture.md");
@@ -44,7 +64,7 @@ A reader-first upstream title must become the issue heading.
 Use the upstreamTitle, never the bare finding id.
 `,
     );
-    return body(finding);
+    return await body(finding);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -54,42 +74,23 @@ Use the upstreamTitle, never the bare finding id.
 // plumbing over a fixture repo, so the 5s default times out under parallel load and passes in
 // isolation. Bound the real hang, not the subprocess cost.
 describe("improvements issue filing template", { timeout: 30_000 }, () => {
-  test("uses an explicit reader-first upstream title for an unreported finding", () => {
-    const output = withFixtureFinding((finding) =>
-      execFileSync(
-        process.execPath,
-        [
-          "scripts/improvements-file-issue.mjs",
-          "--file",
-          finding,
-          "--repo",
-          "stellar/stellar-docs",
-          "--dry-run",
-        ],
-        { cwd: ROOT, encoding: "utf8" },
-      ),
+  test.concurrent("uses an explicit reader-first upstream title for an unreported finding", async () => {
+    const result = await withFixtureFinding((finding) =>
+      runFiler(["--file", finding, "--repo", "stellar/stellar-docs", "--dry-run"]),
     );
 
-    expect(output).toMatch(/^# Correct multi-entry ExtendFootprintTTLOp guidance$/m);
-    expect(output).not.toMatch(/^# sd-998:/m);
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).toMatch(/^# Correct multi-entry ExtendFootprintTTLOp guidance$/m);
+    expect(result.stdout).not.toMatch(/^# sd-998:/m);
   });
 
-  test("opens with a visible automation disclaimer and durable marker", () => {
-    const output = withFixtureFinding((finding) =>
-      execFileSync(
-        process.execPath,
-        [
-          "scripts/improvements-file-issue.mjs",
-          "--file",
-          finding,
-          "--repo",
-          "stellar/stellar-docs",
-          "--dry-run",
-        ],
-        { cwd: ROOT, encoding: "utf8" },
-      ),
+  test.concurrent("opens with a visible automation disclaimer and durable marker", async () => {
+    const result = await withFixtureFinding((finding) =>
+      runFiler(["--file", finding, "--repo", "stellar/stellar-docs", "--dry-run"]),
     );
 
+    expect(result.status, result.stderr).toBe(0);
+    const output = result.stdout;
     const marker = "<!-- generated-by-stellar-raven -->";
     const notice =
       "[Stellar Raven](https://github.com/stellar-experimental/stellar-raven) filed this issue from its automated evaluation pipeline. The issue includes evidence and a public source record. Please verify the live surface before you act.";
@@ -106,13 +107,13 @@ describe("improvements issue filing template", { timeout: 30_000 }, () => {
   // for anything else, so "did we reach the filing call?" is observable and a regression posts
   // nothing. The first version of this test used --dry-run for the accept case, which exits
   // BEFORE the guard runs and therefore asserted nothing at all.
-  function withSuccessorFixture<T>(
+  async function withSuccessorFixture<T>(
     body: (ctx: {
-      run: (extra: string[], citedState?: string) => ReturnType<typeof spawnSync>;
+      run: (extra: string[], citedState?: string) => Promise<CliResult>;
       findingPath: string;
       stubPath: string;
-    }) => T,
-  ): T {
+    }) => Promise<T>,
+  ): Promise<T> {
     const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-successor-test-"));
     try {
       const bin = path.join(dir, "bin");
@@ -151,74 +152,65 @@ File a successor rather than reopening it.
 `,
       );
       const run = (extra: string[], citedState = "CLOSED") =>
-        spawnSync(
-          process.execPath,
-          [
-            "scripts/improvements-file-issue.mjs",
-            "--file",
-            finding,
-            "--repo",
-            "stellar/stellar-docs",
-            ...extra,
-          ],
-          {
-            cwd: ROOT,
-            encoding: "utf8",
-            env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, STUB_STATE: citedState },
-          },
+        runFiler(
+          ["--file", finding, "--repo", "stellar/stellar-docs", ...extra],
+          { ...process.env, PATH: `${bin}:${process.env.PATH}`, STUB_STATE: citedState },
         );
-      return body({ run, findingPath: finding, stubPath: `${bin}:${process.env.PATH}` });
+      return await body({ run, findingPath: finding, stubPath: `${bin}:${process.env.PATH}` });
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
   }
 
-  test("a successor filing may only supersede a CLOSED ref the finding cites exactly", () => {
-    withSuccessorFixture(({ run, findingPath, stubPath }) => {
+  test.concurrent("a successor filing may only supersede a CLOSED ref the finding cites exactly", async () => {
+    await withSuccessorFixture(async ({ run, findingPath, stubPath }) => {
       const CITED = "https://github.com/stellar/stellar-docs/issues/1234";
 
-      // reported-upstream still refuses by default — the dedupe guard is the point
-      expect(run([]).status).toBe(2);
+      // Safe to run in parallel: the `gh` stub is stateless and exits 42 before any local write.
+      const [
+        defaultRefused,
+        uncitedRefused,
+        bareSchemeRefused,
+        numericPrefixRefused,
+        openRefused,
+        junkResults,
+        crossRepo,
+        ok
+      ] = await Promise.all([
+        // reported-upstream still refuses by default — the dedupe guard is the point
+        run([]),
+        // a ref this finding never cited cannot be superseded
+        run(["--successor-to", "https://github.com/stellar/stellar-docs/issues/9999"]),
+        // EXACT ref match: a bare scheme, or a numeric prefix of the cited ref, must not satisfy it
+        run(["--successor-to", "https"]),
+        run(["--successor-to", "https://github.com/stellar/stellar-docs/issues/123"]),
+        // a cited ref that is still OPEN is a duplicate, not a successor
+        run(["--successor-to", CITED], "OPEN"),
+        // FAIL CLOSED: empty or junk state must block. Asserting `!== 0` here is too weak — a
+        // fail-open bug reaches the stub and exits 42, which is also non-zero. Assert the guard's
+        // own exit code, and that the filing call was never reached.
+        Promise.all(["", "   ", "banana", "OPENISH"].map((junk) => run(["--successor-to", CITED], junk))),
+        // a closed ref in a DIFFERENT repo must not authorise a filing into this one
+        runFiler(
+          ["--file", findingPath, "--repo", "stellar/rs-soroban-sdk", "--successor-to", CITED],
+          { ...process.env, PATH: stubPath },
+        ),
+        // the accept path: cited + exact + closed + same repo reaches the filing call
+        // (stub exits 42, so a regression here still posts nothing)
+        run(["--successor-to", CITED]),
+      ]);
 
-      // a ref this finding never cited cannot be superseded
-      expect(run(["--successor-to", "https://github.com/stellar/stellar-docs/issues/9999"]).status).toBe(2);
-
-      // EXACT ref match: a bare scheme, or a numeric prefix of the cited ref, must not satisfy it
-      expect(run(["--successor-to", "https"]).status).toBe(2);
-      expect(run(["--successor-to", "https://github.com/stellar/stellar-docs/issues/123"]).status).toBe(2);
-
-      // a cited ref that is still OPEN is a duplicate, not a successor
-      expect(run(["--successor-to", CITED], "OPEN").status).toBe(2);
-
-      // FAIL CLOSED: empty or junk state must block. Asserting `!== 0` here is too weak — a
-      // fail-open bug reaches the stub and exits 42, which is also non-zero. Assert the guard's
-      // own exit code, and that the filing call was never reached.
-      for (const junk of ["", "   ", "banana", "OPENISH"]) {
-        const blocked = run(["--successor-to", CITED], junk);
+      expect(defaultRefused.status).toBe(2);
+      expect(uncitedRefused.status).toBe(2);
+      expect(bareSchemeRefused.status).toBe(2);
+      expect(numericPrefixRefused.status).toBe(2);
+      expect(openRefused.status).toBe(2);
+      for (const blocked of junkResults) {
         expect(blocked.status).toBe(2);
         expect(blocked.stderr).not.toContain("STUB_GH_REACHED_FILING");
       }
-
-      // a closed ref in a DIFFERENT repo must not authorise a filing into this one
-      const crossRepo = spawnSync(
-        process.execPath,
-        [
-          "scripts/improvements-file-issue.mjs",
-          "--file",
-          findingPath,
-          "--repo",
-          "stellar/rs-soroban-sdk",
-          "--successor-to",
-          CITED,
-        ],
-        { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: stubPath } },
-      );
       expect(crossRepo.status).toBe(2);
       expect(crossRepo.stderr).not.toContain("STUB_GH_REACHED_FILING");
-
-      // the accept path: cited + exact + closed + same repo reaches the filing call
-      // (stub exits 42, so a regression here still posts nothing)
-      const ok = run(["--successor-to", CITED]);
       expect(ok.status).toBe(42);
       expect(ok.stderr).toContain("STUB_GH_REACHED_FILING");
     });
@@ -226,7 +218,7 @@ File a successor rather than reopening it.
 
   // Checking only the named ref is not dedupe: once a successor is filed it joins the evidence,
   // so naming the ORIGINAL closed ref again would open a third issue while the second is live.
-  test("a finding with any still-open recorded ref cannot file another successor", () => {
+  test.concurrent("a finding with any still-open recorded ref cannot file another successor", async () => {
     const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-openref-test-"));
     try {
       const bin = path.join(dir, "bin");
@@ -267,18 +259,9 @@ The original closed; a successor is already open.
 Follow up on the open successor, do not file again.
 `,
       );
-      const result = spawnSync(
-        process.execPath,
-        [
-          "scripts/improvements-file-issue.mjs",
-          "--file",
-          finding,
-          "--repo",
-          "stellar/stellar-docs",
-          "--successor-to",
-          "https://github.com/stellar/stellar-docs/issues/1234",
-        ],
-        { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: `${bin}:${process.env.PATH}` } },
+      const result = await runFiler(
+        ["--file", finding, "--repo", "stellar/stellar-docs", "--successor-to", "https://github.com/stellar/stellar-docs/issues/1234"],
+        { ...process.env, PATH: `${bin}:${process.env.PATH}` },
       );
       expect(result.status).toBe(2);
       expect(result.stderr).toContain("not closed");
@@ -290,7 +273,7 @@ Follow up on the open successor, do not file again.
 
   // The sibling loop must fail CLOSED too. Blocking only on literal "open" let an UNREADABLE
   // sibling through — a transient gh failure is not evidence that a live report closed.
-  test("an unreadable recorded ref blocks a successor rather than being waved through", () => {
+  test.concurrent("an unreadable recorded ref blocks a successor rather than being waved through", async () => {
     const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-unreadable-test-"));
     try {
       const bin = path.join(dir, "bin");
@@ -330,18 +313,9 @@ One recorded ref cannot be read.
 Refuse until it can be.
 `,
       );
-      const result = spawnSync(
-        process.execPath,
-        [
-          "scripts/improvements-file-issue.mjs",
-          "--file",
-          finding,
-          "--repo",
-          "stellar/stellar-docs",
-          "--successor-to",
-          "https://github.com/stellar/stellar-docs/issues/1234",
-        ],
-        { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: `${bin}:${process.env.PATH}` } },
+      const result = await runFiler(
+        ["--file", finding, "--repo", "stellar/stellar-docs", "--successor-to", "https://github.com/stellar/stellar-docs/issues/1234"],
+        { ...process.env, PATH: `${bin}:${process.env.PATH}` },
       );
       expect(result.status).toBe(2);
       expect(result.stderr).toContain("not closed");
@@ -351,8 +325,8 @@ Refuse until it can be.
     }
   });
 
-  test("declined and fixed findings are never re-filable, even with --successor-to", () => {
-    for (const status of ["declined-upstream", "fixed-upstream"]) {
+  test.concurrent("declined and fixed findings are never re-filable, even with --successor-to", async () => {
+    await Promise.all(["declined-upstream", "fixed-upstream"].map(async (status) => {
       const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-terminal-test-"));
       try {
         const finding = path.join(dir, "sd-996-terminal.md");
@@ -388,18 +362,9 @@ Do not re-file.
           `#!/bin/sh\necho "STUB_GH_REACHED_FILING $*" >&2\nexit 42\n`,
           { mode: 0o755 },
         );
-        const result = spawnSync(
-          process.execPath,
-          [
-            "scripts/improvements-file-issue.mjs",
-            "--file",
-            finding,
-            "--repo",
-            "stellar/stellar-docs",
-            "--successor-to",
-            "https://github.com/stellar/stellar-docs/issues/1234",
-          ],
-          { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: `${bin}:${process.env.PATH}` } },
+        const result = await runFiler(
+          ["--file", finding, "--repo", "stellar/stellar-docs", "--successor-to", "https://github.com/stellar/stellar-docs/issues/1234"],
+          { ...process.env, PATH: `${bin}:${process.env.PATH}` },
         );
         expect(result.status).toBe(2);
         expect(result.stderr).toContain("not re-filable");
@@ -407,10 +372,10 @@ Do not re-file.
       } finally {
         rmSync(dir, { recursive: true, force: true });
       }
-    }
+    }));
   });
 
-  test("omits an immutable snapshot when no matching committed blob exists", () => {
+  test.concurrent("omits an immutable snapshot when no matching committed blob exists", async () => {
     const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-template-test-"));
     try {
       const finding = path.join(dir, "sd-999-uncommitted.md");
@@ -436,21 +401,11 @@ The fixture has no committed blob.
 
 Keep the main link and omit the immutable snapshot.
 `);
-      const output = execFileSync(
-        process.execPath,
-        [
-          "scripts/improvements-file-issue.mjs",
-          "--file",
-          finding,
-          "--repo",
-          "stellar/stellar-docs",
-          "--dry-run",
-        ],
-        { cwd: ROOT, encoding: "utf8" },
-      );
+      const result = await runFiler(["--file", finding, "--repo", "stellar/stellar-docs", "--dry-run"]);
 
-      expect(output).toContain("Public source record:");
-      expect(output).not.toContain("Immutable source snapshot:");
+      expect(result.status, result.stderr).toBe(0);
+      expect(result.stdout).toContain("Public source record:");
+      expect(result.stdout).not.toContain("Immutable source snapshot:");
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
@@ -460,7 +415,7 @@ Keep the main link and omit the immutable snapshot.
   // which a temp fixture cannot have. So it picks whichever committed finding exists rather than
   // naming one: hardcoding an id re-arms the trap that turned the suite red when sd-019 was
   // retired, and every finding in this directory is expected to be retired eventually.
-  test("links the exact source record and gives upstream a resolution handoff", () => {
+  test.concurrent("links the exact source record and gives upstream a resolution handoff", async () => {
     const finding = execFileSync(
       "git",
       ["ls-files", "improvements/*/*.md"],
@@ -471,12 +426,10 @@ Keep the main link and omit the immutable snapshot.
       .sort()
       .at(0);
     if (!finding) throw new Error("no committed finding available to exercise blob-URL rendering");
-    const output = execFileSync(
-      process.execPath,
-      ["scripts/improvements-file-issue.mjs", "--file", finding, "--dry-run"],
-      { cwd: ROOT, encoding: "utf8" },
-    );
+    const result = await runFiler(["--file", finding, "--dry-run"]);
 
+    expect(result.status, result.stderr).toBe(0);
+    const output = result.stdout;
     expect(output).toContain("## Source Record");
     expect(output).toContain(`https://github.com/stellar-experimental/stellar-raven/blob/main/${finding}`);
     expect(output).toMatch(new RegExp(`https://github\\.com/stellar-experimental/stellar-raven/blob/[0-9a-f]{40}/${finding}`));
@@ -489,7 +442,7 @@ Keep the main link and omit the immutable snapshot.
   // became stellar/stellar-docs#2716. `path.relative` does not fail on an out-of-tree path, it
   // walks up with `../`, and that string is joined onto a blob URL — so the published source
   // record was a link that could never resolve.
-  test("refuses to file a finding that resolves outside the repository", () => {
+  test.concurrent("refuses to file a finding that resolves outside the repository", async () => {
     const dir = mkdtempSync(path.join(tmpdir(), "improvement-outoftree-test-"));
     try {
       const findingPath = path.join(dir, "sd-996-outside.md");
@@ -526,29 +479,15 @@ Do not file.
       });
       const env = { ...process.env, PATH: `${bin}:${process.env.PATH}` };
 
-      const blocked = spawnSync(
-        process.execPath,
-        ["scripts/improvements-file-issue.mjs", "--file", findingPath, "--repo", "stellar/stellar-docs"],
-        { cwd: ROOT, encoding: "utf8", env },
-      );
+      const [blocked, dry] = await Promise.all([
+        runFiler(["--file", findingPath, "--repo", "stellar/stellar-docs"], env),
+        // --dry-run is the deliberate carve-out: it posts nothing, so inspecting the body of an
+        // out-of-tree finding stays available.
+        runFiler(["--file", findingPath, "--repo", "stellar/stellar-docs", "--dry-run"], env),
+      ]);
       expect(blocked.status).toBe(2);
       expect(blocked.stderr).toContain("resolves outside the repository");
       expect(blocked.stderr).not.toContain("STUB_GH_REACHED_FILING");
-
-      // --dry-run is the deliberate carve-out: it posts nothing, so inspecting the body of an
-      // out-of-tree finding stays available.
-      const dry = spawnSync(
-        process.execPath,
-        [
-          "scripts/improvements-file-issue.mjs",
-          "--file",
-          findingPath,
-          "--repo",
-          "stellar/stellar-docs",
-          "--dry-run",
-        ],
-        { cwd: ROOT, encoding: "utf8", env },
-      );
       expect(dry.status).toBe(0);
       expect(dry.stdout).toContain("## Source Record");
     } finally {

@@ -1,10 +1,10 @@
 import { createHash } from "node:crypto";
-import { spawnSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   assertAgentDiscoveryCliSyntax,
   buildDiscoveryAgentArgs,
@@ -27,10 +27,15 @@ const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..
 const RUNNER_PATH = path.join(REPO_ROOT, "eval", "discovery", "run-agent-discovery.mjs");
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 
-function createCliFixture() {
-  const root = mkdtempSync(path.join(os.tmpdir(), "discovery-paid-run-"));
-  const claudePath = path.join(root, "claude");
-  const callLogPath = path.join(root, "paid-calls.log");
+let sharedFixtureRoot;
+let sharedClaudeSha256;
+let sharedBaseEnv;
+let sharedEnvSha256;
+let callLogSequence = 0;
+
+beforeAll(() => {
+  sharedFixtureRoot = mkdtempSync(path.join(os.tmpdir(), "discovery-paid-run-"));
+  const claudePath = path.join(sharedFixtureRoot, "claude");
   writeFileSync(
     claudePath,
     [
@@ -47,24 +52,38 @@ function createCliFixture() {
     ].join("\n")
   );
   chmodSync(claudePath, 0o755);
-  writeFileSync(callLogPath, "");
-  const environment = {
-    PATH: `${root}:/usr/bin:/bin`,
-    HOME: path.join(root, "home"),
+  sharedBaseEnv = {
+    PATH: `${sharedFixtureRoot}:/usr/bin:/bin`,
+    HOME: path.join(sharedFixtureRoot, "home"),
     SHELL: "/bin/sh",
-    TMPDIR: root,
-    DISCOVERY_FAKE_CALL_LOG: callLogPath
+    TMPDIR: sharedFixtureRoot
   };
-  const binarySha256 = sha256(readFileSync(claudePath));
-  const environmentSha256 = agentEnvironmentIdentity(environment).sha256;
+  sharedClaudeSha256 = sha256(readFileSync(claudePath));
+  sharedEnvSha256 = agentEnvironmentIdentity(sharedBaseEnv).sha256;
+});
+
+afterAll(() => {
+  if (sharedFixtureRoot) rmSync(sharedFixtureRoot, { recursive: true, force: true });
+});
+
+function createCliFixture() {
+  const callLogPath = path.join(sharedFixtureRoot, `paid-calls-${++callLogSequence}.log`);
+  writeFileSync(callLogPath, "");
+  const environment = { ...sharedBaseEnv, DISCOVERY_FAKE_CALL_LOG: callLogPath };
   const paidCalls = () => readFileSync(callLogPath, "utf8").split("\n").filter(Boolean);
   const run = (args) =>
-    spawnSync(process.execPath, [RUNNER_PATH, ...args], {
-      cwd: REPO_ROOT,
-      env: environment,
-      encoding: "utf8"
+    new Promise((resolve) => {
+      execFile(
+        process.execPath,
+        [RUNNER_PATH, ...args],
+        { cwd: REPO_ROOT, env: environment, encoding: "utf8" },
+        (error, stdout, stderr) => {
+          const status = error && typeof error.code === "number" ? error.code : error ? null : 0;
+          resolve({ status, stdout, stderr });
+        }
+      );
     });
-  return { root, binarySha256, environmentSha256, paidCalls, run };
+  return { binarySha256: sharedClaudeSha256, environmentSha256: sharedEnvSha256, paidCalls, run };
 }
 
 function requiredArgs(fixture, {
@@ -78,7 +97,7 @@ function requiredArgs(fixture, {
 }
 
 describe("agent-discovery paid-run flag guards", () => {
-  it.each([
+  it.concurrent.each([
     ["binary absent", { binary: [] }, /requires --expect-agent-binary-sha256/],
     ["binary duplicate", { binary: ["--expect-agent-binary-sha256", "a".repeat(64), "--expect-agent-binary-sha256", "b".repeat(64)] }, /accepts --expect-agent-binary-sha256 exactly once/],
     ["binary value missing", { binary: ["--expect-agent-binary-sha256"] }, /expect-agent-binary-sha256 requires a value/],
@@ -103,41 +122,33 @@ describe("agent-discovery paid-run flag guards", () => {
     ["surface value missing", { surface: ["--expect-sha256"] }, /expect-sha256 requires a value/],
     ["surface empty", { surface: ["--expect-sha256", ""] }, /expect-sha256 requires a value/],
     ["surface equals", { surface: [`--expect-sha256=${"b".repeat(64)}`] }, /expect-sha256=<value> is not supported/]
-  ])("rejects %s before a paid call", (_name, override, message) => {
+  ])("rejects %s before a paid call", async (_name, override, message) => {
     const fixture = createCliFixture();
-    try {
-      const args = requiredArgs(fixture, override);
-      const continuations = [];
-      expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun))).toThrow(message);
-      expect(continuations).toEqual([]);
-      const result = fixture.run(args);
-      expect(result.status).not.toBe(0);
-      expect(result.stderr).toMatch(message);
-      expect(fixture.paidCalls()).toEqual([]);
-    } finally {
-      rmSync(fixture.root, { recursive: true, force: true });
-    }
+    const args = requiredArgs(fixture, override);
+    const continuations = [];
+    expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun))).toThrow(message);
+    expect(continuations).toEqual([]);
+    const result = await fixture.run(args);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toMatch(message);
+    expect(fixture.paidCalls()).toEqual([]);
   });
 
-  it.each([
+  it.concurrent.each([
     ["equals form", ["--ids=discovery-001"], /--ids=<value> is not supported/],
     ["duplicate", ["--ids", "discovery-001", "--ids", "discovery-002"], /accepts --ids at most once/]
-  ])("rejects the %s --ids selector before a paid call", (_name, idsArgs, message) => {
+  ])("rejects the %s --ids selector before a paid call", async (_name, idsArgs, message) => {
     const fixture = createCliFixture();
-    try {
-      const args = [...requiredArgs(fixture), ...idsArgs];
-      const continuations = [];
-      expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
-        .toThrow(message);
-      expect(continuations).toEqual([]);
+    const args = [...requiredArgs(fixture), ...idsArgs];
+    const continuations = [];
+    expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
+      .toThrow(message);
+    expect(continuations).toEqual([]);
 
-      const result = fixture.run(args);
-      expect(result.status).not.toBe(0);
-      expect(result.stderr).toMatch(message);
-      expect(fixture.paidCalls()).toEqual([]);
-    } finally {
-      rmSync(fixture.root, { recursive: true, force: true });
-    }
+    const result = await fixture.run(args);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toMatch(message);
+    expect(fixture.paidCalls()).toEqual([]);
   });
 
   it("preserves a spaced --ids selector", () => {
@@ -146,50 +157,42 @@ describe("agent-discovery paid-run flag guards", () => {
   });
 
   describe("residual optional flag guards", () => {
-    it.each([
+    it.concurrent.each([
       ["--repeat=3", /--repeat=<value> is not supported/],
       ["--model=fixture-model", /--model=<value> is not supported/],
       ["--effort=high", /--effort=<value> is not supported/],
       ["--cases=fixture-cases.json", /--cases=<value> is not supported/],
       ["--run-label=arm-b", /--run-label=<value> is not supported/],
       ["--url=http:\/\/localhost:8787", /--url=<value> is not supported/]
-    ])("rejects %s before the paid continuation", (optionalArg, message) => {
+    ])("rejects %s before the paid continuation", async (optionalArg, message) => {
       const fixture = createCliFixture();
-      try {
-        const args = [...requiredArgs(fixture), optionalArg];
-        const continuations = [];
-        expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
-          .toThrow(message);
-        expect(continuations).toEqual([]);
+      const args = [...requiredArgs(fixture), optionalArg];
+      const continuations = [];
+      expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
+        .toThrow(message);
+      expect(continuations).toEqual([]);
 
-        const result = fixture.run(args);
-        expect(result.status).not.toBe(0);
-        expect(result.stderr).toMatch(message);
-        expect(fixture.paidCalls()).toEqual([]);
-      } finally {
-        rmSync(fixture.root, { recursive: true, force: true });
-      }
+      const result = await fixture.run(args);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
     });
 
-    it.each([
+    it.concurrent.each([
       ["an unknown flag", "--unknown", /run-agent-discovery: unknown flag --unknown/],
       ["a stray argument", "stray", /run-agent-discovery: unexpected positional argument "stray"/]
-    ])("rejects %s before the paid continuation", (_name, arg, message) => {
+    ])("rejects %s before the paid continuation", async (_name, arg, message) => {
       const fixture = createCliFixture();
-      try {
-        const args = [...requiredArgs(fixture), arg];
-        const continuations = [];
-        expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
-          .toThrow(message);
-        expect(continuations).toEqual([]);
+      const args = [...requiredArgs(fixture), arg];
+      const continuations = [];
+      expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
+        .toThrow(message);
+      expect(continuations).toEqual([]);
 
-        const result = fixture.run(args);
-        expect(result.status).not.toBe(0);
-        expect(result.stderr).toMatch(message);
-        expect(fixture.paidCalls()).toEqual([]);
-      } finally {
-        rmSync(fixture.root, { recursive: true, force: true });
-      }
+      const result = await fixture.run(args);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
     });
 
     it("preserves every declared spaced value form", () => {

@@ -3,7 +3,7 @@ import { chmod, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import os from "node:os";
 import path from "node:path";
-import { spawnSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import { afterEach, describe, expect, it } from "vitest";
 // @ts-ignore The executable deliberately exposes pure CLI helpers for this test seam.
 import * as gauntlet from "../scripts/run-demo-model-gauntlet.mjs";
@@ -11,6 +11,7 @@ import * as gauntlet from "../scripts/run-demo-model-gauntlet.mjs";
 const { buildLaunchPlan, formatLaunchPlan, parseGauntletArgs, validateGauntletInvocation } = gauntlet;
 
 const temporaryDirectories: string[] = [];
+const reservedPorts = new Set<number>();
 
 afterEach(async () => {
   await Promise.all(temporaryDirectories.splice(0).map((directory) => rm(directory, { recursive: true, force: true })));
@@ -22,17 +23,32 @@ async function scratchOutDir() {
   return path.join(parent, "artifacts");
 }
 
-function runCli(args: string[]) {
-  return spawnSync(process.execPath, ["scripts/run-demo-model-gauntlet.mjs", ...args], {
-    cwd: process.cwd(),
-    encoding: "utf8"
+function runNode(args: string[], options: { env?: NodeJS.ProcessEnv; timeout?: number } = {}) {
+  return new Promise<{ status: number | null; stdout: string; stderr: string }>((resolve) => {
+    execFile(
+      process.execPath,
+      args,
+      { cwd: process.cwd(), encoding: "utf8", env: options.env, timeout: options.timeout },
+      (error, stdout, stderr) => {
+        const code = error && typeof error === "object" && "code" in error && typeof error.code === "number"
+          ? error.code
+          : error
+            ? null
+            : 0;
+        resolve({ status: code, stdout, stderr });
+      }
+    );
   });
+}
+
+function runCli(args: string[]) {
+  return runNode(["scripts/run-demo-model-gauntlet.mjs", ...args]);
 }
 
 describe("demo model gauntlet CLI safety", () => {
   it("lets literal help win before strict parsing and leaves its requested output absent", async () => {
     const outDir = await scratchOutDir();
-    const result = runCli(["--help", "--not-a-real-flag", "--out-dir", outDir]);
+    const result = await runCli(["--help", "--not-a-real-flag", "--out-dir", outDir]);
 
     expect(result.status).toBe(0);
     expect(result.stdout).toContain("Usage: node scripts/run-demo-model-gauntlet.mjs");
@@ -41,7 +57,7 @@ describe("demo model gauntlet CLI safety", () => {
 
   it("prints the validated plan but makes no output without --max-budget-usd", async () => {
     const outDir = await scratchOutDir();
-    const result = runCli(["--models", "openai/test", "--prompts", "rpc-simulate", "--out-dir", outDir]);
+    const result = await runCli(["--models", "openai/test", "--prompts", "rpc-simulate", "--out-dir", outDir]);
 
     expect(result.status).toBe(1);
     expect(result.stdout).toContain("planned Playground chat turns: 1 (not guaranteed provider calls)");
@@ -55,7 +71,7 @@ describe("demo model gauntlet CLI safety", () => {
 
   it("rejects an invalid invocation before creating its requested output", async () => {
     const outDir = await scratchOutDir();
-    const result = runCli(["--models", "openai/test", "--prompts", "not-a-prompt", "--out-dir", outDir]);
+    const result = await runCli(["--models", "openai/test", "--prompts", "not-a-prompt", "--out-dir", outDir]);
 
     expect(result.status).toBe(1);
     expect(result.stderr).toContain("Invalid prompt ids: not-a-prompt.");
@@ -137,7 +153,7 @@ describe("demo model gauntlet CLI safety", () => {
     expect(unbudgeted.snapshot().reportedUsd).toBe(0);
   });
 
-  it.each([
+  it.concurrent.each([
     { name: "missing cost", cost: null, repeats: 2, error: "unknown turn cost" },
     { name: "accounting error", cost: { costUsd: 0.1, error: "unsettled-call", calls: 1, reportedCalls: 1 }, repeats: 2, error: "unknown turn cost" },
     { name: "unsettled call count", cost: { costUsd: 0.1, calls: 2, reportedCalls: 1 }, repeats: 2, error: "unknown turn cost" },
@@ -147,20 +163,21 @@ describe("demo model gauntlet CLI safety", () => {
     { name: "tiny cap", budgetUsd: "0.0000005", cost: { costUsd: 0.0000005, calls: 1, reportedCalls: 1 }, repeats: 2, error: "budget stopped the matrix" }
   ])("saves an incomplete matrix after $name without another turn", async ({ budgetUsd = "1", cost, repeats, error }) => {
     const directory = await mkdtemp(path.join(os.tmpdir(), "gauntlet-offline-server-"));
-    temporaryDirectories.push(directory);
-    let port: number;
-    do {
-      const reservation = createServer();
-      await new Promise<void>((resolve) => reservation.listen(0, "127.0.0.1", resolve));
-      const address = reservation.address();
-      if (!address || typeof address === "string") throw new Error("No test port");
-      port = address.port;
-      await new Promise<void>((resolve) => reservation.close(() => resolve()));
-    } while (port > 64000);
-    const countFile = path.join(directory, "turns");
-    const headerFile = path.join(directory, "budget-header");
-    const fakeNpx = path.join(directory, "npx");
-    await writeFile(fakeNpx, `#!/usr/bin/env node
+    try {
+      let port: number;
+      do {
+        const reservation = createServer();
+        await new Promise<void>((resolve) => reservation.listen(0, "127.0.0.1", resolve));
+        const address = reservation.address();
+        if (!address || typeof address === "string") throw new Error("No test port");
+        port = address.port;
+        await new Promise<void>((resolve) => reservation.close(() => resolve()));
+      } while (port > 64000 || reservedPorts.has(port));
+      reservedPorts.add(port);
+      const countFile = path.join(directory, "turns");
+      const headerFile = path.join(directory, "budget-header");
+      const fakeNpx = path.join(directory, "npx");
+      await writeFile(fakeNpx, `#!/usr/bin/env node
 const http = require('node:http');
 const fs = require('node:fs');
 let turns = 0;
@@ -175,27 +192,30 @@ http.createServer((req, res) => {
   res.end();
 }).listen(Number(process.argv[process.argv.indexOf('--port') + 1]));
 `);
-    await chmod(fakeNpx, 0o755);
-    const outDir = path.join(directory, "results");
-    const result = spawnSync(process.execPath, ["scripts/run-demo-model-gauntlet.mjs",
-      "--models", "openai/offline-fixture", "--prompts", "rpc-simulate", "--repeats", String(repeats),
-      "--max-budget-usd", budgetUsd, "--port-base", String(port),
-      "--run-id", "missing-cost", "--out-dir", outDir
-    ], {
-      cwd: process.cwd(), encoding: "utf8", timeout: 20_000,
-      env: { ...process.env, PATH: `${directory}${path.delimiter}${process.env.PATH}`, MCP_SERVER_SECRET: "offline-test-placeholder" }
-    });
-    expect(result.status, result.stderr).toBe(1);
-    expect(result.stderr).toContain(error);
-    expect(await readFile(countFile, "utf8")).toBe("1");
-    const header = await readFile(headerFile, "utf8");
-    expect(header).toBe(budgetUsd);
-    expect(header).toMatch(/^(?:\d+\.?\d*|\.\d+)$/);
-    const artifact = JSON.parse(await readFile(path.join(outDir, "missing-cost.json"), "utf8"));
-    expect(artifact.completion).toEqual({ plannedTurns: repeats, completedTurns: 1, status: "incomplete" });
-    expect(artifact.results).toHaveLength(1);
-    expect(artifact.results[0].evalCost.logIds).toEqual(cost && "logIds" in cost ? cost.logIds : []);
-    expect(artifact.budget.unknownCostTurns).toBe(error === "unknown turn cost" ? 1 : 0);
+      await chmod(fakeNpx, 0o755);
+      const outDir = path.join(directory, "results");
+      const result = await runNode(["scripts/run-demo-model-gauntlet.mjs",
+        "--models", "openai/offline-fixture", "--prompts", "rpc-simulate", "--repeats", String(repeats),
+        "--max-budget-usd", budgetUsd, "--port-base", String(port),
+        "--run-id", "missing-cost", "--out-dir", outDir
+      ], {
+        timeout: 20_000,
+        env: { ...process.env, PATH: `${directory}${path.delimiter}${process.env.PATH}`, MCP_SERVER_SECRET: "offline-test-placeholder" }
+      });
+      expect(result.status, result.stderr).toBe(1);
+      expect(result.stderr).toContain(error);
+      expect(await readFile(countFile, "utf8")).toBe("1");
+      const header = await readFile(headerFile, "utf8");
+      expect(header).toBe(budgetUsd);
+      expect(header).toMatch(/^(?:\d+\.?\d*|\.\d+)$/);
+      const artifact = JSON.parse(await readFile(path.join(outDir, "missing-cost.json"), "utf8"));
+      expect(artifact.completion).toEqual({ plannedTurns: repeats, completedTurns: 1, status: "incomplete" });
+      expect(artifact.results).toHaveLength(1);
+      expect(artifact.results[0].evalCost.logIds).toEqual(cost && "logIds" in cost ? cost.logIds : []);
+      expect(artifact.budget.unknownCostTurns).toBe(error === "unknown turn cost" ? 1 : 0);
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
   }, 25_000);
 
   it("computes launch-plan turns across the full selected matrix", () => {

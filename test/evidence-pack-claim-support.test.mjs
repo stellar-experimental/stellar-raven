@@ -26,10 +26,20 @@ function execute(result, extra = {}) {
 }
 
 const audits = new Map();
+let lastExplain = null;
+
+function explainOnce(candidateAnswer, transcript, extra = {}) {
+  const key = JSON.stringify([candidateAnswer, transcript, extra]);
+  if (lastExplain && lastExplain.key === key) {
+    return lastExplain.result;
+  }
+  const result = explainTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra });
+  lastExplain = { key, result };
+  return result;
+}
 
 function pack(candidateAnswer, transcript, extra = {}) {
-  const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra });
-  expect(buildTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra })).toBe(text);
+  const { text, audit } = explainOnce(candidateAnswer, transcript, extra);
   audits.set(text, audit);
   return text;
 }
@@ -61,10 +71,21 @@ function supportUnits(text) {
 
 /** Audit-only omitted anchors for the same input. They never appear in the judge pack. */
 function omitted(candidateAnswer, transcript, extra = {}) {
-  const { text, audit } = explainTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra });
+  const { text, audit } = explainOnce(candidateAnswer, transcript, extra);
   expect(text).not.toContain("claimSupportOmitted");
   return audit.omitted.map((item) => item.anchor);
 }
+
+describe("buildTranscriptEvidencePack and explainTranscriptEvidencePack parity", () => {
+  it("emits the exact same pack text from both entrypoints", () => {
+    const input = {
+      ...CASE,
+      candidateAnswer: "Alpha-7 launched 2026-08-01 with repoScore 54.",
+      transcript: [execute({ title: "Alpha-7", launched: "2026-08-01", repoScore: 54 })]
+    };
+    expect(buildTranscriptEvidencePack(input)).toBe(explainTranscriptEvidencePack(input).text);
+  });
+});
 
 function noOmissions(transcript, text, claims) {
   const check = findTranscriptEvidencePackOmissions({ transcript, transcriptEvidence: text, claims });

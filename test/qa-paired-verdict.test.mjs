@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { spawnSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import { describe, expect, it } from "vitest";
 import {
   CASE_INPUT_IDENTITY,
@@ -178,6 +178,47 @@ function freshBeforeCheck(guard, index) {
   guard.reusedCaptureCount -= 1;
 }
 
+const DEFAULT_REMOTE_VECTOR_SHA256 = remoteIdentityVectorSha256(remoteVector());
+const DEFAULT_IDS_SHA256_CACHE = new Map();
+const DEFAULT_CASE_INPUT_CACHE = new Map();
+
+function cachedIdsSha256(length, ids) {
+  let digest = DEFAULT_IDS_SHA256_CACHE.get(length);
+  if (!digest) {
+    digest = createHash("sha256").update(JSON.stringify(ids)).digest("hex");
+    DEFAULT_IDS_SHA256_CACHE.set(length, digest);
+  }
+  return digest;
+}
+
+function cachedDefaultCaseInput(id) {
+  let cached = DEFAULT_CASE_INPUT_CACHE.get(id);
+  if (!cached) {
+    const caseInput = caseInputPayload({
+      question: id,
+      golden: { answer: `answer-${id}`, keyFacts: [], avoid: [] },
+      tags: { freshness: "stable", trap: null }
+    });
+    cached = { caseInput, digest: caseInputSha256(caseInput) };
+    DEFAULT_CASE_INPUT_CACHE.set(id, cached);
+  }
+  return { caseInput: structuredClone(cached.caseInput), digest: cached.digest };
+}
+
+function runPairedVerdictCli(args) {
+  return new Promise((resolve) => {
+    execFile(
+      process.execPath,
+      ["eval/qa/paired-verdict.mjs", ...args],
+      { cwd: process.cwd(), encoding: "utf8" },
+      (error, stdout, stderr) => {
+        const status = error && typeof error.code === "number" ? error.code : error ? null : 0;
+        resolve({ status, stdout, stderr });
+      }
+    );
+  });
+}
+
 function result(grades, {
   caseInputs = {},
   failures = {},
@@ -186,7 +227,7 @@ function result(grades, {
 } = {}) {
   const ids = grades.map((_, index) => `case-${String(index).padStart(3, "0")}`);
   const remoteIdentity = remoteVector();
-  const remoteIdentitySha256 = remoteIdentityVectorSha256(remoteIdentity);
+  const remoteIdentitySha256 = DEFAULT_REMOTE_VECTOR_SHA256;
   return {
     meta: {
       variant: "A",
@@ -202,7 +243,7 @@ function result(grades, {
       comparable,
       completeness: { complete: true, aggregatesAllowed: true },
       inputSnapshot: {
-        caseIdsSha256: createHash("sha256").update(JSON.stringify(ids)).digest("hex")
+        caseIdsSha256: cachedIdsSha256(ids.length, ids)
       },
       judgeTiering: tiering(),
       agentBinary: {
@@ -263,16 +304,18 @@ function result(grades, {
     },
     rows: grades.map((grade, index) => {
       const id = ids[index];
-      const caseInput = caseInputPayload(caseInputs[id] ?? {
-        question: id,
-        golden: { answer: `answer-${id}`, keyFacts: [], avoid: [] },
-        tags: { freshness: "stable", trap: null }
-      });
+      const override = caseInputs[id];
+      const { caseInput, digest } = override
+        ? (() => {
+            const payload = caseInputPayload(override);
+            return { caseInput: payload, digest: caseInputSha256(payload) };
+          })()
+        : cachedDefaultCaseInput(id);
       return {
         id,
         question: id,
         caseInput,
-        caseInputSha256: caseInputSha256(caseInput),
+        caseInputSha256: digest,
         tags: caseInput.tags,
         agent: { failure: failures[id] ?? null },
         attempts: { agent: [{ number: 1 }], judge: [] },
@@ -1204,7 +1247,7 @@ describe("paired QA verdict", () => {
     );
   });
 
-  it("makes the printer reject equal baseline and candidate revisions", () => {
+  it.concurrent("makes the printer reject equal baseline and candidate revisions", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-paired-verdict-revision-"));
     try {
       const baselinePath = join(root, "baseline.json");
@@ -1215,11 +1258,7 @@ describe("paired QA verdict", () => {
       writeFileSync(baselinePath, JSON.stringify(baseline));
       writeFileSync(candidatePath, JSON.stringify(candidate));
 
-      const run = spawnSync(
-        process.execPath,
-        ["eval/qa/paired-verdict.mjs", baselinePath, candidatePath],
-        { cwd: process.cwd(), encoding: "utf8" }
-      );
+      const run = await runPairedVerdictCli([baselinePath, candidatePath]);
       expect(run.status).toBe(2);
       expect(run.stdout).toMatch(/server-revision-pairing/);
     } finally {
@@ -1235,7 +1274,7 @@ describe("paired QA verdict", () => {
     expect(decision.verdict).toBe("INDETERMINATE");
   });
 
-  it("prints estimates, bounds, eligibility, look, and reasons on one line", () => {
+  it.concurrent("prints estimates, bounds, eligibility, look, and reasons on one line", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-paired-verdict-"));
     try {
       const baselinePath = join(root, "baseline.json");
@@ -1248,11 +1287,10 @@ describe("paired QA verdict", () => {
         candidatePath,
         JSON.stringify(withRuntimeAdapter(result(Array(100).fill("partial")), "candidate"))
       );
-      const run = spawnSync(
-        process.execPath,
-        ["eval/qa/paired-verdict.mjs", baselinePath, candidatePath],
-        { cwd: process.cwd(), encoding: "utf8" }
-      );
+      const [run, jsonRun] = await Promise.all([
+        runPairedVerdictCli([baselinePath, candidatePath]),
+        runPairedVerdictCli([baselinePath, candidatePath, "--json"])
+      ]);
 
       expect(run.status).toBe(0);
       expect(run.stdout.trim().split("\n")).toHaveLength(1);
@@ -1261,11 +1299,6 @@ describe("paired QA verdict", () => {
       expect(run.stdout).toContain("strictCorrect=0.0000[0.0000,0.0000]");
       expect(run.stdout).toContain("reasons=");
 
-      const jsonRun = spawnSync(
-        process.execPath,
-        ["eval/qa/paired-verdict.mjs", baselinePath, candidatePath, "--json"],
-        { cwd: process.cwd(), encoding: "utf8" }
-      );
       expect(jsonRun.status).toBe(0);
       expect(JSON.parse(jsonRun.stdout)).toMatchObject({
         verdict: "PASS",
@@ -1276,12 +1309,8 @@ describe("paired QA verdict", () => {
     }
   });
 
-  it("keeps JSON output on an input failure", () => {
-    const run = spawnSync(
-      process.execPath,
-      ["eval/qa/paired-verdict.mjs", "--json", "/no/such/a.json", "/no/such/b.json"],
-      { cwd: process.cwd(), encoding: "utf8" }
-    );
+  it.concurrent("keeps JSON output on an input failure", async () => {
+    const run = await runPairedVerdictCli(["--json", "/no/such/a.json", "/no/such/b.json"]);
 
     expect(run.status).toBe(2);
     const parsed = JSON.parse(run.stdout);

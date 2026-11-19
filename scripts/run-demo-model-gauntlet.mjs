@@ -292,11 +292,19 @@ async function startWrangler({ model, reasoningEffort, openAiApiMode, port }) {
 async function stopWrangler(server) {
   if (!server?.child || server.child.exitCode !== null) return;
   server.child.kill("SIGTERM");
-  const timeout = sleep(5_000).then(() => "timeout");
+  let timer;
+  const timeout = new Promise((resolve) => {
+    timer = setTimeout(() => resolve("timeout"), 5_000);
+    timer.unref?.();
+  });
   const exited = once(server.child, "exit").then(() => "exit");
-  if ((await Promise.race([timeout, exited])) === "timeout") {
-    server.child.kill("SIGKILL");
-    await once(server.child, "exit").catch(() => {});
+  try {
+    if ((await Promise.race([timeout, exited])) === "timeout") {
+      server.child.kill("SIGKILL");
+      await once(server.child, "exit").catch(() => {});
+    }
+  } finally {
+    clearTimeout(timer);
   }
 }
 

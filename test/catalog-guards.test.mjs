@@ -30,9 +30,12 @@ import { NON_EXPOSED_SCOUT_OP_NAMES } from "../scripts/exposure.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIGEST = "skills.lumenloop.stellar-ecosystem-digest";
+const MANIFEST_ENTRIES = JSON.parse(readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8")).entries;
+const SCOUT_INVENTORY = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
+const ORIGINAL_SCOUT = buildScout(SCOUT_INVENTORY);
 
 describe("Scout exposure data matches the source contract", () => {
-  const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
+  const inventory = SCOUT_INVENTORY;
 
   it("accepts the current contract and still rejects a removed excluded operation", () => {
     expect(() => assertScoutExclusionsResolve(inventory.openapi)).not.toThrow();
@@ -69,11 +72,10 @@ describe("Scout exposure data matches the source contract", () => {
   it("accepts the reviewed submission operation when listed but never emits it", () => {
     const changed = withReviewOperation();
     expect(() => assertScoutExclusionsResolve(changed)).not.toThrow();
-    const original = buildScout(inventory);
     const built = buildScout({ ...inventory, openapi: changed });
-    expect(built.entries).toEqual(original.entries);
-    expect([...built.routingPhraseExtras]).toEqual([...original.routingPhraseExtras]);
-    expect([...built.routingExtras]).toEqual([...original.routingExtras]);
+    expect(built.entries).toEqual(ORIGINAL_SCOUT.entries);
+    expect([...built.routingPhraseExtras]).toEqual([...ORIGINAL_SCOUT.routingPhraseExtras]);
+    expect([...built.routingExtras]).toEqual([...ORIGINAL_SCOUT.routingExtras]);
     expect(scoutRefRewrites(changed).some(([from]) => from.includes("/api/hackathons/review")))
       .toBe(false);
   });
@@ -94,7 +96,7 @@ describe("Scout exposure data matches the source contract", () => {
     const changed = withReviewOperation();
     changed.paths["/api/hackathons/review"].get["x-side-effecting"] = true;
     expect(() => assertSideEffectingOpsExcluded(changed)).not.toThrow();
-    expect(buildScout({ ...inventory, openapi: changed }).entries).toEqual(buildScout(inventory).entries);
+    expect(buildScout({ ...inventory, openapi: changed }).entries).toEqual(ORIGINAL_SCOUT.entries);
   });
 
   it.each(["post", "put", "delete", "patch", "head", "options", "trace"])(
@@ -128,13 +130,11 @@ describe("Scout exposure data matches the source contract", () => {
  * (skill entries carry null schemas until the registry attaches them).
  */
 function preAttachEntries() {
-  return JSON.parse(readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8")).entries.map(
-    (entry) => {
-      if (entry.runnable !== true) return entry;
-      const { runnable: _runnable, ...rest } = entry;
-      return { ...rest, inputSchema: null, outputSchema: null };
-    }
-  );
+  return MANIFEST_ENTRIES.map((entry) => {
+    if (entry.runnable !== true) return entry;
+    const { runnable: _runnable, ...rest } = entry;
+    return { ...rest, inputSchema: null, outputSchema: null };
+  });
 }
 
 describe("attachRunnableSkills — fail-loud drift guards (design §5)", () => {
@@ -191,9 +191,8 @@ describe("assertNoNonExposedRefs — all emitted schema JSON follows ADR-0003", 
   }
 
   it("rejects an excluded child path after the Scout rewrite", () => {
-    const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
     const text = "See GET /api/hackathons/review before you apply.";
-    const description = rewriteScoutRefs(text, scoutRefRewrites(inventory.openapi));
+    const description = rewriteScoutRefs(text, scoutRefRewrites(SCOUT_INVENTORY.openapi));
     expect(description).toBe(text);
     const entry = preAttachEntries().find((entry) => entry.id === "scout.getHackathons");
     expect(() => assertNoNonExposedRefs([{ ...entry, description }])).toThrow(/ADR-0003 leak/);
@@ -277,16 +276,11 @@ describe("assertNoNonExposedRefs — all emitted schema JSON follows ADR-0003", 
 
 describe("assertBuildAuthorityIdsResolve — role ids are pinned to skills that churn upstream", () => {
   it("passes on the real catalog", () => {
-    const entries = JSON.parse(
-      readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8")
-    ).entries;
-    expect(() => assertBuildAuthorityIdsResolve(entries)).not.toThrow();
+    expect(() => assertBuildAuthorityIdsResolve(MANIFEST_ENTRIES)).not.toThrow();
   });
 
   it("throws when an upstream rename orphans a role id, instead of dropping the role", () => {
-    const entries = JSON.parse(
-      readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8")
-    ).entries.filter((e) => e.id !== "skills.stellar-dev.dapp");
+    const entries = MANIFEST_ENTRIES.filter((e) => e.id !== "skills.stellar-dev.dapp");
     expect(() => assertBuildAuthorityIdsResolve(entries)).toThrow(
       /BUILD_AUTHORITY_SKILL_ROLES names skills that no longer exist: skills\.stellar-dev\.dapp/
     );
@@ -295,7 +289,23 @@ describe("assertBuildAuthorityIdsResolve — role ids are pinned to skills that 
 
 
 describe("Scout upstream prose follows ADR-0003 before extraction", () => {
-  const inventory = JSON.parse(readFileSync(join(ROOT, "inventory", "stellar-light.json"), "utf8"));
+  const inventory = SCOUT_INVENTORY;
+  const { "/api/hackathons": hackathonsPathItem, ...otherScoutPaths } = inventory.openapi.paths;
+  // Place `/api/hackathons` first via structural sharing: avoids cloning the full OpenAPI document
+  // on every case and lets throwing guard checks fail on the first path without altering semantics.
+  const withHackathonsRouting = (xRouting) => ({
+    ...inventory,
+    openapi: {
+      ...inventory.openapi,
+      paths: {
+        "/api/hackathons": {
+          ...hackathonsPathItem,
+          get: { ...hackathonsPathItem.get, "x-routing": xRouting }
+        },
+        ...otherScoutPaths
+      }
+    }
+  });
 
   it("drops excluded-name vocabulary from the live 1.9.116 compareHackathons description", () => {
     const changed = structuredClone(inventory);
@@ -328,10 +338,9 @@ describe("Scout upstream prose follows ADR-0003 before extraction", () => {
       `rejects real extracted tokens for %s in ${field} at the raw source`, (reference) => {
         const text = `Use ${reference} here.`;
         expect(extract(text).length).toBeGreaterThan(0);
-        const changed = structuredClone(inventory);
-        changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+        const changed = withHackathonsRouting({
           [sourceField]: sourceField === "purpose" ? text : [text]
-        };
+        });
         expect(() => buildScout(changed)).toThrow(new RegExp(`x-routing\\.${sourceField}`));
       }
     );
@@ -340,64 +349,71 @@ describe("Scout upstream prose follows ADR-0003 before extraction", () => {
   for (const field of ["purpose", "useWhen", "exampleQuestions", "keywords", "notFor"]) {
     it.each(["reviewSubmission", "get_rwa_assets", "/api/hackathons%2Freview", "lumenloop.request_research"])(
       `rejects an unhandled reference %s in x-routing.${field}`, (reference) => {
-        const changed = structuredClone(inventory);
         const text = `Use ${reference} here.`;
-        changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+        const changed = withHackathonsRouting({
           [field]: field === "purpose" ? text : [text]
-        };
+        });
         expect(() => buildScout(changed)).toThrow(new RegExp(`x-routing\\.${field}`));
       }
     );
   }
 
-  it.each(["reviewSubmission", "getQualityReport", "getRwaAssets"])(
-    "drops the excluded notFor target %s before scanning emitted tokens", (target) => {
-      const changed = structuredClone(inventory);
-      changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
-        notFor: [`judging a single entry -> scout.${target}`]
-      };
-      const source = buildScout(changed).routingPhraseExtras.get("scout.getHackathons");
-      expect(extractRoutingExclusions(source.notFor)).toEqual([
-        { tokens: ["judging", "single", "entry"] }
-      ]);
-    }
-  );
+  it("drops excluded notFor targets before scanning emitted tokens", () => {
+    const cases = [
+      ["reviewSubmission", "judging a single entry", ["judging", "single", "entry"]],
+      ["getQualityReport", "reading quality diagnostics", ["reading", "quality", "diagnostics"]],
+      ["getRwaAssets", "listing tokenized assets", ["listing", "tokenized", "assets"]]
+    ];
+    const changed = withHackathonsRouting({
+      notFor: cases.map(([target, clause]) => `${clause} -> scout.${target}`)
+    });
+    const source = buildScout(changed).routingPhraseExtras.get("scout.getHackathons");
+    expect(extractRoutingExclusions(source.notFor)).toEqual(
+      cases.map(([, , tokens]) => ({ tokens }))
+    );
+  });
 
   it.each(["purpose", "useWhen", "exampleQuestions", "keywords"])(
     "scans the full positive x-routing.%s string", (field) => {
-      const changed = structuredClone(inventory);
       const text = "judging a single entry -> scout.reviewSubmission";
-      changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
+      const changed = withHackathonsRouting({
         [field]: field === "purpose" ? text : [text]
-      };
+      });
       expect(() => buildScout(changed)).toThrow(new RegExp(`x-routing\\.${field}`));
     }
   );
 
-  for (const field of ["purpose", "useWhen", "exampleQuestions", "keywords", "notFor"]) {
-    it.each([
-      "post-submission review", "review submission scoring", "quality report", "RWA assets", "api feedback loop"
-    ])(`accepts legitimate prose %s in x-routing.${field}`, (text) => {
-      const changed = structuredClone(inventory);
-      changed.openapi.paths["/api/hackathons"].get["x-routing"] = {
-        [field]: field === "purpose" ? text : [text]
-      };
-      const built = buildScout(changed);
-      const entry = built.entries.find((entry) => entry.id === "scout.getHackathons");
-      const source = built.routingPhraseExtras.get(entry.id);
-      expect(() => assertNoNonExposedRefs([{
-        ...entry,
-        routingKeywords: extractKeywords((built.routingExtras.get(entry.id) ?? []).join("\n")),
-        routingPhrases: extractRoutingPhrases(source),
-        routingExclusions: extractRoutingExclusions(source.notFor)
-      }])).not.toThrow();
+  it.each([
+    "post-submission review", "review submission scoring", "quality report", "RWA assets", "api feedback loop"
+  ])("accepts legitimate prose %s across all five x-routing fields", (text) => {
+    const changed = withHackathonsRouting({
+      purpose: text,
+      useWhen: [text],
+      exampleQuestions: [text],
+      keywords: [text],
+      notFor: [text]
     });
-  }
+    const built = buildScout(changed);
+    const entry = built.entries.find((entry) => entry.id === "scout.getHackathons");
+    const source = built.routingPhraseExtras.get(entry.id);
+    expect(source).toEqual({
+      purpose: [text],
+      useWhen: [text],
+      exampleQuestions: [text],
+      keywords: [text],
+      notFor: [text]
+    });
+    expect(() => assertNoNonExposedRefs([{
+      ...entry,
+      routingKeywords: extractKeywords((built.routingExtras.get(entry.id) ?? []).join("\n")),
+      routingPhrases: extractRoutingPhrases(source),
+      routingExclusions: extractRoutingExclusions(source.notFor)
+    }])).not.toThrow();
+  });
 
   it("preserves a source with only clean notFor strings", () => {
-    const changed = structuredClone(inventory);
     const notFor = ["historical account balances -> stellarDocs.searchApiRpc"];
-    changed.openapi.paths["/api/hackathons"].get["x-routing"] = { notFor };
+    const changed = withHackathonsRouting({ notFor });
     expect(buildScout(changed).routingPhraseExtras.get("scout.getHackathons")).toEqual({
       purpose: [], useWhen: [], exampleQuestions: [], keywords: [], notFor
     });

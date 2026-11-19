@@ -1,4 +1,4 @@
-import { spawn, spawnSync } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { once } from "node:events";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -20,7 +20,7 @@ const SERVER_SOURCE = String.raw`
   const server = net.createServer((socket) => {
     console.log("connection");
     let buffered = Buffer.alloc(0);
-    socket.setTimeout(1000, () => socket.destroy());
+    socket.setTimeout(300, () => socket.destroy());
     socket.on("data", (chunk) => {
       buffered = Buffer.concat([buffered, chunk]);
       while (true) {
@@ -71,7 +71,7 @@ const CLIENT_SOURCE = String.raw`
         await fetchLiveSurface("http://localhost:" + port + "/mcp");
       };
   await probe();
-  spawnSync(process.execPath, ["-e", "Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 1500)"]);
+  spawnSync(process.execPath, ["-e", "Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 700)"]);
   await probe();
 `;
 
@@ -97,17 +97,23 @@ async function waitForConnectionCount(connectionCount, expected) {
 }
 
 describe("evaluation postflight connection lifetime", () => {
-  it.each([
+  it.concurrent.each([
     ["QA", RUN_QA_PATH, "qa"],
     ["discovery", REPORT_LIVE_SURFACE_PATH, "discovery"]
   ])("uses fresh connections for the %s postflight probe", async (_label, modulePath, mode) => {
     const { child, port, connectionCount } = await startServer();
     try {
-      const result = spawnSync(
-        process.execPath,
-        ["--input-type=module", "-e", CLIENT_SOURCE, modulePath, String(port), mode],
-        { encoding: "utf8" }
-      );
+      const result = await new Promise((resolve) => {
+        execFile(
+          process.execPath,
+          ["--input-type=module", "-e", CLIENT_SOURCE, modulePath, String(port), mode],
+          { encoding: "utf8" },
+          (error, stdout, stderr) => {
+            const status = error && typeof error.code === "number" ? error.code : error ? null : 0;
+            resolve({ status, stdout, stderr });
+          }
+        );
+      });
       expect(result.status, result.stderr).toBe(0);
       await waitForConnectionCount(connectionCount, 4);
       expect(connectionCount()).toBe(4);

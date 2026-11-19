@@ -10,7 +10,8 @@
  * records (the compact form ships into the execute sandbox).
  */
 import { describe, expect, it } from "vitest";
-import { execFileSync } from "node:child_process";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { readFileSync, writeFileSync, cpSync, mkdtempSync, rmSync, symlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
@@ -100,32 +101,38 @@ function outputBlock(entry: (typeof manifest.entries)[number]): string | undefin
   return jsonSchemaToType(entry.outputSchema as JsonSchema, `${typeBase}Output`);
 }
 
-function withBuilderFixture(run: (root: string, build: () => void) => void): void {
+const execFileAsync = promisify(execFile);
+
+async function withBuilderFixture(run: (root: string, build: () => Promise<void>) => Promise<void>): Promise<void> {
   const isolatedRoot = mkdtempSync(join(tmpdir(), "super-spec-test-"));
   try {
-    // Copy only builder inputs and dependencies. Credentials never enter the fixture.
-    for (const directory of ["scripts", "src", "inventory", "ecosystem-skills", "catalog", "specs"]) {
+    // Copy mutable builder inputs and `scripts/` (whose import.meta.url derives ROOT);
+    // symlink read-only `src/`, `catalog/`, and `node_modules/`. Credentials never enter.
+    for (const directory of ["scripts", "inventory", "ecosystem-skills", "specs"]) {
       cpSync(join(ROOT, directory), join(isolatedRoot, directory), { recursive: true });
     }
+    for (const directory of ["src", "catalog", "node_modules"]) {
+      symlinkSync(join(ROOT, directory), join(isolatedRoot, directory), "dir");
+    }
     cpSync(join(ROOT, "package.json"), join(isolatedRoot, "package.json"));
-    symlinkSync(join(ROOT, "node_modules"), join(isolatedRoot, "node_modules"), "dir");
-    const build = () => { execFileSync(process.execPath, [join(isolatedRoot, "scripts", "build-super-spec.mjs")], {
-      cwd: isolatedRoot,
-      stdio: "pipe"
-    }); };
-    run(isolatedRoot, build);
+    const build = async () => {
+      await execFileAsync(process.execPath, [join(isolatedRoot, "scripts", "build-super-spec.mjs")], {
+        cwd: isolatedRoot
+      });
+    };
+    await run(isolatedRoot, build);
   } finally {
     rmSync(isolatedRoot, { recursive: true, force: true });
   }
 }
 
 describe("build determinism", () => {
-  it("the checked-in artifact is current, and two rebuilds are byte-identical", () => {
+  it.concurrent("the checked-in artifact is current, and two rebuilds are byte-identical", async () => {
     const before = readFileSync(SPEC_PATH);
-    withBuilderFixture((root, build) => {
-      build();
+    await withBuilderFixture(async (root, build) => {
+      await build();
       const first = readFileSync(join(root, "specs", "super-spec.json"));
-      build();
+      await build();
       const second = readFileSync(join(root, "specs", "super-spec.json"));
       expect(Buffer.compare(first, second)).toBe(0);
       expect(
@@ -135,8 +142,8 @@ describe("build determinism", () => {
     });
   });
 
-  it("scrubs excluded references from summaries, descriptions, and tag descriptions", () => {
-    withBuilderFixture((root, build) => {
+  it.concurrent("scrubs excluded references from summaries, descriptions, and tag descriptions", async () => {
+    await withBuilderFixture(async (root, build) => {
       const inventoryPath = join(root, "inventory", "stellar-light.json");
       const inventory = JSON.parse(readFileSync(inventoryPath, "utf8"));
       const operation = inventory.openapi.paths["/api/hackathons/compare"].get;
@@ -147,7 +154,7 @@ describe("build determinism", () => {
         description: "See GET /api/hackathons/builds/{id}."
       });
       writeFileSync(inventoryPath, JSON.stringify(inventory));
-      build();
+      await build();
       const rebuilt = JSON.parse(readFileSync(join(root, "specs", "super-spec.json"), "utf8"));
       const result = operationById(rebuilt, "scout.compareHackathons");
       expect(result.summary).toBe("Compare hackathon events.");
@@ -157,15 +164,15 @@ describe("build determinism", () => {
     });
   });
 
-  it("applies authored description scrubs when the clause moves into the summary", () => {
-    withBuilderFixture((root, build) => {
+  it.concurrent("applies authored description scrubs when the clause moves into the summary", async () => {
+    await withBuilderFixture(async (root, build) => {
       const inventoryPath = join(root, "inventory", "stellar-light.json");
       const inventory = JSON.parse(readFileSync(inventoryPath, "utf8"));
       const operation = inventory.openapi.paths["/api/status"].get;
       operation.summary = "Use to check freshness or to discover endpoints.";
       operation.description = operation.description.replace(" or to discover endpoints", "");
       writeFileSync(inventoryPath, JSON.stringify(inventory));
-      build();
+      await build();
       const rebuilt = JSON.parse(readFileSync(join(root, "specs", "super-spec.json"), "utf8"));
       expect(operationById(rebuilt, "scout.getStatus").summary).toBe("Use to check freshness.");
     });

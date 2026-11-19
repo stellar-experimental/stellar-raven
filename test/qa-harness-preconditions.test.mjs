@@ -14,7 +14,7 @@
  * use a local fake Claude executable.
  */
 import { createHash } from "node:crypto";
-import { spawnSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -527,6 +527,15 @@ function writeEnvironmentPinFixture(root, name) {
   return resultsPath;
 }
 
+function execNodeAsync(args, { cwd = REPO_ROOT, env } = {}) {
+  return new Promise((resolve) => {
+    execFile(process.execPath, args, { cwd, env, encoding: "utf8" }, (error, stdout, stderr) => {
+      const status = error && typeof error.code === "number" ? error.code : error ? null : 0;
+      resolve({ status, stdout, stderr });
+    });
+  });
+}
+
 function createEnvironmentPinCliFixture() {
   const root = mkdtempSync(path.join(os.tmpdir(), "qa-environment-pin-"));
   const claudePath = path.join(root, "claude");
@@ -566,8 +575,7 @@ printf '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"
   const binarySha256 = sha256(readFileSync(claudePath));
   const environmentSha256 = agentEnvironmentIdentity(environment).sha256;
   const run = (resultsPath, extraArgs = [], extraEnv = {}) =>
-    spawnSync(
-      process.execPath,
+    execNodeAsync(
       [
         RUN_QA_PATH,
         "--judge-stored",
@@ -578,11 +586,10 @@ printf '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"
         binarySha256,
         ...extraArgs
       ],
-      { cwd: REPO_ROOT, env: { ...environment, ...extraEnv }, encoding: "utf8" }
+      { env: { ...environment, ...extraEnv } }
     );
   const runCollection = (extraArgs = []) =>
-    spawnSync(
-      process.execPath,
+    execNodeAsync(
       [
         RUN_QA_PATH,
         "--max-budget-usd",
@@ -591,7 +598,7 @@ printf '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"
         binarySha256,
         ...extraArgs
       ],
-      { cwd: REPO_ROOT, env: environment, encoding: "utf8" }
+      { env: environment }
     );
   const paidCalls = () =>
     readFileSync(callLogPath, "utf8").split("\n").filter(Boolean);
@@ -607,13 +614,13 @@ describe("run-qa optional IDs selector guards", () => {
     expect(() => parseOptionalIdsFlag(idsArgs)).toThrow(message);
   });
 
-  it.each([
+  it.concurrent.each([
     ["equals form", ["--ids=q-example"], /--ids=<value> is not supported/],
     ["duplicate", ["--ids", "q-example", "--ids", "q-second"], /accepts --ids at most once/]
-  ])("rejects the %s --ids selector before a paid call", (_name, idsArgs, message) => {
+  ])("rejects the %s --ids selector before a paid call", async (_name, idsArgs, message) => {
     const fixture = createEnvironmentPinCliFixture();
     try {
-      const result = fixture.runCollection(idsArgs);
+      const result = await fixture.runCollection(idsArgs);
 
       expect(result.status).not.toBe(0);
       expect(result.stderr).toMatch(message);
@@ -628,11 +635,11 @@ describe("run-qa optional IDs selector guards", () => {
       .toBe("q-example,q-second");
   });
 
-  it("rejects --ids with --judge-stored before a paid call", () => {
+  it.concurrent("rejects --ids with --judge-stored before a paid call", async () => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const resultsPath = writeEnvironmentPinFixture(fixture.root, "ids-with-judge-stored");
-      const result = fixture.run(resultsPath, [
+      const result = await fixture.run(resultsPath, [
         "--expect-agent-environment-sha256",
         fixture.environmentSha256,
         "--ids",
@@ -648,11 +655,11 @@ describe("run-qa optional IDs selector guards", () => {
     }
   });
 
-  it("rejects paired collection control in stored judging before a paid call", () => {
+  it.concurrent("rejects paired collection control in stored judging before a paid call", async () => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const resultsPath = writeEnvironmentPinFixture(fixture.root, "paired-control-judge-stored");
-      const result = fixture.run(resultsPath, ["--paired-control-arm", "baseline"]);
+      const result = await fixture.run(resultsPath, ["--paired-control-arm", "baseline"]);
 
       expect(result.status).not.toBe(0);
       expect(result.stderr).toMatch(/valid only for --no-judge collection/);
@@ -868,11 +875,18 @@ describe("run-qa residual optional flag guards", () => {
     ["--search-tool=fixture-search", /--search-tool=<value> is not supported/],
     ["--port=8790", /--port=<value> is not supported/],
     ["--judge-stored=fixture.json", /--judge-stored=<value> is not supported/]
-  ])("rejects %s before a fake judge call", (optionalArg, message) => {
+  ])("rejects %s in the CLI syntax guard", (optionalArg, message) => {
+    expect(() => assertRunQaCliSyntax([optionalArg])).toThrow(message);
+  });
+
+  it.concurrent.each([
+    ["--sample=1", /--sample=<value> is not supported/],
+    ["--no-judge=true", /--no-judge=<value> is not supported; use --no-judge/]
+  ])("rejects %s in the CLI before a fake judge call", async (optionalArg, message) => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const resultsPath = writeEnvironmentPinFixture(fixture.root, "optional-equals");
-      const result = fixture.run(resultsPath, [
+      const result = await fixture.run(resultsPath, [
         "--expect-agent-environment-sha256",
         fixture.environmentSha256,
         optionalArg
@@ -887,14 +901,14 @@ describe("run-qa residual optional flag guards", () => {
     }
   });
 
-  it.each([
+  it.concurrent.each([
     ["an unknown flag", "--unknown", /run-qa: unknown flag --unknown/],
     ["a stray argument", "stray", /run-qa: unexpected positional argument "stray"/]
-  ])("rejects %s before a fake judge call", (_name, arg, message) => {
+  ])("rejects %s before a fake judge call", async (_name, arg, message) => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const resultsPath = writeEnvironmentPinFixture(fixture.root, "fail-closed");
-      const result = fixture.run(resultsPath, [
+      const result = await fixture.run(resultsPath, [
         "--expect-agent-environment-sha256",
         fixture.environmentSha256,
         arg
@@ -936,17 +950,17 @@ describe("run-qa residual optional flag guards", () => {
     ])).not.toThrow();
   });
 
-  it.each([
+  it.concurrent.each([
     ["--sample", "1"],
     ["--model", "fixture-agent"],
     ["--judge-model", "fixture-judge"],
     ["--cases", "fixture-cases.json"],
     ["--variant", "B"]
-  ])("preserves the spaced %s form", (flag, value) => {
+  ])("preserves the spaced %s form", async (flag, value) => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const resultsPath = writeEnvironmentPinFixture(fixture.root, "optional-spaced");
-      const result = fixture.run(resultsPath, [
+      const result = await fixture.run(resultsPath, [
         "--expect-agent-environment-sha256",
         fixture.environmentSha256,
         flag,
@@ -965,14 +979,14 @@ describe("run-qa residual optional flag guards", () => {
 });
 
 describe("P3 — run-qa CLI pins the inherited agent environment", () => {
-  it.each([
+  it.concurrent.each([
     ["duplicate", ["--expect-agent-binary-sha256", "0".repeat(64)], /accepts --expect-agent-binary-sha256 exactly once/],
     ["equals form", [`--expect-agent-binary-sha256=${"0".repeat(64)}`], /=<value> is not supported/]
-  ])("fails before a paid call when the binary pin uses the %s form", (name, binaryArgs, message) => {
+  ])("fails before a paid call when the binary pin uses the %s form", async (name, binaryArgs, message) => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const resultsPath = writeEnvironmentPinFixture(fixture.root, `binary-${name}`);
-      const result = fixture.run(resultsPath, [
+      const result = await fixture.run(resultsPath, [
         ...binaryArgs,
         "--expect-agent-environment-sha256",
         fixture.environmentSha256
@@ -986,15 +1000,15 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
     }
   });
 
-  it.each([
+  it.concurrent.each([
     ["server revision duplicate", ["--server-revision", "0".repeat(40)], /accepts --server-revision exactly once/],
     ["server revision equals form", [`--server-revision=${"0".repeat(40)}`], /server-revision=<value> is not supported/],
     ["surface duplicate", ["--expect-sha256", "0".repeat(64)], /accepts --expect-sha256 exactly once/],
     ["surface equals form", [`--expect-sha256=${"0".repeat(64)}`], /expect-sha256=<value> is not supported/]
-  ])("fails before a paid call when the collection pin uses the %s", (name, pinArgs, message) => {
+  ])("fails before a paid call when the collection pin uses the %s", async (name, pinArgs, message) => {
     const fixture = createEnvironmentPinCliFixture();
     try {
-      const result = fixture.runCollection([
+      const result = await fixture.runCollection([
         "--expect-agent-environment-sha256",
         fixture.environmentSha256,
         "--server-revision",
@@ -1012,13 +1026,13 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
     }
   });
 
-  it.each(["api_key", "oauth_token", "third_party"])(
+  it.concurrent.each(["api_key", "oauth_token", "third_party"])(
     "refuses a paid judge call when the Claude login is %s, not the subscription",
-    (authMethod) => {
+    async (authMethod) => {
       const fixture = createEnvironmentPinCliFixture();
       try {
         const resultsPath = writeEnvironmentPinFixture(fixture.root, `auth-${authMethod}`);
-        const result = fixture.run(
+        const result = await fixture.run(
           resultsPath,
           ["--expect-agent-environment-sha256", fixture.environmentSha256],
           { QA_FAKE_AUTH_METHOD: authMethod }
@@ -1033,14 +1047,14 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
     }
   );
 
-  it("refuses an alternate model endpoint even though the claude.ai login passes", () => {
+  it.concurrent("refuses an alternate model endpoint even though the claude.ai login passes", async () => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const resultsPath = writeEnvironmentPinFixture(fixture.root, "alternate-endpoint");
       const extraEnv = { ANTHROPIC_BASE_URL: "http://127.0.0.1:9" };
       // ANTHROPIC_* names are part of the pinned environment identity, so pin the one the run will see.
       const pin = agentEnvironmentIdentity({ ...fixture.environment, ...extraEnv }).sha256;
-      const result = fixture.run(resultsPath, ["--expect-agent-environment-sha256", pin], extraEnv);
+      const result = await fixture.run(resultsPath, ["--expect-agent-environment-sha256", pin], extraEnv);
 
       expect(result.status).not.toBe(0);
       expect(result.stderr).toMatch(/Claude subscription check: ANTHROPIC_BASE_URL is set, an alternate model endpoint; refusing paid calls/);
@@ -1051,11 +1065,11 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
     }
   });
 
-  it("accepts a matching pin and stamps the judge environment identity", () => {
+  it.concurrent("accepts a matching pin and stamps the judge environment identity", async () => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const matchingPath = writeEnvironmentPinFixture(fixture.root, "matching");
-      const matching = fixture.run(matchingPath, [
+      const matching = await fixture.run(matchingPath, [
         "--expect-agent-environment-sha256",
         fixture.environmentSha256
       ]);
@@ -1079,7 +1093,7 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
     }
   });
 
-  it.each([
+  it.concurrent.each([
     ["absent", [], /requires --expect-agent-environment-sha256/],
     ["mismatch", ["--expect-agent-environment-sha256", "0".repeat(64)], /refusing paid calls/],
     ["malformed", ["--expect-agent-environment-sha256", "not-a-sha256"], /64-character lowercase SHA-256/],
@@ -1100,11 +1114,11 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
       [`--expect-agent-environment-sha256=${"0".repeat(64)}`],
       /=<value> is not supported/
     ]
-  ])("fails before a paid call when the pin is %s", (name, extraArgs, message) => {
+  ])("fails before a paid call when the pin is %s", async (name, extraArgs, message) => {
     const fixture = createEnvironmentPinCliFixture();
     try {
       const resultsPath = writeEnvironmentPinFixture(fixture.root, name);
-      const result = fixture.run(resultsPath, extraArgs);
+      const result = await fixture.run(resultsPath, extraArgs);
 
       expect(result.status).not.toBe(0);
       expect(result.stderr).toMatch(message);
@@ -1115,10 +1129,10 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
     }
   });
 
-  it("rejects a collection-mode mismatch before an answering-agent spawn", () => {
+  it.concurrent("rejects a collection-mode mismatch before an answering-agent spawn", async () => {
     const fixture = createEnvironmentPinCliFixture();
     try {
-      const result = fixture.runCollection([
+      const result = await fixture.runCollection([
         "--expect-agent-environment-sha256",
         "0".repeat(64)
       ]);

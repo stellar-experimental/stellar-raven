@@ -134,6 +134,13 @@ describe("the call ledger", () => {
     expect(sectionOf(summary)).toBe(candidateEvidenceBlock(1));
   });
 
+  it("counts a stellarOrg run as uncorroborated and renders the standalone guard line", () => {
+    expect(summarizeOperationLedger([ok("stellarOrg.search_site")]).uncorroboratedEvidence).toBe(1);
+    const summary = summarizeOperationLedger([ok("stellarOrg.search_site"), ok("stellarOrg.get_page")]);
+    expect(summary.candidateEvidence).toBeUndefined();
+    expect(sectionOf(summary)).toBe(`\n\n${CORROBORATION_GUARD}`);
+  });
+
   it("derives the family from the operation id, which every catalog operation id starts with", () => {
     for (const entry of getCatalog().entries.filter((e) => e.kind === "operation")) {
       expect(entry.id.split(".", 1)[0], entry.id).toBe(entry.service);

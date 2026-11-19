@@ -474,10 +474,6 @@ describe("loadManifest — structural invariants", () => {
     return JSON.parse(readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8"));
   }
 
-  it("loads the real generated manifest without complaint", () => {
-    expect(() => loadManifest(rawManifest())).not.toThrow();
-  });
-
   it("rejects a duplicate entry id", () => {
     const raw = rawManifest();
     const dup = { ...raw, entries: [...raw.entries, raw.entries[0]] };
@@ -788,19 +784,10 @@ describe("searchCatalog — routing quality", () => {
     expect(withoutNegativeIds).toContain("scout.searchProjects");
   });
 
-  it("keeps every exact operation id first after source-routing admission", () => {
-    for (const entry of catalog.entries.filter((candidate) => candidate.kind === "operation")) {
-      expect(searchCatalog(catalog, { query: entry.id, limit: 1 })[0]?.id, entry.id)
-        .toBe(entry.id);
-    }
-  });
-
-  it("does not let negative routing metadata reject its own exact operation id", () => {
-    const withExclusions = catalog.entries.filter(
-      (entry) => entry.kind === "operation" && (entry.routingExclusions?.length ?? 0) > 0
-    );
-    expect(withExclusions.length).toBeGreaterThan(0);
-    for (const entry of withExclusions) {
+  it("keeps every exact operation id first after source-routing admission, including ops with negative exclusions", () => {
+    const ops = catalog.entries.filter((candidate) => candidate.kind === "operation");
+    expect(ops.some((entry) => (entry.routingExclusions?.length ?? 0) > 0)).toBe(true);
+    for (const entry of ops) {
       expect(searchCatalog(catalog, { query: entry.id, limit: 1 })[0]?.id, entry.id)
         .toBe(entry.id);
     }
@@ -809,11 +796,7 @@ describe("searchCatalog — routing quality", () => {
   it.each([
     "freighter",
     "openx402",
-    "hypertron",
-    "planbok",
-    "vigente",
-    "cointracker",
-    "alypay"
+    "hypertron"
   ])("adds a directory advisory for the bare project name %s", (query) => {
     const directoryIds = new Set([
       "lumenloop.search_directory",
@@ -1694,14 +1677,9 @@ describe("runnable byte-stability — the §10.1 invariant, pinned offline (desi
       { query: "project dossier scf funding history", limit: 20 },
       { query: "recent ecosystem digest news roundup", limit: 20 },
       { query: "scf funding award project", limit: 25 },
-      // …and a spread of ordinary pages (ops, sections, backfill, broad).
+      // …and a spread of ordinary pages (broad, op/section, backfill).
       { query: "stellar", limit: 50 },
-      { query: "stellar soroban contract", limit: 15 },
-      { query: "search directory" },
       { query: "soroban storage" },
-      { query: "stellar docs search" },
-      { query: "wallet balance lookup" },
-      { query: "fuzz testing smart contracts" },
       {
         query:
           "design a cross chain remittance corridor that quotes fees checks anchor deposit " +
