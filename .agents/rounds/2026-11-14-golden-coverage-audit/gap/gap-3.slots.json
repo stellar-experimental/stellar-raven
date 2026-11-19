@@ -1,0 +1,381 @@
+[
+ {
+  "leaf": "ai.mcp-servers",
+  "title": "MCP servers for Stellar",
+  "scope": "In: the MCP servers that serve Stellar knowledge or tools, what each provides, and how to connect them. Out: skills and llms.txt (ai.skills-llms-docs).",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "which MCP servers an agent can connect and what each provides",
+  "draftQuestion": "Which MCP servers can an agent connect for Stellar docs, data or tools, and what does each provide?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/build/building-with-ai.md",
+    "observedAt": "2026-11-14",
+    "quote": "Use Stellar documentation with AI assistants and Large Language Models"
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/llms.txt",
+    "observedAt": "2026-11-14",
+    "quote": "The links below point to documentation indexes. Follow each `/_llms/` index recursively until you reach documentation pages."
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/trionlabs/awesome-stellar-ai"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "assets.usdt0",
+  "title": "USDT0 on Stellar",
+  "scope": "In: how Tether's USDT0 reaches Stellar, the bridge standard behind it, and how it differs from a classic asset.",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "how USDT0 reaches Stellar and what kind of token it is",
+  "draftQuestion": "Is USDT on Stellar? How does USDT0 reach Stellar, and what kind of token is it there?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tokens/usdt0-layerzero.md",
+    "observedAt": "2026-11-14",
+    "quote": "Use USDT0, Tether's USDT delivered over LayerZero's OFT standard, on Stellar. Mainnet addresses, how LayerZero fits, integration pointers, and amount precision."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/launch/usdt0.md",
+    "observedAt": "2026-11-14",
+    "quote": "USDT0 is available on the Stellar network. How it arrives, what it unlocks, the contract addresses, and what to check before you build."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/usdt0-on-mainnet.md",
+    "observedAt": "2026-11-14",
+    "quote": "Work with USDT0 on Stellar mainnet from the CLI. Addresses, trustlines, the clawback flags, and how to acquire it safely."
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/press/usdt0-goes-live-on-stellar-connecting-unified-dollar-liquidity-to-the-world-s-most-accessible-network",
+    "unverified": true,
+    "note": "URL listed in stellar.org/sitemap.xml on 2026-11-14; page not opened"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "data.providers",
+  "title": "RPC and Horizon providers and endpoints",
+  "scope": "In: the endpoints SDF hosts, the ones it does not, the third-party provider lists, and the self-hosting option.",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "which endpoints SDF hosts and which it does not",
+  "draftQuestion": "Which RPC and Horizon endpoints does SDF host for Mainnet, Testnet and Futurenet, and where must I use a provider or my own node?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers.md",
+    "observedAt": "2026-11-14",
+    "quote": "Multiple infrastructure providers have made Stellar RPC services available, and offer plans ranging from free to dedicated instances."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/data/apis/horizon/providers.md",
+    "observedAt": "2026-11-14",
+    "quote": "On August 1, 2024, the publicly accessible SDF-hosted Horizon had its historical data truncated to one year."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/networks/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "Stellar RPC | Third-party providers only"
+   },
+   {
+    "class": "C",
+    "ref": "scout.searchProjects type=RPC status=Live",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts.total=14: Nodies, NOWNodes, Gateway.fm, Validation Cloud, QuickNode, Liquify, InfStones, Alchemy"
+   }
+  ],
+  "existingCases": [
+   "q-infra-rpc-provider-archive-tier"
+  ]
+ },
+ {
+  "leaf": "ecosystem.project-directory",
+  "title": "Finding and identifying ecosystem projects",
+  "scope": "In: what a named project is, its category and status, what it was renamed to, and what else exists in its category.",
+  "weight": 3,
+  "volatility": "live",
+  "facet": "telling apart similarly named or renamed projects",
+  "draftQuestion": "A 2025 post mentions the Hermes perps exchange on Stellar. What is that project called now, and is it live?",
+  "canonicalSources": [
+   {
+    "class": "E",
+    "ref": "scout.resolveProject({q:'Soroswap'})",
+    "observedAt": "2026-11-14",
+    "quote": "{slug: soroswap, name: Soroswap, status: Live, url: https://stellarlight.xyz/project/soroswap}"
+   },
+   {
+    "class": "C",
+    "ref": "scout.getStatus",
+    "observedAt": "2026-11-14",
+    "quote": "sources: projects count 1158, lastUpdatedAt 2026-11-14T00:51:27.943Z"
+   },
+   {
+    "class": "C",
+    "ref": "lumenloop.get_categories",
+    "observedAt": "2026-11-14",
+    "quote": "data.count=5: Applications, Developer Tooling, Education & Community, Financial Protocols, Infrastructure & Services"
+   },
+   {
+    "class": "C",
+    "ref": "scout.resolveProject",
+    "observedAt": "2026-11-14",
+    "quote": "Resolve a historical project name to what it is now."
+   }
+  ],
+  "existingCases": [
+   "q-eco-defi-market-map",
+   "q-eco-nft-marketplace-whitespace"
+  ]
+ },
+ {
+  "leaf": "funding.service-providers",
+  "title": "Service providers and partners for hire",
+  "scope": "In: the directories of auditors, anchors, agencies, and infrastructure providers a builder can engage.",
+  "weight": 1,
+  "volatility": "live",
+  "facet": "where to find a vetted audit firm or integration partner",
+  "draftQuestion": "Where can a builder find a vetted audit firm, anchor or integration partner for a Stellar project?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://stellar.org/ecosystem/service-providers",
+    "observedAt": "2026-11-14",
+    "quote": "Service providers"
+   },
+   {
+    "class": "C",
+    "ref": "scout.getPartners",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts: returned 43, total 43; Published partners only."
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "network.quorum-freeze",
+  "title": "Quorum Freeze (CAP-77)",
+  "scope": "In: what CAP-77 lets validators freeze, how the action is voted and reversed, and where it has been used.",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "what CAP-77 lets validators freeze and how it is reversed",
+  "draftQuestion": "What does CAP-77 let validators freeze, how is a freeze voted in and reversed, and where has it been used?",
+  "canonicalSources": [
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0077.md",
+    "observedAt": "2026-11-14",
+    "quote": "CAP-0077 | 26 | Freeze Ledger Entries via Network Configuration | Dmytro Kozhevin | Final"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/blog/foundation-news/quorum-freeze-cap-77-governed-onchain-incident-response",
+    "observedAt": "2026-11-14",
+    "quote": "CAP-77 gives Stellar a consensus-driven way to quarantine specific accounts, contract data, or asset balances directly onchain."
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/blog/developers/from-passive-upgrades-to-active-governance-on-stellar",
+    "observedAt": "2026-11-14",
+    "quote": "these actions should be explicit, governable, and contestable."
+   },
+   {
+    "class": "D",
+    "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+    "observedAt": "2026-11-14",
+    "quote": "73% Quarantined: How Blockaid and Stellar Validators Contained a $10M Price Manipulation Attack"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "security.aml-screening",
+  "title": "AML, sanctions screening, and analytics vendors",
+  "scope": "In: which compliance and blockchain-analytics vendors cover Stellar, and what anchors are expected to screen.",
+  "weight": 1,
+  "volatility": "live",
+  "facet": "which compliance and analytics vendors cover Stellar",
+  "draftQuestion": "Which blockchain analytics and compliance vendors cover Stellar, and what are anchors expected to screen?",
+  "canonicalSources": [
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0012 | KYC API | Interstellar | Active"
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/developer-tools/analytics-platforms.md",
+    "observedAt": "2026-11-14",
+    "quote": "Explore the full history of Stellar network data."
+   },
+   {
+    "class": "C",
+    "ref": "scout.searchProjects type=Analytics status=Live",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts.total=52: Scorechain, Hubble, StreamingFast, Space and Time, ZettaBlock, Steepx, Fuul, Bluechip"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/bd-kyc",
+    "unverified": true,
+    "note": "URL listed in stellar.org/sitemap.xml on 2026-11-14; page not opened"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "security.core-audits",
+  "title": "Audits of Core, RPC, and the SDKs",
+  "scope": "In: the audits of SDF-maintained protocol software and where they are listed.",
+  "weight": 1,
+  "volatility": "scheduled",
+  "facet": "which SDF-maintained components have published audits",
+  "draftQuestion": "Which SDF-maintained components (stellar-core, the Soroban host, RPC, the SDKs) have published security audits, and where are they listed?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/networks/audits/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "Third-party security audits of Stellar network software, by product and version."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/networks/audits/stellar-core.md",
+    "observedAt": "2026-11-14",
+    "quote": "Security audits of Stellar Core."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/networks/audits/soroban-sdk.md",
+    "observedAt": "2026-11-14",
+    "quote": "Security audits of Soroban Rust SDK."
+   },
+   {
+    "class": "D",
+    "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "soroban.resource-fees",
+  "title": "Resource fees, metering, and rent",
+  "scope": "In: the resources a contract transaction is charged for, rent, and how the fee is made up. Out: classic fees (protocol.fees-surge) and current limit values (network.limits-settings).",
+  "weight": 3,
+  "volatility": "scheduled",
+  "facet": "rent and refundable versus non-refundable fees",
+  "draftQuestion": "What makes up the fee of a Soroban transaction: inclusion fee, resource fee, the refundable part, and rent?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+    "observedAt": "2026-11-14",
+    "quote": "Learn how fees, resource limits, and metering work on the Stellar network. Understand cost structures, transaction pricing, and smart contract resource limits."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost.md",
+    "observedAt": "2026-11-14",
+    "quote": "Create efficient and cost-effective contracts"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+    "observedAt": "2026-11-14",
+    "quote": "CAP-0046-07 (formerly 0055) | 20 | Fee model in smart contracts | Nicolas Barry | Final"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-10.md",
+    "observedAt": "2026-11-14",
+    "quote": "CAP-0046-10 | 20 | Smart Contract Budget Metering | Jay Geng | Final"
+   },
+   {
+    "class": "E",
+    "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+    "observedAt": "2026-11-14",
+    "quote": "SLP-0007 (live on Mainnet since October 22, 2026)."
+   },
+   {
+    "class": "E",
+    "ref": "https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive#fees-and-resource-usage",
+    "observedAt": "2026-11-14",
+    "quote": "Soroban smart contracts on Stellar use a multidimensional resource fee model"
+   }
+  ],
+  "existingCases": [
+   "q-soroban-resource-limits"
+  ]
+ },
+ {
+  "leaf": "standards.sep31-sep38",
+  "title": "Cross-border payments and quotes (SEP-31 and SEP-38)",
+  "scope": "In: the sending-anchor to receiving-anchor payment flow, its dependencies, and indicative and firm quotes.",
+  "weight": 2,
+  "volatility": "stable",
+  "facet": "the SEP-31 flow between a sending and a receiving anchor",
+  "draftQuestion": "How does a SEP-31 payment move between a sending and a receiving anchor, and how do SEP-38 indicative and firm quotes fit in?",
+  "canonicalSources": [
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0031 | Cross-Border Payments API | SDF | Active"
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-31 allows for a means by which wallets and/or exchanges interact with Stellar's existing set of send-side services."
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0038 | Anchor RFQ API | Jake Urban and Leigh McCulloch | Draft"
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep38.md",
+    "observedAt": "2026-11-14",
+    "quote": "The [SEP-38] standard defines a way for anchors to provide quotes for the exchange of an off-chain asset and a different on-chain asset, and vice versa."
+   },
+   {
+    "class": "A",
+    "ref": "http://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/configuration"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "tooling.version-compat",
+  "title": "Software versions for the current protocol",
+  "scope": "In: which releases of Core, RPC, Horizon, the Rust SDK, and the CLI go with the current protocol, and the errors a mismatch produces.",
+  "weight": 3,
+  "volatility": "scheduled",
+  "facet": "what fails when an SDK or CLI lags a protocol upgrade",
+  "draftQuestion": "What errors appear when my SDK or CLI is older than the network's protocol version, and how do I fix them?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+    "observedAt": "2026-11-14",
+    "quote": "Smart Contract Rust SDK | `28.0.0`"
+   }
+  ],
+  "existingCases": []
+ }
+]

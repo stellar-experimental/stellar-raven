@@ -1,0 +1,441 @@
+[
+ {
+  "leaf": "ai.agent-cli",
+  "title": "Stellar CLI for agents",
+  "scope": "In: the agent-oriented CLI, what it can do, and its authority and security model.",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "what the agent CLI does and how it limits what an agent can sign",
+  "draftQuestion": "What is the Stellar CLI for agents, what can it do, and how does it limit what an agent may sign?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "Use the Stellar CLI and CLI Skills to give your AI agents an agent-friendly wallet and native way to inspect, move, and manage assets on Stellar."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/quickstart.md",
+    "observedAt": "2026-11-14",
+    "quote": "Install the stellar CLI, connect it to your agent, fund a testnet key, and make your first agent-driven transfer."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/authority-model.md",
+    "observedAt": "2026-11-14",
+    "quote": "What bounds an agent's spending authority when it drives the Stellar CLI, which controls exist today, and which do not."
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "assets.nft-vault-standards",
+  "title": "NFT and vault token standards",
+  "scope": "In: classic NFT patterns, the non-fungible token and tokenized vault standards for contracts, and the libraries that implement them.",
+  "weight": 1,
+  "volatility": "scheduled",
+  "facet": "how NFTs and tokenized vaults are built and which SEPs define them",
+  "draftQuestion": "How do I build an NFT or a tokenized vault on Stellar, and which SEPs define them?",
+  "canonicalSources": [
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0050.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0050 | Non-Fungible Tokens | OpenZeppelin, Boyan Barakov, Özgün Özerk | Draft"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0056 | Tokenized Vault Standard | OpenZeppelin, Boyan Barakov, Özgün Özerk, Sentinel | Draft"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0039.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0039 | Interoperability Recommendations for NFTs | SDF, Litemint.io | Draft"
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts.md",
+    "observedAt": "2026-11-14",
+    "quote": "OpenZeppelin Contract Library and Toolings"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "data.explorers-status",
+  "title": "Block explorers and network status",
+  "scope": "In: the block explorers for Stellar, including contract activity, and the dashboards for live network health, validator status, and maintenance.",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "where to check live network and validator health",
+  "draftQuestion": "Where do I check whether the Stellar network, a validator, or SDF's hosted services are having problems right now?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers.md",
+    "observedAt": "2026-11-14",
+    "quote": "Explore a suite of developer tools for Stellar, including block explorers."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/lab/transaction-dashboard.md",
+    "observedAt": "2026-11-14",
+    "quote": "Use Stellar Lab's Transaction Dashboard Page to get a comprehensive view of transaction details for both classic and smart contracts"
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/developer-tools/network-status.md",
+    "observedAt": "2026-11-14",
+    "quote": "Explore a suite of developer tools for monitoring Stellar network status."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/developer-tools/network-insights.md",
+    "observedAt": "2026-11-14",
+    "quote": "Tools to find unique insights about the Stellar network"
+   },
+   {
+    "class": "A",
+    "ref": "https://dashboard.stellar.org/",
+    "observedAt": "2026-11-14",
+    "quote": "Live network status"
+   },
+   {
+    "class": "C",
+    "ref": "scout.searchProjects type=Explorer status=Live",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts.total=7: Stellar Laboratory, Rumble Fish, Stellar Light, Soroban Explorer, PeerPesa, Astrograph, Steexp"
+   }
+  ],
+  "existingCases": [
+   "q-jutsu-check-account-history"
+  ]
+ },
+ {
+  "leaf": "ecosystem.chain-comparisons",
+  "title": "Stellar compared with other networks",
+  "scope": "In: how Stellar differs from the XRP Ledger, Ethereum, and Solana in consensus, fees, and asset model.",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "how Stellar differs from the XRP Ledger and other chains",
+  "draftQuestion": "How does Stellar differ from the XRP Ledger in consensus, fees and how assets are issued?",
+  "canonicalSources": [
+   {
+    "class": "D",
+    "ref": "https://www.sec.gov/Archives/edgar/data/1761325/000095017024130176/gxlm-20240930.htm",
+    "observedAt": "2026-11-14",
+    "quote": "the Stellar Network initially employed the Ripple Protocol Consensus Algorithm as its consensus mechanism, which was replaced with the Stellar Consensus..."
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/blog/ecosystem/proof-of-stake-vs-proof-of-agreement-stellars-security-edge",
+    "unverified": true,
+    "note": "URL listed in stellar.org/sitemap.xml on 2026-11-14; page not opened"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/learn/the-power-of-stellar",
+    "unverified": true,
+    "note": "URL listed in stellar.org/sitemap.xml on 2026-11-14; page not opened"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "ecosystem.strategy-roadmap",
+  "title": "SDF strategy, roadmap, and reports",
+  "scope": "In: SDF's current strategy, the product roadmap, and its quarterly reports.",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "SDF's stated priorities for the current year",
+  "draftQuestion": "What are SDF's stated priorities for this year, and where are the roadmap and quarterly reports published?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://stellar.org/foundation/strategy",
+    "observedAt": "2026-11-14",
+    "quote": "SDF's 2026 strategy accelerates network growth by scaling proven infrastructure, strengthening partnerships, and investing in critical capabilities."
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/foundation/roadmap",
+    "observedAt": "2026-11-14",
+    "quote": "2025 SDF Product Roadmap"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/quarterly-reports",
+    "observedAt": "2026-11-14",
+    "quote": "Explore SDF's Network Stats. Track and compare key metrics YoY."
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "network.incidents",
+  "title": "Network halts and protocol incidents",
+  "scope": "In: incidents that stopped or corrupted the network or forced an emergency upgrade, disclosed protocol bugs, and their post-mortems. Out: exploits of applications built on Stellar (security.app-exploits).",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "network halts and how each was resolved",
+  "draftQuestion": "Has the Stellar network ever halted? What happened each time and how was it resolved?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem",
+    "observedAt": "2026-11-14",
+    "quote": "On October 9, 2025 (UTC), the Stellar Development Foundation (SDF) identified an issue in the public network"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/blog/developers/addressing-state-archival-inconsistencies-protocol-upgrade-vote-next-week",
+    "observedAt": "2026-11-14",
+    "quote": "A detailed account of containment and resolution for a bug, found in Whisk (Protocol 23) that resulted in outdated entries being archived"
+   },
+   {
+    "class": "D",
+    "ref": "https://medium.com/stellar-developers-blog/may-15th-network-halt-a7b933103984",
+    "observedAt": "2026-11-14",
+    "quote": "May 15th Network Halt"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-core/blob/master/docs/software/security-protocol-release-notes.md",
+    "observedAt": "2026-11-14",
+    "quote": "stellar/stellar-core — docs/software/security-protocol-release-notes.md"
+   },
+   {
+    "class": "D",
+    "ref": "https://www.theblock.co/news/business/2019-05-16-stellar-was-down-for-2-hours-23614"
+   },
+   {
+    "class": "D",
+    "ref": "https://messari.io/report/messari-research-stellar-suffered-and-quietly-patched-a-2-2-billion-xlm-inflation-bug-in-2017"
+   }
+  ],
+  "existingCases": [
+   "q-protocol-24-whisk-incident"
+  ]
+ },
+ {
+  "leaf": "network.running-a-node",
+  "title": "Running a validator or watcher node",
+  "scope": "In: node types, prerequisites, what a validator contributes, and why operators run one. Out: Tier 1 requirements (network.tier1-quorum) and day-two operations (network.node-operations).",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "the incentive to run a validator",
+  "draftQuestion": "Stellar pays validators no block rewards. Why do organizations run one, and what does running a validator require?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/validators/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "Learn how validators support network security and consensus. Understand their role, setup requirements, and how they help maintain the integrity of the..."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/validators/admin-guide/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "Stellar Core is the program nodes use to communicate with other nodes to create and maintain the Stellar peer-to-peer network. It's an implementation of the..."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/validators/admin-guide/prerequisites.md",
+    "observedAt": "2026-11-14",
+    "quote": "You can install Stellar Core a number of different ways, and once you do, you can configure it to participate in the network on a several different levels:..."
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-core",
+    "observedAt": "2026-11-14",
+    "quote": "Reference implementation for the peer-to-peer agent that manages the Stellar network."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/validators/admin-guide/configuring"
+   }
+  ],
+  "existingCases": [
+   "q-protocol-validator-node-roles"
+  ]
+ },
+ {
+  "leaf": "security.audit-registry",
+  "title": "Audit reports for ecosystem projects",
+  "scope": "In: which projects have published audits, by which firms, when, and where the reports are.",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "where audit reports are published and which firms wrote them",
+  "draftQuestion": "Where are security audit reports for Stellar ecosystem projects published, and which firms have written them?",
+  "canonicalSources": [
+   {
+    "class": "D",
+    "ref": "https://stellarsecurityportal.com/",
+    "observedAt": "2026-11-14",
+    "quote": "Stellar Security Portal"
+   },
+   {
+    "class": "E",
+    "ref": "scout.searchProjects({q:'Blend',fields:'audits'})",
+    "observedAt": "2026-11-14",
+    "quote": "Blend audits count 6, auditors [OtterSec, Certora, Code4rena], latestAt 2025-08-13, codeChangedSinceAudit true"
+   },
+   {
+    "class": "C",
+    "ref": "scout.listAudits",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts.total=71; One row per audit report from stellarsecurityportal.com"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/audit-bank/projects"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "security.signing-safety",
+  "title": "Transaction signing safety",
+  "scope": "In: what to verify before signing XDR, blind signing, and wallet transaction scanning.",
+  "weight": 2,
+  "volatility": "stable",
+  "facet": "what to check before signing a transaction from a website",
+  "draftQuestion": "A website asks my wallet to sign a transaction. What should I check before I approve it?",
+  "canonicalSources": [],
+  "existingCases": []
+ },
+ {
+  "leaf": "standards.deposit-withdrawal",
+  "title": "Deposit and withdrawal (SEP-24 and SEP-6)",
+  "scope": "In: the hosted interactive flow, the programmatic flow, and when each fits.",
+  "weight": 3,
+  "volatility": "stable",
+  "facet": "the SEP-24 interactive flow",
+  "draftQuestion": "From the wallet's side, how does a SEP-24 interactive deposit run: the interactive URL, KYC, and status polling until the funds arrive?",
+  "canonicalSources": [
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0024 | Hosted Deposit and Withdrawal | SDF | Active"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0006 | Deposit and Withdrawal API | SDF | Active"
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-24 allows for a means by which wallets and/or exchanges allow the user to directly interact with an on & off-ramp."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep6/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-6 allows for a means by which wallets and/or exchanges interact with an anchor on behalf of users, never requiring the user to directly interact with..."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep24.md",
+    "observedAt": "2026-11-14",
+    "quote": "The [SEP-24] standard defines the standard way for anchors and wallets to interact on behalf of users."
+   },
+   {
+    "class": "E",
+    "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-24 - Hosted Deposit and Withdrawal ... Defines the standard way for anchors and wallets to interact on behalf of us"
+   }
+  ],
+  "existingCases": [
+   "q-sep6-sep24-sep31-choice"
+  ]
+ },
+ {
+  "leaf": "tooling.renames-repos",
+  "title": "Renamed tools and canonical repositories",
+  "scope": "In: Stellar tools and products that changed name, their current names, the repository that holds each SDF-maintained component, and which repositories are archived. Out: SDF's wallet rename (wallets.sdf-wallet).",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "tools and products that changed name",
+  "draftQuestion": "Which Stellar tools and products have been renamed (for example Soroban RPC, the Soroban CLI, Freighter), and what is each called now?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/build/guides/freighter/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-rpc",
+    "observedAt": "2026-11-14",
+    "quote": "RPC server for Soroban contracts."
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-cli",
+    "observedAt": "2026-11-14",
+    "quote": "CLI for Stellar developers"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar",
+    "observedAt": "2026-11-14",
+    "quote": "public_repos: 148"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/go-stellar-sdk",
+    "observedAt": "2026-11-14",
+    "quote": "Stellar's Go SDK"
+   },
+   {
+    "class": "C",
+    "ref": "scout.resolveProject",
+    "observedAt": "2026-11-14",
+    "quote": "Resolve a historical project name to what it is now."
+   }
+  ],
+  "existingCases": [
+   "q-tool-go-sdk-ingest"
+  ]
+ },
+ {
+  "leaf": "wallets.consumer-apps",
+  "title": "Consumer payment apps and cards",
+  "scope": "In: the consumer apps and card products built on Stellar, by region and function.",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "which consumer apps let people spend or save on Stellar",
+  "draftQuestion": "Which consumer apps or cards let people spend, save or send money on Stellar, and in which regions?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://stellar.org/sitemap.xml",
+    "observedAt": "2026-11-14",
+    "quote": "https://stellar.org/case-studies/decaf"
+   },
+   {
+    "class": "C",
+    "ref": "scout.searchProjects type=Card Issuing status=Live",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts.total=5: Bridge, Amulets, Blockroll, Wirex, Rain"
+   },
+   {
+    "class": "C",
+    "ref": "scout.searchProjects category",
+    "observedAt": "2026-11-14",
+    "quote": "category?: \"Infrastructure\" | \"Tooling\" | \"User-Facing App\" | \"Asset\" | \"Protocol/Contract\" | \"Anchor\" | \"Partner Integration\""
+   }
+  ],
+  "existingCases": []
+ }
+]
