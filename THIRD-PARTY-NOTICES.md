@@ -27,9 +27,9 @@ Upstream remains the source.
 **3. Responses carry upstream content and provenance.** Whole-skill reads preserve upstream YAML
 frontmatter. Companion-file reads include any upstream YAML frontmatter. Heading-section reads
 return only the requested `##` section. `data.url` names the pinned main `SKILL.md`. Each
-returned section names its exact pinned source in its own `url`. Whether the forwarded metadata and
-source URLs satisfy each upstream license has not had counsel review. [The work queue](./.agents/TODO.md)
-tracks it.
+returned section names its exact pinned source in its own `url`. The owner closed the
+counsel-review question on 2026-11-18: forwarding was already approved, and Raven stores no skill
+body ([decision](./.agents/rounds/2026-11-16-next-phase/DECISIONS.md)).
 
 At read time, `scrubNonExposedRefs` (`src/skills/scrub.ts`) removes model-facing references that
 are not in Raven's manifest. One pass removes references to retired skills. A second pass removes
