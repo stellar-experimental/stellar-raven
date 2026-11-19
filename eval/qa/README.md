@@ -576,7 +576,7 @@ A missing or invalid register selects the boundary path and records that status.
 `meta.judgeTiering` records the policy, threshold, register hash, cap, source, denominator, and panel counts.
 A stored resume preserves its first cap and refuses a different explicit cap.
 Freeze one register for paired comparisons and use the same `--stability-register <file>` in all arms and resumes.
-`heldout-read.sh` defaults `STABILITY_REGISTER` to `/home/tyler/raven-data/qa/judge-stability.json` (pinned SHA-256 `4322dd4d1ebfc30bc02a9def008039aba4f4b2395b1f9da5cabef56ec24bf458`), alongside the archived stored QA results in `/home/tyler/raven-data/qa/results/`, outside any repository worktree.
+`heldout-read.sh` defaults `STABILITY_REGISTER` to `/home/tyler/raven-data/qa/judge-stability.json` (with its pinned SHA-256), alongside the archived stored QA results in `/home/tyler/raven-data/qa/results/`, outside any repository worktree.
 
 ## Paid judge self-test
 
