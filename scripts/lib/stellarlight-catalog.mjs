@@ -13,14 +13,20 @@ export const STELLARLIGHT_CATALOG_URL = "https://stellarlight.xyz/api/skills";
 
 const canon = (value) => JSON.stringify(sortDeep(value));
 export const entryKey = (entry) => `${entry.source}/${entry.name}`;
+const isoSeconds = () => new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
 
 /**
  * Project the live /api/skills payload into the committed directory shape.
  * Volatile request-scoped fields (such as meta.generatedAt) are dropped by construction.
+ * Fails closed if Stellar Light fell back because skills.stellar.org was unreachable
+ * (meta.registry.live === false omits community-built entries).
  */
 export function projectStellarlightCatalog(live) {
   if (!live || typeof live !== "object" || !Array.isArray(live.skills)) {
     throw new Error("stellarlight catalog: expected a skills array");
+  }
+  if (live.meta?.registry?.live === false) {
+    throw new Error("stellarlight catalog: upstream skills.stellar.org registry fallback (meta.registry.live is false)");
   }
   return {
     counts: live.meta?.counts ?? null,
@@ -75,7 +81,7 @@ export function compareStellarlightCatalog(localCatalog, projected) {
 
 export function formatStellarlightCatalog(
   projected,
-  { source = STELLARLIGHT_CATALOG_URL, fetchedAt = new Date().toISOString() } = {},
+  { source = STELLARLIGHT_CATALOG_URL, fetchedAt = isoSeconds() } = {},
 ) {
   return `${JSON.stringify(
     {
@@ -115,7 +121,7 @@ function parseCliArgs(argv) {
   if (!outPath) {
     throw new Error("usage: node scripts/lib/stellarlight-catalog.mjs <out-path> [--fetched-at <iso>] [--source <url>]");
   }
-  return { outPath, fetchedAt: fetchedAt ?? new Date().toISOString(), source };
+  return { outPath, fetchedAt: fetchedAt ?? isoSeconds(), source };
 }
 
 // Snapshot only the public directory. Never downloads or pins skill bodies.

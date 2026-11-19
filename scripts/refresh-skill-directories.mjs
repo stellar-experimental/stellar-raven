@@ -113,7 +113,6 @@ async function main() {
     fetchCommunityEntries(),
   ]);
 
-  const now = options.fetchedAt ?? new Date().toISOString();
   const catalogNote = existingCatalog ? compareStellarlightCatalog(existingCatalog, projectedCatalog) : "new snapshot";
   const catalogChanged =
     !existingCatalog || existingCatalog.source !== catalogUrl || catalogNote !== "";
@@ -128,11 +127,12 @@ async function main() {
     !Array.isArray(existingCommunity.entries) ||
     communityNote !== "";
 
+  const fetchedAtOption = options.fetchedAt ? { fetchedAt: options.fetchedAt } : {};
   const nextCatalogText = catalogChanged
-    ? formatStellarlightCatalog(projectedCatalog, { source: catalogUrl, fetchedAt: now })
+    ? formatStellarlightCatalog(projectedCatalog, { source: catalogUrl, ...fetchedAtOption })
     : null;
   const nextCommunityText = communityChanged
-    ? formatCommunitySnapshot(liveCommunityEntries, { source: COMMUNITY_URL, fetchedAt: now })
+    ? formatCommunitySnapshot(liveCommunityEntries, { source: COMMUNITY_URL, ...fetchedAtOption })
     : null;
 
   const stage = mkdtempSync(join(tmpdir(), "skill-directories-"));

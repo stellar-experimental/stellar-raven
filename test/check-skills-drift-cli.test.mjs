@@ -11,7 +11,7 @@ const source = { ...definition, type: "github", commit: "a".repeat(40), skills: 
 const one = { title: "One", copyValue: "https://example.com/one", description: "Description." };
 const two = { title: "Two", copyValue: "https://example.com/two", description: "Description." };
 
-async function check({ mode = "pick", path = "skills", exclusions = {}, malformed = false, community = [one], markdown, communitySource, stellarlightSkills = [] } = {}) {
+async function check({ mode = "pick", path = "skills", exclusions = {}, malformed = false, community = [one], markdown, communitySource, stellarlightSkills = [], stellarlightMeta } = {}) {
   const root = mkdtempSync(join(tmpdir(), "skills-drift-"));
   try {
     mkdirSync(join(root, "scripts", "lib"), { recursive: true });
@@ -39,7 +39,7 @@ async function check({ mode = "pick", path = "skills", exclusions = {}, malforme
           return new Response(${JSON.stringify(communitySource ?? ('export const ECOSYSTEM_CARDS = ' + JSON.stringify(community) + ' as const;'))});
         } else if (parsed.hostname === 'skills.stellar.org') {
           return new Response(${JSON.stringify(markdown ?? '')});
-        } else if (parsed.pathname === '/api/skills') body = { skills: ${JSON.stringify(stellarlightSkills)} };
+        } else if (parsed.pathname === '/api/skills') body = { ...( ${JSON.stringify(stellarlightMeta ?? null)} ? { meta: ${JSON.stringify(stellarlightMeta ?? null)} } : {}), skills: ${JSON.stringify(stellarlightSkills)} };
         else throw new Error('unexpected URL ' + url);
         return new Response(JSON.stringify(body));
       };
@@ -194,6 +194,20 @@ describe("skills drift real CLI", () => {
     expect(result.status, result.stderr).toBe(2);
     expect(result.stdout).toContain("expected literal title and copyValue");
     expect(result.stderr).not.toContain("remediation:");
+  });
+
+  it.concurrent("fails closed with exit 2 when stellarlight reports a non-live registry fallback", async () => {
+    const result = await check({
+      mode: "all",
+      stellarlightMeta: { registry: { live: false } },
+      stellarlightSkills: [],
+    });
+    expect(result.status, result.stderr).toBe(2);
+    expect(JSON.parse(result.stdout).results.find((entry) => entry.id === "stellarlight-catalog")).toMatchObject({
+      status: "error",
+      note: expect.stringContaining("meta.registry.live is false"),
+    });
+    expect(result.stderr).not.toContain("remediation");
   });
 
   it.concurrent("fails closed when the Community array is empty", async () => {
