@@ -87,7 +87,7 @@ keeps most of the token saving reopens it; ADR-0011's reopening rules are unchan
 ### Check what the judge saw before changing how it weighs cited text
 
 In the round's harness, the judge called a correctly quoted fact "fabricated" in about 2% of the
-new variants' answers and in none of the current design's. That is a finding about the round's
+new variants' answers and in none of arm A's (the `search` + `execute` baseline). That is a finding about the round's
 judge input, not about the committed QA judge. The committed judge does receive tool evidence:
 `eval/qa/judge.mjs` adds a compact source-basis block from pack `p9`, built from the answer's
 `execute` results, and `eval/qa/evidence-pack.mjs` leaves it out for a case tagged
@@ -99,8 +99,8 @@ judge input, not about the committed QA judge. The committed judge does receive 
   claim-support gaps of judge pack p9" below.
 
 Held: the 2% dispute rate occurred only on the `fp-2026-11-12` prototype `retrieve`/`read` variants
-and in none of the shipped `search` + `execute` design; no `retrieve`/`read` build is planned, and
-any pack or rubric change belongs to the held `p9` item.
+and in none of arm A (the measured `search` + `execute` baseline; arm B-fixed-2 shipped). No
+`retrieve`/`read` build is planned, and any pack or rubric change belongs to the held `p9` item.
 
 Trigger: before revising judge pack `p9` or its rubric ("Close the remaining claim-support gaps of
 judge pack p9"), before reviving a non-`execute` retrieval prototype, or if a cited-fact dispute
@@ -940,12 +940,15 @@ Owner, 2026-11-18: "30 is an allowance, today we have 7. I'd like to convert to 
 everywhere. Do this work carefully, or plan for it maybe for now in TODO." This item is that plan.
 
 Current state: `/terms` (`src/site.ts`, "Operational and quality logs" and "Your choices";
-counsel-owned, the outer bound of what the service may do) states up to 30 days of observability
-data, possibly including queries and responses, with opt-out and account deletion on request.
-Production currently keeps 7 days and logs no query text:
+counsel-owned, the outer bound of what the service may do, which the owner treats as a 30-day
+allowance) says the Service stores observability data, "which may include the queries submitted and
+the responses returned, for 30 days, after which it is deleted", with opt-out and account deletion
+on request. Production currently keeps less than that:
 
 - Workers Logs, traces and request metadata: at most 7 days (Cloudflare's platform limit; it cannot
   be raised in Workers Logs itself).
+- AI Gateway request metadata: Cloudflare AI Gateway's row-count policy (`docs/operations.md`,
+  "Data retention"; payload collection is off per request in `src/demo/model-config.ts`).
 - No query or response text is logged. Several TODO items rely on that fact ("query text is not
   logged, so silence is no measured demand"); 30-day capture would make demand measurable.
 - Oversized `execute` artifacts in R2 `stellar-raven-artifacts`: 7 days. These are a result cache,
@@ -978,10 +981,12 @@ anything the terms do not name would need the legal lane first.
 Next: an owner go ("Owner decisions", decision 6) to start the design study. It touches no file
 the dated runs read.
 
-Done when: every observability store keeps 30 days and deletes after it, opt-out and per-account
-deletion are implemented and tested, `docs/operations.md`, `src/auth/retention.ts`, `/terms` and
-`usage/README.md` agree, the TODO items that assume "query text is not logged" are updated, the
-idea file is folded or deleted, and a read 31 days after the deploy shows the oldest records gone.
+Done when: the Raven-controlled observability archive keeps 30 days and deletes after it (native
+Workers Logs stay at Cloudflare's <=7-day platform limit and AI Gateway metadata stays on its
+row-count policy), opt-out and per-account deletion are implemented and tested, `docs/operations.md`,
+`src/auth/retention.ts`, `/terms` and `usage/README.md` agree, the TODO items that assume "query
+text is not logged" are updated, the idea file is folded or deleted, and a read 31 days after the
+deploy shows the oldest archived records gone.
 
 ## Eval instruments
 
@@ -1143,19 +1148,23 @@ and `.ignore` tests are updated.
 
 ### Tag confirmation-only rows in the agent discovery runner and the agentic workflow
 
-`eval/run-routing.mjs`, `eval/run-protocol-history.mjs` (via
+`eval/run-routing.mjs`, `eval/run-protocol-history.mjs` (and
 `eval/lib/protocol-history-report.mjs`), `eval/discovery/run-discovery.mjs`, and
 `eval/discovery/run-replay.mjs` already import `eval/lib/confirmation-only.mjs`.
-`eval/discovery/run-agent-discovery.mjs`, `eval/discovery/classify-misses.mjs`, and the agentic
-workflow (`eval/agentic/workflow-agentic-routing.js`, `eval/agentic/capture-proxy.mjs`, and
+`eval/discovery/run-agent-discovery.mjs` (which prints per-row outcomes to stdout),
+`eval/discovery/classify-misses.mjs` (which prints only `{ outPath, counts }` to stdout while
+writing untagged `rows` to its JSON file), and the agentic workflow
+(`eval/agentic/workflow-agentic-routing.js`, `eval/agentic/capture-proxy.mjs`, and
 `eval/agentic/reconcile-capture.mjs`) do not tag or hide a row that matches a QA headline
 question, although `eval/routing-qa-overlap.mjs` lists `discovery` and `agentic` sets. Both guides
 ([`eval/discovery/README.md`](../eval/discovery/README.md),
-[`eval/agentic/README.md`](../eval/agentic/README.md)) state this and enforce counts-only
+[`eval/agentic/README.md`](../eval/agentic/README.md)) state this and prescribe counts-only
 reporting.
 
-Trigger: before the next run of `eval/discovery/run-agent-discovery.mjs`,
-`eval/discovery/classify-misses.mjs`, or the agentic workflow (or if the owner decides the
+Held: neither paid diagnostic (`run-agent-discovery.mjs` or `workflow-agentic-routing.js`) is
+scheduled to run, and `classify-misses.mjs` already limits console output to aggregate counts.
+Trigger: before the next paid run of `eval/discovery/run-agent-discovery.mjs` or the agentic
+workflow, or before inspecting per-row `classify-misses.mjs` output (unless the owner decides the
 counts-only guide rule is enough and deletes this item). Then wire `eval/lib/confirmation-only.mjs`
 into those paths so a listed row prints `confirmation-only` in place of its outcome, with the same
 fail-closed behavior as the one-shot runner.
@@ -1390,9 +1399,11 @@ correspondence before acting. The trimmed surface changes the tool descriptions 
 cases describe; re-run the rehearsal before the next submission step.
 [`plugins/openai/README.md`](../plugins/openai/README.md) has the records and rules.
 
-Before publication, resolve publisher verification and privacy coverage. The gap between the
-`/terms` 30-day observability allowance and production's 7-day metadata-only retention is tracked in
-"Keep 30 days of observability data, including queries and responses". After the final review
+Before publication, resolve publisher verification and privacy coverage. The difference between
+`/terms` (which states observability data, possibly including queries and responses, is stored "for
+30 days, after which it is deleted" — treated by the owner as an allowance) and production's
+7-day metadata-only retention is tracked in "Keep 30 days of observability data, including queries
+and responses". After the final review
 decision, revoke the reviewer API key `openai-review-20261007`. Before that revoke, finish
 "Confirm `npm run mcp-key` on wrangler 4.164.0".
 
@@ -1450,9 +1461,12 @@ decision record, then delete it here.
 6. **Keep 30 days of observability data, including queries and responses.** Whether to start the
    design study for 30-day observability retention and query/response capture (see "Keep 30 days of
    observability data, including queries and responses"). `/terms` (counsel-owned, the outer bound
-   of what the service may do) states up to 30 days, possibly including queries and responses, with
-   opt-out and account deletion on request; production keeps 7 days and logs no query text. Safe
-   default: not started; production stays at 7 days with no query or response text logged.
+   of what the service may do, which the owner treats as a 30-day allowance) says observability
+   data, "which may include the queries submitted and the responses returned", is stored "for 30
+   days, after which it is deleted", with opt-out and account deletion on request; production keeps
+   at most 7 days in Workers Logs (and AI Gateway request metadata on its row-count policy) and
+   logs no query text. Safe default: not started; production stays at 7 days with no query or
+   response text logged.
 
 Owner-blocked actions that already have an item (one line each, no decision needed here):
 
