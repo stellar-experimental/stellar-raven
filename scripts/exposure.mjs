@@ -71,9 +71,11 @@ export function lumenloopOpExcluded(tool) {
 export {
   EXCLUDED_SCOUT_OPERATIONS,
   EXCLUDED_SCOUT_OPS,
+  EXCLUDED_SCOUT_PATHS,
   NON_EXPOSED_SCOUT_OP_NAMES,
   OPTIONAL_EXCLUDED_SCOUT_OPERATIONS,
-  SCOUT_PATHS_ABSENT_FROM_SPEC
+  SCOUT_PATHS_ABSENT_FROM_SPEC,
+  findExcludedScoutPath
 } from "../src/policy/scout-exposure.ts";
 
 // Retired skills — exclusion as DATA (ADR-0003; decision 2026-07-03).

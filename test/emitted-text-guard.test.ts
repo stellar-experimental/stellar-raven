@@ -95,6 +95,15 @@ describe("assertNoNonExposedRefsInText", () => {
     )).toThrow("/api/hackathons/review");
   });
 
+  it("rejects paths absent from the Scout spec while allowing exposed child paths", () => {
+    for (const text of ["Use /api/repos?limit=1.", "Use /API/REPOS.", "Use /api%2Frepos."]) {
+      expect(() => assertNoNonExposedRefsInText(text, "emitted text"), text).toThrow("/api/repos");
+    }
+    expect(() =>
+      assertNoNonExposedRefsInText("Use /api/repos/search and /api/repos/explain.", "emitted text")
+    ).not.toThrow();
+  });
+
   it("does not match an excluded name inside a longer identifier", () => {
     expect(() => assertNoNonExposedRefsInText(
       "reviewSubmissionCount getRwaAssetsExtra prereviewSubmission", "emitted text"

@@ -17,6 +17,7 @@
  * a reviewed pin).
  */
 import { readFileSync } from "node:fs";
+import { scrubNonExposedRefs } from "./exposure.mjs";
 import { readSkillFile } from "./lib/skill-mirror.mjs";
 
 const [, , oldPath, newPath] = process.argv;
@@ -72,6 +73,23 @@ function unified(a, b, label) {
   return lines;
 }
 
+/** Surface any sentence narrowed by the exposure scrub so the reviewer reads the served wording. */
+function reportScrubNarrowings(text, key) {
+  const narrowed = [];
+  try {
+    scrubNonExposedRefs(text, key, { onNarrow: (change) => narrowed.push(change) });
+  } catch (e) {
+    console.log(`### SCRUB BLOCKED ${key}: ${e.message}`);
+    return;
+  }
+  if (narrowed.length === 0) return;
+  console.log(`### SCRUB NARROWED ${narrowed.length} sentence(s) in ${key} (review the served wording):`);
+  for (const { before, after } of narrowed) {
+    console.log(`- before: ${before}`);
+    console.log(`+ after:  ${after}`);
+  }
+}
+
 let changed = 0;
 for (const [key, next] of after) {
   const prev = before.get(key);
@@ -84,9 +102,11 @@ for (const [key, next] of after) {
     // the text, then truthfully attest to it.
     console.log(`\n### NEW ${key} (${next.file.size} bytes)`);
     console.log("### Entirely new prompt input — review it in full.");
-    for (const line of unified("", await readSkillFile(next.source, next.skill.name, next.file), key)) {
+    const newText = await readSkillFile(next.source, next.skill.name, next.file);
+    for (const line of unified("", newText, key)) {
       console.log(line);
     }
+    reportScrubNarrowings(newText, key);
     continue;
   }
   // The NEW bytes are mandatory — you cannot review what you cannot read. The
@@ -106,11 +126,13 @@ for (const [key, next] of after) {
     console.log(`### OLD SIDE UNAVAILABLE (${e.message})`);
     console.log("### Showing the incoming file in full — review it as if new.");
     for (const line of unified("", newText, key)) console.log(line);
+    reportScrubNarrowings(newText, key);
     continue;
   }
   console.log(`\n### CHANGED ${key}`);
   console.log(`### ${prev.file.sha.slice(0, 12)} -> ${next.file.sha.slice(0, 12)}`);
   for (const line of unified(oldText, newText, key)) console.log(line);
+  reportScrubNarrowings(newText, key);
 }
 for (const key of before.keys()) {
   if (!after.has(key)) {

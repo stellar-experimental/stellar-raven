@@ -174,11 +174,10 @@ Helpers:
 /**
  * MCP initialize-time instructions (SDK ServerOptions.instructions). Clients
  * that inject them put them in the system prompt, where they outlive per-tool
- * descriptions over a long session. BASE is the workflow and evidence contract
- * and fits inside Grok's 2,033-character cut; it names the envelope without restating
- * the payload-access rule, which the execute description owns. It is the whole
- * string: the per-family source map that used to follow it is gone, and the
- * family orientation lives in the `search` description (FAMILY_LINE).
+ * descriptions over a long session. This is the complete workflow and evidence
+ * contract and fits inside Grok's 2,033-character cut; it names the envelope
+ * without restating the payload-access rule (owned by EXECUTE_DESCRIPTION).
+ * Per-family orientation lives in the `search` description (FAMILY_LINE).
  */
 export const BASE_SERVER_INSTRUCTIONS = `Unified Stellar-ecosystem gateway: \`search\` discovers service operations and skills. \`execute\` composes them in sandboxed JavaScript.
 

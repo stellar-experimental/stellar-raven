@@ -65,3 +65,45 @@ export const EXCLUDED_SCOUT_PATHS = new Set([
   ...[...EXCLUDED_SCOUT_OPS].map((operation) => operation.split(" ")[1]!),
   ...SCOUT_PATHS_ABSENT_FROM_SPEC
 ]);
+
+// A templated segment such as `{id}` matches any concrete value as well as the
+// literal template, so `/api/x/{id}` also covers `/api/x/123`. Case-insensitive
+// and boundary-checked so the runtime skill scrub and build-time emitted-text
+// guard share one matcher over EXCLUDED_SCOUT_PATHS (including
+// SCOUT_PATHS_ABSENT_FROM_SPEC) without false-matching exposed child paths like
+// `/api/repos/search`.
+function excludedPathPattern(path: string): RegExp {
+  const source = path
+    .split(/(\{[^}/]+\})/)
+    .map((part) =>
+      /^\{[^}/]+\}$/.test(part) ? "[^\\s/`)\\]]+" : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    )
+    .join("");
+  return new RegExp(`${source}(?![\\w/-])`, "i");
+}
+
+const EXCLUDED_SCOUT_PATH_PATTERNS: ReadonlyArray<readonly [path: string, pattern: RegExp]> = [
+  ...EXCLUDED_SCOUT_PATHS
+].map((path) => [path, excludedPathPattern(path)]);
+
+function decodePercentRuns(text: string): string {
+  return text.replace(/(?:%[0-9a-f]{2})+/gi, (encoded) => {
+    try {
+      return decodeURIComponent(encoded);
+    } catch {
+      return encoded;
+    }
+  });
+}
+
+/**
+ * Return the first canonical excluded Scout path matched in `text` (plain or
+ * percent-encoded, case-insensitively), or `null` when clean.
+ */
+export function findExcludedScoutPath(text: string): string | null {
+  const decoded = decodePercentRuns(text);
+  for (const [path, pattern] of EXCLUDED_SCOUT_PATH_PATTERNS) {
+    if (pattern.test(text) || pattern.test(decoded)) return path;
+  }
+  return null;
+}

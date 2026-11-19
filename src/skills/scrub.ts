@@ -28,7 +28,16 @@
  * fence), the scrub throws instead of emitting the leak. At build time that fails the build. At read time src/skills/store.ts
  * returns an error envelope. The leak is never served.
  */
-import { EXCLUDED_SCOUT_PATHS } from "../policy/scout-exposure.ts";
+import { findExcludedScoutPath } from "../policy/scout-exposure.ts";
+
+export type NarrowedSentence = {
+  before: string;
+  after: string;
+};
+
+export type ScrubOptions = {
+  onNarrow?: (change: NarrowedSentence) => void;
+};
 
 /**
  * Matches any reference to a non-exposed skill in prose or a relative markdown
@@ -72,33 +81,8 @@ export function scrubRetiredSkillRefs(text: string, context: string): string {
   return scrubbed;
 }
 
-// A templated segment such as `{id}` matches any concrete value as well as
-// the literal template, so `/api/x/{id}` also covers `/api/x/123`.
-function excludedPathPattern(path: string): RegExp {
-  const source = path
-    .split(/(\{[^}/]+\})/)
-    .map((part) =>
-      /^\{[^}/]+\}$/.test(part) ? "[^\\s/`)\\]]+" : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-    )
-    .join("");
-  return new RegExp(`${source}(?![\\w/-])`);
-}
-
-const excludedScoutPathPatterns = [...EXCLUDED_SCOUT_PATHS].map(excludedPathPattern);
-
-function decodePercentRuns(text: string): string {
-  return text.replace(/(?:%[0-9a-f]{2})+/gi, (encoded) => {
-    try {
-      return decodeURIComponent(encoded);
-    } catch {
-      return encoded;
-    }
-  });
-}
-
 function containsExcludedScoutPath(text: string): boolean {
-  const decoded = decodePercentRuns(text);
-  return excludedScoutPathPatterns.some((pattern) => pattern.test(text) || pattern.test(decoded));
+  return findExcludedScoutPath(text) !== null;
 }
 
 function headingDepth(line: string): number | undefined {
@@ -110,8 +94,22 @@ function listItemStart(line: string): boolean {
   return /^\s*(?:[-*+] |\d+[.)] )/.test(line);
 }
 
-function fenceLine(line: string): boolean {
-  return /^\s*(?:```|~~~)/.test(line);
+type Fence = { char: "`" | "~"; length: number };
+
+function openingFence(line: string): Fence | null {
+  const match = /^\s*(`{3,}|~{3,})(.*)$/.exec(line);
+  if (!match) return null;
+  const marker = match[1]!;
+  const char = marker[0] as "`" | "~";
+  // CommonMark: backtick fence info strings cannot contain backticks, so an
+  // inline code span like ```foo``` on one line does not open a fence.
+  if (char === "`" && match[2]!.includes("`")) return null;
+  return { char, length: marker.length };
+}
+
+function closesFence(line: string, fence: Fence): boolean {
+  const match = /^\s*(`{3,}|~{3,})\s*$/.exec(line);
+  return match !== null && match[1]![0] === fence.char && match[1]!.length >= fence.length;
 }
 
 // An indented code block (four spaces or a tab) is code, not prose, so it is
@@ -121,7 +119,7 @@ function paragraphLine(line: string): boolean {
     line.trim() !== "" &&
     !/^(?: {4}|\t)/.test(line) &&
     headingDepth(line) === undefined &&
-    !fenceLine(line) &&
+    openingFence(line) === null &&
     !/^\s*[|>]/.test(line) &&
     !listItemStart(line)
   );
@@ -215,16 +213,22 @@ function stripTrailingExcludedOrClause(sentence: string): string | null {
   return prefix === "" || containsExcludedScoutPath(prefix) ? null : prefix + terminator;
 }
 
-function narrowListItem(item: string[]): string[] | null {
+function narrowListItem(item: string[], narrowedOut: NarrowedSentence[]): string[] | null {
   const match = LIST_ITEM_MARKER_RE.exec(item[0] ?? "");
   if (!match || item.slice(1).some((part) => /^\s*[|>]/.test(part))) return null;
   const joined = [match[2]!, ...item.slice(1)].map((part) => part.trim()).filter(Boolean).join(" ");
-  const kept = splitSentences(joined).map((sentence) =>
-    containsExcludedScoutPath(sentence) ? stripTrailingExcludedOrClause(sentence) : sentence
-  );
-  return kept.length > 0 && kept.every((sentence): sentence is string => sentence !== null)
-    ? [match[1]! + kept.join(" ")]
-    : null;
+  const itemNarrowed: NarrowedSentence[] = [];
+  const kept = splitSentences(joined).map((sentence) => {
+    if (!containsExcludedScoutPath(sentence)) return sentence;
+    const narrowed = stripTrailingExcludedOrClause(sentence);
+    if (narrowed !== null) itemNarrowed.push({ before: sentence, after: narrowed });
+    return narrowed;
+  });
+  if (kept.length === 0 || !kept.every((sentence): sentence is string => sentence !== null)) {
+    return null;
+  }
+  narrowedOut.push(...itemNarrowed);
+  return [match[1]! + kept.join(" ")];
 }
 
 /**
@@ -233,21 +237,50 @@ function narrowListItem(item: string[]): string[] | null {
  * block that names no excluded path keeps its exact bytes. Any reference that
  * does not fit one of these units stops the build or read.
  */
-export function scrubExcludedScoutOperationRefs(text: string, context: string): string {
+export function scrubExcludedScoutOperationRefs(
+  text: string,
+  context: string,
+  options?: ScrubOptions
+): string {
   const lines = text.split("\n");
   const withoutSections: string[] = [];
 
+  let headingFence: Fence | null = null;
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i] ?? "";
+    if (headingFence) {
+      withoutSections.push(line);
+      if (closesFence(line, headingFence)) headingFence = null;
+      continue;
+    }
+    const opened = openingFence(line);
+    if (opened) {
+      headingFence = opened;
+      withoutSections.push(line);
+      continue;
+    }
     const depth = headingDepth(line);
     if (depth === undefined || !containsExcludedScoutPath(line)) {
       withoutSections.push(line);
       continue;
     }
 
+    let skippedFence: Fence | null = null;
     i += 1;
     while (i < lines.length) {
-      const nextDepth = headingDepth(lines[i] ?? "");
+      const nextLine = lines[i] ?? "";
+      if (skippedFence) {
+        if (closesFence(nextLine, skippedFence)) skippedFence = null;
+        i += 1;
+        continue;
+      }
+      const nextOpened = openingFence(nextLine);
+      if (nextOpened) {
+        skippedFence = nextOpened;
+        i += 1;
+        continue;
+      }
+      const nextDepth = headingDepth(nextLine);
       if (nextDepth !== undefined && nextDepth <= depth) {
         i -= 1;
         break;
@@ -257,12 +290,19 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
   }
 
   const out: string[] = [];
-  let inFence = false;
+  const narrowedSentences: NarrowedSentence[] = [];
+  let activeFence: Fence | null = null;
   for (let i = 0; i < withoutSections.length; i++) {
     const line = withoutSections[i] ?? "";
     // Fenced lines bypass every removal, so a reference in a fence fails closed.
-    if (fenceLine(line)) inFence = !inFence;
-    if (inFence || fenceLine(line)) {
+    if (activeFence) {
+      out.push(line);
+      if (closesFence(line, activeFence)) activeFence = null;
+      continue;
+    }
+    const opened = openingFence(line);
+    if (opened) {
+      activeFence = opened;
       out.push(line);
       continue;
     }
@@ -307,6 +347,7 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
         const kept = splitSentences(unit).flatMap((sentence) => {
           if (!containsExcludedScoutPath(sentence)) return [sentence];
           const narrowed = stripTrailingExcludedOrClause(sentence);
+          if (narrowed !== null) narrowedSentences.push({ before: sentence, after: narrowed });
           return narrowed === null ? [] : [narrowed];
         });
         return kept.length > 0 ? [indent + kept.join(" ")] : [];
@@ -323,7 +364,7 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
       j < withoutSections.length &&
       /^\s+\S/.test(withoutSections[j] ?? "") &&
       !listItemStart(withoutSections[j] ?? "") &&
-      !fenceLine(withoutSections[j] ?? "")
+      openingFence(withoutSections[j] ?? "") === null
     ) {
       item.push(withoutSections[j] ?? "");
       j += 1;
@@ -331,7 +372,7 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
     if (!containsExcludedScoutPath(item.join("\n"))) {
       out.push(...item);
     } else {
-      const narrowed = narrowListItem(item);
+      const narrowed = narrowListItem(item, narrowedSentences);
       if (narrowed !== null) out.push(...narrowed);
     }
     i = j - 1;
@@ -345,10 +386,13 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
         `src/skills/scrub.ts so the reference cannot be emitted.`
     );
   }
+  if (options?.onNarrow) {
+    for (const change of narrowedSentences) options.onNarrow(change);
+  }
   return scrubbed;
 }
 
 /** Apply every model-facing skill-body exposure filter. */
-export function scrubNonExposedRefs(text: string, context: string): string {
-  return scrubExcludedScoutOperationRefs(scrubRetiredSkillRefs(text, context), context);
+export function scrubNonExposedRefs(text: string, context: string, options?: ScrubOptions): string {
+  return scrubExcludedScoutOperationRefs(scrubRetiredSkillRefs(text, context), context, options);
 }

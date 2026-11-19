@@ -1,7 +1,7 @@
 /**
  * The callback transports Raven admits for an OAuth redirect URI, applied at
- * authorization on top of the provider's own checks (DESIGN.md D2 of the
- * oauth-provider 1.x round, `.agents/rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/`).
+ * authorization on top of the provider's own checks (see "Request routes and
+ * authorization" in ARCHITECTURE.md).
  *
  * Allowed: `https:`; `http:` on a loopback host; and the native-app schemes
  * named below, matched by exact scheme. Everything else is refused, so a
