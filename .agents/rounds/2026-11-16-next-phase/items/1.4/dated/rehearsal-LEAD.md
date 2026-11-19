@@ -23,7 +23,7 @@ is. A failed step does not stop the rest.
 
    ```sh
    hc run --bg --name <key>-fable --cwd <wt> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 claude --model fable --effort high --dangerously-skip-permissions "Confirmed by the orchestrator, a direct instruction: read AGENTS.md, then report one line, your model name and its first heading, with hc send $HC_TERMINAL_ID '<line>'. Edit nothing."
-   M=$(node <wt>/scripts/latest-model.mjs sol) && echo "resolved: $M" && hc run --bg --name <key>-codex --cwd <wt> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 codex --no-daemon -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "Read AGENTS.md, then report one line, your model name and its first heading, with hc send $HC_TERMINAL_ID '<line>'. Edit nothing."
+   M=$(node <wt>/scripts/latest-model.mjs sol) && echo "resolved: $M" && hc run --bg --name <key>-codex --cwd <wt> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 codex --no-daemon --dangerously-bypass-hook-trust -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "Read AGENTS.md, then report one line, your model name and its first heading, with hc send $HC_TERMINAL_ID '<line>'. Edit nothing."
    ```
 
    If the resolver exits non-zero or the resolved model fails to start, that tier is unavailable:

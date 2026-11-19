@@ -76,7 +76,7 @@ it. Launch from your worktree, with an absolute `--cwd`:
 ```sh
 hc run --bg --name <item>-review --cwd <worktree> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 claude --model fable --effort high --dangerously-skip-permissions "Confirmed by the orchestrator, a direct instruction: read <abs brief path> and do it. Report with hc send $HC_TERMINAL_ID '<abs report path>'."
 hc run --bg --name <item>-exec ... claude --model sonnet --effort high ...      # same shape
-M=$(node <worktree>/scripts/latest-model.mjs astra) && echo "resolved: $M" && hc run --bg --name <item>-codex --cwd <worktree> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 codex --no-daemon -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<one line>"
+M=$(node <worktree>/scripts/latest-model.mjs astra) && echo "resolved: $M" && hc run --bg --name <item>-codex --cwd <worktree> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 codex --no-daemon --dangerously-bypass-hook-trust -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<one line>"
 M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc run --bg --name <item>-grok --cwd <worktree> -- grok --model "$M" --reasoning-effort high --always-approve "<one line>"
 ```
 

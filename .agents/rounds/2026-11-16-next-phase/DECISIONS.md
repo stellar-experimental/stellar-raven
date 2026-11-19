@@ -238,6 +238,19 @@ shipped-tuple smoke (about USD 0.45 per model-path change)?" Round item 8.8 appl
   paid research, Mintlify admin, outward-facing posts, merge and deploy gates. See
   [items/8.8/EXEC.md](items/8.8/EXEC.md).
 
+## Follow-up answers (2026-11-19, free fixes and their audit)
+
+- **Free fixes and test reduction** (round item 8.9). Owner (2026-11-19), verbatim: "sounds good, do
+  all of this in parallel, use the new agy antigravity cli with Neon for all of this in parallel with
+  hc, ensure you test, eval and ensure. Also run a lane to reduce the amount of tests especially
+  overlap, meaningless, overdone to reduce load there if reasonable"
+- **Audit of that work** (round item 8.10). Owner (2026-11-19), verbatim: "Once all of this work is
+  done plan to spawn a fable hc agent to carefully review all completed work and ensure it was done
+  well, correctly, completely and wasn't over or underfit for it's task. Likely all good but worth an
+  assessement and correction with Sonnet where neccesary"
+- **Applied.** Item 8.9 ran eight parallel Antigravity lanes (pull requests #499 to #506). Item 8.10
+  is the audit: [items/8.10/AUDIT.md](items/8.10/AUDIT.md).
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at

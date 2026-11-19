@@ -27,10 +27,8 @@ approval, and each runs under a dollar cap and is recorded with its cost.
    mcp-key` on wrangler 4.164.0").
 3. Owner decisions (the list at the end).
 4. Free own-repo fixes that need no paid measurement: the Freighter and Scout SDK-status golden
-   look, the timing flake, the `test/live/` suites, the judge-stability register move, the
-   skill-scrub narrowing, the card binding, the golden-round JSON flush, the hook wiring, and the
-   case-file move once every dated run and follow-up has merged and `systemctl --user list-timers`
-   on agentpc shows no `raven-dated` or `raven-watchdog` unit.
+   look, and the case-file move once every dated run and follow-up has merged and
+   `systemctl --user list-timers` on agentpc shows no `raven-dated` or `raven-watchdog` unit.
 
 Everything not named here is a hold, a monitor or waits on its trigger. Do not start one without
 its trigger.
@@ -564,17 +562,6 @@ checks ([evidence](rounds/2026-10-28-routing-repair/verify/final.md), O3).
 Done when: those operations no longer enter non-hackathon pages in the 544-row corpus and the
 verify lane's 22 hackathon negative probes, with no graded loss.
 
-### Bind the `scout_hackathon_detail` card to its operation
-
-`cardMatches` in `eval/lib/grade.mjs` matches the expected text `hackathon_detail` against
-`gethackathon`, so the card binds to no catalog operation. The routing eval cannot credit
-`scout.getHackathon` on `q-scf-hackathon-detail-results`. Fix the binding generally, re-run
-`npm run eval:routing -- --gate`, and record any cardHit5 change through the accepted-evidence
-process.
-
-Done when: every card in the routing corpus binds to a catalog operation or service, with a
-test that fails on an unbound card.
-
 ### `search` does not surface the research lane for protocol-history questions
 
 `scout.searchResearch` holds every fact for `q-protocol-24-whisk-incident`, but `search` does
@@ -795,22 +782,30 @@ model-facing documentation and a forward-only shape change, and measure that cha
 
 Done when: one reviewed, measured correction makes the shape clear to models.
 
-### Narrow the skill scrub so an excluded operation keeps the skill's workflow
+### Align the skill scrub with the emitted-text guard
 
-`src/skills/scrub.ts` scrubs skill bodies from the same exclusion list that removes operations
-from the manifest. The removal of `scout.matchPartners` (round item 5.1) therefore also dropped, from
-the served `stellar-scout` skill, the partner-filter step in its workflow (the directory filters, the
-stablecoin peg guidance and the "none listed at our source" rule), one sentence of the `getPartner`
-paragraph, and the match section of the API reference. The step helps a caller who never uses the
-excluded operation.
+`src/skills/scrub.ts` and `scripts/emitted-text-guard.mjs` guard the same boundary (ADR-0003) and
+differ in three places. None can leak, because each case fails closed in one of the two, but a
+difference costs a failed build or a silently dropped line where a scrub would do
+([scrub review](rounds/2026-11-16-next-phase/items/8.9/scrub/REVIEW.md), "Pre-existing"):
 
-Next: add a narrower scrub unit, so the partner-filter step survives an operation exclusion. Then
-check the served skill text. The skill is model-facing, so the change needs its own gate run.
-"Re-expose `scout.matchPartners` when `sls-123` is fixed" would also restore the dropped text, so
-this item matters while the removal stands.
+- the scrub matches an excluded path case-sensitively, and the guard lowercases first;
+- the guard's path list leaves out `SCOUT_PATHS_ABSENT_FROM_SPEC` (`/api/repos`), which the scrub
+  covers;
+- the scrub's fence toggle ignores the fence kind, so a `~~~` line inside a backtick fence ends
+  the fence.
 
-Done when: the served `stellar-scout` skill keeps the partner-filter step with the operation
-excluded, a test pins it, and the served text was checked afterwards.
+A fourth point comes from the round item 8.10 audit
+([AUDIT.md](rounds/2026-11-16-next-phase/items/8.10/AUDIT.md)). The trailing-`or` rule can change
+a sentence's meaning, because it also drops a qualifier that follows the excluded alternative. A
+re-pin review reads the upstream diff, not the served sentence. A pinned count of narrowed
+sentences in `test/skill-scrub.test.ts` would make a new narrowing fail `npm test` at the re-pin.
+
+Trigger: the next change to either file, or the next `stellar-light` re-pin. A change to served
+text is model-facing and needs the served-text check.
+
+Done when: the two matchers agree on letter case and on the path set, the fence toggle matches
+the fence kind, and a new narrowing fails a test until someone has read the served sentence.
 
 ### Triage the runtime and client gaps from the HackMeridian telemetry
 
@@ -1006,23 +1001,6 @@ idea file is folded or deleted, and a read 31 days after the deploy shows the ol
 
 ## Eval instruments
 
-### Repair the `test/live/` suites against current code
-
-On 2026-11-18 (round item 7.3, PR 2) both live suites failed against a local `npm run dev`, with
-identical results on `origin/main` `0683d266` and on the upgraded branch, so no dependency change
-caused it:
-- `run-live-execute.mjs` failed 3 checks: `initialize` reports no envelope contract in its
-  instructions, case 6's result is unparseable, and case 8 is `isError` with
-  `Cannot read properties of undefined (reading 'slice')`;
-- `run-live-spec-search.mjs` failed case 4, whose oversized whole-spec result is meant to be
-  truncated host-side with the footer.
-
-The cause was not investigated. Until they are repaired, AGENTS.md's live
-check depends on the handshake and smoke lanes.
-
-Done when: both suites pass against a current local server, or each failing check is rewritten to
-the current contract or deleted with a stated guard.
-
 ### Method note: same-surface verdict noise, and the judge-tier cap
 
 Standing note, not a task. Two runs of the same 50 panel rows on the same surface differed on 17 rows (8
@@ -1162,56 +1140,13 @@ Done when: the same defect appears in a second unrelated case (a different quest
 primary service), a contract mismatch appears, or trace evidence shows the prompt requests the
 wrong behavior. Record each recurrence with its case ID, result stamp, and transcript.
 
-### Move the pinned judge-stability register out of the `gca-eval` worktree
-
-`eval/qa/heldout-read.sh` defaults its register to
-`/home/tyler/code/raven-wt/gca-eval/eval/qa/judge-stability.json` and stops unless its SHA-256 is the
-pinned value, so that detached worktree stays as a data directory; the stored QA results live in its
-ignored files too. Both are also in the held-out archive of the 2026-11-16 branch cleanup
-([record](rounds/2026-11-16-next-phase/items/0.3/DISPOSITION.md)).
-
-Done when: the register and the stored QA results sit at a fixed path outside any worktree, the script
-default points there with the same pin, and the `gca-eval` worktree is removed, in a reviewed change.
-
-### Stabilize the timing-ratio assertion in `test/qa-judge-evidence.test.mjs`
-
-The test `scans failed and userinfo-free URL candidates in bounded linear time` is flaky. On
-2026-11-18, PR #484's CI run 44223760712 on its final head `997f8e30` failed attempt 1 at
-`test/qa-judge-evidence.test.mjs:1519`: `largeMs / smallMs` was 8.41 against `< 8`. Attempt 2 of the
-same run passed with no code change. The failed attempt is
-<https://github.com/stellar-experimental/stellar-raven/actions/runs/44223760712/attempts/1>.
-
-Scope: that one test. Line 1519 compares two single wall-clock samples, and line 1518
-(`largeMs < 250`) is also one single sample. The other timed assertions in the file (lines 715,
-1587, 1808, 1821) are out of scope.
-
-Approach: count work instead of time where the scanner allows it. Otherwise take the minimum of
-several runs for each size, because noise only adds time.
-
-Done when: no assertion in that test compares a single timed sample.
-
-### Flush the uncited golden-round JSON
-
-The two golden rounds (`.agents/rounds/2026-11-02-golden-audit/` and
-`.agents/rounds/2026-11-14-golden-coverage-audit/`) hold JSON intermediates that carry case text
-outside the case folders. At round item 7.1, 109 files were removal candidates. The corpus cites 24 of them as per-case provenance and `sd-108` cites a 25th, so 84 could
-go. Round item 7.1 left the flush out so it would not land in a code commit
-([report](rounds/2026-11-16-next-phase/items/7.1/REPORT.md)). The `.ignore` files and the hook
-already keep agents out of the folders, so this is cleanup, not exposure.
-
-Next: write a committed token-only script that lists the files neither the corpus nor an
-`improvements/` finding cites. It searches the case folders and `improvements/` without printing any
-case text. Then one records-only pull request removes the listed files with `git rm`. Reviewers read
-`--stat` only and never open the files.
-
-Done when: the files are gone, and the script proves that nothing cited by the corpus or by an
-`improvements/` finding went.
-
 ### Move the compiled case files into `eval/qa/compiled/`
 
-`eval/qa/cases.json`, `sample.json` and `tool-cases.json` sit where a non-Claude lane's
-`rg -g '*.json'` glob can reach them. The case-search hook covers Claude Code only. Moving them
-closes that hole at the source. About 30 references change.
+`eval/qa/cases.json`, `sample.json` and `tool-cases.json` sit where an unguarded session's
+`rg -g '*.json'` glob can reach them. The hook denies that glob in Claude Code, Codex, Grok and
+Antigravity where it is active (`eval/qa/README.md`, "Searching without reading case text"), but a
+session without the hook is not stopped. Moving them closes that hole at the source. About 30
+references change.
 
 Trigger: after every dated run and follow-up has merged, and `systemctl --user list-timers` on
 agentpc shows no `raven-dated` or `raven-watchdog` unit. The dated runs read the current paths
@@ -1221,19 +1156,6 @@ event schedules a follow-up, so the last merge can fall after 2026-12-04.
 
 Done when: no `rg -g '*.json'` file entry reaches the three files from the repo root, and the hook
 and `.ignore` tests are updated.
-
-### Wire the case-search guard into Codex and Grok
-
-The Claude Code hook (`.claude/settings.json` and `scripts/agent-hooks/case-search-guard.mjs`, round item 7.1) denies the ordinary forms that open
-case text. Codex and Grok lanes rely on the `AGENTS.md` rule alone. Codex 0.169 has a Claude-shaped
-`PreToolUse` deny contract, so the same script may serve, but its payload field names are
-unverified. Grok 1.0.88 has a hook dispatcher that nobody has investigated.
-
-Next: read each CLI's hook contract, wire the guard, and run the hook's probe set through each CLI
-once as a live probe on the subscription login.
-
-Done when: each CLI denies the hook's probe set in a live probe, or this item records why one
-cannot.
 
 ### Tag confirmation-only rows in the agent discovery runner and the agentic workflow
 
@@ -1248,17 +1170,6 @@ outcome, with the same fail-closed behavior as the one-shot runner. Or decide th
 is enough and delete this item.
 
 Done when: every runner that replays a listed row tags it, or the owner accepts the guide rule.
-
-### Move the playground blind-packets test out of a record folder
-
-`research/audits/2026-11-06-playground-final-resolution/blind-packets.test.mjs` is tracked, and
-`vitest.config.ts` excludes no `research/` path, so `npm test` and CI run it from a dated record
-folder. A record folder should not hold a test that gates CI.
-
-Next: move the file under `test/`, or add `research/**` to the vitest exclude and retire the test.
-Either way, update the `test/README.md` scope line that now names the extra file.
-
-Done when: `npm test` runs no file under `research/`.
 
 ### Run the judge self-test on the resolved judge model
 
@@ -1570,10 +1481,7 @@ decision record, then delete it here.
    "Confirm the WorkOS GitHub sign-in recovery and decide its record". Safe default: it stays
    untracked on the Mac, and the orchestrator keeps a second copy outside the checkout until it is
    decided.
-5. **Install ripgrep on agentpc** (owner, needs sudo; round item 7.1). Safe default: Claude lanes use
-   the `rg` from Claude Code's shell, and other lanes use the `git grep` exclusion form in
-   [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split").
-6. **A production bearer credential for post-deploy checks**
+5. **A production bearer credential for post-deploy checks**
    (`research/audits/2026-11-06-remaining-sweep/live-host-check.mjs`, not run after the round item
    7.3 deploys because no production bearer credential exists on the Mac or agentpc). It is the
    only free check of both wire eras on all three hosts. Safe default: none. Deploy checks stay on

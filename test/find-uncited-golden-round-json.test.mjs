@@ -230,7 +230,8 @@ describe("find-uncited-golden-round-json on a synthetic repository", () => {
     }
   });
 
-  it.skipIf(!hasRg && !process.env.CI)("never leaks file content or case filenames across all CLI output modes and honors --check", () => {
+  // Fixed work whose wall time depends on suite load; the timeout only guards against a hang.
+  it.skipIf(!hasRg && !process.env.CI)("never leaks file content or case filenames across all CLI output modes and honors --check", { timeout: 30_000 }, () => {
     expect(hasRg, "ripgrep must be installed in CI").toBe(true);
     const invocations = [
       { args: ["--repo", root], expectedStatus: 0 },

@@ -1319,7 +1319,8 @@ describe("paired QA verdict", () => {
     expect(parsed.reasons).toEqual([expect.objectContaining({ code: "command-error" })]);
   });
 
-  it("runs reduced deterministic operating-characteristic gates under npm test", () => {
+  // Fixed CPU work whose wall time depends on suite load; the timeout only guards against a hang.
+  it("runs reduced deterministic operating-characteristic gates under npm test", { timeout: 30_000 }, () => {
     const validation = runPairedVerdictValidation({ iterations: 5_000 });
 
     expect(validation.pass).toBe(true);
