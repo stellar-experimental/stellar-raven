@@ -1,0 +1,7 @@
+**No defects found** in `origin/main...HEAD` against the macfix brief or `AGENTS.md`. The diff changes only the existing fake Claude fixture and adds no tests. `git diff --check` and Node syntax validation passed. [Fixture](/home/tyler/code/raven-wt/np-8.12-macfix/test/qa-harness-preconditions.test.mjs:539)
+
+The original script emitted invalid JSON under Bash in POSIX mode. Bash stripped the backslashes protecting the nested verdict’s quotes, so the judge could no longer parse `total_cost_usd`. Apple’s Bash source shows the same escape handling. The fix writes the escaped JSON with `cat` and uses only POSIX-defined `printf` formatting. [Apple Bash source](https://github.com/apple-oss-distributions/bash/blob/main/bash-3.2/builtins/printf.def#L715-L729)
+
+I checked the generated script under Linux `/bin/sh`, Dash, Bash in POSIX mode, and BusyBox `sh`. Version and auth output, both model paths, the verdict, the `$0.01` reported cost, and the call log all passed. A separate subprocess check confirmed that the judge receives the new fixture path and accepts the same environment hash.
+
+The review was read-only. The full Vitest file requires temporary-file writes, and macOS `/bin/sh` was verified from source rather than run directly.

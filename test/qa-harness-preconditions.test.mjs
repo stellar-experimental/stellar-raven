@@ -540,6 +540,19 @@ function createEnvironmentPinCliFixture() {
   const root = mkdtempSync(path.join(os.tmpdir(), "qa-environment-pin-"));
   const claudePath = path.join(root, "claude");
   const callLogPath = path.join(root, "paid-calls.log");
+  const responsePrefixPath = path.join(root, "judge-response-prefix.txt");
+  const verdictJson = JSON.stringify({
+    score: "correct",
+    coreAnswer: "correct",
+    missingFacts: [],
+    wrongClaims: [],
+    avoidMatches: [],
+    rationale: "fixture"
+  });
+  writeFileSync(
+    responsePrefixPath,
+    `{"result":${JSON.stringify(verdictJson)},"total_cost_usd":0.01,"modelUsage":{"`
+  );
   const claudeSource = `#!/bin/sh
 if [ "$1" = "--version" ]; then
   printf '%s\\n' 'fixture-claude 1.0.0'
@@ -561,7 +574,8 @@ done
 if [ "$model" = "sonnet" ]; then model="claude-sonnet-5-5"; fi
 cat >/dev/null
 printf '%s\\n' paid >> "$QA_FAKE_CALL_LOG"
-printf '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"missingFacts\\":[],\\"wrongClaims\\":[],\\"avoidMatches\\":[],\\"rationale\\":\\"fixture\\"}","total_cost_usd":0.01,"modelUsage":{"%s":{}}}\\n' "$model"
+cat "$QA_FAKE_RESPONSE_PREFIX"
+printf '%s":{}}}\\n' "$model"
 `;
   writeFileSync(claudePath, claudeSource);
   chmodSync(claudePath, 0o755);
@@ -570,7 +584,8 @@ printf '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"
     HOME: path.join(root, "home"),
     SHELL: "/bin/sh",
     TMPDIR: root,
-    QA_FAKE_CALL_LOG: callLogPath
+    QA_FAKE_CALL_LOG: callLogPath,
+    QA_FAKE_RESPONSE_PREFIX: responsePrefixPath
   };
   const binarySha256 = sha256(readFileSync(claudePath));
   const environmentSha256 = agentEnvironmentIdentity(environment).sha256;
