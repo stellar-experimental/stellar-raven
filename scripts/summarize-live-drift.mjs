@@ -406,6 +406,10 @@ function contentHashForJsonFile(path, { omitFetchedAt = true } = {}) {
 
 const ANCHOR_PATH = "src/adapters/stellar-docs-anchors.json";
 const INVENTORY_GENERATED_PATHS = ["inventory", "catalog", "specs", ANCHOR_PATH];
+// Only these inventory snapshots feed catalog/manifest.json and specs/super-spec.json
+// (see inventory/README.md). Anchors, stellar-docs backend, and stellar-org are drift
+// evidence / adapter-only and cannot explain a catalog/specs diff.
+const CATALOG_FEEDING_SOURCES = new Set(["lumenloop", "stellar-light", "stellar-docs-titles"]);
 
 /**
  * Collect per-source inventory drift records from the current git working tree.
@@ -521,10 +525,10 @@ export function collectInventoryDrift() {
     });
   }
 
-  // Only emit a derived-only item when catalog/specs artifacts changed with no
-  // inventory/anchor source file change. Ignore documentation files like
-  // inventory/README.md.
-  if (sourceItems.length === 0) {
+  // Emit a derived-only item whenever catalog/specs artifacts changed without a
+  // change in any catalog-feeding inventory snapshot. Ignore documentation files
+  // like inventory/README.md.
+  if (!sourceItems.some((item) => CATALOG_FEEDING_SOURCES.has(item.source))) {
     const derivedFiles = generatedChanged.filter(
       (file) => !handled.has(file) && (file.startsWith("catalog/") || file.startsWith("specs/")) && file.endsWith(".json")
     );
@@ -534,7 +538,7 @@ export function collectInventoryDrift() {
         source: "derived",
         files: derivedFiles,
         diffStat: diffStat(derivedFiles),
-        classificationLines: ["- No inventory files changed; inspect catalog/spec diffs and the run logs."],
+        classificationLines: ["- No catalog-feeding inventory files changed; inspect catalog/spec diffs and the run logs."],
         runnerHits: [],
         contentHash: createHash("sha256").update(rawDiff).digest("hex")
       });

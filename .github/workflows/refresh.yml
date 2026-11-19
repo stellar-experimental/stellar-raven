@@ -178,9 +178,17 @@ jobs:
             echo "MINTLIFY_ASSISTANT_API_KEY=${{ secrets.MINTLIFY_ASSISTANT_API_KEY }}"
           } > .env
       - run: node scripts/refresh-inventory.mjs
-      - run: node scripts/build-catalog.mjs
-      - run: npm run family-text:build
-      - run: npm run spec:build
+      # build-catalog / family-text / spec:build fetch pinned skill bodies on a cold
+      # runner. When check-mirrors already proved a pin unresolvable, skip them so
+      # the confirmed pin outage reaches detect drift and opens pins:ecosystem-skills
+      # instead of crashing into the generic refresh-failure issue.
+      - name: rebuild derived catalog and specs
+        id: builders
+        if: steps.pins.outputs.state != 'unresolvable'
+        run: |
+          node scripts/build-catalog.mjs
+          npm run family-text:build
+          npm run spec:build
       # Detection only — never runs ecosystem-skills/update.sh from CI (mirrored
       # skills are prompt input; upstream edits go through human review). Reads
       # LUMENLOOP_API_KEY from the materialized .env like refresh-inventory.mjs.
@@ -209,6 +217,7 @@ jobs:
           GOSPEL_STATE: ${{ steps.gospel.outputs.state }}
           ANCHORS_STATE: ${{ steps.anchors.outputs.state }}
           SKILLS_DRIFT: ${{ steps.skills.outputs.drift }}
+          DERIVED_CHECKED: ${{ steps.builders.outcome == 'success' && 'true' || 'false' }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           rm -f .env
@@ -220,7 +229,8 @@ jobs:
             --canary-state "$CANARY_STATE" --canary-file canary.json \
             --gospel-state "$GOSPEL_STATE" --gospel-file stale-gospel.txt \
             --anchors-state "$ANCHORS_STATE" \
-            --skills-drift "$SKILLS_DRIFT" --skills-file skills-drift.json
+            --skills-drift "$SKILLS_DRIFT" --skills-file skills-drift.json \
+            --derived-checked "$DERIVED_CHECKED"
       # The credential comes in as a step env var, not from .env: the drift step above
       # deletes .env before this runs. Without it every authenticated probe reports
       # `inconclusive (missing host credential …)`, which is indistinguishable in the log
@@ -230,15 +240,24 @@ jobs:
         env:
           LUMENLOOP_API_KEY: ${{ secrets.LUMENLOOP_API_KEY }}
         run: npm run improvements:probes
+      # Issues track the default branch only; a manual dispatch from another
+      # branch runs in --dry-run mode so it cannot close or mutate main's issues.
       - name: sync drift issues
         if: (success() || failure()) && steps.drift.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
+          IS_DEFAULT_BRANCH: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
         run: |
+          extra=()
+          if [ "$IS_DEFAULT_BRANCH" != "true" ]; then
+            echo "::notice::Non-default ref (${GITHUB_REF}); running drift issue sync in --dry-run mode."
+            extra+=(--dry-run)
+          fi
           node scripts/sync-drift-issues.mjs sync \
             --report drift-report.json \
             --repo "$GITHUB_REPOSITORY" \
-            --assignee "$REFRESH_ISSUE_ASSIGNEE"
+            --assignee "$REFRESH_ISSUE_ASSIGNEE" \
+            "${extra[@]}"
       # Runs after the issue sync step so any detected drift issues are still
       # reconciled before the job fails on a checker error.
       - name: fail on skills drift check error

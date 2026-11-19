@@ -78,6 +78,7 @@ describe("daily anchor refresh failure handling", () => {
         PINS_STATE: "clean",
         GOSPEL_STATE: "clean",
         CANARY_STATE: "clean",
+        DERIVED_CHECKED: "true",
         RUN_URL: "https://github.com/example/repo/actions/runs/1"
       }
     });

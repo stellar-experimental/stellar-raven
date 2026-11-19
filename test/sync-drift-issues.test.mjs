@@ -8,6 +8,7 @@ import {
   canCloseKey,
   formatMarker,
   parseDriftMarker,
+  parseFlags,
   planDriftIssueSync
 } from "../scripts/sync-drift-issues.mjs";
 
@@ -170,7 +171,7 @@ describe("drift key routing (buildDriftReport)", () => {
     expect(canCloseKey("skills-directory:stellarlight-catalog", report.checks).ok).toBe(true);
   });
 
-  it("fails closed when step outputs or skills JSON are missing or malformed", () => {
+  it("fails closed when step outputs, skills JSON, or skill statuses are invalid", () => {
     const report = buildDriftReport(
       cleanInputs({
         pinsState: "",
@@ -187,6 +188,17 @@ describe("drift key routing (buildDriftReport)", () => {
     expect(canCloseKey("canary:failing", report.checks).ok).toBe(false);
     expect(canCloseKey("gospel:qa-corpus", report.checks).ok).toBe(false);
     expect(canCloseKey("skills-pin:stellar-dev", report.checks).ok).toBe(false);
+
+    const unknownStatus = buildDriftReport(
+      cleanInputs({
+        skillsDrift: "false",
+        skillsJson: { results: [{ id: "stellar-dev", status: "unknown" }] },
+        derivedChecked: false
+      })
+    );
+    expect(unknownStatus.errors.skills).toBe(true);
+    expect(canCloseKey("skills-pin:stellar-dev", unknownStatus.checks).ok).toBe(false);
+    expect(canCloseKey("inventory:derived", unknownStatus.checks).ok).toBe(false);
   });
 });
 
@@ -281,14 +293,14 @@ describe("issue reconciliation planning (planDriftIssueSync)", () => {
     expect(closeAction.comment).toContain("https://github.com/org/repo/actions/runs/555");
   });
 
-  it("closes stale canary and opens failing canary when canary state transitions", () => {
-    const report = buildDriftReport(
+  it("closes stale canary on failing verdict, but holds failing canary when detector goes stale", () => {
+    const toFailing = buildDriftReport(
       cleanInputs({
         canaryState: "failing",
         canaryOutput: JSON.stringify({ ok: false, checkedAt: "2026-11-19T06:00:00Z", checked: 1, ms: 50, error: "unreachable" })
       })
     );
-    const openIssues = [
+    const staleOpen = [
       {
         number: 700,
         title: "Drift (canary): stale",
@@ -297,12 +309,58 @@ describe("issue reconciliation planning (planDriftIssueSync)", () => {
         comments: []
       }
     ];
-
-    const plan = planDriftIssueSync({ report, openIssues, assignee: "kalepail" });
-    expect(plan.actions.map((a) => [a.type, a.key, a.number ?? null])).toEqual([
+    expect(planDriftIssueSync({ report: toFailing, openIssues: staleOpen, assignee: "kalepail" }).actions.map((a) => [a.type, a.key, a.number ?? null])).toEqual([
       ["open", "canary:failing", null],
       ["close", "canary:stale", 700]
     ]);
+
+    const toStale = buildDriftReport(
+      cleanInputs({
+        canaryState: "stale",
+        canaryOutput: JSON.stringify({ ok: false, checkedAt: "2026-11-19T02:00:00Z", checked: 1, ms: 50, error: "unreachable" })
+      })
+    );
+    const failingOpen = [
+      {
+        number: 701,
+        title: "Drift (canary): failing",
+        body: `${formatMarker("canary:failing", "b".repeat(64))}\nold`,
+        assignees: ["kalepail"],
+        comments: []
+      }
+    ];
+    expect(planDriftIssueSync({ report: toStale, openIssues: failingOpen, assignee: "kalepail" }).actions.map((a) => [a.type, a.key, a.number ?? null])).toEqual([
+      ["open", "canary:stale", null],
+      ["hold-on-error", "canary:failing", 701]
+    ]);
+  });
+
+  it("ignores markers quoted outside line 1 so legacy issues with examples stay untouched", () => {
+    const quotedLegacy = `Discussion of drift keys:\n\`\`\`html\n${formatMarker("inventory:stellar-light", "c".repeat(64))}\n\`\`\``;
+    expect(parseDriftMarker(quotedLegacy)).toBeNull();
+    const plan = planDriftIssueSync({
+      report: buildDriftReport(cleanInputs()),
+      openIssues: [{ number: 800, title: "Drift discussion", body: quotedLegacy, assignees: [], comments: [] }],
+      assignee: "kalepail"
+    });
+    expect(plan.actions.map((a) => [a.type, a.number])).toEqual([["ignore-legacy", 800]]);
+  });
+
+  it("rejects missing flag values and refuses --open-issues without --dry-run", () => {
+    expect(() => parseFlags(["--assignee", "--dry-run"])).toThrow(/missing value for --assignee/);
+    const dir = mkdtempSync(join(tmpdir(), "sync-drift-guard-"));
+    tempDirs.push(dir);
+    const reportPath = join(dir, "report.json");
+    const openPath = join(dir, "open.json");
+    writeFileSync(reportPath, JSON.stringify(buildDriftReport(cleanInputs())));
+    writeFileSync(openPath, "[]");
+    expect(() =>
+      execFileSync(
+        process.execPath,
+        [join(REPO, "scripts", "sync-drift-issues.mjs"), "sync", "--report", reportPath, "--open-issues", openPath],
+        { encoding: "utf8", stdio: "pipe" }
+      )
+    ).toThrow(/--open-issues is only permitted with --dry-run/);
   });
 
   it("supports offline dry-run CLI against fixture report and open-issues JSON", () => {

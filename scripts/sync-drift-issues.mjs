@@ -29,7 +29,8 @@ import { DIRECTORY_SOURCE_IDS } from "./check-skills-drift.mjs";
 import { collectInventoryDrift } from "./summarize-live-drift.mjs";
 
 export const MARKER_PREFIX = "raven-drift";
-const MARKER_RE = /<!--\s*raven-drift\s+key=([a-z0-9][a-z0-9:._-]*)(?:\s+fingerprint=([0-9a-f]{64}))?\s*-->/i;
+const MARKER_LINE_RE = /^<!--\s*raven-drift\s+key=([a-z0-9][a-z0-9:._-]*)(?:\s+fingerprint=([0-9a-f]{64}))?\s*-->$/i;
+const VALID_SKILL_STATUSES = new Set(["ok", "DRIFT", "error", "skipped"]);
 const MAX_BODY_CHARS = 60_000;
 const DRIFT_LABEL = "drift";
 const DRIFT_LABEL_COLOR = "D93F0B";
@@ -55,7 +56,11 @@ export function formatMarker(key, fingerprint) {
 
 export function parseDriftMarker(text) {
   if (typeof text !== "string" || !text) return null;
-  const match = text.match(MARKER_RE);
+  // Managed issues and automated comments always place the marker on line 1
+  // (matching dependency-audit.yml and golden-sentinels.yml), so examples
+  // quoted later in a legacy issue body or code fence cannot match.
+  const firstLine = text.split(/\r?\n/, 1)[0].trim();
+  const match = firstLine.match(MARKER_LINE_RE);
   if (!match) return null;
   return { key: match[1].toLowerCase(), fingerprint: match[2] ? match[2].toLowerCase() : null };
 }
@@ -436,7 +441,8 @@ export function buildDriftReport({
   skillsDrift = "",
   skillsJson = null,
   inventoryItems = [],
-  inventoryChecked = true
+  inventoryChecked = true,
+  derivedChecked = true
 }) {
   const pinsValid = pinsState === "clean" || pinsState === "unresolvable";
   const pinsError = !pinsValid;
@@ -466,35 +472,47 @@ export function buildDriftReport({
   let skillsDriftedEntries = [];
 
   if (skillsResults) {
-    const drifted = skillsResults.filter((r) => r && r.status === "DRIFT" && typeof r.id === "string");
-    const errored = skillsResults.filter((r) => r && r.status === "error" && typeof r.id === "string");
-    const skipped = skillsResults.filter((r) => r && r.status === "skipped" && typeof r.id === "string");
+    const hasInvalidEntry = skillsResults.some(
+      (r) =>
+        !r ||
+        typeof r !== "object" ||
+        typeof r.id !== "string" ||
+        r.id.length === 0 ||
+        !VALID_SKILL_STATUSES.has(r.status)
+    );
+    if (hasInvalidEntry) {
+      skillsError = true;
+    } else {
+      const drifted = skillsResults.filter((r) => r.status === "DRIFT");
+      const errored = skillsResults.filter((r) => r.status === "error");
+      const skipped = skillsResults.filter((r) => r.status === "skipped");
 
-    if (skillsDrift === "false") {
-      if (drifted.length === 0 && errored.length === 0) {
-        skillsCheckOk = true;
-        skillsSkippedSources = skipped.map((r) => r.id).sort();
-      } else {
+      if (skillsDrift === "false") {
+        if (drifted.length === 0 && errored.length === 0) {
+          skillsCheckOk = true;
+          skillsSkippedSources = skipped.map((r) => r.id).sort();
+        } else {
+          skillsError = true;
+        }
+      } else if (skillsDrift === "true") {
+        if (drifted.length > 0 && errored.length === 0) {
+          skillsCheckOk = true;
+          skillsDriftedEntries = drifted;
+          skillsSkippedSources = skipped.map((r) => r.id).sort();
+        } else {
+          skillsError = true;
+        }
+      } else if (skillsDrift === "error" && errored.length > 0) {
+        // Partial check error: check-skills-drift exited 2 because one or more
+        // sources errored, while still producing a complete JSON results array.
+        // Preserve real DRIFT items and clean-source closes while protecting
+        // errored and skipped sources from closure.
         skillsError = true;
-      }
-    } else if (skillsDrift === "true") {
-      if (drifted.length > 0 && errored.length === 0) {
         skillsCheckOk = true;
         skillsDriftedEntries = drifted;
+        skillsErroredSources = errored.map((r) => r.id).sort();
         skillsSkippedSources = skipped.map((r) => r.id).sort();
-      } else {
-        skillsError = true;
       }
-    } else if (skillsDrift === "error" && errored.length > 0) {
-      // Partial check error: check-skills-drift exited 2 because one or more
-      // sources errored, while still producing a complete JSON results array.
-      // Preserve real DRIFT items and clean-source closes while protecting
-      // errored and skipped sources from closure.
-      skillsError = true;
-      skillsCheckOk = true;
-      skillsDriftedEntries = drifted;
-      skillsErroredSources = errored.map((r) => r.id).sort();
-      skillsSkippedSources = skipped.map((r) => r.id).sort();
     }
   } else {
     skillsError = true;
@@ -539,6 +557,7 @@ export function buildDriftReport({
       pins: normalizedPins,
       gospel: normalizedGospel,
       inventory: inventoryChecked ? "checked" : "error",
+      derived: derivedChecked ? "checked" : "skipped",
       skills: {
         ok: skillsCheckOk,
         erroredSources: skillsErroredSources,
@@ -565,9 +584,18 @@ export function canCloseKey(key, checks) {
         ? { ok: true }
         : { ok: false, reason: `anchors check state is ${checks.anchors}` };
     case "canary":
-      return checks.canary !== "error"
+      if (checks.canary === "error") return { ok: false, reason: "canary check errored" };
+      if (source === "stale") {
+        // Any fresh verdict (clean or failing) proves the detector is running again.
+        return checks.canary === "clean" || checks.canary === "failing"
+          ? { ok: true }
+          : { ok: false, reason: `canary check state is ${checks.canary}` };
+      }
+      // A stale detector says nothing about whether retrieval recovered, so
+      // canary:failing can only close on a fresh clean verdict.
+      return checks.canary === "clean"
         ? { ok: true }
-        : { ok: false, reason: "canary check errored" };
+        : { ok: false, reason: `canary state is ${checks.canary}; retrieval recovery is unverified` };
     case "pins":
       return checks.pins === "clean"
         ? { ok: true }
@@ -582,6 +610,9 @@ export function canCloseKey(key, checks) {
       }
       if (source === "stellar-docs-anchors" && checks.anchors !== "ok") {
         return { ok: false, reason: "anchor capture failed, so stellar-docs-anchors was not refreshed" };
+      }
+      if (source === "derived" && checks.derived === "skipped") {
+        return { ok: false, reason: "derived catalog/spec builders were skipped" };
       }
       return { ok: true };
     case "skills-pin":
@@ -768,9 +799,9 @@ function ghApiPaginateArray(endpointBase) {
       throw new Error(`expected array from ${endpointBase} (page ${page})`);
     }
     items.push(...batch);
-    if (batch.length < 100) break;
+    if (batch.length < 100) return items;
   }
-  return items;
+  throw new Error(`pagination limit (100 pages) exceeded for ${endpointBase}`);
 }
 
 function fetchOpenDriftIssues(repo, currentKeys) {
@@ -833,45 +864,56 @@ function executePlan(plan, repo) {
   for (const warning of plan.warnings) {
     console.log(`::warning::${warning}`);
   }
+  const failures = [];
   for (const action of plan.actions) {
-    switch (action.type) {
-      case "open": {
-        const created = gh(
-          ["issue", "create", "--repo", repo, "--title", action.title, "--label", DRIFT_LABEL, "--body-file", "-"],
-          { input: action.body }
-        ).trim();
-        console.log(`open ${action.key}: created ${created}`);
-        if (action.assignee) tryAddAssignee(repo, created, action.assignee);
-        break;
+    try {
+      switch (action.type) {
+        case "open": {
+          const created = gh(
+            ["issue", "create", "--repo", repo, "--title", action.title, "--label", DRIFT_LABEL, "--body-file", "-"],
+            { input: action.body }
+          ).trim();
+          console.log(`open ${action.key}: created ${created}`);
+          if (action.assignee) tryAddAssignee(repo, created, action.assignee);
+          break;
+        }
+        case "update": {
+          if (action.addAssignee) tryAddAssignee(repo, action.number, action.addAssignee);
+          gh(["issue", "comment", String(action.number), "--repo", repo, "--body-file", "-"], {
+            input: action.body
+          });
+          console.log(`update ${action.key}: commented on #${action.number} (fingerprint changed)`);
+          break;
+        }
+        case "unchanged": {
+          if (action.addAssignee) tryAddAssignee(repo, action.number, action.addAssignee);
+          console.log(`unchanged ${action.key}: #${action.number} left without comment`);
+          break;
+        }
+        case "close": {
+          gh(["issue", "comment", String(action.number), "--repo", repo, "--body-file", "-"], {
+            input: action.comment
+          });
+          gh(["issue", "close", String(action.number), "--repo", repo, "--reason", "completed"]);
+          console.log(`close ${action.key}: commented and closed #${action.number}`);
+          break;
+        }
+        case "hold-on-error":
+          console.log(`hold ${action.key}: #${action.number} left open (${action.reason})`);
+          break;
+        case "ignore-legacy":
+          console.log(`ignore legacy: #${action.number} (${action.title}) has no drift key marker`);
+          break;
       }
-      case "update": {
-        if (action.addAssignee) tryAddAssignee(repo, action.number, action.addAssignee);
-        gh(["issue", "comment", String(action.number), "--repo", repo, "--body-file", "-"], {
-          input: action.body
-        });
-        console.log(`update ${action.key}: commented on #${action.number} (fingerprint changed)`);
-        break;
-      }
-      case "unchanged": {
-        if (action.addAssignee) tryAddAssignee(repo, action.number, action.addAssignee);
-        console.log(`unchanged ${action.key}: #${action.number} left without comment`);
-        break;
-      }
-      case "close": {
-        gh(["issue", "comment", String(action.number), "--repo", repo, "--body-file", "-"], {
-          input: action.comment
-        });
-        gh(["issue", "close", String(action.number), "--repo", repo, "--reason", "completed"]);
-        console.log(`close ${action.key}: commented and closed #${action.number}`);
-        break;
-      }
-      case "hold-on-error":
-        console.log(`hold ${action.key}: #${action.number} left open (${action.reason})`);
-        break;
-      case "ignore-legacy":
-        console.log(`ignore legacy: #${action.number} (${action.title}) has no drift key marker`);
-        break;
+    } catch (err) {
+      const detail = err?.stderr?.trim() || err?.message || String(err);
+      const target = action.key ?? `#${action.number}`;
+      console.error(`::error::drift issue sync failed for ${action.type} ${target}: ${detail}`);
+      failures.push(`${action.type} ${target}: ${detail}`);
     }
+  }
+  if (failures.length > 0) {
+    throw new Error(`${failures.length} drift issue action(s) failed:\n- ${failures.join("\n- ")}`);
   }
 }
 
@@ -925,7 +967,7 @@ function printPlanSummary(plan, { dryRun, json }) {
 // ---------------------------------------------------------------------------
 // CLI
 // ---------------------------------------------------------------------------
-function parseFlags(argv) {
+export function parseFlags(argv) {
   const flags = {};
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -936,7 +978,9 @@ function parseFlags(argv) {
       continue;
     }
     const next = argv[i + 1];
-    if (next === undefined) throw new Error(`missing value for --${name}`);
+    if (next === undefined || next.startsWith("--")) {
+      throw new Error(`missing value for --${name}`);
+    }
     flags[name] = next;
     i++;
   }
@@ -976,7 +1020,8 @@ function runCollect(argv) {
     skillsDrift: flags["skills-drift"] ?? "",
     skillsJson: readOptionalJson(flags["skills-file"]),
     inventoryItems,
-    inventoryChecked: true
+    inventoryChecked: true,
+    derivedChecked: flags["derived-checked"] !== "false"
   });
 
   const serialized = `${JSON.stringify(report, null, 2)}\n`;
@@ -1009,6 +1054,9 @@ function runSync(argv) {
   let openIssues;
   let repo = flags.repo ?? "";
   if (flags["open-issues"]) {
+    if (!dryRun) {
+      throw new Error("--open-issues is only permitted with --dry-run");
+    }
     openIssues = JSON.parse(readFileSync(flags["open-issues"], "utf8"));
   } else {
     repo = resolveRepo(flags.repo);
