@@ -5,7 +5,7 @@
  * These checks make real service calls and require the server's configured credentials.
  * They are separate from npm test. The offline suite validates their catalog references.
  */
-import { existingServerUrl, isMain, mcpCall, parseRpc } from "./client.mjs";
+import { existingServerUrl, isMain, mcpCall } from "./client.mjs";
 
 function trim(s, n = 1100) {
   const t = typeof s === "string" ? s : JSON.stringify(s);
@@ -70,9 +70,24 @@ export const CASES = [
     }`
   },
   {
-    label: "4. execute: oversized result (whole spec) truncated host-side with the footer",
+    label: "4. execute: oversized result (whole spec) truncated host-side with SOURCE BASIS",
     tool: "execute",
-    expect: ["--- TRUNCATED ---", "tokens (limit: 6000)"],
+    expect: [
+      "--- SOURCE BASIS ---",
+      "Bulk lost from top-level keys:",
+      "guidance: prefer a narrower re-run"
+    ],
+    check: (text) => {
+      if (text.includes("--- TRUNCATED ---")) {
+        return "unexpected raw --- TRUNCATED --- marker (execute replaces it with --- SOURCE BASIS ---)";
+      }
+      // Default EXECUTE_MODEL_BOUNDARY_MAX_TOKENS (6000 in wrangler.jsonc) * CHARS_PER_TOKEN (4).
+      const cut = text.indexOf("\n--- SOURCE BASIS ---");
+      if (cut <= 0 || cut > 24000) {
+        return `expected visible prefix clipped within 24000 chars before SOURCE BASIS, got ${cut}`;
+      }
+      return null;
+    },
     code: `async () => await codemode.spec()`
   },
   {
@@ -103,14 +118,16 @@ async function main() {
   if (!health.ok) throw new Error(`Server health check failed: HTTP ${health.status}`);
 
   let failures = 0;
-  for (const { label, tool, code, expect: expected } of CASES) {
+  for (const { label, tool, code, expect: expected, check } of CASES) {
     const started = Date.now();
     const r = await mcpCall(BASE, tool, { code });
     const ms = Date.now() - started;
     const missing = (expected ?? []).filter((s) => !r.text.includes(s));
-    const pass = !r.isError && missing.length === 0;
+    const checkFail = !r.isError && missing.length === 0 && check ? check(r.text) : null;
+    const pass = !r.isError && missing.length === 0 && !checkFail;
     console.log(`=== ${label} (${ms} ms, isError=${r.isError}, ${pass ? "PASS" : "FAIL"})`);
     if (missing.length > 0) console.log(`    missing expected substrings: ${JSON.stringify(missing)}`);
+    if (checkFail) console.log(`    check failed: ${checkFail}`);
     console.log(trim(r.text));
     console.log();
     if (!pass) failures += 1;

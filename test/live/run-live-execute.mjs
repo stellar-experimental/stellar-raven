@@ -94,7 +94,7 @@ export const CASES = [
       const dir = await lumenloop.search_directory({ query: "soroswap", limit: 2 });
       const failed = await lumenloop.search_directory({ limit: 2 }); // missing required query -> guard error
       const sp = await scout.searchProjects({ q: "soroban", limit: 1 });
-      const out = { okGuard: null, errGuardIsUndefined: null, metaGuard: null, writeBack: null, viaData: dir.ok ? dir.data.count : null, raw: dir };
+      const out = { okGuard: null, errGuardIsUndefined: null, metaGuard: null, spOk: sp.ok, writeBack: null, viaData: dir.ok ? dir.data.count : null, raw: dir };
       try { void dir.projects; out.okGuard = "NOT THROWN — guard missing"; }
       catch (e) { out.okGuard = String(e.message).slice(0, 160); }
       out.errGuardIsUndefined = typeof failed.data === "undefined";
@@ -105,18 +105,29 @@ export const CASES = [
       return out;
     }`,
     check: (text) => {
-      if (!text.includes('"errGuardIsUndefined":true')) {
-        return "failed.data was not undefined (errGuardIsUndefined false)";
-      }
       if (!text.includes("[envelope] lumenloop.search_directory")) {
         return "console block missing the [envelope] lumenloop.search_directory warning";
       }
-      if (!text.includes("use r.data.meta")) {
-        return "sp.meta did not throw a pointer at r.data.meta";
-      }
-      const body = text.split("\n--- console")[0];
+      // execute emits compact single-line JSON before any host-appended blocks or console output.
+      const nl = text.indexOf("\n");
+      const body = nl === -1 ? text : text.slice(0, nl);
       try {
         const out = JSON.parse(body);
+        if (!out.raw?.ok || out.viaData === null) {
+          return "precondition: lumenloop.search_directory not ok (upstream)";
+        }
+        if (!out.spOk) {
+          return "precondition: scout.searchProjects not ok (upstream)";
+        }
+        if (out.errGuardIsUndefined !== true) {
+          return "failed.data was not undefined (errGuardIsUndefined false)";
+        }
+        if (typeof out.okGuard !== "string" || !out.okGuard.includes("use r.data.projects")) {
+          return "dir.projects did not throw a pointer at r.data.projects";
+        }
+        if (typeof out.metaGuard !== "string" || !out.metaGuard.includes("use r.data.meta")) {
+          return "sp.meta did not throw a pointer at r.data.meta";
+        }
         if (typeof out.writeBack !== "number" || out.writeBack !== out.viaData) {
           return `writeBack ${out.writeBack} did not round-trip viaData ${out.viaData}`;
         }
@@ -143,10 +154,10 @@ export const CASES = [
   {
     label: "8. oversized whole-skill read returns the FULL body plus an advisory notice",
     code: `async () => {
-      const r = await codemode.skill.read("skills.stellar-dev.standards");
+      const r = await codemode.skill.read("skills.stellar-light.stellar-scout");
       return {
         pass: r.ok && typeof r.data.content === "string" && r.data.content.length > 24000 && typeof r.data.notice === "string" && r.data.availableSections.length > 10,
-        notice: r.ok ? r.data.notice.slice(0, 140) : r.error,
+        notice: r.ok ? (r.data.notice?.slice(0, 140) ?? null) : r.error,
         chars: r.ok ? r.data.content.length : 0,
         sectionCount: r.ok ? r.data.availableSections.length : 0
       };
@@ -156,10 +167,10 @@ export const CASES = [
   {
     label: "9. section-first read of the same oversized skill returns full section content, no notice",
     code: `async () => {
-      const index = await codemode.skill.read("skills.stellar-dev.standards");
+      const index = await codemode.skill.read("skills.stellar-light.stellar-scout");
       if (!index.ok) return { pass: false, error: index.error };
       const slug = index.data.availableSections.find((s) => !s.startsWith("file:"));
-      const r = await codemode.skill.read("skills.stellar-dev.standards", { sections: [slug] });
+      const r = await codemode.skill.read("skills.stellar-light.stellar-scout", { sections: [slug] });
       return {
         pass: r.ok && r.data.sections.length === 1 && r.data.sections[0].content.length > 50 && r.data.notice === undefined,
         slug,
@@ -192,10 +203,13 @@ async function main() {
       }
     })
   });
+  if (!initRes.ok) throw new Error(`MCP initialize HTTP ${initRes.status}`);
   const initText = await initRes.text();
   const init = parseRpc(initText);
   const instructions = init.result?.instructions ?? "";
-  const hasEnvelopeContract = instructions.includes("r.data.projects");
+  const hasEnvelopeContract =
+    instructions.includes("{ ok: true, data, asOf, asOfBasis, caveat? }") &&
+    instructions.includes("{ ok: false, error: { kind, message, hint? } }");
   console.log(`=== initialize carries instructions (envelope contract present: ${hasEnvelopeContract})`);
   console.log(trim(instructions, 300));
   console.log();
