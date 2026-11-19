@@ -3,7 +3,6 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   cardMatches,
-  cardMatchesExact,
   classifyCardBinding,
   findUnboundRoutingCards,
   isExternalServiceCard,
@@ -50,7 +49,7 @@ describe("routing card binding helpers", () => {
     ).toBeNull();
   });
 
-  it("fails on unbound cards and external-only cases without leaking case text", () => {
+  it("fails on unbound cards, external-only cases, and missing/empty card lists without leaking case text", () => {
     const MARKER = "SYNTHETIC_PRIVATE_MARKER_7b3e";
     const failures = findUnboundRoutingCards(
       [
@@ -58,6 +57,8 @@ describe("routing card binding helpers", () => {
         { id: `${MARKER}-ext-with-cat`, question: MARKER, expected_cards: ["lumenloop_project_detail", "perplexity_search"] },
         { id: `${MARKER}-unbound`, question: MARKER, expected_cards: [`scout_${MARKER}`] },
         { id: `${MARKER}-ext-only`, question: MARKER, expected_cards: ["perplexity_search"] },
+        { id: `${MARKER}-empty`, question: MARKER, expected_cards: [] },
+        { id: `${MARKER}-missing`, question: MARKER },
       ],
       SAMPLE_ENTRIES,
       { lane: "synthetic" },
@@ -67,6 +68,8 @@ describe("routing card binding helpers", () => {
       { lane: "synthetic", caseIndex: 2, cardIndex: 0, reason: "unbound" },
       { lane: "synthetic", caseIndex: 2, cardIndex: null, reason: "no-catalog-card" },
       { lane: "synthetic", caseIndex: 3, cardIndex: null, reason: "no-catalog-card" },
+      { lane: "synthetic", caseIndex: 4, cardIndex: null, reason: "no-cards" },
+      { lane: "synthetic", caseIndex: 5, cardIndex: null, reason: "no-cards" },
     ]);
     expect(JSON.stringify(failures)).not.toContain(MARKER);
   });
@@ -78,7 +81,7 @@ describe("committed routing corpus card bindings", () => {
     (e) => e.searchable !== false && e.kind !== "skill-section",
   );
 
-  it("binds scout_hackathon_detail and scout_skill_detail to their exact single-resource ops", () => {
+  it("binds scout_hackathon_detail and scout_skill_detail to their exact getter ops", () => {
     expect(
       searchableEntries.filter((e) => cardMatches("scout_hackathon_detail", e)).map((e) => e.id),
     ).toEqual(["scout.getHackathon"]);
@@ -87,6 +90,7 @@ describe("committed routing corpus card bindings", () => {
     ).toEqual(["scout.getSkill"]);
   });
 
+  // Holdout exact-card binding is already enforced on every `eval:routing -- --gate` run in eval/run-routing.mjs.
   it("binds every card in routing-cases.json and skills-cases.json to a catalog op or service", () => {
     const routing = readJson("eval/routing-cases.json");
     const skills = readJson("eval/skills-cases.json");
@@ -94,24 +98,5 @@ describe("committed routing corpus card bindings", () => {
     expect(findUnboundRoutingCards(routing.cases, manifest.entries, { lane: "legacy" })).toEqual([]);
     expect(findUnboundRoutingCards(routing.extendedCases, manifest.entries, { lane: "extended" })).toEqual([]);
     expect(findUnboundRoutingCards(skills.cases, manifest.entries, { lane: "skills" })).toEqual([]);
-  });
-
-  it("binds every expected and forbidden card in holdout-cases.json to exactly one searchable entry", () => {
-    const holdout = readJson("eval/holdout-cases.json");
-    const failures = [];
-    holdout.cases.forEach((c, caseIndex) => {
-      for (const [list, cards] of [
-        ["expected", c.expected_cards],
-        ["forbidden", c.forbidden_cards],
-      ]) {
-        cards.forEach((card, cardIndex) => {
-          const matchCount = searchableEntries.filter((e) => cardMatchesExact(card, e)).length;
-          if (matchCount !== 1) {
-            failures.push({ lane: "holdout", caseIndex, list, cardIndex, matchCount });
-          }
-        });
-      }
-    });
-    expect(failures).toEqual([]);
   });
 });

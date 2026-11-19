@@ -58,7 +58,7 @@ export function cardMatchesExact(expectedCard, hit) {
  *      >= 4 chars (tolerates "projects" vs "list_projects"; guards against
  *      trivial substrings like "get").
  *   4. Same service AND a `<noun>_detail` card matches a `get_<noun>` or
- *      `get<noun>` single-resource operation (e.g. `scout_hackathon_detail` ->
+ *      `get<noun>` operation by name (e.g. `scout_hackathon_detail` ->
  *      `scout.getHackathon`, `scout_skill_detail` -> `scout.getSkill`).
  */
 export function cardMatches(expectedCard, hit) {
@@ -100,18 +100,14 @@ export function isExternalServiceCard(card) {
   return EXTERNAL_CARD_PREFIXES.some((prefix) => c.startsWith(prefix));
 }
 
-/**
- * Classify how a routing card binds to searchable catalog entries:
- *   - "external"  — documented general-web prefix outside this catalog (`perplexity_*`, `parallel_*`)
- *   - "service"   — `<service>_mcp` card whose service exists among searchable entries
- *   - "operation" — matches at least one searchable non-section entry via `cardMatches`
- *   - null        — unbound (unknown prefix, missing service, or zero matching operations)
- */
-export function classifyCardBinding(card, entries) {
+function searchableEntriesOf(entries) {
+  return entries.filter((e) => e.searchable !== false && e.kind !== "skill-section");
+}
+
+function classifyCardBindingInSearchable(card, searchable) {
   if (isExternalServiceCard(card)) return "external";
   const { service } = splitCard(card);
   if (!service) return null;
-  const searchable = entries.filter((e) => e.searchable !== false && e.kind !== "skill-section");
   if (isServiceLevelCard(card)) {
     const svcCanon = canonToken(service);
     return searchable.some((e) => canonToken(e.service) === svcCanon) ? "service" : null;
@@ -120,19 +116,32 @@ export function classifyCardBinding(card, entries) {
 }
 
 /**
- * Find any unbound card (or case whose expected_cards lack any catalog-bound card).
- * Reports only lane name, case index, card index, and reason — never a case id,
- * question, or card label — so failures stay safe in logs.
+ * Classify how a routing card binds to searchable catalog entries:
+ *   - "external"  — documented general-web prefix outside this catalog (`perplexity_*`, `parallel_*`)
+ *   - "service"   — `<service>_mcp` card whose service exists among searchable entries
+ *   - "operation" — matches at least one searchable non-section entry via `cardMatches`
+ *   - null        — unbound (unknown prefix, missing service, or zero matching operations)
+ */
+export function classifyCardBinding(card, entries) {
+  return classifyCardBindingInSearchable(card, searchableEntriesOf(entries));
+}
+
+/**
+ * Find any unbound card, missing/empty card list, or case whose expected_cards lack any
+ * catalog-bound card. Reports only lane name, case index, card index, and reason — never
+ * a case id, question, or card label — so failures stay safe in logs.
  */
 export function findUnboundRoutingCards(cases, entries, { lane = "routing" } = {}) {
-  const searchable = entries.filter((e) => e.searchable !== false && e.kind !== "skill-section");
+  const searchable = searchableEntriesOf(entries);
   const failures = [];
   cases.forEach((c, caseIndex) => {
-    const cards = Array.isArray(c.expected_cards) ? c.expected_cards : [];
-    if (cards.length === 0) return;
+    if (!Array.isArray(c.expected_cards) || c.expected_cards.length === 0) {
+      failures.push({ lane, caseIndex, cardIndex: null, reason: "no-cards" });
+      return;
+    }
     let hasCatalogBinding = false;
-    cards.forEach((card, cardIndex) => {
-      const binding = classifyCardBinding(card, searchable);
+    c.expected_cards.forEach((card, cardIndex) => {
+      const binding = classifyCardBindingInSearchable(card, searchable);
       if (binding === null) {
         failures.push({ lane, caseIndex, cardIndex, reason: "unbound" });
       } else if (binding === "service" || binding === "operation") {
