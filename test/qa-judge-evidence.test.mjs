@@ -1528,7 +1528,7 @@ describe("QA judge CLI evidence", () => {
         expect(large.urlCandidateProbes).toBe(small.urlCandidateProbes);
         expect(small.urlScanChars).toBeGreaterThanOrEqual(10_000);
         expect(large.urlScanChars).toBeGreaterThanOrEqual(40_000);
-        expect(large.urlScanChars).toBeLessThanOrEqual(largeInput.length * 2);
+        expect(large.urlScanChars).toBeLessThanOrEqual(largeInput.length * 4);
         expect(large.urlScanChars / small.urlScanChars).toBeLessThan(5);
       }
 

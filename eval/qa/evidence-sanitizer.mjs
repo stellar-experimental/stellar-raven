@@ -801,8 +801,9 @@ function sanitizeStructuredStringLeaf(value, metrics = null) {
 }
 
 // Exported for focused sanitizer regression tests. Optional `options.metrics`
-// records URL-candidate scan counts (`urlCandidateProbes`, `urlScanChars`) so
-// linear-scan tests can assert on work done instead of wall-clock timing.
+// accumulates URL-candidate scan counts (`urlCandidateProbes`, `urlScanChars`)
+// across the call (pass a fresh object per measurement) so linear-scan tests
+// can assert on work done instead of wall-clock timing.
 export function sanitizeCliEvidenceText(text, options) {
   try {
     const metrics = options?.metrics && typeof options.metrics === "object" ? options.metrics : null;
