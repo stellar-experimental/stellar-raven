@@ -250,6 +250,10 @@ shipped-tuple smoke (about USD 0.45 per model-path change)?" Round item 8.8 appl
   assessement and correction with Sonnet where neccesary"
 - **Applied.** Item 8.9 ran eight parallel Antigravity lanes (pull requests #499 to #506). Item 8.10
   is the audit: [items/8.10/AUDIT.md](items/8.10/AUDIT.md).
+- **Three small `src/` fixes** (round item 8.11). Owner (2026-11-19), verbatim: "Makes sense, do
+  them now, just don't write and maintain permanent tests for ephemeral issues". Applied in #508: each
+  mismatch is fixed in the code (a returned field, one shared path matcher, CommonMark fence matching),
+  and no test pins today's wording, counts or upstream text.
 
 ## Timing
 

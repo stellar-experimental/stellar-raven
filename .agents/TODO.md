@@ -782,31 +782,6 @@ model-facing documentation and a forward-only shape change, and measure that cha
 
 Done when: one reviewed, measured correction makes the shape clear to models.
 
-### Align the skill scrub with the emitted-text guard
-
-`src/skills/scrub.ts` and `scripts/emitted-text-guard.mjs` guard the same boundary (ADR-0003) and
-differ in three places. None can leak, because each case fails closed in one of the two, but a
-difference costs a failed build or a silently dropped line where a scrub would do
-([scrub review](rounds/2026-11-16-next-phase/items/8.9/scrub/REVIEW.md), "Pre-existing"):
-
-- the scrub matches an excluded path case-sensitively, and the guard lowercases first;
-- the guard's path list leaves out `SCOUT_PATHS_ABSENT_FROM_SPEC` (`/api/repos`), which the scrub
-  covers;
-- the scrub's fence toggle ignores the fence kind, so a `~~~` line inside a backtick fence ends
-  the fence.
-
-A fourth point comes from the round item 8.10 audit
-([AUDIT.md](rounds/2026-11-16-next-phase/items/8.10/AUDIT.md)). The trailing-`or` rule can change
-a sentence's meaning, because it also drops a qualifier that follows the excluded alternative. A
-re-pin review reads the upstream diff, not the served sentence. A pinned count of narrowed
-sentences in `test/skill-scrub.test.ts` would make a new narrowing fail `npm test` at the re-pin.
-
-Trigger: the next change to either file, or the next `stellar-light` re-pin. A change to served
-text is model-facing and needs the served-text check.
-
-Done when: the two matchers agree on letter case and on the path set, the fence toggle matches
-the fence kind, and a new narrowing fails a test until someone has read the served sentence.
-
 ### Triage the runtime and client gaps from the HackMeridian telemetry
 
 Each needs a check before a fix. The review's evidence is in the owner's private snapshot
@@ -873,18 +848,6 @@ test is probes Q5, R23, R33, and R35 of the HackMeridian review.
 Done when: the ranking trap is fixed through a gated general change, and either the four probes
 pass again or the owner's decision leaves release data upstream and the request is filed in
 `improvements/`.
-
-### Decouple `extractLossDetail` from the truncation footer wording
-
-`extractLossDetail` in `src/policy/source-basis.ts` finds the loss detail with a regular expression
-over the footer that `truncate.ts` appends (`--- TRUNCATED --- Result was ~N tokens (limit: N).`
-then the detail, then ` Re-run returning`). A wording edit to that footer silently empties
-`lossDetail`, and one indirect test guards it.
-
-Next: have `truncate.ts` return the detail as a field, or export one constant that both sides use,
-and add a direct test that fails when the footer changes.
-
-Done when: a footer wording change fails a test instead of emptying `lossDetail`.
 
 ## Authentication follow-ups
 
@@ -1233,19 +1196,6 @@ of the list; do not apply it before then. The list is the "Approval list" point 
   case text"; with the pointer line in "Held-out split" they stay navigable until then.
 
 Done when: the approved changes are applied and the rest are declined in the round ledger.
-
-### Fix the document pointers in `src/` comments
-
-Three comments under `src/` point at text that no longer fits. Editing them changes Worker bytes,
-so they ride with the next code change, not a documentation pull request.
-
-- `src/mcp/tools.ts` (the `BASE_SERVER_INSTRUCTIONS` comment) narrates the removed per-family source
-  map. State what the string is and where the family orientation lives.
-- `src/auth/gate.ts` and `src/auth/redirects.ts` cite "DESIGN.md D1" and "D2 of the oauth-provider
-  1.x round". That file sits in a round folder that retention may delete. Point them at the
-  per-origin provider description in `ARCHITECTURE.md`.
-
-Done when: the comments state current behavior with no history and no pointer to a round file.
 
 ## Dependencies
 
