@@ -3,21 +3,24 @@ name: Refresh (live drift check)
 # Re-fetches the live service surfaces (Lumenloop /v1/tools + /v1/me union,
 # Stellar Light /api/openapi.json, Stellar Docs Mintlify backend and llms.txt
 # page index and rendered section anchors) and rebuilds the derived
-# artifacts. Any diff = upstream drift → an issue is opened/updated and the run
-# fails so drift is impossible to miss. Diffing op-id sets is the signal —
+# artifacts. Any diff = upstream drift -> per-kind keyed drift issues are
+# opened/updated/closed by scripts/sync-drift-issues.mjs and the run fails so
+# drift is impossible to miss. Diffing op-id sets is the signal —
 # info.version is NOT (Scout has shipped new ops without bumping it).
 #
 # Also checks the
 # ecosystem-skills/ pin set for upstream drift (pinned commit SHAs /
-# stellarlight catalog) via check-skills-drift.mjs — detection only; pins are
-# never auto-advanced from CI, because skill bodies are prompt input.
+# stellarlight catalog / community directory) via check-skills-drift.mjs —
+# detection only; pins are never auto-advanced from CI, because skill bodies are
+# prompt input.
 #
-# Every failure class is an explicit enum captured into the drift issue with its
-# own remediation. Three run FIRST, before any builder: pinned-file availability
-# (`check-mirrors --fetch`, cache-bypassing — bodies are served not stored, so an
-# unresolvable pin is a live user-facing outage), the deployed Worker's own
-# retrieval verdict (`/health/skills`), and the QA stale-gospel due-date queue.
-# The generic "job crashed" issue is reserved for faults that fit none of them.
+# Every failure class is an explicit enum mapped to a stable `<class>:<source>`
+# drift key with its own issue and remediation. Three run FIRST, before any
+# builder: pinned-file availability (`check-mirrors --fetch`, cache-bypassing —
+# bodies are served not stored, so an unresolvable pin is a live user-facing
+# outage), the deployed Worker's own retrieval verdict (`/health/skills`), and
+# the QA stale-gospel due-date queue. The generic "job crashed" issue is
+# reserved for faults that fit none of them.
 #
 # The first two answer DIFFERENT questions and both are needed: this workflow
 # runs on a GitHub Actions runner, so it can only prove the pins resolve from
@@ -34,6 +37,10 @@ on:
 permissions:
   contents: read
   issues: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
 
 env:
   # Assignment subscribes the maintainer to later plain comments without requiring repo watch.
@@ -171,9 +178,17 @@ jobs:
             echo "MINTLIFY_ASSISTANT_API_KEY=${{ secrets.MINTLIFY_ASSISTANT_API_KEY }}"
           } > .env
       - run: node scripts/refresh-inventory.mjs
-      - run: node scripts/build-catalog.mjs
-      - run: npm run family-text:build
-      - run: npm run spec:build
+      # build-catalog / family-text / spec:build fetch pinned skill bodies on a cold
+      # runner. When check-mirrors already proved a pin unresolvable, skip them so
+      # the confirmed pin outage reaches detect drift and opens pins:ecosystem-skills
+      # instead of crashing into the generic refresh-failure issue.
+      - name: rebuild derived catalog and specs
+        id: builders
+        if: steps.pins.outputs.state != 'unresolvable'
+        run: |
+          node scripts/build-catalog.mjs
+          npm run family-text:build
+          npm run spec:build
       # Detection only — never runs ecosystem-skills/update.sh from CI (mirrored
       # skills are prompt input; upstream edits go through human review). Reads
       # LUMENLOOP_API_KEY from the materialized .env like refresh-inventory.mjs.
@@ -187,7 +202,8 @@ jobs:
         run: |
           set -o pipefail
           ec=0
-          node scripts/check-skills-drift.mjs 2>&1 | tee skills-drift.txt || ec=$?
+          node scripts/check-skills-drift.mjs --json > skills-drift.json || ec=$?
+          cat skills-drift.json || true
           case "$ec" in
             0) echo "drift=false" >> "$GITHUB_OUTPUT" ;;
             1) echo "drift=true" >> "$GITHUB_OUTPUT" ;;
@@ -195,152 +211,26 @@ jobs:
           esac
       - name: detect drift
         id: drift
+        env:
+          PINS_STATE: ${{ steps.pins.outputs.state }}
+          CANARY_STATE: ${{ steps.canary.outputs.state }}
+          GOSPEL_STATE: ${{ steps.gospel.outputs.state }}
+          ANCHORS_STATE: ${{ steps.anchors.outputs.state }}
+          SKILLS_DRIFT: ${{ steps.skills.outputs.drift }}
+          DERIVED_CHECKED: ${{ steps.builders.outcome == 'success' && 'true' || 'false' }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          rm .env
-          inventory_drift=false
-          git diff --quiet -- inventory catalog specs src/adapters/stellar-docs-anchors.json || inventory_drift=true
-          # ENUM check (closes the old fail-open): only the literal strings
-          # 'true' and 'false' are valid; anything else — including 'error' and
-          # EMPTY (step didn't write the output) — is a check error. The error
-          # fails the job in a dedicated step below, but never puts the re-pin
-          # remediation into the drift issue; an inventory-only drift issue may
-          # still be created.
-          skills_drift='${{ steps.skills.outputs.drift }}'
-          skills_error=false
-          case "$skills_drift" in
-            true|false) ;;
-            *) skills_error=true ;;
-          esac
-          # Same ENUM discipline for the two classes captured before the
-          # builders: an empty output means the step never wrote one. That is a
-          # check error — never a silent pass, and never coerced into the domain
-          # state either, because the domain states assert facts ("production is
-          # failing", "a golden is past due") that a broken checker has not
-          # established.
-          pins_state='${{ steps.pins.outputs.state }}'
-          pins_error=false
-          case "$pins_state" in clean|unresolvable) ;; *) pins_error=true; pins_state=error ;; esac
-          gospel_state='${{ steps.gospel.outputs.state }}'
-          gospel_error=false
-          case "$gospel_state" in clean|stale) ;; *) gospel_error=true; gospel_state=error ;; esac
-          canary_state='${{ steps.canary.outputs.state }}'
-          canary_error=false
-          case "$canary_state" in clean|failing|stale) ;; *) canary_error=true; canary_state=error ;; esac
-          anchors_state='${{ steps.anchors.outputs.state }}'
-          case "$anchors_state" in ok) ;; *) anchors_state=error ;; esac
-          {
-            echo "skills_error=$skills_error"
-            echo "pins_error=$pins_error"
-            echo "gospel_error=$gospel_error"
-            echo "canary_error=$canary_error"
-          } >> "$GITHUB_OUTPUT"
-          # Domain states and anchor capture errors have report sections.
-          # Other checker errors fail in dedicated steps below.
-          if [ "$inventory_drift" = "false" ] && [ "$skills_drift" != "true" ] \
-             && [ "$pins_state" != "unresolvable" ] \
-             && [ "$gospel_state" != "stale" ] && [ "$canary_state" = "clean" ] \
-             && [ "$anchors_state" = "ok" ]; then
-            echo "drift=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "drift=true" >> "$GITHUB_OUTPUT"
-            # Markdown backticks stay literal in the report.
-            # shellcheck disable=SC2016
-            {
-              echo '### Live service drift detected'
-              echo
-              echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-              if [ "$anchors_state" = "error" ]; then
-                echo
-                echo '#### Docs section anchor capture failed'
-                echo
-                echo 'The public-site capture failed. Other service refresh checks continued.'
-                echo 'The committed anchor index stays in place.'
-                echo 'Headings without an indexed match use page URLs.'
-                echo
-                echo 'Remediation: re-run `npm run docs:anchors:build` and review the captured heading changes.'
-                echo 'See the anchor capture step log for failed URLs.'
-              fi
-              if [ "$canary_state" = "stale" ]; then
-                echo
-                echo '#### Skill-retrieval detector is STALE — current state unknown'
-                echo
-                echo 'The hourly canary has not recorded a verdict in over 3 hours. This proves the'
-                echo 'DETECTOR stopped, and says nothing about whether retrieval works: the last'
-                echo 'verdict is simply too old to describe now. Do not read it either way.'
-                echo '```'
-                cat canary.json 2>/dev/null || echo '(no verdict body)'
-                echo '```'
-                echo
-                echo 'Remediation: check the Worker'"'"'s Cron Trigger and its Past Events in the'
-                echo 'Cloudflare dashboard, and `evt: "skill_canary"` in Workers Logs.'
-              fi
-              if [ "$canary_state" = "failing" ]; then
-                echo
-                echo '#### :rotating_light: The deployed Worker cannot retrieve skills — LIVE OUTAGE'
-                echo
-                echo 'This is the Worker'"'"'s own verdict from inside Cloudflare, which is the only'
-                echo 'place a colo-egress failure is visible. The pin-availability step above runs on'
-                echo 'a GitHub runner and can be green while this is red — that combination means the'
-                echo 'content is fine and OUR ACCESS to it is not.'
-                echo '```'
-                cat canary.json 2>/dev/null || echo '(no verdict body)'
-                echo '```'
-                echo
-                echo 'Remediation: check Worker logs for `evt: "skill_canary"` and `skill_read` with'
-                echo 'ok=false, then Cloudflare status and GitHub status. Do not mirror the content to'
-                echo '"fix" it — see `ARCHITECTURE.md` §6.'
-              fi
-              if [ "$pins_state" = "unresolvable" ]; then
-                echo
-                echo '#### :rotating_light: Pinned skill file did not resolve upstream — LIVE `skill.read` OUTAGE'
-                echo
-                echo 'Skill bodies are served from their pinned upstream, never stored. A pin that'
-                echo 'stops resolving means production `skill.read` is failing for real users right'
-                echo 'now on any cold read (warm colo caches and isolate memos may still succeed,'
-                echo 'so this can be a PARTIAL outage that looks healthy from one location).'
-                echo '```'
-                cat pin-availability.txt
-                echo '```'
-                echo
-                echo 'Remediation: confirm the upstream repo/commit still exists and is public. If'
-                echo 'the content moved, re-pin (`ecosystem-skills/update.sh`), review the body diff,'
-                echo 'and DEPLOY — a merge alone does not reach production. See `ARCHITECTURE.md` §6'
-                echo '"availability posture". Do not solve this by mirroring the content.'
-              fi
-              if [ "$gospel_state" = "stale" ]; then
-                echo
-                echo '#### QA gospel past its re-verification date'
-                echo
-                echo 'The standing due-date queue fired. This is the truth-maintenance lane working'
-                echo 'as designed, not a script failure.'
-                echo '```'
-                cat stale-gospel.txt
-                echo '```'
-                echo
-                echo 'Remediation: triage each past-due case through the `golden-truth` lane —'
-                echo 're-verify and set a new staggered `reverifyBy`, or record an explicit dated'
-                echo 'extension with a rootCause. Never silently bump a date.'
-              fi
-              if [ "$inventory_drift" = "true" ]; then
-                echo
-                echo '#### Inventory drift'
-                echo
-                node scripts/summarize-live-drift.mjs
-              fi
-              if [ "$skills_drift" = "true" ]; then
-                echo
-                echo '#### Skills mirror drift'
-                echo
-                echo '```'
-                cat skills-drift.txt
-                echo '```'
-                echo
-                echo 'Follow the labeled remediation paths in the checker output above.'
-                echo 'Source drift needs a reviewed re-pin. Directory-only drift needs only a directory snapshot and index refresh.'
-                echo 'Never auto-sync from CI.'
-              fi
-            } > drift-report.md
-          fi
+          rm -f .env
+          node scripts/sync-drift-issues.mjs collect \
+            --out drift-report.json \
+            --github-output "$GITHUB_OUTPUT" \
+            --run-url "$RUN_URL" \
+            --pins-state "$PINS_STATE" --pins-file pin-availability.txt \
+            --canary-state "$CANARY_STATE" --canary-file canary.json \
+            --gospel-state "$GOSPEL_STATE" --gospel-file stale-gospel.txt \
+            --anchors-state "$ANCHORS_STATE" \
+            --skills-drift "$SKILLS_DRIFT" --skills-file skills-drift.json \
+            --derived-checked "$DERIVED_CHECKED"
       # The credential comes in as a step env var, not from .env: the drift step above
       # deletes .env before this runs. Without it every authenticated probe reports
       # `inconclusive (missing host credential …)`, which is indistinguishable in the log
@@ -350,35 +240,35 @@ jobs:
         env:
           LUMENLOOP_API_KEY: ${{ secrets.LUMENLOOP_API_KEY }}
         run: npm run improvements:probes
-      - name: open or update drift issue
-        if: always() && steps.drift.outputs.drift == 'true'
+      # Issues track the default branch only; a manual dispatch from another
+      # branch runs in --dry-run mode so it cannot close or mutate main's issues.
+      - name: sync drift issues
+        if: (success() || failure()) && steps.drift.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
+          IS_DEFAULT_BRANCH: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
         run: |
-          gh label create drift --description "live service surface drifted from committed inventory" --color D93F0B 2>/dev/null || true
-          existing=$(gh issue list --label drift --state open --json number --jq '.[0].number // empty')
-          if [ -n "$existing" ]; then
-            if ! gh issue view "$existing" --json assignees --jq '.assignees[].login' | grep -Fxq "$REFRESH_ISSUE_ASSIGNEE"; then
-              gh issue edit "$existing" --add-assignee "$REFRESH_ISSUE_ASSIGNEE" \
-                || echo "::warning::Could not assign $REFRESH_ISSUE_ASSIGNEE to drift issue #$existing"
-            fi
-            gh issue comment "$existing" --body-file drift-report.md
-          else
-            created=$(gh issue create --title "Live service drift detected" --label drift --body-file drift-report.md)
-            gh issue edit "$created" --add-assignee "$REFRESH_ISSUE_ASSIGNEE" \
-              || echo "::warning::Could not assign $REFRESH_ISSUE_ASSIGNEE to new drift issue $created"
+          extra=()
+          if [ "$IS_DEFAULT_BRANCH" != "true" ]; then
+            echo "::notice::Non-default ref (${GITHUB_REF}); running drift issue sync in --dry-run mode."
+            extra+=(--dry-run)
           fi
-      # Runs after the issue step so an inventory-only drift issue (if any) is
-      # still opened/updated before the job fails on the skills-check error.
+          node scripts/sync-drift-issues.mjs sync \
+            --report drift-report.json \
+            --repo "$GITHUB_REPOSITORY" \
+            --assignee "$REFRESH_ISSUE_ASSIGNEE" \
+            "${extra[@]}"
+      # Runs after the issue sync step so any detected drift issues are still
+      # reconciled before the job fails on a checker error.
       - name: fail on skills drift check error
         if: steps.drift.outputs.skills_error == 'true'
         run: |
-          echo "::error::skills drift check errored — see skills-drift.txt output"
+          echo "::error::skills drift check errored — see skills-drift.json output"
           exit 1
       # These two fail the job WITHOUT asserting a domain fact. A crashed
       # check-mirrors or a runner-side network fault is not evidence that
       # production is down, and a broken corpus linter is not evidence that a
-      # golden is past due — so neither writes a section into the drift issue.
+      # golden is past due — so neither opens or closes a drift issue.
       - name: fail on pin-availability check error
         if: steps.drift.outputs.pins_error == 'true'
         run: |
@@ -397,12 +287,12 @@ jobs:
       - name: fail on drift
         if: steps.drift.outputs.drift == 'true'
         run: |
-          echo "::error::live refresh detected drift or an anchor capture error — see the drift issue"
+          echo "::error::live refresh detected drift or an anchor capture error — see the open drift issue(s)"
           exit 1
       # Crash guard for GENUINELY UNCLASSIFIED failures only. Every drift class
       # with a documented owner — unresolvable pin, stale gospel, inventory,
       # skills-HEAD, anchor capture error — is captured as an enum above and reported in
-      # the drift issue with its own remediation, so it never lands here. What
+      # its own keyed drift issue with its own remediation, so it never lands here. What
       # remains is a real script fault (refresh-inventory / build-catalog /
       # family-text / spec:build) that died before drift detection completed, which
       # would otherwise be just a red scheduled run. Gated on the drift step NOT
@@ -419,7 +309,7 @@ jobs:
             echo 'The daily refresh failed BEFORE drift detection completed — an UNCLASSIFIED'
             echo 'script error (refresh-inventory / build-catalog / family-text / spec:build).'
             echo
-            echo 'Every known drift class is captured as an enum and reported in the drift issue'
+            echo 'Every known drift class is captured as an enum and reported in its own drift issue'
             echo 'with its own remediation — an unresolvable skill pin, stale QA gospel, inventory'
             echo 'drift, skills-HEAD drift, and anchor capture errors all land there, not here. If one is the'
             echo 'real cause, this workflow has a routing bug as well.'

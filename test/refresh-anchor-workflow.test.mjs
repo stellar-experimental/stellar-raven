@@ -1,9 +1,10 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
+const REPO = resolve(import.meta.dirname, "..");
 const workflow = readFileSync(new URL("../.github/workflows/refresh.yml", import.meta.url), "utf8");
 const captureName = "refresh docs section anchors without credentials";
 const directories = [];
@@ -24,17 +25,30 @@ function step(name) {
   return { block, script: body.join("\n") };
 }
 
-function run(script) {
+function run(script, { extraEnv = {}, withFakeGit = false } = {}) {
   const directory = mkdtempSync(join(tmpdir(), "refresh-anchor-workflow-"));
   directories.push(directory);
   const output = join(directory, "output");
   writeFileSync(output, "");
   writeFileSync(join(directory, ".env"), "");
+  writeFileSync(join(directory, "skills-drift.json"), JSON.stringify({ results: [] }));
+  symlinkSync(join(REPO, "scripts"), join(directory, "scripts"), "dir");
+
+  const env = { ...process.env, GITHUB_OUTPUT: output, ...extraEnv };
+  if (withFakeGit) {
+    const binDir = join(directory, "bin");
+    const fakeGit = join(binDir, "git");
+    spawnSync("mkdir", ["-p", binDir]);
+    writeFileSync(fakeGit, "#!/bin/sh\nexit 0\n");
+    chmodSync(fakeGit, 0o755);
+    env.PATH = `${binDir}:${env.PATH ?? ""}`;
+  }
+
   const result = spawnSync("bash", ["-e", "-o", "pipefail", "-c", script], {
     cwd: directory,
-    env: { ...process.env, GITHUB_OUTPUT: output },
+    env,
     encoding: "utf8",
-    timeout: 5_000
+    timeout: 10_000
   });
   if (result.error) throw result.error;
   return { result, output: readFileSync(output, "utf8"), directory };
@@ -56,30 +70,31 @@ describe("daily anchor refresh failure handling", () => {
   });
 
   it.each(["ok", "error", "", "unexpected"])("handles anchor state %j with no other drift", (state) => {
-    const values = {
-      "steps.anchors.outputs.state": state,
-      "steps.skills.outputs.drift": "false",
-      "steps.pins.outputs.state": "clean",
-      "steps.gospel.outputs.state": "clean",
-      "steps.canary.outputs.state": "clean"
-    };
-    const script = step("detect drift").script.replace(/\$\{\{\s*([^}]+?)\s*\}\}/g, (_, expression) => values[expression] ?? "fixture");
-    const { result, output, directory } = run(`git() { return 0; }\n${script}`);
+    const { result, output, directory } = run(step("detect drift").script, {
+      withFakeGit: true,
+      extraEnv: {
+        ANCHORS_STATE: state,
+        SKILLS_DRIFT: "false",
+        PINS_STATE: "clean",
+        GOSPEL_STATE: "clean",
+        CANARY_STATE: "clean",
+        DERIVED_CHECKED: "true",
+        RUN_URL: "https://github.com/example/repo/actions/runs/1"
+      }
+    });
     expect(result.status, result.stderr).toBe(0);
+    const report = JSON.parse(readFileSync(join(directory, "drift-report.json"), "utf8"));
     if (state === "ok") {
       expect(output).toContain("drift=false\n");
+      expect(report.items).toEqual([]);
       return;
     }
     expect(output).toContain("drift=true\n");
-    const report = readFileSync(join(directory, "drift-report.md"), "utf8");
-    expect(report).toContain("Docs section anchor capture failed");
-    expect(report).toContain("Other service refresh checks continued.");
-    expect(report).toContain("The committed anchor index stays in place.");
-    expect(report).toContain("Headings without an indexed match use page URLs.");
-    expect(report).toContain("re-run `npm run docs:anchors:build`");
+    expect(report.checks.anchors).toBe("error");
+    expect(report.items.map((item) => item.key)).toEqual(["anchors:stellar-docs"]);
     const failure = step("fail on drift");
     expect(failure.block).toContain("if: steps.drift.outputs.drift == 'true'");
     expect(run(failure.script).result.status).toBe(1);
-    expect(step("open or update drift issue").block).toContain("if: always() && steps.drift.outputs.drift == 'true'");
+    expect(step("sync drift issues").block).toContain("steps.drift.outcome == 'success'");
   });
 });

@@ -26,8 +26,7 @@ The script needs Node 24 (`.nvmrc`) and no dependencies. It reads `LUMENLOOP_API
 
 ### Daily refresh in CI
 
-The daily `refresh.yml` workflow runs the same refresh. It opens or updates a drift issue when a snapshot
-changes. It requires these repository secrets: `LUMENLOOP_API_KEY` and `MINTLIFY_ASSISTANT_API_KEY`.
+The daily `refresh.yml` workflow runs the same refresh. It opens, updates (only when a key's report changes), and closes one `drift`-labeled issue per drift kind (keyed by drift class and source) via `scripts/sync-drift-issues.mjs`. It requires these repository secrets: `LUMENLOOP_API_KEY` and `MINTLIFY_ASSISTANT_API_KEY`.
 Missing required secrets fail the workflow in stellar-experimental/stellar-raven. Other repositories
 skip with a notice.
 

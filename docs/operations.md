@@ -74,7 +74,7 @@ findings go to GitHub issues.
 
 | Workflow | Schedule | Report |
 |---|---|---|
-| `refresh.yml` | Daily | One open issue labeled `drift` for upstream drift in the service snapshots, skill pins, and canaries; it also reads `/health/skills`. A script fault goes to an issue labeled `refresh-failure`. [`inventory/README.md`](../inventory/README.md) lists its secrets and variables. |
+| `refresh.yml` | Daily | One open issue per drift kind labeled `drift` (keyed by drift class and source) for upstream drift in the service snapshots, skill pins, skill directories, pin availability, Worker canary, and stale QA gospel; updates an open issue only when its report changes and closes it when its key clears. A script fault goes to an issue labeled `refresh-failure`. [`inventory/README.md`](../inventory/README.md) lists its secrets and variables. |
 | `dependency-audit.yml` | Daily, and on each change to `package.json` or `package-lock.json` on `main` | One open issue labeled `dependency-audit` for `npm audit` findings. The workflow replaces the body when findings change and closes the issue when the audit is clean. It needs no secret. |
 | `golden-sentinels.yml` | Daily, and on each change to `eval/qa/source-sentinels.*` on `main` | One open issue labeled `golden-sentinels` for primary-source drift on a golden case. It needs no secret. The drift only queues a re-verification; it is never evidence by itself. |
 | `usage-health.yml` | Hourly | The run fails on a usage collection gap and opens no issue ([`usage/README.md`](../usage/README.md)). |
