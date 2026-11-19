@@ -57,6 +57,9 @@ export function cardMatchesExact(expectedCard, hit) {
  *   3. Same service AND one op name contains the other, when the shorter op is
  *      >= 4 chars (tolerates "projects" vs "list_projects"; guards against
  *      trivial substrings like "get").
+ *   4. Same service AND a `<noun>_detail` card matches a `get_<noun>` or
+ *      `get<noun>` single-resource operation (e.g. `scout_hackathon_detail` ->
+ *      `scout.getHackathon`, `scout_skill_detail` -> `scout.getSkill`).
  */
 export function cardMatches(expectedCard, hit) {
   if (cardMatchesExact(expectedCard, hit)) return true;
@@ -73,12 +76,74 @@ export function cardMatches(expectedCard, hit) {
   if (eService !== hitService) return false;
   if (e.op === hitOp) return true;
   const [shorter, longer] = e.op.length <= hitOp.length ? [e.op, hitOp] : [hitOp, e.op];
-  return shorter.length >= 4 && longer.includes(shorter);
+  if (shorter.length >= 4 && longer.includes(shorter)) return true;
+  if (e.op.endsWith("_detail")) {
+    const noun = e.op.slice(0, -"_detail".length);
+    if (/^[a-z0-9]+(?:_[a-z0-9]+)*$/.test(noun)) {
+      return hitOp === `get_${noun}` || hitOp === `get${noun.replace(/_/g, "")}`;
+    }
+  }
+  return false;
 }
 
 /** Service-only cards are outside the operation-level card@5 metric. */
 export function isServiceLevelCard(card) {
   return splitCard(card).op === "mcp";
+}
+
+/** General-web service prefixes outside this catalog (never surfaceable in search). */
+const EXTERNAL_CARD_PREFIXES = ["perplexity_", "parallel_"];
+
+/** True when a card belongs to a documented out-of-catalog general-web service. */
+export function isExternalServiceCard(card) {
+  const c = canonToken(card);
+  return EXTERNAL_CARD_PREFIXES.some((prefix) => c.startsWith(prefix));
+}
+
+/**
+ * Classify how a routing card binds to searchable catalog entries:
+ *   - "external"  — documented general-web prefix outside this catalog (`perplexity_*`, `parallel_*`)
+ *   - "service"   — `<service>_mcp` card whose service exists among searchable entries
+ *   - "operation" — matches at least one searchable non-section entry via `cardMatches`
+ *   - null        — unbound (unknown prefix, missing service, or zero matching operations)
+ */
+export function classifyCardBinding(card, entries) {
+  if (isExternalServiceCard(card)) return "external";
+  const { service } = splitCard(card);
+  if (!service) return null;
+  const searchable = entries.filter((e) => e.searchable !== false && e.kind !== "skill-section");
+  if (isServiceLevelCard(card)) {
+    const svcCanon = canonToken(service);
+    return searchable.some((e) => canonToken(e.service) === svcCanon) ? "service" : null;
+  }
+  return searchable.some((e) => cardMatches(card, e)) ? "operation" : null;
+}
+
+/**
+ * Find any unbound card (or case whose expected_cards lack any catalog-bound card).
+ * Reports only lane name, case index, card index, and reason — never a case id,
+ * question, or card label — so failures stay safe in logs.
+ */
+export function findUnboundRoutingCards(cases, entries, { lane = "routing" } = {}) {
+  const searchable = entries.filter((e) => e.searchable !== false && e.kind !== "skill-section");
+  const failures = [];
+  cases.forEach((c, caseIndex) => {
+    const cards = Array.isArray(c.expected_cards) ? c.expected_cards : [];
+    if (cards.length === 0) return;
+    let hasCatalogBinding = false;
+    cards.forEach((card, cardIndex) => {
+      const binding = classifyCardBinding(card, searchable);
+      if (binding === null) {
+        failures.push({ lane, caseIndex, cardIndex, reason: "unbound" });
+      } else if (binding === "service" || binding === "operation") {
+        hasCatalogBinding = true;
+      }
+    });
+    if (!hasCatalogBinding) {
+      failures.push({ lane, caseIndex, cardIndex: null, reason: "no-catalog-card" });
+    }
+  });
+  return failures;
 }
 
 /**

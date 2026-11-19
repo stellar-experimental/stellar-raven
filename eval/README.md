@@ -103,6 +103,7 @@ A card matches when one of these conditions holds:
 1. The complete normalized names match.
 2. The mapped services and remaining operation names match.
 3. The services match, and one operation name contains the other with a minimum shorter length of four characters.
+4. The services match, and a `<noun>_detail` card matches a `get_<noun>` or `get<noun>` single-resource operation.
 
 Cross-service matches require an explicit acceptable-service label; the normalizer does not create them.
 A `<service>_mcp` card names a service, so `card@5` excludes it.
