@@ -336,7 +336,7 @@ jobs:
                 echo '```'
                 echo
                 echo 'Follow the labeled remediation paths in the checker output above.'
-                echo 'Source drift needs a reviewed re-pin. Community-only drift needs only a directory snapshot and index refresh.'
+                echo 'Source drift needs a reviewed re-pin. Directory-only drift needs only a directory snapshot and index refresh.'
                 echo 'Never auto-sync from CI.'
               fi
             } > drift-report.md

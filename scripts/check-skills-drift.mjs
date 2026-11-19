@@ -6,7 +6,8 @@
 // DETECTION ONLY. This script never modifies ecosystem-skills/ and must never be
 // replaced by an automated sync: mirrored skills are prompt input, so upstream
 // edits go through a human review gate. Source drift needs a reviewed re-pin.
-// Community-only drift needs only a directory snapshot and index refresh.
+// Directory-only drift (stellarlight-catalog or stellar-community-catalog) needs
+// only a directory snapshot and index refresh (scripts/refresh-skill-directories.mjs).
 //
 // Node with installed repository dependencies. Like
 // scripts/refresh-inventory.mjs it reads .env at the repo root and overlays
@@ -27,13 +28,14 @@
 //     A cherry-picked source also lists the upstream skill dirs it does NOT pin,
 //     using the shared sources.json selection: a newly published sibling
 //     would otherwise never be pinned and nothing would ever mention it.
-//   - stellarlight catalog: GET the live directory and project it through the
-//     same field mapping update.sh's fetch_catalog uses, then deep-compare with
+//   - stellarlight catalog: GET the live directory and project it through
+//     scripts/lib/stellarlight-catalog.mjs (the same projection update.sh and
+//     scripts/refresh-skill-directories.mjs use), then deep-compare with
 //     ecosystem-skills/catalog.json. Volatile fields never enter the compare by
 //     construction: the local fetched_at is not projected, and live-side
 //     request-scoped meta (generatedAt etc.) is dropped because only
 //     meta.counts, meta.validKinds and the per-skill projected fields are kept.
-//     "Drift" therefore means exactly: re-running update.sh would change catalog.json.
+//     "Drift" therefore means exactly: refreshing the catalog would change catalog.json.
 //   - stellar/stellar-dev-skill main directory: project the literal ECOSYSTEM_CARDS
 //     names and links from the site source, then compare with community.json.
 //     No bodies are fetched, and upstream code is never executed.
@@ -50,9 +52,16 @@
 import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { fetchJson, parseEnvFile, sortDeep } from "./lib/shared.mjs";
+import { fetchJson, parseEnvFile } from "./lib/shared.mjs";
 import { readSourceDefinitions, sourceDefinition } from "./lib/skill-source-definitions.mjs";
 import { COMMUNITY_SOURCE, compareCommunity, fetchCommunityEntries } from "./lib/stellar-community.mjs";
+import {
+  STELLARLIGHT_CATALOG_URL,
+  compareStellarlightCatalog,
+  fetchStellarlightCatalog,
+} from "./lib/stellarlight-catalog.mjs";
+
+const DIRECTORY_SOURCE_IDS = new Set(["stellarlight-catalog", "stellar-community-catalog"]);
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const JSON_MODE = process.argv.includes("--json");
@@ -198,64 +207,19 @@ async function checkGithubSource(source, unpinnedUpstream, definition) {
 // ---------------------------------------------------------------------------
 // stellarlight.xyz/api/skills directory vs ecosystem-skills/catalog.json
 // ---------------------------------------------------------------------------
-const canon = (value) => JSON.stringify(sortDeep(value));
-const entryKey = (e) => `${e.source}/${e.name}`;
-
 async function checkStellarlightCatalog(localCatalog) {
-  const url = localCatalog.source ?? "https://stellarlight.xyz/api/skills";
-  const live = await fetchJson(url, { label: "stellarlight /api/skills" });
-
-  // Same projection as update.sh fetch_catalog's jq (minus fetched_at, which is
-  // the snapshot timestamp, not upstream state). Live-side volatile fields
-  // (e.g. meta.generatedAt) are excluded because they are simply not projected.
-  const projected = {
-    counts: live.meta?.counts ?? null,
-    validKinds: live.meta?.validKinds ?? null,
-    entries: (live.skills ?? [])
-      .map((s) => ({
-        name: s.slug ?? s.name ?? null,
-        title: s.name ?? null,
-        source: s.source ?? null,
-        kind: s.kind ?? null,
-        tagline: s.tagline ?? null,
-        install: s.install ?? null,
-        repository: s.repository ?? null,
-        homepage: s.homepage ?? null,
-      }))
-      .sort((a, b) => (entryKey(a) < entryKey(b) ? -1 : entryKey(a) > entryKey(b) ? 1 : 0)),
-  };
-  const snapshot = {
-    counts: localCatalog.counts ?? null,
-    validKinds: localCatalog.validKinds ?? null,
-    entries: localCatalog.entries ?? [],
-  };
-
-  const pinned = `${snapshot.entries.length} entries (snapshot ${localCatalog.fetched_at ?? "?"})`;
+  const url = localCatalog.source ?? STELLARLIGHT_CATALOG_URL;
+  const projected = await fetchStellarlightCatalog(url);
+  const snapshotCount = Array.isArray(localCatalog.entries) ? localCatalog.entries.length : 0;
+  const pinned = `${snapshotCount} entries (snapshot ${localCatalog.fetched_at ?? "?"})`;
   const upstream = `${projected.entries.length} entries`;
-  if (canon(projected) === canon(snapshot)) {
-    return { id: "stellarlight-catalog", status: "ok", pinned, upstream };
-  }
-
-  // Entry-level diff summary so the drift note is actionable.
-  const before = new Map(snapshot.entries.map((e) => [entryKey(e), e]));
-  const after = new Map(projected.entries.map((e) => [entryKey(e), e]));
-  const added = [...after.keys()].filter((k) => !before.has(k));
-  const removed = [...before.keys()].filter((k) => !after.has(k));
-  const changed = [...after.keys()].filter(
-    (k) => before.has(k) && canon(after.get(k)) !== canon(before.get(k)),
-  );
-  const parts = [];
-  if (added.length) parts.push(`added: ${added.join(", ")}`);
-  if (removed.length) parts.push(`removed: ${removed.join(", ")}`);
-  if (changed.length) parts.push(`changed: ${changed.join(", ")}`);
-  if (canon(projected.counts) !== canon(snapshot.counts)) parts.push("counts changed");
-  if (canon(projected.validKinds) !== canon(snapshot.validKinds)) parts.push("validKinds changed");
+  const note = compareStellarlightCatalog(localCatalog, projected);
   return {
     id: "stellarlight-catalog",
-    status: "DRIFT",
+    status: note ? "DRIFT" : "ok",
     pinned,
     upstream,
-    note: parts.join("; ") || "entry content differs",
+    ...(note ? { note } : {}),
   };
 }
 
@@ -340,18 +304,20 @@ async function main() {
     console.error(`\ncheck-skills-drift: ${errored.length} source(s) could not be checked — failing closed.`);
   }
   if (drifted.length) {
+    const pinDrifted = drifted.filter((entry) => !DIRECTORY_SOURCE_IDS.has(entry.id));
+    const directoryDrifted = drifted.filter((entry) => DIRECTORY_SOURCE_IDS.has(entry.id));
     console.error(`\ncheck-skills-drift: ${drifted.length} source(s) changed from the local snapshots.`);
-    if (drifted.some((entry) => entry.id !== "stellar-community-catalog")) {
+    if (pinDrifted.length) {
       console.error(
         "Source remediation: run ecosystem-skills/update.sh locally. Review the skill diffs, re-pin, and commit.\n" +
         "Change picks in ecosystem-skills/sources.json. Record exclusions in ecosystem-skills/groups.json.",
       );
     }
-    if (drifted.some((entry) => entry.id === "stellar-community-catalog")) {
+    if (directoryDrifted.length) {
+      const names = directoryDrifted.map((entry) => entry.id).join(", ");
       console.error(
-        `Community remediation: refresh the ${COMMUNITY_SOURCE} directory snapshot and index. Review and commit.\n` +
-        "node scripts/lib/stellar-community.mjs ecosystem-skills/community.json\n" +
-        "node ecosystem-skills/build-index.mjs",
+        `Directory remediation (${names}): refresh the directory snapshots and index without moving pins. Review and commit.\n` +
+        "node scripts/refresh-skill-directories.mjs",
       );
     }
     console.error("Never auto-sync from CI.");

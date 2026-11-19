@@ -50,11 +50,12 @@ name-only stubs in `inventory/lumenloop.json`.
 
 ## Re-pin
 
-`update.sh` needs an authenticated `gh` CLI, `jq`, `node`, `curl`, and `git`, and no API key.
+`update.sh` needs an authenticated `gh` CLI, `jq`, `node`, and `git`, and no API key.
 
 ```bash
-./ecosystem-skills/update.sh          # re-pin every source and rebuild INDEX.md
-node ecosystem-skills/build-index.mjs # rebuild the index only (after editing groups.json)
+./ecosystem-skills/update.sh                 # re-pin every source, refresh directories, and rebuild INDEX.md
+node scripts/refresh-skill-directories.mjs   # refresh directory snapshots and INDEX.md only (no pin changes)
+node ecosystem-skills/build-index.mjs        # rebuild the index only (after editing groups.json)
 ```
 
 `update.sh` resolves a commit for each source, records every file's path, size, and blob hash,
@@ -112,10 +113,12 @@ touches the pinned path; the live stellarlight directory against `catalog.json`;
 Community names and links against `community.json`. Drift goes into the same issue as the
 inventory checks. CI never runs `update.sh`: a person must review upstream skill edits.
 
-- Source drift: run `./ecosystem-skills/update.sh` and follow "After a re-pin".
-- Community-only drift: run
-  `node scripts/lib/stellar-community.mjs ecosystem-skills/community.json`, then
-  `node ecosystem-skills/build-index.mjs`.
+- Source drift (a pinned GitHub source moved or an unclassified sibling appeared): run
+  `./ecosystem-skills/update.sh` and follow "After a re-pin".
+- Directory-only drift (`stellarlight-catalog` and/or `stellar-community-catalog`, no pin moved):
+  run `node scripts/refresh-skill-directories.mjs`. It rewrites only the changed directory
+  snapshot(s) (`catalog.json` / `community.json`) and `INDEX.md`, leaving `MANIFEST.json`, the
+  catalog, the super-spec, and the Worker untouched.
 
 The Community check reads the exported `ECOSYSTEM_CARDS` array in
 [`site/src/data/skills.ts`](https://github.com/stellar/stellar-dev-skill/blob/main/site/src/data/skills.ts)
@@ -123,8 +126,10 @@ on `main`. It parses literal titles and links and never executes upstream code. 
 sorted copy of one preceding same-file literal array (a `localeCompare` on `title` or
 `copyValue`) and fails on anything else: an empty or missing array, invalid syntax, an
 unsupported entry identity, or another reference to the array. It measures source drift, not
-deployed-site drift. Each Community candidate needs its own pin and exposure review before
-Raven can serve it.
+deployed-site drift. Each Community candidate needs its own pin and exposure review before Raven
+serves it as a curated `skills.*` entry; Scout's live pass-through (`scout.listSkills`,
+`scout.getSkill`) already lists and returns upstream community `SKILL.md` bodies published in
+Stellar Light.
 
 ## Adding a source
 

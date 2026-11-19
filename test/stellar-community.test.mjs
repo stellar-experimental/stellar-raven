@@ -114,7 +114,7 @@ describe("Community directory projection", () => {
     expect(index).toContain("stellar/stellar-dev-skill main source snapshot");
     expect(index).toContain("Source changes can precede deployment or never deploy.");
     expect(index).not.toContain("skills.stellar.org snapshot");
-    expect(index).not.toMatch(/`skills\./);
+    expect(index).not.toMatch(/`skills\.[a-z0-9_-]+/i);
   });
 
   it("escapes backslashes before table and link characters", () => {

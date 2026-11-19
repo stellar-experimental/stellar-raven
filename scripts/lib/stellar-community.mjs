@@ -146,6 +146,13 @@ export function compareCommunity(localEntries, liveEntries) {
 
 const escapeCell = (value) => value.replace(/\\/g, "\\\\").replace(/\|/g, "\\|").replace(/[\r\n]/g, " ").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
 
+export function formatCommunitySnapshot(
+  entries,
+  { source = COMMUNITY_URL, fetchedAt = new Date().toISOString() } = {},
+) {
+  return `${JSON.stringify({ source, fetched_at: fetchedAt, entries }, null, 2)}\n`;
+}
+
 export function communityIndex(snapshot) {
   return [
     `## Community directory (${COMMUNITY_SOURCE} source snapshot)`,
@@ -153,7 +160,7 @@ export function communityIndex(snapshot) {
     `The snapshot lists ${snapshot.entries.length} Community skills from [${COMMUNITY_SOURCE}](${snapshot.source}).`,
     `The snapshot date is ${snapshot.fetched_at}.`,
     "Source changes can precede deployment or never deploy.",
-    "These links support discovery. Each skill needs a separate pin and exposure review before Raven can serve it.",
+    "These links support discovery. Each skill needs a separate pin and exposure review before Raven serves it as a curated `skills.*` entry; Scout's live pass-through (`scout.listSkills`, `scout.getSkill`) already lists and returns upstream community `SKILL.md` bodies published in Stellar Light.",
     "",
     "| Community skill | Upstream link |",
     "| --- | --- |",
@@ -165,5 +172,5 @@ export function communityIndex(snapshot) {
 // Snapshot only this public directory. Never fetch or pin the listed bodies.
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const entries = await fetchCommunityEntries();
-  writeFileAtomic(process.argv[2], JSON.stringify({ source: COMMUNITY_URL, fetched_at: new Date().toISOString(), entries }, null, 2) + "\n");
+  writeFileAtomic(process.argv[2], formatCommunitySnapshot(entries));
 }

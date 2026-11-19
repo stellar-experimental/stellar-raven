@@ -49,6 +49,12 @@ node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
   rebuild the catalog, family-text, spec, and op classes in the order above. Skill bodies are fetched and verified
   at read time from the pinned commit, so a re-pin changes what the model reads. Read the body diff
   before you commit it.
+- **Skill directories only.** When `node scripts/check-skills-drift.mjs` reports drift only on
+  `stellarlight-catalog` and/or `stellar-community-catalog` (every pinned GitHub source is `ok`),
+  run `node scripts/refresh-skill-directories.mjs` instead of `update.sh`. It updates only the
+  changed directory snapshot(s) (`ecosystem-skills/catalog.json`, `ecosystem-skills/community.json`)
+  and `ecosystem-skills/INDEX.md`, leaves `MANIFEST.json`, the catalog, the super-spec, and Worker
+  bytes untouched, and needs no pin review or deploy.
 
 ## 2. Classify each service
 

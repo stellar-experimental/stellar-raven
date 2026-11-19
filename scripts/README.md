@@ -32,6 +32,7 @@ The launcher forwards arguments, including `--json`, to the report.
 | `node eval/qa/compile-qa.mjs` | `eval/qa/cases.json`, `eval/qa/sample.json`, `eval/qa/tool-cases.json`, `eval/qa/lifecycle-registry.json` | yes |
 | `node eval/plan/build-op-classes.mjs` | `eval/plan/op-classes.json` | yes |
 | `node ecosystem-skills/build-index.mjs` | `ecosystem-skills/INDEX.md` from the pin manifest, directory catalog, and groups | yes (this regeneration only) |
+| `node scripts/refresh-skill-directories.mjs` | `ecosystem-skills/catalog.json`, `community.json`, `INDEX.md` (directory snapshots only; leaves pins untouched) | no; CI never runs it, and `check-skills-drift.mjs` reports drift |
 | `./ecosystem-skills/update.sh` | `ecosystem-skills/MANIFEST.json`, `catalog.json`, `community.json`, `INDEX.md` | no; CI never runs it, and `check-mirrors.mjs` and `check-pin-review.mjs` gate the result |
 | `node scripts/refresh-inventory.mjs` | `inventory/*.json` | no; the daily `refresh.yml` reports drift |
 | `npm run improvements:index` | `improvements/INDEX.md` | yes (`npm run improvements:lint`) |

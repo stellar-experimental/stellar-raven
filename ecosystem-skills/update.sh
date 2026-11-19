@@ -45,7 +45,7 @@
 # Usage:
 #   ./update.sh            # re-pin every source at its default branch
 #
-# Requires: gh (authenticated), jq, node, curl, git. No API keys.
+# Requires: gh (authenticated), jq, node, git. No API keys.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -57,7 +57,6 @@ INDEX="$SCRIPT_DIR/INDEX.md"
 command -v gh    >/dev/null || { echo "error: gh CLI not found" >&2; exit 1; }
 command -v jq    >/dev/null || { echo "error: jq not found" >&2; exit 1; }
 command -v node  >/dev/null || { echo "error: node not found" >&2; exit 1; }
-command -v curl  >/dev/null || { echo "error: curl not found" >&2; exit 1; }
 command -v git   >/dev/null || { echo "error: git not found" >&2; exit 1; }
 
 # Every source is public and every step fails closed, so a run that reaches the
@@ -149,25 +148,15 @@ pin_github() {
 # ---------------------------------------------------------------------------
 fetch_catalog() {
   echo "Fetching catalog: stellarlight.xyz/api/skills ..."
-  local raw
   # FAIL CLOSED. Silently keeping the previous snapshot let a run advance every
   # skill pin, print "Done", and exit 0 while leaving a stale ecosystem catalog
   # behind — a mixed-age result reported as a complete refresh, which is exactly
   # what an operator resolving a drift issue would then believe was resolved.
-  raw="$(curl -fsS "https://stellarlight.xyz/api/skills")" || {
+  node "$SCRIPT_DIR/../scripts/lib/stellarlight-catalog.mjs" "$CATALOG_TMP" --fetched-at "$NOW" || {
     echo "error: could not fetch the stellarlight catalog — refusing to re-pin." >&2
     echo "       Nothing was changed. Retry when the directory is reachable." >&2
     exit 1
   }
-  echo "$raw" | jq --arg now "$NOW" '
-    { source: "https://stellarlight.xyz/api/skills",
-      fetched_at: $now,
-      counts: .meta.counts,
-      validKinds: .meta.validKinds,
-      entries: ( .skills
-        | map({ name: (.slug // .name), title: .name, source, kind,
-                tagline, install, repository, homepage })
-        | sort_by(.source+"/"+.name) ) }' > "$CATALOG_TMP"
   echo "  catalog: $(jq '.entries|length' "$CATALOG_TMP") entries across $(jq -r '.counts.bySource|keys|join(", ")' "$CATALOG_TMP")."
 }
 
