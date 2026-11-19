@@ -116,6 +116,35 @@ check("cardMatches: skills_ prefix maps to skills service; terminal name matches
   // wrong service must not match even with a similar op name
   assert.equal(cardMatches("skills_search_directory", E.llDirectory), false);
 });
+check("cardMatches: <noun>_detail binds to same-service get<Noun> / get_<noun> only", () => {
+  const getHackathon = { id: "scout.getHackathon", service: "scout", kind: "operation", score: 0, description: "" };
+  const getHackathons = { id: "scout.getHackathons", service: "scout", kind: "operation", score: 0, description: "" };
+  const compareHackathons = { id: "scout.compareHackathons", service: "scout", kind: "operation", score: 0, description: "" };
+  const getSkill = { id: "scout.getSkill", service: "scout", kind: "operation", score: 0, description: "" };
+  const listSkills = { id: "scout.listSkills", service: "scout", kind: "operation", score: 0, description: "" };
+  const getRepoTrust = { id: "scout.getRepoTrust", service: "scout", kind: "operation", score: 0, description: "" };
+  const getProject = { id: "lumenloop.get_project", service: "lumenloop", kind: "operation", score: 0, description: "" };
+  const getProjectTags = { id: "lumenloop.get_project_tags_vocabulary", service: "lumenloop", kind: "operation", score: 0, description: "" };
+  const bareGet = { id: "scout.get", service: "scout", kind: "operation", score: 0, description: "" };
+
+  assert.equal(cardMatches("scout_hackathon_detail", getHackathon), true);
+  assert.equal(cardMatches("stellar_light_hackathon_detail", getHackathon), true);
+  assert.equal(cardMatches("scout_hackathon_detail", getHackathons), false);
+  assert.equal(cardMatches("scout_hackathon_detail", compareHackathons), false);
+  assert.equal(cardMatchesExact("scout_hackathon_detail", getHackathon), false);
+
+  assert.equal(cardMatches("scout_skill_detail", getSkill), true);
+  assert.equal(cardMatches("scout_skill_detail", listSkills), false);
+  assert.equal(cardMatches("scout_repo_trust_detail", getRepoTrust), true);
+
+  assert.equal(cardMatches("lumenloop_project_detail", getProject), true);
+  assert.equal(cardMatches("lumenloop_project_detail", getProjectTags), false);
+  assert.equal(cardMatches("scout_project_detail", getProject), false);
+
+  assert.equal(cardMatches("scout_detail", bareGet), false);
+  assert.equal(cardMatches("scout__detail", bareGet), false);
+  assert.equal(cardMatches("scout_foo__detail", { id: "scout.getFoo", service: "scout", kind: "operation", score: 0, description: "" }), false);
+});
 
 // --- gradeCase: top-1/3/5 semantics ------------------------------------------------
 // case 1: expected service at rank 1 -> all true; expected card present -> cardHit5 true
