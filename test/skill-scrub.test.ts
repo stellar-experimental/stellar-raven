@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
 import { loadSkillTexts } from "../scripts/lib/skill-mirror.mjs";
 import { EXCLUDED_SCOUT_PATHS } from "../src/policy/scout-exposure.ts";
 import {
@@ -186,7 +187,87 @@ describe("skill-body operation exposure scrub", () => {
     expect(scrubbed).toContain("/api/repository");
   });
 
-  it("removes excluded paths from every selected Scout file", async () => {
+  it("narrows trailing top-level or alternative clauses in list items and paragraphs", () => {
+    const match = "/api/partners/match";
+    const listText = [
+      "1. **Step one.** Keep `/api/stablecoins`.",
+      `2. **Rails and partners.** \`/api/stablecoins?peg={USD}\` (compare \`marketCapUSD\`, never raw \`supply\`) and \`/api/partners?type=anchor\`, or \`POST ${match}\` with the need in plain language. Empty results mean none listed.`,
+      `3. **Wrapped step.** Use \`/api/partners\`,`,
+      `   or \`POST ${match}\` (plain-language matching). Keep this.`,
+      `4. **Encoded step.** Use \`/api/partners\` or /api/partners%2Fmatch.`,
+      "5. **Templated step.** Use `/api/hackathons/builds` or `/api/hackathons/builds/dorahacks-12` for one build.",
+      "6. **Final step.** Keep `/api/rfps`."
+    ].join("\n");
+
+    expect(scrubExcludedScoutOperationRefs(listText, "workflow list")).toBe(
+      [
+        "1. **Step one.** Keep `/api/stablecoins`.",
+        "2. **Rails and partners.** `/api/stablecoins?peg={USD}` (compare `marketCapUSD`, never raw `supply`) and `/api/partners?type=anchor`. Empty results mean none listed.",
+        "3. **Wrapped step.** Use `/api/partners`. Keep this.",
+        "4. **Encoded step.** Use `/api/partners`.",
+        "5. **Templated step.** Use `/api/hackathons/builds`.",
+        "6. **Final step.** Keep `/api/rfps`."
+      ].join("\n")
+    );
+
+    const paragraph = [
+      "One profile by slug.",
+      `**Use when** you hold a slug from \`/api/partners\`; for *finding* a partner use \`/api/partners\` filters or \`POST ${match}\`.`
+    ].join(" ");
+    expect(scrubExcludedScoutOperationRefs(paragraph, "paragraph alternative")).toBe(
+      "One profile by slug. **Use when** you hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
+    );
+
+    const wrappedParagraph = [
+      "Find partners with `/api/partners`",
+      `or \`POST ${match}\` with plain language.`,
+      "Keep this sentence."
+    ].join("\n");
+    expect(scrubExcludedScoutOperationRefs(wrappedParagraph, "wrapped paragraph alternative")).toBe(
+      "Find partners with `/api/partners`. Keep this sentence."
+    );
+  });
+
+  it("falls back to whole-sentence or whole-item removal and fails closed on fenced excluded paths", () => {
+    const match = "/api/partners/match";
+    for (const sentence of [
+      `Call \`POST ${match}\` or \`/api/partners\`.`,
+      `Use \`/api/partners\` (or \`POST ${match}\`).`,
+      `Say "use /api/partners or POST ${match}".`,
+      `Use \`/api/partners\` or \`POST ${match}\`, then inspect.`
+    ]) {
+      expect(
+        scrubExcludedScoutOperationRefs(`${sentence} Keep this.`, "fallback sentence"),
+        sentence
+      ).toBe("Keep this.");
+    }
+
+    const fallbackList = [
+      "- Keep before.",
+      `- **Partner matching.** Call \`POST ${match}\`. It ranks partners by fit.`,
+      `- Use \`/api/partners\` or \`POST ${match}\`.`,
+      "  > Quoted continuation drops the item.",
+      `- Use \`/api/partners\` or \`POST ${match}\`.`,
+      "  | Col | Val |",
+      "- Keep after."
+    ].join("\n");
+    expect(scrubExcludedScoutOperationRefs(fallbackList, "fallback list")).toBe(
+      ["- Keep before.", "- Keep after."].join("\n")
+    );
+
+    // Any excluded path inside an indented fence still fails closed, whether its
+    // parent list item was kept or dropped.
+    for (const fenced of [
+      ["- Keep this bullet.", "  ```sh", `  curl https://example.test${match}`, "  ```"].join("\n"),
+      [`- Call \`POST ${match}\`:`, "  ```sh", `  curl https://example.test${match}`, "  ```"].join("\n")
+    ]) {
+      expect(() => scrubExcludedScoutOperationRefs(fenced, "fenced bullet")).toThrow(
+        "survives outside a removable Markdown block or sentence"
+      );
+    }
+  });
+
+  it("removes excluded paths from every selected Scout file while keeping the partner-filter workflow", async () => {
     const manifest = JSON.parse(
       readFileSync(join(ROOT, "ecosystem-skills", "MANIFEST.json"), "utf8")
     );
@@ -195,12 +276,32 @@ describe("skill-body operation exposure scrub", () => {
 
     const selected = await loadSkillTexts({ ...manifest, sources: [source] });
     expect(selected.size).toBeGreaterThan(0);
+    const scrubbedByKey = new Map<string, string>();
     for (const [key, file] of selected) {
       const scrubbed = scrubNonExposedRefs(file.text, key);
+      scrubbedByKey.set(key, scrubbed);
+      expect(() => assertNoNonExposedRefsInText(scrubbed, key)).not.toThrow();
+      // Also check SCOUT_PATHS_ABSENT_FROM_SPEC (e.g. /api/repos), which the
+      // emitted-text guard does not list.
       const mentionedPaths = scrubbed.match(/\/api\/[\w/{}/-]+/g) ?? [];
       for (const path of EXCLUDED_SCOUT_PATHS) {
         expect(mentionedPaths, `${key} retains ${path}`).not.toContain(path);
       }
     }
+
+    const skillMd = scrubbedByKey.get("stellar-light/stellar-scout/SKILL.md");
+    expect(skillMd).toBeDefined();
+    expect(skillMd).toContain("4. **Rails and partners the demo needs.**");
+    expect(skillMd).toContain("`/api/stablecoins?peg={USD|EUR|BRL…}` (compare `marketCapUSD`, never raw `supply` across pegs)");
+    expect(skillMd).toContain("`/api/partners?type={anchor|on-off-ramp|audit-firm}&q={country}`.");
+    expect(skillMd).toContain('"none listed at our source"');
+    expect(skillMd).not.toContain("/api/partners/match");
+
+    const apiRef = scrubbedByKey.get("stellar-light/stellar-scout/references/api-reference.md");
+    expect(apiRef).toBeDefined();
+    expect(apiRef).toContain(
+      "**Use when** you already hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
+    );
+    expect(apiRef).not.toContain("## `POST /api/partners/match`");
   });
 });

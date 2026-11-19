@@ -17,9 +17,11 @@
  * never a partial sentence.
  *
  * Scout skill bodies can also describe operations outside Raven's manifest.
- * The scrub removes a complete Markdown section, table row, blockquote, or list item that
- * names any excluded path. In a plain paragraph it removes each complete
- * sentence that names one. The host exposure policy owns the path set.
+ * The scrub removes a complete Markdown section, table row, or blockquote that
+ * names any excluded path. In a paragraph or list item it drops a trailing `or`
+ * alternative clause when every excluded path sits there; otherwise it drops
+ * the sentence (paragraph) or whole item (list). The host exposure policy owns
+ * the path set.
  *
  * Fail-loud drift guard: if upstream introduces a non-exposed reference
  * outside a removable Markdown block or sentence (for example, in a code
@@ -172,11 +174,64 @@ function splitSentences(text: string): string[] {
   return sentences;
 }
 
+const LIST_ITEM_MARKER_RE = /^(\s*(?:[-*+] |\d+[.)] ))(.*)$/;
+const TRAILING_OR_RE = /(?:,\s*|\s+)or\s+/iy;
+
+function stripTrailingExcludedOrClause(sentence: string): string | null {
+  const terminator = /[.!?]$/.exec(sentence)?.[0] ?? "";
+  const body = terminator ? sentence.slice(0, -1) : sentence;
+  let inCode = false;
+  let inQuote = false;
+  let depth = 0;
+  let lastOrStart = -1;
+  let clauseBreakInTail = false;
+
+  for (let i = 0; i < body.length; i++) {
+    const ch = body[i] ?? "";
+    if (ch === "`") inCode = !inCode;
+    if (inCode) continue;
+    if (ch === '"') inQuote = !inQuote;
+    if (inQuote) continue;
+    if (ch === "(" || ch === "[") depth += 1;
+    else if (ch === ")" || ch === "]") {
+      if (--depth < 0) return null;
+    } else if (depth === 0) {
+      if (ch === "," || (/\s/.test(ch) && i > 0 && !/[\s,]/.test(body[i - 1] ?? ""))) {
+        TRAILING_OR_RE.lastIndex = i;
+        const match = TRAILING_OR_RE.exec(body);
+        if (match) {
+          lastOrStart = i;
+          clauseBreakInTail = false;
+          i += match[0].length - 1;
+          continue;
+        }
+      }
+      if (ch === "," || ch === ";" || ch === ":") clauseBreakInTail = true;
+    }
+  }
+
+  if (inCode || inQuote || depth !== 0 || lastOrStart <= 0 || clauseBreakInTail) return null;
+  const prefix = body.slice(0, lastOrStart).trimEnd();
+  return prefix === "" || containsExcludedScoutPath(prefix) ? null : prefix + terminator;
+}
+
+function narrowListItem(item: string[]): string[] | null {
+  const match = LIST_ITEM_MARKER_RE.exec(item[0] ?? "");
+  if (!match || item.slice(1).some((part) => /^\s*[|>]/.test(part))) return null;
+  const joined = [match[2]!, ...item.slice(1)].map((part) => part.trim()).filter(Boolean).join(" ");
+  const kept = splitSentences(joined).map((sentence) =>
+    containsExcludedScoutPath(sentence) ? stripTrailingExcludedOrClause(sentence) : sentence
+  );
+  return kept.length > 0 && kept.every((sentence): sentence is string => sentence !== null)
+    ? [match[1]! + kept.join(" ")]
+    : null;
+}
+
 /**
  * Remove complete Markdown blocks that advertise excluded Scout paths, and
- * complete sentences that name one inside a plain paragraph. A paragraph that
- * names no excluded path keeps its exact bytes. Any reference that does not
- * fit one of these units stops the build or read; no sentence is edited in part.
+ * narrow or drop affected sentences in plain paragraphs and list items. A
+ * block that names no excluded path keeps its exact bytes. Any reference that
+ * does not fit one of these units stops the build or read.
  */
 export function scrubExcludedScoutOperationRefs(text: string, context: string): string {
   const lines = text.split("\n");
@@ -249,7 +304,11 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
       const keptLines = units.flatMap((unit) => {
         if (!containsExcludedScoutPath(unit)) return [unit];
         const indent = /^\s*/.exec(unit)?.[0] ?? "";
-        const kept = splitSentences(unit).filter((sentence) => !containsExcludedScoutPath(sentence));
+        const kept = splitSentences(unit).flatMap((sentence) => {
+          if (!containsExcludedScoutPath(sentence)) return [sentence];
+          const narrowed = stripTrailingExcludedOrClause(sentence);
+          return narrowed === null ? [] : [narrowed];
+        });
         return kept.length > 0 ? [indent + kept.join(" ")] : [];
       });
       out.push(...keptLines);
@@ -263,12 +322,18 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
     while (
       j < withoutSections.length &&
       /^\s+\S/.test(withoutSections[j] ?? "") &&
-      !listItemStart(withoutSections[j] ?? "")
+      !listItemStart(withoutSections[j] ?? "") &&
+      !fenceLine(withoutSections[j] ?? "")
     ) {
       item.push(withoutSections[j] ?? "");
       j += 1;
     }
-    if (!containsExcludedScoutPath(item.join("\n"))) out.push(...item);
+    if (!containsExcludedScoutPath(item.join("\n"))) {
+      out.push(...item);
+    } else {
+      const narrowed = narrowListItem(item);
+      if (narrowed !== null) out.push(...narrowed);
+    }
     i = j - 1;
   }
 
