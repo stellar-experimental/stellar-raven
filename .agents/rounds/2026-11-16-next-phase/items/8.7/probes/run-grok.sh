@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+cd /tmp/claude-1000/-home-tyler-code-stellar-raven-codemode/22ec2db9-d49f-46a4-ae1d-a28e75952222/scratchpad/grok-probe/dir
+unset XAI_API_KEY GROK_API_KEY OPENAI_API_KEY
+grok -p "Use your tools now. 1) List the files in the current directory. 2) Print the full contents of canary.txt. 3) Fetch http://127.0.0.1:42203/page.html and quote its HTML title. 4) List the exact name of every tool or function you can call, or NONE. If you cannot use tools, say so after step 4." -m "grok-4.7" --cwd /tmp/claude-1000/-home-tyler-code-stellar-raven-codemode/22ec2db9-d49f-46a4-ae1d-a28e75952222/scratchpad/grok-probe/dir --tools "" --disable-web-search --no-subagents --no-plan --deny 'mcp__*' --max-turns 2 --output-format streaming-json > /tmp/claude-1000/-home-tyler-code-stellar-raven-codemode/22ec2db9-d49f-46a4-ae1d-a28e75952222/scratchpad/grok-probe/out/stream.jsonl 2> /tmp/claude-1000/-home-tyler-code-stellar-raven-codemode/22ec2db9-d49f-46a4-ae1d-a28e75952222/scratchpad/grok-probe/out/stderr.txt
+echo "exit $?" > /tmp/claude-1000/-home-tyler-code-stellar-raven-codemode/22ec2db9-d49f-46a4-ae1d-a28e75952222/scratchpad/grok-probe/out/exit.txt
