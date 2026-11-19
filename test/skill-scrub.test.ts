@@ -197,7 +197,11 @@ describe("skill-body operation exposure scrub", () => {
       `   or call \`POST ${match}\``,
       "   for plain-language matching, or",
       `   \`POST ${assistant}\` (guided flow). Keep this.`,
-      "4. **Final step.** Keep `/api/rfps`."
+      "4. **Line-wise step.**",
+      `   Use \`/api/partners\` or /api/partners%2Fmatch.`,
+      "   Keep the third line.",
+      "5. **Templated step.** Use `/api/hackathons/builds` or `/api/hackathons/builds/dorahacks-12` for one build.",
+      "6. **Final step.** Keep `/api/rfps`."
     ].join("\n");
 
     expect(scrubExcludedScoutOperationRefs(listText, "workflow list")).toBe(
@@ -205,7 +209,11 @@ describe("skill-body operation exposure scrub", () => {
         "1. **Step one.** Keep `/api/stablecoins`.",
         "2. **Rails and partners.** `/api/stablecoins?peg={USD}` (compare `marketCapUSD`, never raw `supply`) and `/api/partners?type=anchor`. Empty results mean none listed.",
         "3. **Wrapped step.** Use `/api/partners`. Keep this.",
-        "4. **Final step.** Keep `/api/rfps`."
+        "4. **Line-wise step.**",
+        "   Use `/api/partners`.",
+        "   Keep the third line.",
+        "5. **Templated step.** Use `/api/hackathons/builds`.",
+        "6. **Final step.** Keep `/api/rfps`."
       ].join("\n")
     );
 
@@ -216,14 +224,38 @@ describe("skill-body operation exposure scrub", () => {
     expect(scrubExcludedScoutOperationRefs(paragraph, "paragraph alternative")).toBe(
       "One profile by slug. **Use when** you hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
     );
+
+    const wrappedParagraph = [
+      "Find partners with `/api/partners`",
+      `or \`POST ${match}\` with plain language.`,
+      "Keep this sentence."
+    ].join("\n");
+    expect(scrubExcludedScoutOperationRefs(wrappedParagraph, "wrapped paragraph alternative")).toBe(
+      "Find partners with `/api/partners`. Keep this sentence."
+    );
   });
 
-  it("drops the whole sentence or list item when narrowing would leave a fragment or drop exposed paths", () => {
+  it("drops the whole sentence or list item when narrowing would leave a fragment, drop conditions, or orphan continuations", () => {
     const match = "/api/partners/match";
     for (const sentence of [
       `Either call \`/api/partners\` or \`POST ${match}\`.`,
       `Check whether \`/api/partners\` or \`POST ${match}\` fits.`,
+      `Neither \`/api/partners\` or \`POST ${match}\`.`,
+      `Choose between \`/api/partners\` or \`POST ${match}\`.`,
+      `Both \`/api/partners\` or \`POST ${match}\`.`,
+      `Not only \`/api/partners\` or \`POST ${match}\`.`,
+      `Pick one of \`/api/partners\` or \`POST ${match}\`.`,
       `If \`/api/partners\` or \`POST ${match}\` fails, retry.`,
+      `Prefer the directory, since \`/api/partners\` or \`POST ${match}\` with a plain need both work.`,
+      `\`/api/partners\` or \`POST ${match}\` with a country filter returns anchors.`,
+      `Calling \`/api/partners\` or \`POST ${match}\` with a need yields matches.`,
+      `Fall back to \`/api/partners?type=anchor\` or \`POST ${match}\` when the region search is empty.`,
+      `Call \`/api/partners\` or \`POST ${match}\` if the user names a country.`,
+      `Use \`/api/partners\` or \`POST ${match}\` for ranking and report "none listed at our source" when empty.`,
+      `Use \`/api/partners\`, \`/api/projects\`, or \`POST ${match}\`.`,
+      `Use \`/api/partners\` or the AI ranking at \`POST ${match}\`.`,
+      `Say 'use /api/partners or POST ${match}'.`,
+      `“Use /api/partners or POST ${match}”.`,
       `The \`/api/partners\` or \`POST ${match}\` endpoint returns 200.`,
       `Use \`/api/partners\` or \`POST ${match}\`, then inspect.`,
       `Use \`/api/a\` or \`/api/b\` when \`POST ${match}\` is unavailable.`,
@@ -237,24 +269,48 @@ describe("skill-body operation exposure scrub", () => {
       ).toBe("Keep this.");
     }
 
+    // Sentences above the narrowing scan cap fall back to whole-sentence removal in linear time.
+    const oversized = `Use \`/api/partners\` ${"or x ".repeat(500)}or \`POST ${match}\`. Keep this.`;
+    expect(scrubExcludedScoutOperationRefs(oversized, "oversized sentence")).toBe("Keep this.");
+
     const orphanList = [
       "- Keep before.",
       `- **Partner matching.** Call \`POST ${match}\`. It ranks partners by fit.`,
+      `- Use \`/api/partners\` or \`POST ${match}\`.`,
+      "  > Quoted continuation also drops the item.",
+      `- Use \`/api/partners\` or \`POST ${match}\`.`,
+      "  | Col | Val |",
       "- Keep after."
     ].join("\n");
     expect(scrubExcludedScoutOperationRefs(orphanList, "orphan list")).toBe(
       ["- Keep before.", "- Keep after."].join("\n")
     );
 
-    const fencedAfterBullet = [
-      "- Keep this bullet.",
+    // Dropping a list item also drops its clean child fence and continuation lines
+    // so they cannot orphan onto the preceding item.
+    const droppedWithCleanFence = [
+      "- Keep.",
+      `- Call \`POST ${match}\` like this:`,
       "  ```sh",
-      `  curl https://example.test${match}`,
-      "  ```"
+      "  curl https://x.test/api/partners?q=a",
+      "  ```",
+      "  Then read the ranking.",
+      "- Next."
     ].join("\n");
-    expect(() => scrubExcludedScoutOperationRefs(fencedAfterBullet, "fenced bullet")).toThrow(
-      "survives outside a removable Markdown block or sentence"
+    expect(scrubExcludedScoutOperationRefs(droppedWithCleanFence, "dropped fenced bullet")).toBe(
+      ["- Keep.", "- Next."].join("\n")
     );
+
+    // Any excluded path inside an indented fence still fails closed, whether its
+    // parent list item was kept or dropped.
+    for (const fenced of [
+      ["- Keep this bullet.", "  ```sh", `  curl https://example.test${match}`, "  ```"].join("\n"),
+      [`- Call \`POST ${match}\`:`, "  ```sh", `  curl https://example.test${match}`, "  ```"].join("\n")
+    ]) {
+      expect(() => scrubExcludedScoutOperationRefs(fenced, "fenced bullet")).toThrow(
+        "survives outside a removable Markdown block or sentence"
+      );
+    }
   });
 
   it("removes excluded paths from every selected Scout file while keeping the partner-filter workflow", async () => {
@@ -271,6 +327,8 @@ describe("skill-body operation exposure scrub", () => {
       const scrubbed = scrubNonExposedRefs(file.text, key);
       scrubbedByKey.set(key, scrubbed);
       expect(() => assertNoNonExposedRefsInText(scrubbed, key)).not.toThrow();
+      // Also check SCOUT_PATHS_ABSENT_FROM_SPEC (e.g. /api/repos), which the
+      // emitted-text guard does not list.
       const mentionedPaths = scrubbed.match(/\/api\/[\w/{}/-]+/g) ?? [];
       for (const path of EXCLUDED_SCOUT_PATHS) {
         expect(mentionedPaths, `${key} retains ${path}`).not.toContain(path);
