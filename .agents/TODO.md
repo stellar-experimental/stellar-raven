@@ -23,12 +23,18 @@ approval, and each runs under a dollar cap and is recorded with its cost.
 2. One Workers Logs session on the Mac on 2026-11-25: the sign-in watch ("Watch sign-in rejects
    after the oauth-provider 1.x deploy"), then the `execute` timeout read with its `recoveryHint`,
    `skipped`, `errorName` and user-agent questions ("Decide the `execute` timeout from one more
-   Workers Logs read"), and the read-only remote `kv key list` for `mcp-key` ("Confirm `npm run
+   Workers Logs read"), the `skill_read` shape distribution ("Read the `skill_read` shape
+   distribution"), and the read-only remote `kv key list` for `mcp-key` ("Confirm `npm run
    mcp-key` on wrangler 4.164.0").
 3. Owner decisions (the list at the end).
 4. Free own-repo fixes that need no paid measurement: the Freighter and Scout SDK-status golden
-   look, and the case-file move once every dated run and follow-up has merged and
-   `systemctl --user list-timers` on agentpc shows no `raven-dated` or `raven-watchdog` unit.
+   look ("Look at the Freighter and Scout SDK-status goldens"), the overdue partner-documentation
+   review ("Run the overdue partner-documentation review"), the smart-contracts malformed-input
+   recurrence probe ("Probe the malformed-input gap in the pinned smart-contracts skill"), the
+   canonical-page Docs search re-probe ("Fix Docs search misses on canonical pages"), the two unread
+   corpus guides ("Audit the two corpus guides no lane has read"), and the case-file move once every
+   dated run and follow-up has merged and `systemctl --user list-timers` on agentpc shows no
+   `raven-dated` or `raven-watchdog` unit.
 
 Everything not named here is a hold, a monitor or waits on its trigger. Do not start one without
 its trigger.
@@ -81,7 +87,7 @@ keeps most of the token saving reopens it; ADR-0011's reopening rules are unchan
 ### Check what the judge saw before changing how it weighs cited text
 
 In the round's harness, the judge called a correctly quoted fact "fabricated" in about 2% of the
-new variants' answers and in none of the current design's. That is a finding about the round's
+new variants' answers and in none of arm A's (the `search` + `execute` baseline). That is a finding about the round's
 judge input, not about the committed QA judge. The committed judge does receive tool evidence:
 `eval/qa/judge.mjs` adds a compact source-basis block from pack `p9`, built from the answer's
 `execute` results, and `eval/qa/evidence-pack.mjs` leaves it out for a case tagged
@@ -92,9 +98,15 @@ judge input, not about the committed QA judge. The committed judge does receive 
 - An evidence block that omits the cited text: the p9 limits in "Close the remaining
   claim-support gaps of judge pack p9" below.
 
-Next: read the exact stored judge prompt of the disputed answers, then choose between a harness
-input fix, a pack change, and a rubric change. A pack or rubric change belongs to the p9 item
-and is a judging-semantics change under the `run-evals` skill.
+Held: the 2% dispute rate occurred only on the `fp-2026-11-12` prototype `retrieve`/`read` variants
+and in none of arm A (the measured `search` + `execute` baseline; arm B-fixed-2 shipped). No
+`retrieve`/`read` build is planned, and any pack or rubric change belongs to the held `p9` item.
+
+Trigger: before revising judge pack `p9` or its rubric ("Close the remaining claim-support gaps of
+judge pack p9"), before reviving a non-`execute` retrieval prototype, or if a cited-fact dispute
+appears on the committed QA judge. Then read the exact stored judge prompt of the disputed answers,
+and choose between a harness input fix, a pack change, and a rubric change (a pack or rubric change
+is a judging-semantics change under the `run-evals` skill).
 
 Done when: the disputed verdicts are traced to one of those causes. Any fix is measured: the
 disputes disappear, and no answer with a truly unsupported claim is graded up.
@@ -156,8 +168,8 @@ cut. claude.ai web and Claude Desktop: community evidence (`anthropics/claude-ai
 instructions are dropped, so the tool descriptions are the whole contract there. The audit's
 "Re-verifying the external facts" table has the method for each.
 
-State on 2026-11-18: agentpc runs Claude Code 2.1.327, Codex 0.169.0 and Grok 1.0.88, so every
-measured version has moved and the re-check is due.
+State on 2026-11-18: agentpc runs Claude Code 2.1.327, Codex 0.169.0 and Grok 1.0.88. Every
+measured version has moved, but the re-check waits on the trigger below.
 
 Trigger: before a change to the server instructions or the tool descriptions, and when a client's
 release notes name an MCP text limit. A client version bump alone does not fire it. The cheapest
@@ -363,6 +375,12 @@ Four topics have no owning case: the entry-cap write failure for a growing persi
 the per-call reset of test-side event reads, auth failure error remapping, and `try_*` client
 method semantics.
 
+Held: reviewing existing battery cases for coverage gaps or stale pointers is not a
+maintenance-exception trigger ([`eval/qa/README.md`](../eval/qa/README.md), "Held-out split"), so
+opening any held-out or reserve case among them moves it to tuning and amends the split, and
+authoring the four missing topics changes the battery. Trigger: the next deliberate corpus-coverage
+revision.
+
 Done when: each row is edited through `golden-truth`, confirmed unchanged, or has its pointer
 rerouted, and each topic is authored as a case or declined with a reason.
 
@@ -496,8 +514,11 @@ Held by this item:
 - Three mixed-intent controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove the
   markers when the repair passes.
 - [Issue #223](https://github.com/stellar-experimental/stellar-raven/issues/223) stays open for the
-  repair. Holdout top3 now sits on its floor (26) after the live Docs titles were absorbed (round item 6.2),
-  so the next change that costs one holdout top-3 fails the gate.
+  repair. In `eval/gates.json`, three holdout limits sit at their bounds: `top1` at its floor (12),
+  `top3` at its floor (26, after round item 6.2 absorbed the live Docs titles), and
+  `forbiddenCaptures` at its ceiling (11, raised from 10 for the `scout.matchPartners` removal in
+  round item 5.1; `top5` is 30 against floor 29). Any change that costs one holdout top-1, costs
+  one holdout top-3, or adds one forbidden capture fails the gate.
 - A `SKILL_DESCRIPTION_OVERRIDES` entry for `skills.stellar-dev.dapp` holds that skill's search
   text.
 
@@ -723,26 +744,24 @@ removed and this item is deleted.
 
 ### Point agents at the page when a docs hit has no body
 
-`sd-059`: Mintlify search rarely returns `<ResponseField>` text, so a result-code page often
-comes back as its title-and-description chunk only. An agent with the Set Options result-code
-page in a hit did not read it and gave a wrong code mapping. The site's own public MCP search
-returns a relevant result-code page first for all seven probe queries, while Raven's Discovery
-path returned none in its top five
-([evidence](rounds/2026-11-02-upstream-followup.md), probes in
-`rounds/2026-11-02-mintlify-migration/identifier-probe.json`).
+`sd-059` ([stellar/stellar-docs#2995](https://github.com/stellar/stellar-docs/issues/2995)):
+Mintlify Discovery search rarely returns `<ResponseField>` text, so a result-code page often comes
+back as its title-and-description chunk only. The 2026-11-03 raw-candidate comparison ruled out
+Raven's adapter filter (expected leaf page absent from all 50 raw Discovery candidates for 7 of 7
+bare/verbatim probes; 153 of 190 result-code tokens in raw top 5, matching adapter top 5
+identically), while the site's public MCP search returned the expected page first for 7 of 7 and in
+top 5 for 190 of 190. Fusing or replacing Discovery with the site MCP backend was tested and
+rejected on 2026-11-03 (fusion added 1,257 to 1,424 ms at p95 against a 600 ms limit; full
+replacement lost broad docs-page hits). Tuning arm 1 shipped the `stellarDocs.get_doc_page`
+page-read pointer for this class (#446; the owner kept it as a named exception to the
+pre-registered rule, [measurement](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
 
-Next: compare the raw Discovery candidates with the adapter output, to rule out Raven's own
-filtering. Then choose: mark such hits with a hint to call `stellarDocs.get_doc_page`, read
-those pages host-side, or serve `search_docs` from the site MCP backend (check its rate limits
-and terms). Each changes the output contract and needs a general mechanism, a free retrieval
-A/B on the golden docs pages and the probe, and the routing gate.
+Trigger: upstream action on `sd-059` (`stellar/stellar-docs#2995`, still open; last re-checked
+2026-11-09). Then re-run the Discovery check (`op_bad_signer`, `pageSize: 50`, Set Options
+result-code page in top 5) and the 190-token check recorded in
+[`improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md`](../improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md).
 
-Done when: the `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search
-call or one hinted page read. Remove when `sd-059` is fixed upstream.
-
-Tuning arm 1 shipped the page-read pointer for this class (#446; the owner kept it as a named
-exception to the pre-registered rule, [measurement](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
-The item stays for `sd-059` itself.
+Done when: `sd-059` is fixed upstream and retired under the `improvements-pipeline` skill.
 
 ### Fix Docs search misses on canonical pages
 
@@ -920,12 +939,16 @@ Done when: the recovery is confirmed and the record is committed or discarded.
 Owner, 2026-11-18: "30 is an allowance, today we have 7. I'd like to convert to actually doing 30
 everywhere. Do this work carefully, or plan for it maybe for now in TODO." This item is that plan.
 
-What is wrong: `/terms` (`src/site.ts`, "Operational and quality logs") says the Service stores
-observability data, which may include queries and responses, for 30 days, and that a user may opt
-out of query and response logging. Today Raven keeps less than that:
+Current state: `/terms` (`src/site.ts`, "Operational and quality logs" and "Your choices";
+counsel-owned, the outer bound of what the service may do, which the owner treats as a 30-day
+allowance) says the Service stores observability data, "which may include the queries submitted and
+the responses returned, for 30 days, after which it is deleted", with opt-out and account deletion
+on request. Production currently keeps less than that:
 
 - Workers Logs, traces and request metadata: at most 7 days (Cloudflare's platform limit; it cannot
   be raised in Workers Logs itself).
+- AI Gateway request metadata: Cloudflare AI Gateway's row-count policy (`docs/operations.md`,
+  "Data retention"; payload collection is off per request in `src/demo/model-config.ts`).
 - No query or response text is logged. Several TODO items rely on that fact ("query text is not
   logged, so silence is no measured demand"); 30-day capture would make demand measurable.
 - Oversized `execute` artifacts in R2 `stellar-raven-artifacts`: 7 days. These are a result cache,
@@ -955,12 +978,15 @@ security review, because this stores user content):
 The work stays inside the `/terms` text as written, so no counsel review is needed; capturing
 anything the terms do not name would need the legal lane first.
 
-Next: an owner go to start the design study. It touches no file the dated runs read.
+Next: an owner go ("Owner decisions", decision 6) to start the design study. It touches no file
+the dated runs read.
 
-Done when: every observability store keeps 30 days and deletes after it, opt-out and per-account
-deletion are implemented and tested, `docs/operations.md`, `src/auth/retention.ts`, `/terms` and
-`usage/README.md` agree, the TODO items that assume "query text is not logged" are updated, the
-idea file is folded or deleted, and a read 31 days after the deploy shows the oldest records gone.
+Done when: the Raven-controlled observability archive keeps 30 days and deletes after it (native
+Workers Logs stay at Cloudflare's <=7-day platform limit and AI Gateway metadata stays on its
+row-count policy), opt-out and per-account deletion are implemented and tested, `docs/operations.md`,
+`src/auth/retention.ts`, `/terms` and `usage/README.md` agree, the TODO items that assume "query
+text is not logged" are updated, the idea file is folded or deleted, and a read 31 days after the
+deploy shows the oldest archived records gone.
 
 ## Eval instruments
 
@@ -1122,15 +1148,26 @@ and `.ignore` tests are updated.
 
 ### Tag confirmation-only rows in the agent discovery runner and the agentic workflow
 
-Only `run-discovery.mjs` and `run-replay.mjs` import `lib/confirmation-only.mjs`.
-`run-agent-discovery.mjs`, `classify-misses.mjs` and the agentic workflow
-(`eval/agentic/workflow-agentic-routing.js`, its capture proxy and reconciler) do not tag or hide a
-row that matches a QA headline question, although `routing-qa-overlap.mjs` lists an `agentic` set.
-The guides now say so and ask for counts only.
+`eval/run-routing.mjs`, `eval/run-protocol-history.mjs` (and
+`eval/lib/protocol-history-report.mjs`), `eval/discovery/run-discovery.mjs`, and
+`eval/discovery/run-replay.mjs` already import `eval/lib/confirmation-only.mjs`.
+`eval/discovery/run-agent-discovery.mjs` (which prints per-row outcomes to stdout),
+`eval/discovery/classify-misses.mjs` (which prints only `{ outPath, counts }` to stdout while
+writing untagged `rows` to its JSON file), and the agentic workflow
+(`eval/agentic/workflow-agentic-routing.js`, `eval/agentic/capture-proxy.mjs`, and
+`eval/agentic/reconcile-capture.mjs`) do not tag or hide a row that matches a QA headline
+question, although `eval/routing-qa-overlap.mjs` lists `discovery` and `agentic` sets. Both guides
+([`eval/discovery/README.md`](../eval/discovery/README.md),
+[`eval/agentic/README.md`](../eval/agentic/README.md)) state this and prescribe counts-only
+reporting.
 
-Next: wire the tag into those paths so a listed row prints `confirmation-only` in place of its
-outcome, with the same fail-closed behavior as the one-shot runner. Or decide the counts-only rule
-is enough and delete this item.
+Held: neither paid diagnostic (`run-agent-discovery.mjs` or `workflow-agentic-routing.js`) is
+scheduled to run, and `classify-misses.mjs` already limits console output to aggregate counts.
+Trigger: before the next paid run of `eval/discovery/run-agent-discovery.mjs` or the agentic
+workflow, or before inspecting per-row `classify-misses.mjs` output (unless the owner decides the
+counts-only guide rule is enough and deletes this item). Then wire `eval/lib/confirmation-only.mjs`
+into those paths so a listed row prints `confirmation-only` in place of its outcome, with the same
+fail-closed behavior as the one-shot runner.
 
 Done when: every runner that replays a listed row tags it, or the owner accepts the guide rule.
 
@@ -1199,23 +1236,6 @@ Done when: the approved changes are applied and the rest are declined in the rou
 
 ## Dependencies
 
-### Wait for a picomatch release that fixes GHSA-fc5q-39xc-vjpf
-
-Issue #481 (`npm audit`, 8 high; it replaced #473, closed on 2026-11-17) traces to one advisory:
-picomatch through 4.0.7 has a ReDoS on single-branch repeated extglobs (GHSA-fc5q-39xc-vjpf,
-published 2026-10-19). Every reported package reaches it through `picomatch` 4.0.7, which is still
-the latest release on 2026-11-18, and the advisory names no patched version. The fixes `npm audit`
-offers are downgrades and are not taken: `agents@0.8.3`, `vitest@3.1.4`, and
-`@cloudflare/vitest-plugin@0.0.0`.
-
-Reach on 2026-11-18: `picomatch` comes in through `vitest`, `tinyglobby` and `fdir` (tests), and
-through `agents` via `vite` and `@rolldown/plugin-babel` (build tooling). The built Worker bundle
-(`dist/server.js`, built from `bb171055`) contains no `picomatch` text (0 matches), and Raven passes
-no untrusted glob to any of these tools. Production has no exposure; the risk is local tooling only.
-
-Done when: a picomatch release fixes the advisory, the lockfile takes it (an `overrides` entry if a
-parent pins it), `npm audit` reports none, and the dependency-audit workflow closes #481.
-
 ### Move `wrangler`, `miniflare`, and `@cloudflare/vitest-plugin` together
 
 Standing note. `@cloudflare/vitest-plugin` pins `wrangler`, `miniflare`, `esbuild`, and `zod` exactly,
@@ -1247,12 +1267,12 @@ cloudflare/agents#2790 was closed as not planned on 2026-11-03, so `createAI` ke
 and the reviewed decision the migration needs covers that.
 
 Done when: an `agents` release forwards Anthropic provider options for `anthropic/*` catalog ids
-(re-run the `cs-010` repro), a reviewed decision covers stream resume, `src/demo` and
-`test/demo-model-config.test.ts` no longer import the package, and `wai-001` is closed under the
-`improvements-pipeline` skill. The migration moves the demo model path, so it needs
-`npm run test:smoke`, the single-`workerd` check, and a Playground run of every demo model. The
-migration is not `fixed-upstream` evidence for `wai-001`; that close-out needs a reviewed
-lifecycle decision.
+(re-run the `cs-010` repro), a reviewed decision covers stream resume, `src/demo` and the demo
+tests (`test/demo-model-config.test.ts`, `test/demo-chat.test.ts`, `test/demo-eval-cost.test.ts`)
+no longer import the package, and `wai-001` is closed under the `improvements-pipeline` skill. The
+migration moves the demo model path, so it needs `npm run test:smoke`, the single-`workerd` check,
+and a Playground run of every demo model. The migration is not `fixed-upstream` evidence for
+`wai-001`; that close-out needs a reviewed lifecycle decision.
 
 ### Verify that xAI accepts the explicit tool `strict` field
 
@@ -1379,9 +1399,11 @@ correspondence before acting. The trimmed surface changes the tool descriptions 
 cases describe; re-run the rehearsal before the next submission step.
 [`plugins/openai/README.md`](../plugins/openai/README.md) has the records and rules.
 
-Before publication, resolve publisher verification and privacy coverage. The `/terms` 30-day
-observability promise against today's 7 days is tracked in "Keep 30 days of observability data,
-including queries and responses". After the final review
+Before publication, resolve publisher verification and privacy coverage. The difference between
+`/terms` (which states observability data, possibly including queries and responses, is stored "for
+30 days, after which it is deleted" — treated by the owner as an allowance) and production's
+7-day metadata-only retention is tracked in "Keep 30 days of observability data, including queries
+and responses". After the final review
 decision, revoke the reviewer API key `openai-review-20261007`. Before that revoke, finish
 "Confirm `npm run mcp-key` on wrangler 4.164.0".
 
@@ -1436,6 +1458,16 @@ decision record, then delete it here.
    7.3 deploys because no production bearer credential exists on the Mac or agentpc). It is the
    only free check of both wire eras on all three hosts. Safe default: none. Deploy checks stay on
    the OAuth metadata, the `/mcp` 401 and one connector `execute`.
+6. **Keep 30 days of observability data, including queries and responses.** Whether to start the
+   design study for 30-day observability retention and query/response capture (see "Keep 30 days of
+   observability data, including queries and responses"). `/terms` (counsel-owned, the outer bound
+   of what the service may do, which the owner treats as a 30-day allowance) says observability
+   data, "which may include the queries submitted and the responses returned", is stored "for 30
+   days, after which it is deleted", with opt-out and account deletion on request; production keeps
+   at most 7 days in Workers Logs (and AI Gateway request metadata on its row-count policy) and
+   logs no query text. Safe default: not started; production stays at 7 days with no query or
+   response text logged.
+
 Owner-blocked actions that already have an item (one line each, no decision needed here):
 
 - The OpenAI portal check and reply: "Obtain a written exception for the accepted two-tool endpoint".
