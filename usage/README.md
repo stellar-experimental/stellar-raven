@@ -143,13 +143,14 @@ The archive cannot recreate tool events that expired from Workers Logs before co
 ## Owner data stays outside the repository
 
 This repository is the only source for usage collection and the report. It works without any
-private directory. On the owner's machine, two private local Git repositories (no remote) sit
-beside it:
+private directory. The owner keeps private directories on their machines. The first two are
+private local Git repositories with no remote, and they sit beside this one:
 
 | Directory | Holds |
 |---|---|
 | `~/Desktop/stellar-raven-aux-priv-report` | The Sites publication copy of `usage/report-site/`. `scripts/sync-usage-site.mjs` writes it from clean `main`; never edit it directly. |
 | `~/Desktop/stellar-raven-aux-priv-evidence` | Production snapshots, dashboard exports, and audits with real figures. Production data lives there and nowhere else. |
+| `/home/tyler/raven-data/qa` (on agentpc) | The pinned judge-stability register and the stored QA results, which contain held-out verdicts. `eval/qa/heldout-read.sh` reads the register from there by default. Never open or commit them. |
 
 A fork creates its own Sites project and keeps its own evidence outside its repository.
 

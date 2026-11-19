@@ -63,7 +63,7 @@ substitution inside the launch line would pass `-m ""`, and an empty Codex model
 `~/.codex/config.toml`. The `echo` prints the resolved ID for the orchestrator to record.
 
 ```sh
-M=$(node <worktree>/scripts/latest-model.mjs <sol|astra|terra>) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> codex --no-daemon -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<task>"
+M=$(node <worktree>/scripts/latest-model.mjs <sol|astra|terra>) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> codex --no-daemon --dangerously-bypass-hook-trust -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<task>"
 hc run --bg --name <lane> --cwd <worktree> claude --model <sonnet|opus|fable> --effort high --permission-mode bypassPermissions "<task>"
 M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> grok --model "$M" --reasoning-effort high --always-approve "<task>"
 ```
@@ -72,7 +72,10 @@ M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc 
   `.agents/` or commit to the shared `.git`. Have it write findings to the ignored `tmp/`
   directory, then copy and commit them yourself. With `-a never` it cannot approve MCP tool
   calls, so it cannot repeat an authenticated Raven connector check. Before a paid lane, check
-  that `codex login status` prints "Logged in using ChatGPT".
+  that `codex login status` prints "Logged in using ChatGPT". `--dangerously-bypass-hook-trust`
+  makes Codex run the project hook in `.codex/hooks.json` (the case-search guard); without it Codex
+  skips the hook unless it was approved in `/hooks`. An Antigravity (`agy`) lane needs no flag for
+  `.agents/hooks.json`, and Grok runs `.grok/hooks/` in a trusted folder.
 - **Grok** has no offline login check (`grok usage` cannot show the plan in this version). Before a
   paid lane, establish the SuperGrok login interactively and keep `XAI_API_KEY` unset; a Codex lane
   likewise keeps `OPENAI_API_KEY` unset. `--always-approve` can be denied as an unsafe launch when a Claude Code orchestrator

@@ -305,7 +305,7 @@ into four CLIs:
 | CLI | Config file | Tools guarded | Notes |
 |---|---|---|---|
 | Claude Code | `.claude/settings.json` | `Bash`, `Grep` | Runs in every Claude session in a checkout. Shell rules probed live; `Grep` branch unit-tested only. |
-| Codex | `.codex/hooks.json` | `Bash` | Matches Codex 0.169 `pre-tool-use.command.{input,output}` (subprocess-tested). Codex loads project hooks only when the checkout folder has `trust_level = "trusted"` in `~/.codex/config.toml` (not overridable by `-c`) and the hook is approved in `/hooks` or run with `--dangerously-bypass-hook-trust`; untrusted worktrees skip it. |
+| Codex | `.codex/hooks.json` | `Bash` | Runs when Codex is launched with `--dangerously-bypass-hook-trust`, which the launch line in [`.agents/model-roster.md`](../../.agents/model-roster.md) carries. Probed live with that flag in the main checkout and in worktrees that `~/.codex/config.toml` does not list as trusted. Without the flag, Codex runs a project hook only after it is approved in `/hooks`; treat such a session as unguarded. |
 | Grok | `.grok/hooks/case-search-guard.json` | `Bash` (`run_terminal_command`, `Shell`), `Grep` (`grep`) | Probed live (shell and built-in `grep`) in a trusted project under `--always-approve`. Grok also reads `.claude/settings.json` when Claude compatibility is enabled; the native `.grok/hooks/` file keeps the guard active when Claude compatibility is off. Truncated inputs (`toolInputTruncated: true`) on guarded tools deny. |
 | Antigravity (`agy`) | `.agents/hooks.json` | `run_command`, `grep_search` | `run_command` probed live under `--dangerously-skip-permissions`; `grep_search` unit-tested only. Allowed calls emit empty stdout (pass-through); `{}` would default proto3 `allow_tool` to `false`. |
 
@@ -340,10 +340,10 @@ No other lane uses it.
 explicit path to a listed file, a pull request's diff, a script file or a pipe into a shell
 (`echo '...' | bash`), `ag`, `ack` and `ugrep`, an unglobbed search through an agent's built-in
 grep tool if that tool does not honor `.ignore` (unverified for Grok `grep` and for Antigravity's
-in-process fallback when embedded ripgrep is unavailable), a Codex session in an untrusted worktree
-or without hook trust, a Grok session in an untrusted folder, and any CLI outside the four above.
-`rg -g '*.json'` re-includes a file-level entry, so the hook denies it where active; untrusted
-Codex/Grok sessions and other CLIs rely on the rule in `AGENTS.md`.
+in-process fallback when embedded ripgrep is unavailable), a Codex session launched without
+`--dangerously-bypass-hook-trust` or `/hooks` approval, a Grok session in an untrusted folder, and any CLI outside the four above.
+`rg -g '*.json'` re-includes a file-level entry, so the hook denies it where active; those
+sessions and other CLIs rely on the rule in `AGENTS.md`.
 
 **Copies of golden text.** `eval/qa/case-text-scan.mjs` counts 8-word golden shingles (unique to at
 most two cases) that a file git lists outside the paths above repeats. `npm test` fails when a file

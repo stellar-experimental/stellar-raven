@@ -4,6 +4,7 @@
 |---|---|---|
 | `skills/` | Repeatable task procedures (`<name>/SKILL.md`). `.claude/skills` is a committed symlink to it. | Durable |
 | `model-roster.md` | Family-to-launch-line map for the `AGENTS.md` tiers and the eval and test set | Durable; names families, so a family move needs no edit |
+| `hooks.json` | Antigravity's `PreToolUse` hook config, which runs the case-search guard (`scripts/agent-hooks/case-search-guard.mjs`); the other CLIs' configs are `.claude/settings.json`, `.codex/hooks.json` and `.grok/hooks/case-search-guard.json` | Durable |
 | `TODO.md` | The own-repo work queue and open owner decisions | Until each item is done |
 | `rounds/` | `<YYYY-MM-DD>-<slug>.md` ledger per multi-lane round, plus an optional `<YYYY-MM-DD>-<slug>/` working folder for briefs, plans, and reviews | Until reconciliation (see Retention) |
 
