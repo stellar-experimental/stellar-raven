@@ -17,14 +17,18 @@
  * never a partial sentence.
  *
  * Scout skill bodies can also describe operations outside Raven's manifest.
- * The scrub removes a complete Markdown section, table row, blockquote, or list item that
- * names any excluded path. In a plain paragraph it removes each complete
- * sentence that names one. The host exposure policy owns the path set.
+ * The scrub removes a complete Markdown section, table row, or blockquote that
+ * names any excluded path. In a plain paragraph or list item, a sentence that
+ * names an excluded path only in a trailing `or` alternative clause drops that
+ * clause and keeps the rest of the sentence; otherwise a paragraph drops the
+ * complete sentence and a list item drops the whole item. The host exposure
+ * policy owns the path set.
  *
  * Fail-loud drift guard: if upstream introduces a non-exposed reference
- * outside a removable Markdown block or sentence (for example, in a code
- * fence), the scrub throws instead of emitting the leak. At build time that fails the build. At read time src/skills/store.ts
- * returns an error envelope. The leak is never served.
+ * outside a removable Markdown block, sentence, or alternative clause (for
+ * example, in a code fence), the scrub throws instead of emitting the leak. At
+ * build time that fails the build. At read time src/skills/store.ts returns an
+ * error envelope. The leak is never served.
  */
 import { EXCLUDED_SCOUT_PATHS } from "../policy/scout-exposure.ts";
 
@@ -172,11 +176,317 @@ function splitSentences(text: string): string[] {
   return sentences;
 }
 
+const LIST_ITEM_MARKER_RE = /^(\s*(?:[-*+] |\d+[.)] ))(.*)$/;
+const ENDPOINT_REF_RE =
+  /(\*{1,2})?(?:(?:GET|POST|PUT|PATCH|DELETE)\s+)?(?:`(?:(?:GET|POST|PUT|PATCH|DELETE)\s+)?(?:https?:\/\/[^\s`]+)?\/api\/[^`]*`|(?:https?:\/\/[^\s`)\]]+)?\/api\/[^\s`)\]]+)\1/i;
+const ALT_LEAD_IN_RE =
+  /^(?:call|use|try|query|hit|run|send|post|see|check|ask|fetch|read|via|with)(?:\s+(?:to|the))?$/i;
+const ALT_MODIFIER_RE = /^(?:with|for|to|in|on|by|via|from|using|passing|when|if)\b/i;
+const SUBORDINATOR_START_RE =
+  /^(?:if|when|while|unless|although|though|because|since|before|after|until|once|whenever|wherever)\b/i;
+const DANGLING_END_WORD_RE =
+  /\b(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|a|an|the|to|for|with|from|via|in|on|at|by|of|as|and|or|nor|but|than)$/i;
+const CORRELATIVE_PAIRS: ReadonlyArray<[RegExp, RegExp]> = [
+  [/\beither\b/gi, /\bor\b/i],
+  [/\bwhether\b/gi, /\bor\b/i],
+  [/\bneither\b/gi, /\bnor\b/i],
+  [/\bbetween\b/gi, /\band\b/i]
+];
+
+function hasBalancedMarkdownEmphasis(text: string): boolean {
+  const prose = text.replace(/`[^`]*`/g, "");
+  if (prose.includes("`")) return false;
+  if ((prose.match(/\*\*/g)?.length ?? 0) % 2 !== 0) return false;
+  const noBold = prose.replace(/\*\*/g, "");
+  return (noBold.match(/\*/g)?.length ?? 0) % 2 === 0;
+}
+
+function scanTopLevel(text: string): {
+  balanced: boolean;
+  topLevel: string;
+  hasClauseBreak: boolean;
+} {
+  let inCode = false;
+  let inDoubleQuote = false;
+  let parenDepth = 0;
+  let bracketDepth = 0;
+  let topLevel = "";
+  let hasClauseBreak = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i] ?? "";
+    if (ch === "`") {
+      inCode = !inCode;
+      if (!inCode && !inDoubleQuote && parenDepth === 0 && bracketDepth === 0) topLevel += " ";
+      continue;
+    }
+    if (inCode) continue;
+    if (ch === '"') {
+      inDoubleQuote = !inDoubleQuote;
+      if (!inDoubleQuote && parenDepth === 0 && bracketDepth === 0) topLevel += " ";
+      continue;
+    }
+    if (inDoubleQuote) continue;
+    if (ch === "(") {
+      parenDepth += 1;
+      continue;
+    }
+    if (ch === ")") {
+      parenDepth -= 1;
+      if (parenDepth < 0) return { balanced: false, topLevel, hasClauseBreak };
+      if (parenDepth === 0 && bracketDepth === 0) topLevel += " ";
+      continue;
+    }
+    if (ch === "[") {
+      bracketDepth += 1;
+      continue;
+    }
+    if (ch === "]") {
+      bracketDepth -= 1;
+      if (bracketDepth < 0) return { balanced: false, topLevel, hasClauseBreak };
+      if (parenDepth === 0 && bracketDepth === 0) topLevel += " ";
+      continue;
+    }
+    if (parenDepth === 0 && bracketDepth === 0) {
+      topLevel += ch;
+      if (ch === "," || ch === ";" || ch === ":" || ch === "—" || ch === "–") {
+        hasClauseBreak = true;
+      } else if (ch === "-" && text[i - 1] === " " && text[i + 1] === " ") {
+        hasClauseBreak = true;
+      }
+    }
+  }
+
+  const balanced =
+    !inCode &&
+    !inDoubleQuote &&
+    parenDepth === 0 &&
+    bracketDepth === 0 &&
+    hasBalancedMarkdownEmphasis(text);
+  return { balanced, topLevel, hasClauseBreak };
+}
+
+function isSingleParenthetical(text: string): boolean {
+  if (!text.startsWith("(") || !text.endsWith(")")) return false;
+  let inCode = false;
+  let inDoubleQuote = false;
+  let depth = 0;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i] ?? "";
+    if (ch === "`") {
+      inCode = !inCode;
+      continue;
+    }
+    if (inCode) continue;
+    if (ch === '"') {
+      inDoubleQuote = !inDoubleQuote;
+      continue;
+    }
+    if (inDoubleQuote) continue;
+    if (ch === "(") depth += 1;
+    else if (ch === ")") {
+      depth -= 1;
+      if (depth < 0) return false;
+      if (depth === 0 && i < text.length - 1) return false;
+    }
+  }
+  return !inCode && !inDoubleQuote && depth === 0;
+}
+
+function hasUnpairedCorrelative(clause: string): boolean {
+  for (const [opener, partner] of CORRELATIVE_PAIRS) {
+    let lastMatchEnd = -1;
+    for (const match of clause.matchAll(opener)) {
+      lastMatchEnd = match.index + match[0].length;
+    }
+    if (lastMatchEnd !== -1 && !partner.test(clause.slice(lastMatchEnd))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+const COMMA_OR_RE = /,\s*or\s+/iy;
+const SPACE_OR_RE = /\s+or\s+/iy;
+
+function topLevelOrSplits(text: string): Array<{ start: number; end: number }> {
+  const splits: Array<{ start: number; end: number }> = [];
+  let inCode = false;
+  let inDoubleQuote = false;
+  let parenDepth = 0;
+  let bracketDepth = 0;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i] ?? "";
+    if (ch === "`") {
+      inCode = !inCode;
+      continue;
+    }
+    if (inCode) continue;
+    if (ch === '"') {
+      inDoubleQuote = !inDoubleQuote;
+      continue;
+    }
+    if (inDoubleQuote) continue;
+    if (ch === "(") {
+      parenDepth += 1;
+      continue;
+    }
+    if (ch === ")") {
+      parenDepth = Math.max(0, parenDepth - 1);
+      continue;
+    }
+    if (ch === "[") {
+      bracketDepth += 1;
+      continue;
+    }
+    if (ch === "]") {
+      bracketDepth = Math.max(0, bracketDepth - 1);
+      continue;
+    }
+    if (parenDepth !== 0 || bracketDepth !== 0) continue;
+
+    if (ch === ",") {
+      COMMA_OR_RE.lastIndex = i;
+      const match = COMMA_OR_RE.exec(text);
+      if (match) splits.push({ start: i, end: i + match[0].length });
+    } else if (/\s/.test(ch) && i > 0 && !/[\s,]/.test(text[i - 1] ?? "")) {
+      SPACE_OR_RE.lastIndex = i;
+      const match = SPACE_OR_RE.exec(text);
+      if (match) splits.push({ start: i, end: i + match[0].length });
+    }
+  }
+  return splits;
+}
+
+function isValidNarrowedPrefix(prefix: string): boolean {
+  const visibleEnd = prefix.replace(/\*+$/, "");
+  if (
+    visibleEnd === "" ||
+    /[;,:\(\[\/—–-]$/.test(visibleEnd) ||
+    DANGLING_END_WORD_RE.test(visibleEnd)
+  ) {
+    return false;
+  }
+  const scan = scanTopLevel(prefix);
+  if (!scan.balanced) return false;
+  const cut = Math.max(scan.topLevel.lastIndexOf(";"), scan.topLevel.lastIndexOf(":"));
+  const activeClause = scan.topLevel.slice(cut + 1).trim();
+  if (hasUnpairedCorrelative(activeClause)) return false;
+  const clauseStart = activeClause.replace(/^\*+\s*/, "");
+  if (SUBORDINATOR_START_RE.test(clauseStart) && !activeClause.includes(",")) {
+    return false;
+  }
+  return true;
+}
+
+function isExcludedAlternativeTail(tail: string): boolean {
+  if (!containsExcludedScoutPath(tail)) return false;
+  const scan = scanTopLevel(tail);
+  if (!scan.balanced || scan.hasClauseBreak) return false;
+  const refMatch = ENDPOINT_REF_RE.exec(tail);
+  if (!refMatch) return false;
+  const endpoint = refMatch[0];
+  if (!containsExcludedScoutPath(endpoint)) return false;
+  const before = tail.slice(0, refMatch.index).trim();
+  if (before !== "" && !ALT_LEAD_IN_RE.test(before)) return false;
+  const after = tail.slice(refMatch.index + endpoint.length).trim();
+  if (after === "") return true;
+  if (/\/api\//i.test(decodePercentRuns(after))) return false;
+  return isSingleParenthetical(after) || ALT_MODIFIER_RE.test(after);
+}
+
+/**
+ * Strip one or more trailing top-level `or` alternative clauses that offer an
+ * excluded Scout endpoint (e.g. `, or \`POST /api/partners/match\` with ...`)
+ * when the remaining prefix stands as a complete, balanced sentence. Returns
+ * `null` whenever narrowing would risk a fragment or leave an excluded path.
+ */
+function stripExcludedAlternativeClause(sentence: string): string | null {
+  const terminatorMatch = /([.!?])$/.exec(sentence);
+  let body = terminatorMatch ? sentence.slice(0, -1) : sentence;
+  const terminator = terminatorMatch?.[1] ?? "";
+
+  while (containsExcludedScoutPath(body)) {
+    const splits = topLevelOrSplits(body);
+    let peeled = false;
+    for (let k = splits.length - 1; k >= 0; k--) {
+      const split = splits[k]!;
+      const prefix = body.slice(0, split.start).trimEnd();
+      const tail = body.slice(split.end).trimStart();
+      if (!isValidNarrowedPrefix(prefix) || !isExcludedAlternativeTail(tail)) continue;
+      body = prefix;
+      peeled = true;
+      break;
+    }
+    if (!peeled) return null;
+  }
+
+  return body + terminator;
+}
+
+function narrowAllSentences(text: string): string | null {
+  const kept: string[] = [];
+  for (const sentence of splitSentences(text)) {
+    if (!containsExcludedScoutPath(sentence)) {
+      kept.push(sentence);
+      continue;
+    }
+    const narrowed = stripExcludedAlternativeClause(sentence);
+    if (narrowed === null) return null;
+    kept.push(narrowed);
+  }
+  return kept.length > 0 ? kept.join(" ") : null;
+}
+
+/**
+ * Narrow a list item when every excluded-path reference in it sits inside a
+ * removable trailing `or` alternative clause. If any sentence in the item is
+ * about an excluded operation as a whole, return `null` so the caller drops
+ * the complete list item rather than leaving orphan continuation text.
+ */
+function narrowListItem(item: string[]): string[] | null {
+  const match = LIST_ITEM_MARKER_RE.exec(item[0] ?? "");
+  if (!match) return null;
+  const marker = match[1]!;
+  const firstBody = match[2]!;
+  const continuations = item.slice(1);
+  if (continuations.some((part) => /^\s*[|>]/.test(part))) return null;
+
+  const bodyLines = [firstBody, ...continuations];
+  if (bodyLines.every(endsSentence)) {
+    const keptLines: string[] = [];
+    for (let k = 0; k < bodyLines.length; k++) {
+      const rawLine = bodyLines[k]!;
+      const prefix = k === 0 ? marker : (/^\s*/.exec(rawLine)?.[0] ?? "");
+      const content = k === 0 ? rawLine : rawLine.slice(prefix.length);
+      if (!containsExcludedScoutPath(content)) {
+        keptLines.push(prefix + content);
+        continue;
+      }
+      const narrowed = narrowAllSentences(content);
+      if (narrowed === null) return null;
+      keptLines.push(prefix + narrowed);
+    }
+    return keptLines;
+  }
+
+  const joined = bodyLines
+    .map((part) => part.trim())
+    .filter((part) => part !== "")
+    .join(" ");
+  const narrowed = narrowAllSentences(joined);
+  return narrowed !== null ? [marker + narrowed] : null;
+}
+
 /**
  * Remove complete Markdown blocks that advertise excluded Scout paths, and
- * complete sentences that name one inside a plain paragraph. A paragraph that
- * names no excluded path keeps its exact bytes. Any reference that does not
- * fit one of these units stops the build or read; no sentence is edited in part.
+ * narrow or drop affected sentences in plain paragraphs and list items. A
+ * trailing `or` alternative clause that names an excluded endpoint is removed
+ * when the remaining sentence stands on its own; otherwise a paragraph drops
+ * that sentence and a list item drops the whole item. Blocks that name no
+ * excluded path keep their exact bytes. Any reference that does not fit one of
+ * these units stops the build or read.
  */
 export function scrubExcludedScoutOperationRefs(text: string, context: string): string {
   const lines = text.split("\n");
@@ -249,7 +559,15 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
       const keptLines = units.flatMap((unit) => {
         if (!containsExcludedScoutPath(unit)) return [unit];
         const indent = /^\s*/.exec(unit)?.[0] ?? "";
-        const kept = splitSentences(unit).filter((sentence) => !containsExcludedScoutPath(sentence));
+        const kept: string[] = [];
+        for (const sentence of splitSentences(unit)) {
+          if (!containsExcludedScoutPath(sentence)) {
+            kept.push(sentence);
+            continue;
+          }
+          const narrowed = stripExcludedAlternativeClause(sentence);
+          if (narrowed !== null) kept.push(narrowed);
+        }
         return kept.length > 0 ? [indent + kept.join(" ")] : [];
       });
       out.push(...keptLines);
@@ -263,13 +581,19 @@ export function scrubExcludedScoutOperationRefs(text: string, context: string): 
     while (
       j < withoutSections.length &&
       /^\s+\S/.test(withoutSections[j] ?? "") &&
-      !listItemStart(withoutSections[j] ?? "")
+      !listItemStart(withoutSections[j] ?? "") &&
+      !fenceLine(withoutSections[j] ?? "")
     ) {
       item.push(withoutSections[j] ?? "");
       j += 1;
     }
-    if (!containsExcludedScoutPath(item.join("\n"))) out.push(...item);
     i = j - 1;
+    if (!containsExcludedScoutPath(item.join("\n"))) {
+      out.push(...item);
+      continue;
+    }
+    const narrowed = narrowListItem(item);
+    if (narrowed !== null) out.push(...narrowed);
   }
 
   const scrubbed = out.join("\n");

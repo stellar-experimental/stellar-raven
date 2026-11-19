@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
 import { loadSkillTexts } from "../scripts/lib/skill-mirror.mjs";
 import { EXCLUDED_SCOUT_PATHS } from "../src/policy/scout-exposure.ts";
 import {
@@ -186,7 +187,77 @@ describe("skill-body operation exposure scrub", () => {
     expect(scrubbed).toContain("/api/repository");
   });
 
-  it("removes excluded paths from every selected Scout file", async () => {
+  it("narrows trailing excluded alternative clauses inside list items and paragraphs", () => {
+    const match = "/api/partners/match";
+    const assistant = "/api/partners/assistant";
+    const listText = [
+      "1. **Step one.** Keep `/api/stablecoins`.",
+      `2. **Rails and partners.** \`/api/stablecoins?peg={USD}\` (compare \`marketCapUSD\`, never raw \`supply\`) and \`/api/partners?type=anchor\`, or \`POST ${match}\` with the need in plain language. Empty results mean none listed.`,
+      `3. **Wrapped step.** Use \`/api/partners\`,`,
+      `   or call \`POST ${match}\``,
+      "   for plain-language matching, or",
+      `   \`POST ${assistant}\` (guided flow). Keep this.`,
+      "4. **Final step.** Keep `/api/rfps`."
+    ].join("\n");
+
+    expect(scrubExcludedScoutOperationRefs(listText, "workflow list")).toBe(
+      [
+        "1. **Step one.** Keep `/api/stablecoins`.",
+        "2. **Rails and partners.** `/api/stablecoins?peg={USD}` (compare `marketCapUSD`, never raw `supply`) and `/api/partners?type=anchor`. Empty results mean none listed.",
+        "3. **Wrapped step.** Use `/api/partners`. Keep this.",
+        "4. **Final step.** Keep `/api/rfps`."
+      ].join("\n")
+    );
+
+    const paragraph = [
+      "One profile by slug.",
+      `**Use when** you hold a slug from \`/api/partners\`; for *finding* a partner use \`/api/partners\` filters or \`POST ${match}\`.`
+    ].join(" ");
+    expect(scrubExcludedScoutOperationRefs(paragraph, "paragraph alternative")).toBe(
+      "One profile by slug. **Use when** you hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
+    );
+  });
+
+  it("drops the whole sentence or list item when narrowing would leave a fragment or drop exposed paths", () => {
+    const match = "/api/partners/match";
+    for (const sentence of [
+      `Either call \`/api/partners\` or \`POST ${match}\`.`,
+      `Check whether \`/api/partners\` or \`POST ${match}\` fits.`,
+      `If \`/api/partners\` or \`POST ${match}\` fails, retry.`,
+      `The \`/api/partners\` or \`POST ${match}\` endpoint returns 200.`,
+      `Use \`/api/partners\` or \`POST ${match}\`, then inspect.`,
+      `Use \`/api/a\` or \`/api/b\` when \`POST ${match}\` is unavailable.`,
+      `Compare \`/api/partners\` or \`POST ${match}\` with \`/api/projects\`.`,
+      `Send GET or POST ${match}.`,
+      `**Partners:** or \`POST ${match}\`.`
+    ]) {
+      expect(
+        scrubExcludedScoutOperationRefs(`${sentence} Keep this.`, "unsafe alternative"),
+        sentence
+      ).toBe("Keep this.");
+    }
+
+    const orphanList = [
+      "- Keep before.",
+      `- **Partner matching.** Call \`POST ${match}\`. It ranks partners by fit.`,
+      "- Keep after."
+    ].join("\n");
+    expect(scrubExcludedScoutOperationRefs(orphanList, "orphan list")).toBe(
+      ["- Keep before.", "- Keep after."].join("\n")
+    );
+
+    const fencedAfterBullet = [
+      "- Keep this bullet.",
+      "  ```sh",
+      `  curl https://example.test${match}`,
+      "  ```"
+    ].join("\n");
+    expect(() => scrubExcludedScoutOperationRefs(fencedAfterBullet, "fenced bullet")).toThrow(
+      "survives outside a removable Markdown block or sentence"
+    );
+  });
+
+  it("removes excluded paths from every selected Scout file while keeping the partner-filter workflow", async () => {
     const manifest = JSON.parse(
       readFileSync(join(ROOT, "ecosystem-skills", "MANIFEST.json"), "utf8")
     );
@@ -195,12 +266,30 @@ describe("skill-body operation exposure scrub", () => {
 
     const selected = await loadSkillTexts({ ...manifest, sources: [source] });
     expect(selected.size).toBeGreaterThan(0);
+    const scrubbedByKey = new Map<string, string>();
     for (const [key, file] of selected) {
       const scrubbed = scrubNonExposedRefs(file.text, key);
+      scrubbedByKey.set(key, scrubbed);
+      expect(() => assertNoNonExposedRefsInText(scrubbed, key)).not.toThrow();
       const mentionedPaths = scrubbed.match(/\/api\/[\w/{}/-]+/g) ?? [];
       for (const path of EXCLUDED_SCOUT_PATHS) {
         expect(mentionedPaths, `${key} retains ${path}`).not.toContain(path);
       }
     }
+
+    const skillMd = scrubbedByKey.get("stellar-light/stellar-scout/SKILL.md");
+    expect(skillMd).toBeDefined();
+    expect(skillMd).toContain("4. **Rails and partners the demo needs.**");
+    expect(skillMd).toContain("`/api/stablecoins?peg={USD|EUR|BRL…}` (compare `marketCapUSD`, never raw `supply` across pegs)");
+    expect(skillMd).toContain("`/api/partners?type={anchor|on-off-ramp|audit-firm}&q={country}`.");
+    expect(skillMd).toContain('"none listed at our source"');
+    expect(skillMd).not.toContain("/api/partners/match");
+
+    const apiRef = scrubbedByKey.get("stellar-light/stellar-scout/references/api-reference.md");
+    expect(apiRef).toBeDefined();
+    expect(apiRef).toContain(
+      "**Use when** you already hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
+    );
+    expect(apiRef).not.toContain("## `POST /api/partners/match`");
   });
 });
