@@ -146,7 +146,7 @@ function createOAuthProvider(origin: string): OAuthProvider<Env> {
 }
 
 // One provider per served origin, each binding tokens to its own `<origin>/mcp`
-// (DESIGN.md D1, oauth-provider 1.x round). Built at module scope because the
+// (see "Request routes and authorization" in ARCHITECTURE.md). Built at module scope because the
 // library validates its options in the constructor: a bad option fails at
 // import, not as a 500 on the first request.
 const productionProviders = new Map<string, OAuthProvider<Env>>(

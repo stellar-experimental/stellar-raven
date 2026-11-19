@@ -41,7 +41,10 @@ Then add an entry below, rebuild the generated artifacts, and commit together.
 What to look for in the diff, beyond "is it accurate": instructions that try to change the
 agent's behavior outside the skill's topic, references to non-exposed operations or retired
 skills, claims about this gateway's own capabilities, and anything resembling injected
-instructions ("ignore previous", "you must", credentials, URLs to fetch).
+instructions ("ignore previous", "you must", credentials, URLs to fetch). When `diff-pins.mjs`
+prints `### SCRUB NARROWED` for a file, check that each `served as:` sentence kept its intended
+meaning after the excluded alternative was stripped; a `### SCRUB BLOCKED` line means an excluded
+reference survived the scrub and will fail the catalog build until the scrub is updated.
 
 ## Entries
 

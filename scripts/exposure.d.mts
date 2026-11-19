@@ -1,13 +1,18 @@
 // Ambient declaration for exposure.mjs (plain JS, no build step) so TS test
 // files can import its exclusion data directly under `tsc --noEmit`. Keep in
 // sync with the exported surface of exposure.mjs.
+import type { ScrubOptions } from "../src/skills/scrub.ts";
+
 export const LUMENLOOP_ACCOUNT_OP_RE: RegExp;
 export const EXCLUDED_LUMENLOOP_OPS: Set<string>;
 export function lumenloopOpExcluded(tool: { name: string; metered?: boolean }): boolean;
 export const EXCLUDED_SCOUT_OPS: Set<string>;
 export const EXCLUDED_SCOUT_OPERATIONS: Map<string, string>;
+export const EXCLUDED_SCOUT_PATHS: Set<string>;
 export const NON_EXPOSED_SCOUT_OP_NAMES: Set<string>;
 export const OPTIONAL_EXCLUDED_SCOUT_OPERATIONS: Map<string, string>;
+export const SCOUT_PATHS_ABSENT_FROM_SPEC: Set<string>;
+export function findExcludedScoutPath(text: string): string | null;
 export const RETIRED_ONBOARDING_SKILLS: Set<string>;
 export const RETIRED_PARTNER_ONBOARDING_SKILLS: Set<string>;
 export const SKILL_EXPOSURE_CLASSIFICATION_VALUES: Set<string>;
@@ -29,4 +34,4 @@ export const SKILL_EXPOSURE_CLASSIFICATION_BY_ID: Map<
   }
 >;
 export function scrubRetiredSkillRefs(text: string, context: string): string;
-export function scrubNonExposedRefs(text: string, context: string): string;
+export function scrubNonExposedRefs(text: string, context: string, options?: ScrubOptions): string;

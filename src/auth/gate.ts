@@ -56,7 +56,8 @@ export function mcpResource(origin: string): string {
  *
  * `resource` is the one canonical resource this provider binds tokens to. Raven
  * serves three origins, so src/server.ts builds one provider per origin, each
- * with its own `<origin>/mcp` (DESIGN.md D1 of the oauth-provider 1.x round).
+ * with its own `<origin>/mcp` (see "Request routes and authorization" in
+ * ARCHITECTURE.md).
  */
 export function oauthProviderOptions(
   mcpHandler: ExportedHandler<Env> & { fetch: NonNullable<ExportedHandler<Env>["fetch"]> },

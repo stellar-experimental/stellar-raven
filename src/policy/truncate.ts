@@ -34,6 +34,8 @@ export type Truncated = {
   maxChars: number;
   /** Same estimate the footer uses; useful for observability aggregates. */
   approxOriginalTokens: number;
+  /** Human-readable description of where the clipped bulk was (empty when not truncated or unavailable). */
+  lossDetail: string;
 };
 
 /**
@@ -215,14 +217,16 @@ export function truncateForModel(
       returnedChars: text.length,
       maxTokens,
       maxChars,
-      approxOriginalTokens
+      approxOriginalTokens,
+      lossDetail: ""
     };
   }
   // SECURITY: the cut position is fixed at maxChars regardless of shape; the
   // loss detail only changes the ADVICE TEXT appended after it. Callers
   // redact BEFORE this function (run.ts), so both the kept prefix and any key
   // names echoed in the footer are already scrubbed — never reorder that.
-  const returnedText = text.slice(0, maxChars) + footer(text.length, maxTokens, lossDetail(value, text.length, maxChars), advice);
+  const detail = lossDetail(value, text.length, maxChars);
+  const returnedText = text.slice(0, maxChars) + footer(text.length, maxTokens, detail, advice);
   return {
     text: returnedText,
     truncated: true,
@@ -230,7 +234,8 @@ export function truncateForModel(
     returnedChars: returnedText.length,
     maxTokens,
     maxChars,
-    approxOriginalTokens
+    approxOriginalTokens,
+    lossDetail: detail
   };
 }
 
@@ -260,7 +265,8 @@ export function truncateLogsForModel(text: string, maxTokens = DEFAULT_MAX_TOKEN
       returnedChars: text.length,
       maxTokens,
       maxChars,
-      approxOriginalTokens
+      approxOriginalTokens,
+      lossDetail: ""
     };
   }
   const returnedText = text.slice(0, maxChars) + logsFooter(text.length, maxTokens);
@@ -271,6 +277,7 @@ export function truncateLogsForModel(text: string, maxTokens = DEFAULT_MAX_TOKEN
     returnedChars: returnedText.length,
     maxTokens,
     maxChars,
-    approxOriginalTokens
+    approxOriginalTokens,
+    lossDetail: ""
   };
 }

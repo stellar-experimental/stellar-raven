@@ -158,7 +158,7 @@ export function sourceBasisShapeFromTruncation(value: unknown, truncated: Trunca
   const base = {
     serializedChars: truncated.originalChars,
     approxTokens: truncated.approxOriginalTokens,
-    lossDetail: extractLossDetail(truncated.text, truncated.maxChars)
+    lossDetail: truncated.lossDetail
   };
 
   if (Array.isArray(value)) return { ...base, kind: "array", totalItems: value.length };
@@ -429,12 +429,6 @@ function artifactLine(artifact: SourceBasisArtifact | undefined): string {
     `bytes=${safeInteger(artifact.bytes)}`,
     `expiresAt=${truncateAtom(artifact.expiresAt, MAX_ATOM_CHARS)}`
   ].join(" ");
-}
-
-function extractLossDetail(text: string, maxChars: number): string {
-  const footer = text.slice(maxChars);
-  const match = /^\n--- TRUNCATED --- Result was ~\d+ tokens \(limit: \d+\)\.(.*?) Re-run returning/s.exec(footer);
-  return match?.[1]?.trim() ?? "";
 }
 
 function sourceBasisCallTotals(calls: SourceBasisCall[]): Record<SourceBasisCallOutcome, number> {

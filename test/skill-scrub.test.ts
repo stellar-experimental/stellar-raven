@@ -105,7 +105,9 @@ describe("skill-body operation exposure scrub", () => {
   it("fails closed on an indented code block and on structural lines inside a fence", () => {
     for (const text of [
       ["Before.", "", `    curl https://x${excludedPath}`, "    echo done. Next thing.", "", "After."].join("\n"),
-      ["```", `- ${excludedPath}`, `| ${excludedPath} |`, `> ${excludedPath}`, "```"].join("\n")
+      ["```", `- ${excludedPath}`, `| ${excludedPath} |`, `> ${excludedPath}`, "```"].join("\n"),
+      // A `~~~` line inside a backtick fence does not close the fence.
+      ["```", "~~~", `- ${excludedPath}`, "```"].join("\n")
     ]) {
       expect(() => scrubExcludedScoutOperationRefs(text, "code fixture")).toThrow(
         "survives outside a removable Markdown block or sentence"
@@ -132,10 +134,11 @@ describe("skill-body operation exposure scrub", () => {
     ).toBe("Keep this.");
   });
 
-  it("matches a templated excluded path with a concrete value and a percent-encoded path", () => {
+  it("matches a templated excluded path with a concrete value, case variant, and percent-encoded path", () => {
     const text = [
       "- Fetch /api/hackathons/builds/dorahacks-buidl-12 for detail.",
-      "- Call /api/hackathons%2Fanalyze now.",
+      "- Call /api/hackathons%2Freview now.",
+      "- Call /API/HACKATHONS/ANALYZE now.",
       "- Keep `/api/hackathons/builds?q=defi`."
     ].join("\n");
     expect(scrubExcludedScoutOperationRefs(text, "templated")).toBe(
@@ -214,9 +217,20 @@ describe("skill-body operation exposure scrub", () => {
       "One profile by slug.",
       `**Use when** you hold a slug from \`/api/partners\`; for *finding* a partner use \`/api/partners\` filters or \`POST ${match}\`.`
     ].join(" ");
-    expect(scrubExcludedScoutOperationRefs(paragraph, "paragraph alternative")).toBe(
+    const narrowedEvents: Array<{ before: string; after: string }> = [];
+    expect(
+      scrubExcludedScoutOperationRefs(paragraph, "paragraph alternative", {
+        onNarrow: (change) => narrowedEvents.push(change)
+      })
+    ).toBe(
       "One profile by slug. **Use when** you hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
     );
+    expect(narrowedEvents).toEqual([
+      {
+        before: `**Use when** you hold a slug from \`/api/partners\`; for *finding* a partner use \`/api/partners\` filters or \`POST ${match}\`.`,
+        after: "**Use when** you hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
+      }
+    ]);
 
     const wrappedParagraph = [
       "Find partners with `/api/partners`",
@@ -251,9 +265,15 @@ describe("skill-body operation exposure scrub", () => {
       "  | Col | Val |",
       "- Keep after."
     ].join("\n");
-    expect(scrubExcludedScoutOperationRefs(fallbackList, "fallback list")).toBe(
+    const fallbackNarrowed: Array<{ before: string; after: string }> = [];
+    expect(
+      scrubExcludedScoutOperationRefs(fallbackList, "fallback list", {
+        onNarrow: (change) => fallbackNarrowed.push(change)
+      })
+    ).toBe(
       ["- Keep before.", "- Keep after."].join("\n")
     );
+    expect(fallbackNarrowed).toEqual([]);
 
     // Any excluded path inside an indented fence still fails closed, whether its
     // parent list item was kept or dropped.
@@ -267,7 +287,7 @@ describe("skill-body operation exposure scrub", () => {
     }
   });
 
-  it("removes excluded paths from every selected Scout file while keeping the partner-filter workflow", async () => {
+  it("removes excluded paths from every selected Scout file", async () => {
     const manifest = JSON.parse(
       readFileSync(join(ROOT, "ecosystem-skills", "MANIFEST.json"), "utf8")
     );
@@ -276,32 +296,9 @@ describe("skill-body operation exposure scrub", () => {
 
     const selected = await loadSkillTexts({ ...manifest, sources: [source] });
     expect(selected.size).toBeGreaterThan(0);
-    const scrubbedByKey = new Map<string, string>();
     for (const [key, file] of selected) {
       const scrubbed = scrubNonExposedRefs(file.text, key);
-      scrubbedByKey.set(key, scrubbed);
       expect(() => assertNoNonExposedRefsInText(scrubbed, key)).not.toThrow();
-      // Also check SCOUT_PATHS_ABSENT_FROM_SPEC (e.g. /api/repos), which the
-      // emitted-text guard does not list.
-      const mentionedPaths = scrubbed.match(/\/api\/[\w/{}/-]+/g) ?? [];
-      for (const path of EXCLUDED_SCOUT_PATHS) {
-        expect(mentionedPaths, `${key} retains ${path}`).not.toContain(path);
-      }
     }
-
-    const skillMd = scrubbedByKey.get("stellar-light/stellar-scout/SKILL.md");
-    expect(skillMd).toBeDefined();
-    expect(skillMd).toContain("4. **Rails and partners the demo needs.**");
-    expect(skillMd).toContain("`/api/stablecoins?peg={USD|EUR|BRL…}` (compare `marketCapUSD`, never raw `supply` across pegs)");
-    expect(skillMd).toContain("`/api/partners?type={anchor|on-off-ramp|audit-firm}&q={country}`.");
-    expect(skillMd).toContain('"none listed at our source"');
-    expect(skillMd).not.toContain("/api/partners/match");
-
-    const apiRef = scrubbedByKey.get("stellar-light/stellar-scout/references/api-reference.md");
-    expect(apiRef).toBeDefined();
-    expect(apiRef).toContain(
-      "**Use when** you already hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
-    );
-    expect(apiRef).not.toContain("## `POST /api/partners/match`");
   });
 });

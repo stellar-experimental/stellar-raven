@@ -21,21 +21,13 @@
  */
 import {
   EXCLUDED_LUMENLOOP_OPS,
-  EXCLUDED_SCOUT_OPS,
   NON_EXPOSED_SCOUT_OP_NAMES,
-  RETIRED_SKILL_REF_RE
+  RETIRED_SKILL_REF_RE,
+  findExcludedScoutPath
 } from "./exposure.mjs";
 
 // Share the runtime scrub pattern instead of maintaining another retired-id list.
 const RETIRED_SKILL_RE = RETIRED_SKILL_REF_RE;
-const RAW_SCOUT_PATHS = [...EXCLUDED_SCOUT_OPS].map((signature) => signature.split(" ")[1]);
-// A templated segment (`{id}`) also matches a concrete value, the same rule as
-// the runtime scrub in src/skills/scrub.ts.
-const TEMPLATED_SCOUT_PATH_RES = RAW_SCOUT_PATHS.filter((path) => /\{[^}/]+\}/.test(path)).map(
-  (path) => [path, new RegExp(path.toLowerCase().split(/(\{[^}/]+\})/).map((part) =>
-    /^\{[^}/]+\}$/.test(part) ? "[^\\s/`)\\]]+" : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-  ).join("") + "(?![\\w/-])")]
-);
 const SCOUT_NAME_SPELLINGS = [...NON_EXPOSED_SCOUT_OP_NAMES].flatMap((name) => [
   name, name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase()
 ]);
@@ -68,25 +60,18 @@ export function assertNoNonExposedRefsInText(text, label) {
         `scripts/exposure.mjs).`
     );
   }
-  // Decode valid escape runs separately: a stray prose percent sign must not
-  // disable checks for an encoded path elsewhere in the same text.
-  const decodedText = text.replace(/(?:%[0-9a-f]{2})+/gi, (encoded) => {
-    try { return decodeURIComponent(encoded); } catch { return encoded; }
-  }).toLowerCase();
-  const matchesPath = (path) =>
-    decodedText.includes(path.toLowerCase()) ||
-    TEMPLATED_SCOUT_PATH_RES.some(([templated, re]) => templated === path && re.test(decodedText));
-  for (const path of RAW_SCOUT_PATHS) {
-    if (matchesPath(path)) {
-      throw new Error(
-        `ADR-0003 leak: ${label} emits excluded scout endpoint path "${path}" — ` +
-          `if it came from an exposed OPERATION's description, add the clause to ` +
-          `SCOUT_DESCRIPTION_SCRUBS in scripts/description-notes.mjs. That scrub is keyed by ` +
-          `operationId and cannot reach COMPONENT prose: a component describing only an excluded ` +
-          `op should be unreachable and pruned by build-super-spec.mjs, and a reachable ` +
-          `component whose description names the path needs the text fixed at the source.`
-      );
-    }
+  // Share the runtime path matcher (case-insensitive, percent-decoded,
+  // boundary-checked over EXCLUDED_SCOUT_PATHS including SCOUT_PATHS_ABSENT_FROM_SPEC).
+  const excludedPath = findExcludedScoutPath(text);
+  if (excludedPath) {
+    throw new Error(
+      `ADR-0003 leak: ${label} emits excluded scout endpoint path "${excludedPath}" — ` +
+        `if it came from an exposed OPERATION's description, add the clause to ` +
+        `SCOUT_DESCRIPTION_SCRUBS in scripts/description-notes.mjs. That scrub is keyed by ` +
+        `operationId and cannot reach COMPONENT prose: a component describing only an excluded ` +
+        `op should be unreachable and pruned by build-super-spec.mjs, and a reachable ` +
+        `component whose description names the path needs the text fixed at the source.`
+    );
   }
   if (RETIRED_SKILL_RE.test(text)) {
     throw new Error(
