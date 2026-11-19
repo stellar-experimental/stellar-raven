@@ -127,8 +127,8 @@ const REDACTED = "[redacted]";
 
 // Redaction events performed by the sanitizer. Counted at the source so the
 // choice between variants never depends on marker text in the input.
-function newRedactionTally() {
-  return { count: 0 };
+function newRedactionTally(metrics = null) {
+  return { count: 0, metrics };
 }
 
 function redactedLeaf(tally) {
@@ -215,7 +215,7 @@ function normalizeKeyForClassification(key) {
 // about the key it replaced — never a digest of it, which would hand back the
 // secret to anyone able to test a guess.
 function emitKeyName(key, keyNames, tally) {
-  const scanned = sanitizeStructuredStringLeaf(key);
+  const scanned = sanitizeStructuredStringLeaf(key, tally.metrics);
   tally.count += scanned.redactions;
   const base = scanned.sanitized;
   // Resume from this base's next free suffix instead of restarting the search
@@ -479,17 +479,28 @@ function consumeSchemeToken(text, start) {
   return index > start ? { end: index } : null;
 }
 
+function recordUrlScan(metrics, scannedChars) {
+  if (!metrics) return;
+  metrics.urlCandidateProbes += 1;
+  metrics.urlScanChars += scannedChars;
+}
+
 // One scheme-shaped run is parsed once. Every candidate start inside a run
 // reaches the same run end, so a failed "://" or userinfo-free authority is
 // reported back as `schemeRunEnd` and the caller skips the overlapping
 // suffixes instead of rescanning them.
-function consumeUserinfoUrl(text, start) {
+function consumeUserinfoUrl(text, start, metrics) {
   let index = start + 1;
   while (index < text.length && isSchemeChar(text[index])) index += 1;
-  if (!text.startsWith("://", index)) return { schemeRunEnd: index };
+  let scannedChars = index - start;
+  if (!text.startsWith("://", index)) {
+    recordUrlScan(metrics, scannedChars);
+    return { schemeRunEnd: index };
+  }
   const schemeEnd = index + 3;
   let at = -1;
   for (let cursor = schemeEnd; cursor < text.length; cursor += 1) {
+    scannedChars += 1;
     const ch = text[cursor];
     if (ch === "/" || ch === "?" || ch === "#" || ch === " " || ch === "\t" || ch === "\n" || ch === '"' || ch === "'") {
       break;
@@ -499,8 +510,10 @@ function consumeUserinfoUrl(text, start) {
     } else if (ch === "%" && text[cursor + 1] === "4" && text[cursor + 2] === "0") {
       at = cursor + 2;
       cursor += 2;
+      scannedChars += 2;
     }
   }
+  recordUrlScan(metrics, scannedChars);
   if (at === -1) return { schemeRunEnd: index };
   return { end: at + 1, replacement: `${text.slice(start, schemeEnd)}${REDACTED}@` };
 }
@@ -531,7 +544,7 @@ function redactPlaintextAssignments(text, tally = newRedactionTally()) {
     }
 
     if (!quoted && flagNameStart < 0 && index >= schemeSkipUntil) {
-      const url = consumeUserinfoUrl(text, index);
+      const url = consumeUserinfoUrl(text, index, tally.metrics);
       if (url.replacement !== undefined) {
         out += url.replacement;
         tally.count += 1;
@@ -606,7 +619,7 @@ function isJsonSafePrimitive(value) {
 // expand into an output hole per slot.
 function redactStructuredEntry(dst, key, entry, depth, stack, visited, tally) {
   if (typeof entry === "string") {
-    const leaf = sanitizeStructuredStringLeaf(entry);
+    const leaf = sanitizeStructuredStringLeaf(entry, tally.metrics);
     dst[key] = leaf.sanitized;
     tally.count += leaf.redactions;
     return;
@@ -636,7 +649,7 @@ function redactStructuredEntry(dst, key, entry, depth, stack, visited, tally) {
 // redacted without ever being invoked.
 function redactSensitiveValues(value, tally = newRedactionTally()) {
   if (typeof value === "string") {
-    const leaf = sanitizeStructuredStringLeaf(value);
+    const leaf = sanitizeStructuredStringLeaf(value, tally.metrics);
     tally.count += leaf.redactions;
     return leaf.sanitized;
   }
@@ -780,18 +793,26 @@ function chooseSanitizedVariant(text, redact) {
 // path parses its input as JSON, and a leaf whose text merely looks like JSON
 // would be parsed and re-serialized, rewriting a string nothing was wrong with.
 // Only the plaintext credential scan runs here.
-function sanitizeStructuredStringLeaf(value) {
+function sanitizeStructuredStringLeaf(value, metrics = null) {
   return chooseSanitizedVariant(value, (variant) => {
-    const tally = newRedactionTally();
+    const tally = newRedactionTally(metrics);
     return { sanitized: redactPlaintextAssignments(variant, tally), redactions: tally.count };
   });
 }
 
-// Exported for focused sanitizer regression tests.
-export function sanitizeCliEvidenceText(text) {
+// Exported for focused sanitizer regression tests. Optional `options.metrics`
+// accumulates URL-candidate scan counts (`urlCandidateProbes`, `urlScanChars`)
+// across the call (pass a fresh object per measurement) so linear-scan tests
+// can assert on work done instead of wall-clock timing.
+export function sanitizeCliEvidenceText(text, options) {
   try {
+    const metrics = options?.metrics && typeof options.metrics === "object" ? options.metrics : null;
+    if (metrics) {
+      metrics.urlCandidateProbes ??= 0;
+      metrics.urlScanChars ??= 0;
+    }
     return chooseSanitizedVariant(text, (variant) => {
-      const tally = newRedactionTally();
+      const tally = newRedactionTally(metrics);
       const parsed = tryParseJson(variant);
       const sanitized = parsed === undefined ? sanitizeNonJsonText(variant, tally) : sanitizeStructuredJson(parsed, tally);
       return { sanitized, redactions: tally.count };

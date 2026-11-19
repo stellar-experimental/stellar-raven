@@ -1501,29 +1501,43 @@ describe("QA judge CLI evidence", () => {
     expect(serialized).toContain("done cleanly");
   });
 
-  it("scans failed and userinfo-free URL candidates in bounded linear time", () => {
-    const buildFailedCandidate = (size) => `${"a+".repeat(Math.ceil(size / 2)).slice(0, size)}:x`;
-    const buildSchemeRun = (size) => `${"a+".repeat(Math.ceil(size / 2)).slice(0, size)}://example.com`;
+  it(
+    "scans failed and userinfo-free URL candidates in bounded linear time",
+    { timeout: 5_000 },
+    () => {
+      const buildFailedCandidate = (size) => `${"a+".repeat(Math.ceil(size / 2)).slice(0, size)}:x`;
+      const buildSchemeRun = (size) => `${"a+".repeat(Math.ceil(size / 2)).slice(0, size)}://example.com`;
 
-    const timeOnce = (input) => {
-      const startedAt = performance.now();
-      sanitizeCliEvidenceText(input);
-      return performance.now() - startedAt;
-    };
+      const measureScan = (input) => {
+        const metrics = { urlCandidateProbes: 0, urlScanChars: 0 };
+        const sanitized = sanitizeCliEvidenceText(input, { metrics });
+        expect(sanitized).toBe(input);
+        return metrics;
+      };
 
-    for (const build of [buildFailedCandidate, buildSchemeRun]) {
-      const smallMs = Math.max(timeOnce(build(10_000)), 1);
-      const largeMs = timeOnce(build(40_000));
+      for (const build of [buildFailedCandidate, buildSchemeRun]) {
+        const smallInput = build(10_000);
+        const largeInput = build(40_000);
+        const small = measureScan(smallInput);
+        const large = measureScan(largeInput);
 
-      expect(largeMs).toBeLessThan(250);
-      expect(largeMs / smallMs).toBeLessThan(8);
+        // Each scheme-shaped run is scanned once instead of once per overlapping
+        // suffix, so probes stay constant and scanned characters grow linearly.
+        expect(small.urlCandidateProbes).toBeGreaterThan(0);
+        expect(small.urlCandidateProbes).toBeLessThanOrEqual(4);
+        expect(large.urlCandidateProbes).toBe(small.urlCandidateProbes);
+        expect(small.urlScanChars).toBeGreaterThanOrEqual(10_000);
+        expect(large.urlScanChars).toBeGreaterThanOrEqual(40_000);
+        expect(large.urlScanChars).toBeLessThanOrEqual(largeInput.length * 4);
+        expect(large.urlScanChars / small.urlScanChars).toBeLessThan(5);
+      }
+
+      expect(sanitizeCliEvidenceText(`${buildFailedCandidate(64)}\nPASSWORD=SCAN_SENTINEL\n`)).toContain(
+        "PASSWORD=[redacted]"
+      );
+      expect(sanitizeCliEvidenceText("token+password=PLUS_SENTINEL")).not.toContain("PLUS_SENTINEL");
     }
-
-    expect(sanitizeCliEvidenceText(`${buildFailedCandidate(64)}\nPASSWORD=SCAN_SENTINEL\n`)).toContain(
-      "PASSWORD=[redacted]"
-    );
-    expect(sanitizeCliEvidenceText("token+password=PLUS_SENTINEL")).not.toContain("PLUS_SENTINEL");
-  });
+  );
 
   it("never invokes accessors or toJSON when sanitizing structured evidence", () => {
     const hostile = { kept: 1, total_cost_usd: 0.25 };
