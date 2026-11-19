@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 /**
- * summarize-live-drift.mjs - Markdown evidence for the auto-filed drift issue.
+ * summarize-live-drift.mjs - Markdown and per-source structured evidence for
+ * the auto-filed drift issues.
  *
  * This is intentionally advisory. The live-drift-resolution skill remains the
  * source of truth: agents must regenerate locally and classify from the actual
- * diff before committing. This script makes the issue richer by surfacing the
+ * diff before committing. This script makes each issue richer by surfacing the
  * first-pass facts CI can derive from the checked-out old snapshot vs the
  * refreshed working tree.
  */
+import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
-import { join, dirname, resolve } from "node:path";
+import { basename, join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { RUNNERS } from "../src/skills/runners/index.ts";
 import { summarizeAnchorChanges } from "./build-stellar-docs-anchors.mjs";
@@ -346,6 +348,39 @@ function summarizeDocsInventory(path) {
   ];
 }
 
+export function classifyStellarOrg(oldInv, nextInv) {
+  const lines = [];
+  if (!sameJson(oldInv?.source, nextInv?.source)) {
+    lines.push(
+      "  - backend source identity changed (origin, search path, or auth).",
+      "  - Reconcile specs/stellar-org.json `backend` and src/adapters/stellar-org.ts before closing."
+    );
+  }
+  if (!sameJson(oldInv?.contract, nextInv?.contract)) {
+    lines.push(
+      "  - site search or page probe contract changed.",
+      "  - Run test/stellar-org-adapter.test.ts and a live smoke of stellarOrg.search_site and stellarOrg.get_page."
+    );
+  }
+  return lines;
+}
+
+function summarizeStellarOrg(path) {
+  if (!changedFiles([path]).includes(path)) return [];
+  if (!existsSync(join(ROOT, path))) return [`- ${path}: removed; classify manually.`];
+  const oldInv = readHeadJson(path);
+  const nextInv = readJson(path);
+  if (!oldInv) return [`- ${path}: new inventory file; classify manually.`];
+  if (sameJson({ ...oldInv, fetchedAt: nextInv.fetchedAt }, nextInv)) {
+    return [`- ${path}: unchanged ignoring fetchedAt.`];
+  }
+  const lines = classifyStellarOrg(oldInv, nextInv);
+  return [
+    `- ${path}: stellar.org site contract snapshot changed.`,
+    ...(lines.length > 0 ? lines : ["  - only fields outside source and contract changed; classify manually."])
+  ];
+}
+
 function runnerIntersections(touchedCatalogIds) {
   const lines = [];
   for (const [runnerId, runner] of Object.entries(RUNNERS)) {
@@ -355,9 +390,163 @@ function runnerIntersections(touchedCatalogIds) {
   return lines;
 }
 
+function hashStableJson(value) {
+  return createHash("sha256").update(JSON.stringify(stable(value))).digest("hex");
+}
+
+function contentHashForJsonFile(path, { omitFetchedAt = true } = {}) {
+  if (!existsSync(join(ROOT, path))) return hashStableJson({ deleted: path });
+  const parsed = readJson(path);
+  if (omitFetchedAt && parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+    const { fetchedAt: _ignored, ...rest } = parsed;
+    return hashStableJson(rest);
+  }
+  return hashStableJson(parsed);
+}
+
+const ANCHOR_PATH = "src/adapters/stellar-docs-anchors.json";
+const INVENTORY_GENERATED_PATHS = ["inventory", "catalog", "specs", ANCHOR_PATH];
+
+/**
+ * Collect per-source inventory drift records from the current git working tree.
+ *
+ * Each changed inventory or anchor file produces an independent record whose
+ * `contentHash`, `diffStat`, `classificationLines`, and `runnerHits` depend
+ * solely on that source, so drift in one service cannot churn another service's
+ * drift issue fingerprint.
+ */
+export function collectInventoryDrift() {
+  const generatedChanged = changedFiles(INVENTORY_GENERATED_PATHS);
+  if (generatedChanged.length === 0) return [];
+
+  const sourceItems = [];
+  const handled = new Set();
+
+  if (generatedChanged.includes("inventory/lumenloop.json")) {
+    handled.add("inventory/lumenloop.json");
+    const touched = new Set();
+    const lumenloop = summarizeLumenloop("inventory/lumenloop.json");
+    for (const id of lumenloop.touchedCatalogIds) touched.add(id);
+    const lumenloopOpenapi = summarizeOpenapiInventory("inventory/lumenloop.json", "lumenloop", {
+      label: "inventory/lumenloop.json (OpenAPI surface)",
+      skipUnchangedNote: true
+    });
+    for (const id of lumenloopOpenapi.touchedCatalogIds) touched.add(id);
+    sourceItems.push({
+      source: "lumenloop",
+      files: ["inventory/lumenloop.json"],
+      diffStat: diffStat(["inventory/lumenloop.json"]),
+      classificationLines: [...lumenloop.lines, ...lumenloopOpenapi.lines],
+      runnerHits: runnerIntersections(touched),
+      contentHash: contentHashForJsonFile("inventory/lumenloop.json")
+    });
+  }
+
+  if (generatedChanged.includes("inventory/stellar-light.json")) {
+    handled.add("inventory/stellar-light.json");
+    const scout = summarizeOpenapiInventory("inventory/stellar-light.json", "scout");
+    sourceItems.push({
+      source: "stellar-light",
+      files: ["inventory/stellar-light.json"],
+      diffStat: diffStat(["inventory/stellar-light.json"]),
+      classificationLines: scout.lines,
+      runnerHits: runnerIntersections(scout.touchedCatalogIds),
+      contentHash: contentHashForJsonFile("inventory/stellar-light.json")
+    });
+  }
+
+  if (generatedChanged.includes("inventory/stellar-docs.json")) {
+    handled.add("inventory/stellar-docs.json");
+    sourceItems.push({
+      source: "stellar-docs",
+      files: ["inventory/stellar-docs.json"],
+      diffStat: diffStat(["inventory/stellar-docs.json"]),
+      classificationLines: summarizeDocsInventory("inventory/stellar-docs.json"),
+      runnerHits: [],
+      contentHash: contentHashForJsonFile("inventory/stellar-docs.json")
+    });
+  }
+
+  if (generatedChanged.includes("inventory/stellar-docs-titles.json")) {
+    handled.add("inventory/stellar-docs-titles.json");
+    sourceItems.push({
+      source: "stellar-docs-titles",
+      files: ["inventory/stellar-docs-titles.json"],
+      diffStat: diffStat(["inventory/stellar-docs-titles.json"]),
+      classificationLines: summarizeDocsInventory("inventory/stellar-docs-titles.json"),
+      runnerHits: [],
+      contentHash: contentHashForJsonFile("inventory/stellar-docs-titles.json")
+    });
+  }
+
+  if (generatedChanged.includes("inventory/stellar-org.json")) {
+    handled.add("inventory/stellar-org.json");
+    sourceItems.push({
+      source: "stellar-org",
+      files: ["inventory/stellar-org.json"],
+      diffStat: diffStat(["inventory/stellar-org.json"]),
+      classificationLines: summarizeStellarOrg("inventory/stellar-org.json"),
+      runnerHits: [],
+      contentHash: contentHashForJsonFile("inventory/stellar-org.json")
+    });
+  }
+
+  if (generatedChanged.includes(ANCHOR_PATH)) {
+    handled.add(ANCHOR_PATH);
+    const lines = existsSync(join(ROOT, ANCHOR_PATH))
+      ? summarizeDocsAnchors(readHeadJson(ANCHOR_PATH), readJson(ANCHOR_PATH))
+      : [`- ${ANCHOR_PATH}: removed; classify manually.`];
+    sourceItems.push({
+      source: "stellar-docs-anchors",
+      files: [ANCHOR_PATH],
+      diffStat: diffStat([ANCHOR_PATH]),
+      classificationLines: lines,
+      runnerHits: [],
+      contentHash: contentHashForJsonFile(ANCHOR_PATH, { omitFetchedAt: false })
+    });
+  }
+
+  // Catch any newly added inventory/*.json source not explicitly mapped above.
+  for (const file of generatedChanged) {
+    if (handled.has(file) || !file.startsWith("inventory/") || !file.endsWith(".json")) continue;
+    handled.add(file);
+    const source = basename(file, ".json").toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
+    sourceItems.push({
+      source,
+      files: [file],
+      diffStat: diffStat([file]),
+      classificationLines: [`- ${file}: inventory snapshot changed; classify manually.`],
+      runnerHits: [],
+      contentHash: contentHashForJsonFile(file)
+    });
+  }
+
+  // Only emit a derived-only item when catalog/specs artifacts changed with no
+  // inventory/anchor source file change. Ignore documentation files like
+  // inventory/README.md.
+  if (sourceItems.length === 0) {
+    const derivedFiles = generatedChanged.filter(
+      (file) => !handled.has(file) && (file.startsWith("catalog/") || file.startsWith("specs/")) && file.endsWith(".json")
+    );
+    if (derivedFiles.length > 0) {
+      const rawDiff = git(["diff", "--", ...derivedFiles]);
+      sourceItems.push({
+        source: "derived",
+        files: derivedFiles,
+        diffStat: diffStat(derivedFiles),
+        classificationLines: ["- No inventory files changed; inspect catalog/spec diffs and the run logs."],
+        runnerHits: [],
+        contentHash: createHash("sha256").update(rawDiff).digest("hex")
+      });
+    }
+  }
+
+  return sourceItems.sort((a, b) => (a.source < b.source ? -1 : a.source > b.source ? 1 : 0));
+}
+
 function main() {
-  const anchorPath = "src/adapters/stellar-docs-anchors.json";
-  const generatedPaths = ["inventory", "catalog", "specs", anchorPath];
+  const anchorPath = ANCHOR_PATH;
+  const generatedPaths = INVENTORY_GENERATED_PATHS;
   const generatedChanged = changedFiles(generatedPaths);
   const stat = diffStat(generatedPaths);
   const touchedCatalogIds = new Set();
@@ -395,6 +584,7 @@ function main() {
 
   classificationLines.push(...summarizeDocsInventory("inventory/stellar-docs.json"));
   classificationLines.push(...summarizeDocsInventory("inventory/stellar-docs-titles.json"));
+  classificationLines.push(...summarizeStellarOrg("inventory/stellar-org.json"));
   if (generatedChanged.includes(anchorPath)) {
     classificationLines.push(...summarizeDocsAnchors(readHeadJson(anchorPath), readJson(anchorPath)));
   }

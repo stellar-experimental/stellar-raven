@@ -61,7 +61,7 @@ import {
   fetchStellarlightCatalog,
 } from "./lib/stellarlight-catalog.mjs";
 
-const DIRECTORY_SOURCE_IDS = new Set(["stellarlight-catalog", "stellar-community-catalog"]);
+export const DIRECTORY_SOURCE_IDS = new Set(["stellarlight-catalog", "stellar-community-catalog"]);
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const JSON_MODE = process.argv.includes("--json");
@@ -329,7 +329,9 @@ async function main() {
   process.exit(errored.length ? 2 : drifted.length ? 1 : 0);
 }
 
-main().catch((err) => {
-  console.error(`check-skills-drift failed: ${err.message}`);
-  process.exit(2); // check error, not drift — see the exit-code contract above
-});
+if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
+  main().catch((err) => {
+    console.error(`check-skills-drift failed: ${err.message}`);
+    process.exit(2); // check error, not drift — see the exit-code contract above
+  });
+}

@@ -498,8 +498,8 @@ Held by this item:
   `locateSource` stay excluded.
 - Three mixed-intent controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove the
   markers when the repair passes.
-- [Issue #223](https://github.com/stellar-experimental/stellar-raven/issues/223) stays open for the
-  repair. In `eval/gates.json`, three holdout limits sit at their bounds: `top1` at its floor (12),
+- Routing-gate headroom (tracked here rather than on a standing drift issue; #223 is closed): in
+  `eval/gates.json`, three holdout limits sit at their bounds: `top1` at its floor (12),
   `top3` at its floor (26, after round item 6.2 absorbed the live Docs titles), and
   `forbiddenCaptures` at its ceiling (11, raised from 10 for the `scout.matchPartners` removal in
   round item 5.1; `top5` is 30 against floor 29). Any change that costs one holdout top-1, costs

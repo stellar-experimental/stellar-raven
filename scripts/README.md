@@ -7,6 +7,7 @@ Top-level scripts provide operator commands, CI checks, and shared build policy.
 Files under `scripts/lib/` are shared helpers. Files under `scripts/catalog-data/` are builder data.
 `scripts/git-hooks/` contains the installed hook.
 `scripts/agent-hooks/` holds `PreToolUse` hooks wired by `.claude/settings.json`, `.codex/hooks.json`, `.grok/hooks/case-search-guard.json`, and `.agents/hooks.json`; `case-search-guard.mjs` denies searches that would read case text.
+`sync-drift-issues.mjs` builds per-kind (`<class>:<source>`) drift reports for `refresh.yml` and reconciles one `drift`-labeled GitHub issue per key (open, comment only on report change, and close on clear, with `--dry-run` planning).
 `find-uncited-golden-round-json.mjs` lists the JSON files in the two golden round folders that no case file, QA register or `improvements/` finding cites. It prints paths and counts and never opens a listed file. `npm test` fails while a file is uncited; `--uncited` prints the list to `git rm`.
 Keep a command when a package command, CI check, maintenance workflow, or generated artifact uses it.
 Delete a command only after checking package commands, workflows, documentation, and imports.
