@@ -11,14 +11,14 @@ const source = { ...definition, type: "github", commit: "a".repeat(40), skills: 
 const one = { title: "One", copyValue: "https://example.com/one", description: "Description." };
 const two = { title: "Two", copyValue: "https://example.com/two", description: "Description." };
 
-async function check({ mode = "pick", path = "skills", exclusions = {}, malformed = false, community = [one], markdown, communitySource } = {}) {
+async function check({ mode = "pick", path = "skills", exclusions = {}, malformed = false, community = [one], markdown, communitySource, stellarlightSkills = [], stellarlightMeta } = {}) {
   const root = mkdtempSync(join(tmpdir(), "skills-drift-"));
   try {
     mkdirSync(join(root, "scripts", "lib"), { recursive: true });
     mkdirSync(join(root, "ecosystem-skills"));
     symlinkSync(join(REPO, "node_modules"), join(root, "node_modules"), "dir");
     copyFileSync(join(REPO, "scripts", "check-skills-drift.mjs"), join(root, "scripts", "check-skills-drift.mjs"));
-    for (const name of ["shared", "skill-source-definitions", "stellar-community"]) {
+    for (const name of ["shared", "skill-source-definitions", "stellar-community", "stellarlight-catalog"]) {
       copyFileSync(join(REPO, "scripts", "lib", `${name}.mjs`), join(root, "scripts", "lib", `${name}.mjs`));
     }
     writeFileSync(join(root, "ecosystem-skills", "MANIFEST.json"), JSON.stringify({ sources: [{ ...source, path }] }));
@@ -39,7 +39,7 @@ async function check({ mode = "pick", path = "skills", exclusions = {}, malforme
           return new Response(${JSON.stringify(communitySource ?? ('export const ECOSYSTEM_CARDS = ' + JSON.stringify(community) + ' as const;'))});
         } else if (parsed.hostname === 'skills.stellar.org') {
           return new Response(${JSON.stringify(markdown ?? '')});
-        } else if (parsed.pathname === '/api/skills') body = { skills: [] };
+        } else if (parsed.pathname === '/api/skills') body = { ...( ${JSON.stringify(stellarlightMeta ?? null)} ? { meta: ${JSON.stringify(stellarlightMeta ?? null)} } : {}), skills: ${JSON.stringify(stellarlightSkills)} };
         else throw new Error('unexpected URL ' + url);
         return new Response(JSON.stringify(body));
       };
@@ -70,7 +70,7 @@ describe("skills drift real CLI", () => {
     expect(result.stdout).toContain("ecosystem-skills/sources.json");
     expect(result.stdout).not.toContain("pin them in ecosystem-skills/update.sh");
     expect(result.stderr).toContain("Source remediation:");
-    expect(result.stderr).not.toContain("Community remediation:");
+    expect(result.stderr).not.toContain("Directory remediation");
   });
 
   it.concurrent("accepts a recorded exclusion without inferring the mode from it", async () => {
@@ -106,10 +106,41 @@ describe("skills drift real CLI", () => {
       markdown: `## Community Built\n- [One](https://example.com/one): Description.\n${marker} [Two](https://example.com/two): Description.` });
     expect(result.status, result.stderr).toBe(1);
     expect(JSON.parse(result.stdout).results.find((entry) => entry.id === "stellar-community-catalog")).toMatchObject({ status: "DRIFT", note: "added: https://example.com/two" });
-    expect(result.stderr).toContain("Community remediation:");
-    expect(result.stderr).toContain("node scripts/lib/stellar-community.mjs ecosystem-skills/community.json");
-    expect(result.stderr).toContain("node ecosystem-skills/build-index.mjs");
+    expect(result.stderr).toContain("Directory remediation (stellar-community-catalog):");
+    expect(result.stderr).toContain("node scripts/refresh-skill-directories.mjs");
     expect(result.stderr).not.toContain("Source remediation:");
+    expect(result.stderr).not.toContain("update.sh");
+    expect(result.stderr).not.toContain("re-pin");
+  });
+
+  it.concurrent("routes stellarlight-catalog-only drift to directory remediation without update.sh", async () => {
+    const result = await check({
+      mode: "all",
+      stellarlightSkills: [{ slug: "alpha", name: "Alpha", source: "community", kind: "skill-md" }],
+    });
+    expect(result.status, result.stderr).toBe(1);
+    expect(JSON.parse(result.stdout).results.find((entry) => entry.id === "stellarlight-catalog")).toMatchObject({
+      status: "DRIFT",
+      note: "added: community/alpha",
+    });
+    expect(result.stderr).toContain("Directory remediation (stellarlight-catalog):");
+    expect(result.stderr).toContain("node scripts/refresh-skill-directories.mjs");
+    expect(result.stderr).not.toContain("Source remediation:");
+    expect(result.stderr).not.toContain("update.sh");
+    expect(result.stderr).not.toContain("re-pin");
+  });
+
+  it.concurrent("routes combined directory-only drift to the single directory refresh command", async () => {
+    const result = await check({
+      mode: "all",
+      community: [one, two],
+      stellarlightSkills: [{ slug: "alpha", name: "Alpha", source: "community", kind: "skill-md" }],
+    });
+    expect(result.status, result.stderr).toBe(1);
+    expect(result.stderr).toContain("Directory remediation (stellar-community-catalog, stellarlight-catalog):");
+    expect(result.stderr).toContain("node scripts/refresh-skill-directories.mjs");
+    expect(result.stderr).not.toContain("Source remediation:");
+    expect(result.stderr).not.toContain("update.sh");
     expect(result.stderr).not.toContain("re-pin");
   });
 
@@ -132,9 +163,8 @@ describe("skills drift real CLI", () => {
     expect(result.stderr).toContain("Source remediation:");
     expect(result.stderr).toContain("ecosystem-skills/update.sh");
     expect(result.stderr).toContain("ecosystem-skills/sources.json");
-    expect(result.stderr).toContain("Community remediation:");
-    expect(result.stderr).toContain("node scripts/lib/stellar-community.mjs ecosystem-skills/community.json");
-    expect(result.stderr).toContain("node ecosystem-skills/build-index.mjs");
+    expect(result.stderr).toContain("Directory remediation (stellar-community-catalog):");
+    expect(result.stderr).toContain("node scripts/refresh-skill-directories.mjs");
   });
 
   // All reference-outside-declaration AST shapes are covered in test/stellar-community.test.mjs;
@@ -155,7 +185,7 @@ describe("skills drift real CLI", () => {
     expect(JSON.parse(result.stdout).results.find((entry) => entry.id === "stellar-community-catalog"))
       .toMatchObject({ status: "DRIFT", source: "stellar/stellar-dev-skill main",
         upstream: "2 entries (stellar/stellar-dev-skill main source)", note: "added: https://example.com/two" });
-    expect(result.stderr).toContain("Community remediation: refresh the stellar/stellar-dev-skill main directory snapshot and index.");
+    expect(result.stderr).toContain("Directory remediation (stellar-community-catalog): refresh the directory snapshots and index without moving pins.");
   });
 
   it.concurrent("rejects an unsupported second identity through the real checker", async () => {
@@ -164,6 +194,20 @@ describe("skills drift real CLI", () => {
     expect(result.status, result.stderr).toBe(2);
     expect(result.stdout).toContain("expected literal title and copyValue");
     expect(result.stderr).not.toContain("remediation:");
+  });
+
+  it.concurrent("fails closed with exit 2 when stellarlight reports a non-live registry fallback", async () => {
+    const result = await check({
+      mode: "all",
+      stellarlightMeta: { registry: { live: false } },
+      stellarlightSkills: [],
+    });
+    expect(result.status, result.stderr).toBe(2);
+    expect(JSON.parse(result.stdout).results.find((entry) => entry.id === "stellarlight-catalog")).toMatchObject({
+      status: "error",
+      note: expect.stringContaining("meta.registry.live is false"),
+    });
+    expect(result.stderr).not.toContain("remediation");
   });
 
   it.concurrent("fails closed when the Community array is empty", async () => {

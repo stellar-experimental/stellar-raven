@@ -1,0 +1,50 @@
+# Item 8.12 `checker` — Sol Review Challenge
+
+- **Reviewer:** OpenAI Codex `gpt-6.2-sol` (`model_reasoning_effort="high"`, read-only sandbox)
+- **Review file:** `.agents/rounds/2026-11-16-next-phase/items/8.12/checker/SOL-REVIEW.md`
+- **Reviewed commit:** `6d004483` (`origin/main...HEAD`)
+
+## Summary
+
+| Verdict | Count | Findings |
+| --- | ---: | --- |
+| Valid (fixed) | 3 | F1, F4, F5 |
+| Valid, not worth fixing | 2 | F2, F3 |
+| Invalid | 0 | — |
+
+## Finding-by-finding challenge
+
+### F1 · medium · `scripts/lib/stellarlight-catalog.mjs:25` · `inventory/stellar-light.json:19534`
+
+- **Sol claim:** `projectStellarlightCatalog` ignores `meta.registry.live === false`, which Stellar Light documents as an upstream registry outage fallback that drops Community entries; a fallback payload would be reported as drift (exit 1) and saved as an incomplete snapshot.
+- **Verification:** Confirmed directly in `inventory/stellar-light.json:19534` (`"live=false means the registry did not answer and the SDF set came from a fallback list, so community-built entries are missing."`) and live `https://stellarlight.xyz/api/skills` `.meta` (which returns `"registry": { "live": true, ... }`). Although pre-existing in both `check-skills-drift.mjs` and `update.sh`, carrying it into the new shared projection violates `check-skills-drift.mjs`'s fail-closed exit-2 contract for transient upstream outages.
+- **Verdict:** **Valid.**
+- **Action:** Fixed in `scripts/lib/stellarlight-catalog.mjs` (`projectStellarlightCatalog` now throws when `live.meta?.registry?.live === false`) and added a fail-closed CLI test in `test/check-skills-drift-cli.test.mjs` verifying exit `2` with no remediation output. (Note: `meta.registry.unreachable` is intentionally not rejected because live responses legitimately list single unreachable third-party repos while `live: true`.)
+
+### F2 · medium · `scripts/refresh-skill-directories.mjs:179`
+
+- **Sol claim:** Running `ecosystem-skills/update.sh` concurrently with `scripts/refresh-skill-directories.mjs` can allow the directory refresh to overwrite the newer `INDEX.md` with one rendered from the older `MANIFEST.json`.
+- **Verification:** Reproducible in principle because neither `update.sh` nor `refresh-skill-directories.mjs` (nor `build-index.mjs` or `refresh-inventory.mjs`) takes cross-process file locks. However, both are manual local-developer maintenance commands (CI never runs either), `writeFileAtomic` is documented (`scripts/README.md:44-45`) to prevent interrupted/truncated writes rather than mediate concurrent operator commands, and CI's `generated artifacts in sync` check catches any stale `INDEX.md`.
+- **Verdict:** **Valid but not worth fixing.**
+- **Action:** None; adding cross-script lockfiles between mutually exclusive local maintenance scripts would add complexity outside the smallest-change bar.
+
+### F3 · low · `scripts/refresh-skill-directories.mjs:178`
+
+- **Sol claim:** Invoking `scripts/refresh-skill-directories.mjs --index ecosystem-skills/MANIFEST.json` overwrites `MANIFEST.json` with Markdown, violating the header comment that `MANIFEST.json` stays untouched.
+- **Verification:** Confirmed only when the caller explicitly overrides `--index` to point at `MANIFEST.json`. The documented command takes no path flags and never touches `MANIFEST.json`; path override flags mirror `ecosystem-skills/build-index.mjs` (`--manifest`/`--out`), which likewise does not special-case `--out ecosystem-skills/MANIFEST.json`.
+- **Verdict:** **Valid but not worth fixing.**
+- **Action:** None; contrived self-inflicted CLI flag misuse rather than a defect in the documented refresh path.
+
+### F4 · low · `scripts/refresh-skill-directories.mjs:116` · `ecosystem-skills/update.sh:81`
+
+- **Sol claim:** Even at the exact same clock second with default arguments, `update.sh` writes whole-second UTC timestamps (`YYYY-MM-DDTHH:MM:SSZ` from `date -u +%Y-%m-%dT%H:%M:%SZ`), while `refresh-skill-directories.mjs` / `stellarlight-catalog.mjs` defaulted to millisecond precision (`new Date().toISOString()`, `.000Z`), so default `catalog.json` outputs differ.
+- **Verification:** Confirmed by reading `ecosystem-skills/update.sh:81` (`date -u +%Y-%m-%dT%H:%M:%SZ`), committed `ecosystem-skills/catalog.json:3` (`2026-11-19T21:48:44Z`), and `scripts/lib/stellarlight-catalog.mjs:75` (`new Date().toISOString()`).
+- **Verdict:** **Valid.**
+- **Action:** Fixed `scripts/lib/stellarlight-catalog.mjs` to default `fetched_at` to whole-second UTC ISO (`isoSeconds()`), and updated `scripts/refresh-skill-directories.mjs` to pass `fetchedAt` only when `--fetched-at` is supplied so each directory formatter uses its canonical default (`catalog.json` matches `update.sh` whole-second format; `community.json` keeps `stellar-community.mjs` millisecond format).
+
+### F5 · low · `ecosystem-skills/INDEX.md:1` · `ecosystem-skills/build-index.mjs:128`
+
+- **Sol claim:** Line 1 of generated `ecosystem-skills/INDEX.md` still reads `<!-- AUTO-GENERATED by build-index.mjs — do not edit by hand. Re-run ./update.sh. -->`, steering directory-only drift readers back to `./update.sh`.
+- **Verification:** Confirmed at `ecosystem-skills/build-index.mjs:128` and `ecosystem-skills/INDEX.md:1`.
+- **Verdict:** **Valid.**
+- **Action:** Updated `ecosystem-skills/build-index.mjs:128` to list `./update.sh` (pin drift), `node scripts/refresh-skill-directories.mjs` (directory drift), and `node ecosystem-skills/build-index.mjs` (index only), and regenerated `ecosystem-skills/INDEX.md`.
