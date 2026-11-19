@@ -118,6 +118,17 @@ describe("heldout-read.sh", () => {
     expect(source).toContain('--max-panel-cases "$N"');
   });
 
+  it("defaults STABILITY_REGISTER outside any worktree with the pinned SHA-256", () => {
+    const source = readFileSync("eval/qa/heldout-read.sh", "utf8");
+    const pin = "4322dd4d1ebfc30bc02a9def008039aba4f4b2395b1f9da5cabef56ec24bf458";
+    expect(source).toContain(
+      "STABILITY_REGISTER=${STABILITY_REGISTER:-/home/tyler/raven-data/qa/judge-stability.json}"
+    );
+    expect(source).not.toMatch(/gca-eval|raven-wt/);
+    expect(source).toContain(`= ${pin} ] || fail "stability register pin differs from the panel runs"`);
+    expect(source).toContain(`echo "register=${pin}"`);
+  });
+
   it("refuses to run with the wrong arguments, printing nothing about ids", () => {
     const run = spawnSync("bash", ["eval/qa/heldout-read.sh", "only-one-argument"], { encoding: "utf8" });
     expect(run.status).toBe(64);

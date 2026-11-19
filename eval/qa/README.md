@@ -20,6 +20,7 @@ Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to plan an
 | `results/` | Local, ignored collection and judging artifacts |
 | `reviewed/` | Retained dated evidence |
 | `claim-read-packets.mjs`, `claim-read-brief.md` | Packets and the standing brief for the governance and attribution claim read; the lead splits the packets into chunk files and gives each reader one |
+| `heldout-read.sh`, `heldout-read.mjs` | Orchestrator-only held-out launcher and its counts-only plan/summary helper; defaults `STABILITY_REGISTER` to `/home/tyler/raven-data/qa/judge-stability.json` outside any worktree |
 
 [lifecycle-registry.json](lifecycle-registry.json) owns current battery membership.
 Keep the battery, canonical live cases, and digest supplement separate in reports.
@@ -575,6 +576,7 @@ A missing or invalid register selects the boundary path and records that status.
 `meta.judgeTiering` records the policy, threshold, register hash, cap, source, denominator, and panel counts.
 A stored resume preserves its first cap and refuses a different explicit cap.
 Freeze one register for paired comparisons and use the same `--stability-register <file>` in all arms and resumes.
+`heldout-read.sh` defaults `STABILITY_REGISTER` to `/home/tyler/raven-data/qa/judge-stability.json` (with its pinned SHA-256), alongside the archived stored QA results in `/home/tyler/raven-data/qa/results/`, outside any repository worktree.
 
 ## Paid judge self-test
 

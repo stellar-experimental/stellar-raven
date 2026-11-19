@@ -7,6 +7,8 @@
 # (the surface check below stops the run otherwise). Every byte the runner, the probe and the
 # surface report write goes to files inside <sealed-output-dir>; this script itself prints only the
 # summary at the end, or one fixed line naming the failed check. It never echoes an id.
+# Set STABILITY_REGISTER to override the default pinned register path
+# (/home/tyler/raven-data/qa/judge-stability.json).
 #
 # Known exposure, outside this script's reach: `run-qa.mjs` takes its ids as one `--ids` argument, so
 # the ids are in the runner's process arguments (`ps`) on this machine while it runs.
@@ -49,7 +51,7 @@ REMOTE_IDENTITY_PROBE=eval/qa/probe-remote-identities.mjs
 REMOTE_IDENTITY_PROBE_SHA256=$(shasum -a 256 "$REMOTE_IDENTITY_PROBE" | cut -d' ' -f1)
 [ "$REMOTE_IDENTITY_PROBE_SHA256" = aabfb83fb8e956856d70f9b5657ea6fca2f64551073812fb646b3689a8f28d99 ] || fail "remote probe pin differs from the panel runs"
 REMOTE_IDENTITY_SHA256=$(env -i PATH="$PATH" "$REMOTE_IDENTITY_PROBE" --stable-sha256 2>>"$LOG") || fail "remote identity probe failed"
-STABILITY_REGISTER=${STABILITY_REGISTER:-/home/tyler/code/raven-wt/gca-eval/eval/qa/judge-stability.json}
+STABILITY_REGISTER=${STABILITY_REGISTER:-/home/tyler/raven-data/qa/judge-stability.json}
 [ "$(sha256sum "$STABILITY_REGISTER" 2>/dev/null | cut -d' ' -f1)" = 4322dd4d1ebfc30bc02a9def008039aba4f4b2395b1f9da5cabef56ec24bf458 ] || fail "stability register pin differs from the panel runs"
 node eval/report-live-surface.mjs --port "$PORT" --expect-source-revision "$REV" --json "$SEALED/surface.json" >>"$LOG" 2>&1 || fail "the server on that port does not serve this commit"
 SURFACE_SHA256=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).surfaceSha256)' "$SEALED/surface.json") || fail "surface hash unreadable"
