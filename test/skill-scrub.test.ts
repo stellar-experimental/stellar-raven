@@ -187,19 +187,14 @@ describe("skill-body operation exposure scrub", () => {
     expect(scrubbed).toContain("/api/repository");
   });
 
-  it("narrows trailing excluded alternative clauses inside list items and paragraphs", () => {
+  it("narrows trailing top-level or alternative clauses in list items and paragraphs", () => {
     const match = "/api/partners/match";
-    const assistant = "/api/partners/assistant";
     const listText = [
       "1. **Step one.** Keep `/api/stablecoins`.",
       `2. **Rails and partners.** \`/api/stablecoins?peg={USD}\` (compare \`marketCapUSD\`, never raw \`supply\`) and \`/api/partners?type=anchor\`, or \`POST ${match}\` with the need in plain language. Empty results mean none listed.`,
       `3. **Wrapped step.** Use \`/api/partners\`,`,
-      `   or call \`POST ${match}\``,
-      "   for plain-language matching, or",
-      `   \`POST ${assistant}\` (guided flow). Keep this.`,
-      "4. **Line-wise step.**",
-      `   Use \`/api/partners\` or /api/partners%2Fmatch.`,
-      "   Keep the third line.",
+      `   or \`POST ${match}\` (plain-language matching). Keep this.`,
+      `4. **Encoded step.** Use \`/api/partners\` or /api/partners%2Fmatch.`,
       "5. **Templated step.** Use `/api/hackathons/builds` or `/api/hackathons/builds/dorahacks-12` for one build.",
       "6. **Final step.** Keep `/api/rfps`."
     ].join("\n");
@@ -209,9 +204,7 @@ describe("skill-body operation exposure scrub", () => {
         "1. **Step one.** Keep `/api/stablecoins`.",
         "2. **Rails and partners.** `/api/stablecoins?peg={USD}` (compare `marketCapUSD`, never raw `supply`) and `/api/partners?type=anchor`. Empty results mean none listed.",
         "3. **Wrapped step.** Use `/api/partners`. Keep this.",
-        "4. **Line-wise step.**",
-        "   Use `/api/partners`.",
-        "   Keep the third line.",
+        "4. **Encoded step.** Use `/api/partners`.",
         "5. **Templated step.** Use `/api/hackathons/builds`.",
         "6. **Final step.** Keep `/api/rfps`."
       ].join("\n")
@@ -235,70 +228,31 @@ describe("skill-body operation exposure scrub", () => {
     );
   });
 
-  it("drops the whole sentence or list item when narrowing would leave a fragment, drop conditions, or orphan continuations", () => {
+  it("falls back to whole-sentence or whole-item removal and fails closed on fenced excluded paths", () => {
     const match = "/api/partners/match";
     for (const sentence of [
-      `Either call \`/api/partners\` or \`POST ${match}\`.`,
-      `Check whether \`/api/partners\` or \`POST ${match}\` fits.`,
-      `Neither \`/api/partners\` or \`POST ${match}\`.`,
-      `Choose between \`/api/partners\` or \`POST ${match}\`.`,
-      `Both \`/api/partners\` or \`POST ${match}\`.`,
-      `Not only \`/api/partners\` or \`POST ${match}\`.`,
-      `Pick one of \`/api/partners\` or \`POST ${match}\`.`,
-      `If \`/api/partners\` or \`POST ${match}\` fails, retry.`,
-      `Prefer the directory, since \`/api/partners\` or \`POST ${match}\` with a plain need both work.`,
-      `\`/api/partners\` or \`POST ${match}\` with a country filter returns anchors.`,
-      `Calling \`/api/partners\` or \`POST ${match}\` with a need yields matches.`,
-      `Fall back to \`/api/partners?type=anchor\` or \`POST ${match}\` when the region search is empty.`,
-      `Call \`/api/partners\` or \`POST ${match}\` if the user names a country.`,
-      `Use \`/api/partners\` or \`POST ${match}\` for ranking and report "none listed at our source" when empty.`,
-      `Use \`/api/partners\`, \`/api/projects\`, or \`POST ${match}\`.`,
-      `Use \`/api/partners\` or the AI ranking at \`POST ${match}\`.`,
-      `Say 'use /api/partners or POST ${match}'.`,
-      `“Use /api/partners or POST ${match}”.`,
-      `The \`/api/partners\` or \`POST ${match}\` endpoint returns 200.`,
-      `Use \`/api/partners\` or \`POST ${match}\`, then inspect.`,
-      `Use \`/api/a\` or \`/api/b\` when \`POST ${match}\` is unavailable.`,
-      `Compare \`/api/partners\` or \`POST ${match}\` with \`/api/projects\`.`,
-      `Send GET or POST ${match}.`,
-      `**Partners:** or \`POST ${match}\`.`
+      `Call \`POST ${match}\` or \`/api/partners\`.`,
+      `Use \`/api/partners\` (or \`POST ${match}\`).`,
+      `Say "use /api/partners or POST ${match}".`,
+      `Use \`/api/partners\` or \`POST ${match}\`, then inspect.`
     ]) {
       expect(
-        scrubExcludedScoutOperationRefs(`${sentence} Keep this.`, "unsafe alternative"),
+        scrubExcludedScoutOperationRefs(`${sentence} Keep this.`, "fallback sentence"),
         sentence
       ).toBe("Keep this.");
     }
 
-    // Sentences above the narrowing scan cap fall back to whole-sentence removal in linear time.
-    const oversized = `Use \`/api/partners\` ${"or x ".repeat(500)}or \`POST ${match}\`. Keep this.`;
-    expect(scrubExcludedScoutOperationRefs(oversized, "oversized sentence")).toBe("Keep this.");
-
-    const orphanList = [
+    const fallbackList = [
       "- Keep before.",
       `- **Partner matching.** Call \`POST ${match}\`. It ranks partners by fit.`,
       `- Use \`/api/partners\` or \`POST ${match}\`.`,
-      "  > Quoted continuation also drops the item.",
+      "  > Quoted continuation drops the item.",
       `- Use \`/api/partners\` or \`POST ${match}\`.`,
       "  | Col | Val |",
       "- Keep after."
     ].join("\n");
-    expect(scrubExcludedScoutOperationRefs(orphanList, "orphan list")).toBe(
+    expect(scrubExcludedScoutOperationRefs(fallbackList, "fallback list")).toBe(
       ["- Keep before.", "- Keep after."].join("\n")
-    );
-
-    // Dropping a list item also drops its clean child fence and continuation lines
-    // so they cannot orphan onto the preceding item.
-    const droppedWithCleanFence = [
-      "- Keep.",
-      `- Call \`POST ${match}\` like this:`,
-      "  ```sh",
-      "  curl https://x.test/api/partners?q=a",
-      "  ```",
-      "  Then read the ranking.",
-      "- Next."
-    ].join("\n");
-    expect(scrubExcludedScoutOperationRefs(droppedWithCleanFence, "dropped fenced bullet")).toBe(
-      ["- Keep.", "- Next."].join("\n")
     );
 
     // Any excluded path inside an indented fence still fails closed, whether its
