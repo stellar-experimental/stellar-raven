@@ -46,3 +46,17 @@ the named files finds nothing; the files that the new links point to exist.
 - `model-roster.md`: I put the new Codex sentences at the end of the Codex bullet, not after its first
   sentence, so "Its `workspace-write` sandbox" still refers to Codex.
 - Ledger row: "TODO items closed" says "the eight deleted in the TODO" because the row has no B1 list.
+
+## Second task (F4)
+
+Edits (each adds a one-line comment above the test and `{ timeout: 30_000 }` as the options argument; nothing else changed):
+
+- `test/qa-paired-verdict.test.mjs:1322-1323`: "runs reduced deterministic operating-characteristic gates under npm test".
+- `test/find-uncited-golden-round-json.test.mjs:233-234`: the `it.skipIf(...)` test "never leaks file content or case filenames across all CLI output modes and honors --check".
+
+Gates:
+
+- `npx vitest run test/qa-paired-verdict.test.mjs test/find-uncited-golden-round-json.test.mjs`: exit 0 (2 files, 149 tests passed).
+- `npm run typecheck`: exit 0.
+- `npm test`: exit 0 (173 files passed, 5 skipped; 4165 tests passed, 3 expected fail, 5 skipped; 18.03 s).
+- `npm run secrets:scan -- --tree`: exit 0 (clean).
