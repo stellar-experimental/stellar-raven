@@ -70,8 +70,9 @@ export const EXCLUDED_SCOUT_PATHS = new Set([
 // literal template, so `/api/x/{id}` also covers `/api/x/123`. Case-insensitive
 // and boundary-checked so the runtime skill scrub and build-time emitted-text
 // guard share one matcher over EXCLUDED_SCOUT_PATHS (including
-// SCOUT_PATHS_ABSENT_FROM_SPEC) without false-matching exposed child paths like
-// `/api/repos/search`.
+// SCOUT_PATHS_ABSENT_FROM_SPEC): a trailing `/` still matches unless followed
+// by another path segment (so `/api/feedback/` is caught while exposed child
+// paths like `/api/repos/search` stay allowed).
 function excludedPathPattern(path: string): RegExp {
   const source = path
     .split(/(\{[^}/]+\})/)
@@ -79,7 +80,7 @@ function excludedPathPattern(path: string): RegExp {
       /^\{[^}/]+\}$/.test(part) ? "[^\\s/`)\\]]+" : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
     )
     .join("");
-  return new RegExp(`${source}(?![\\w/-])`, "i");
+  return new RegExp(`${source}(?![\\w-]|\\/[\\w{%-])`, "i");
 }
 
 const EXCLUDED_SCOUT_PATH_PATTERNS: ReadonlyArray<readonly [path: string, pattern: RegExp]> = [

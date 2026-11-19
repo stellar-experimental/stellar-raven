@@ -10,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
 import {
   EXCLUDED_LUMENLOOP_OPS,
+  EXCLUDED_SCOUT_PATHS,
   NON_EXPOSED_SCOUT_OP_NAMES,
   RETIRED_ONBOARDING_SKILLS,
   RETIRED_PARTNER_ONBOARDING_SKILLS
@@ -95,13 +96,14 @@ describe("assertNoNonExposedRefsInText", () => {
     )).toThrow("/api/hackathons/review");
   });
 
-  it("rejects paths absent from the Scout spec while allowing exposed child paths", () => {
-    for (const text of ["Use /api/repos?limit=1.", "Use /API/REPOS.", "Use /api%2Frepos."]) {
-      expect(() => assertNoNonExposedRefsInText(text, "emitted text"), text).toThrow("/api/repos");
+  it("rejects every path in EXCLUDED_SCOUT_PATHS (including trailing slash) while allowing distinct child paths", () => {
+    for (const path of EXCLUDED_SCOUT_PATHS) {
+      expect(() => assertNoNonExposedRefsInText(`Use ${path}.`, "emitted text"), path).toThrow(path);
+      expect(() => assertNoNonExposedRefsInText(`Use ${path}/.`, "emitted text"), `${path}/`).toThrow(path);
+      if (!path.includes("{")) {
+        expect(() => assertNoNonExposedRefsInText(`Use ${path}/child.`, "emitted text"), `${path}/child`).not.toThrow();
+      }
     }
-    expect(() =>
-      assertNoNonExposedRefsInText("Use /api/repos/search and /api/repos/explain.", "emitted text")
-    ).not.toThrow();
   });
 
   it("does not match an excluded name inside a longer identifier", () => {

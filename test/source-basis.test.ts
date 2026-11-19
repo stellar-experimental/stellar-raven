@@ -296,8 +296,8 @@ describe("source-basis manifest", () => {
 
     expect(text).toContain("shape: object");
     expect(text).toContain("top-level keys");
-    expect(text).toContain("Bulk lost from top-level keys:");
-    expect(text).toMatch(/\"rows\" ~\d+(\.\d+)?k chars \(cut\)/);
+    expect(shape.lossDetail).toBeTruthy();
+    expect(text).toContain(shape.lossDetail!);
   });
 
   it("keeps template prose clear of non-exposed operation and retired-skill references", () => {

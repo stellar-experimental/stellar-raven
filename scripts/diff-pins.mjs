@@ -17,7 +17,7 @@
  * a reviewed pin).
  */
 import { readFileSync } from "node:fs";
-import { scrubNonExposedRefs } from "./exposure.mjs";
+import { RETIRED_ONBOARDING_SKILLS, scrubNonExposedRefs } from "./exposure.mjs";
 import { readSkillFile } from "./lib/skill-mirror.mjs";
 
 const [, , oldPath, newPath] = process.argv;
@@ -73,20 +73,32 @@ function unified(a, b, label) {
   return lines;
 }
 
-/** Surface any sentence narrowed by the exposure scrub so the reviewer reads the served wording. */
-function reportScrubNarrowings(text, key) {
+/** Surface any new or changed sentence narrowed by the exposure scrub so the reviewer reads the served wording. */
+function reportScrubNarrowings(newText, key, skillName, oldText = null) {
+  if (RETIRED_ONBOARDING_SKILLS.has(skillName)) return;
   const narrowed = [];
   try {
-    scrubNonExposedRefs(text, key, { onNarrow: (change) => narrowed.push(change) });
+    scrubNonExposedRefs(newText, key, { onNarrow: (change) => narrowed.push(change) });
   } catch (e) {
     console.log(`### SCRUB BLOCKED ${key}: ${e.message}`);
     return;
   }
-  if (narrowed.length === 0) return;
-  console.log(`### SCRUB NARROWED ${narrowed.length} sentence(s) in ${key} (review the served wording):`);
-  for (const { before, after } of narrowed) {
-    console.log(`- before: ${before}`);
-    console.log(`+ after:  ${after}`);
+  const previous = new Set();
+  if (oldText !== null) {
+    try {
+      scrubNonExposedRefs(oldText, key, {
+        onNarrow: ({ before, after }) => previous.add(`${before}\0${after}`)
+      });
+    } catch {
+      // Old pin failed to scrub; treat every narrowing in the incoming text as new.
+    }
+  }
+  const fresh = narrowed.filter(({ before, after }) => !previous.has(`${before}\0${after}`));
+  if (fresh.length === 0) return;
+  console.log(`### SCRUB NARROWED ${fresh.length} sentence(s) in ${key} (review the served wording):`);
+  for (const { before, after } of fresh) {
+    console.log(`  narrowed from: ${before}`);
+    console.log(`  served as:     ${after}`);
   }
 }
 
@@ -106,7 +118,7 @@ for (const [key, next] of after) {
     for (const line of unified("", newText, key)) {
       console.log(line);
     }
-    reportScrubNarrowings(newText, key);
+    reportScrubNarrowings(newText, key, next.skill.name);
     continue;
   }
   // The NEW bytes are mandatory — you cannot review what you cannot read. The
@@ -126,13 +138,13 @@ for (const [key, next] of after) {
     console.log(`### OLD SIDE UNAVAILABLE (${e.message})`);
     console.log("### Showing the incoming file in full — review it as if new.");
     for (const line of unified("", newText, key)) console.log(line);
-    reportScrubNarrowings(newText, key);
+    reportScrubNarrowings(newText, key, next.skill.name);
     continue;
   }
   console.log(`\n### CHANGED ${key}`);
   console.log(`### ${prev.file.sha.slice(0, 12)} -> ${next.file.sha.slice(0, 12)}`);
   for (const line of unified(oldText, newText, key)) console.log(line);
-  reportScrubNarrowings(newText, key);
+  reportScrubNarrowings(newText, key, next.skill.name, oldText);
 }
 for (const key of before.keys()) {
   if (!after.has(key)) {

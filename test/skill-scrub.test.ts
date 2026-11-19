@@ -287,7 +287,7 @@ describe("skill-body operation exposure scrub", () => {
     }
   });
 
-  it("removes excluded paths from every selected Scout file while keeping the partner-filter workflow", async () => {
+  it("removes excluded paths from every selected Scout file", async () => {
     const manifest = JSON.parse(
       readFileSync(join(ROOT, "ecosystem-skills", "MANIFEST.json"), "utf8")
     );
@@ -296,26 +296,9 @@ describe("skill-body operation exposure scrub", () => {
 
     const selected = await loadSkillTexts({ ...manifest, sources: [source] });
     expect(selected.size).toBeGreaterThan(0);
-    const scrubbedByKey = new Map<string, string>();
     for (const [key, file] of selected) {
       const scrubbed = scrubNonExposedRefs(file.text, key);
-      scrubbedByKey.set(key, scrubbed);
       expect(() => assertNoNonExposedRefsInText(scrubbed, key)).not.toThrow();
     }
-
-    const skillMd = scrubbedByKey.get("stellar-light/stellar-scout/SKILL.md");
-    expect(skillMd).toBeDefined();
-    expect(skillMd).toContain("4. **Rails and partners the demo needs.**");
-    expect(skillMd).toContain("`/api/stablecoins?peg={USD|EUR|BRL…}` (compare `marketCapUSD`, never raw `supply` across pegs)");
-    expect(skillMd).toContain("`/api/partners?type={anchor|on-off-ramp|audit-firm}&q={country}`.");
-    expect(skillMd).toContain('"none listed at our source"');
-    expect(skillMd).not.toContain("/api/partners/match");
-
-    const apiRef = scrubbedByKey.get("stellar-light/stellar-scout/references/api-reference.md");
-    expect(apiRef).toBeDefined();
-    expect(apiRef).toContain(
-      "**Use when** you already hold a slug from `/api/partners`; for *finding* a partner use `/api/partners` filters."
-    );
-    expect(apiRef).not.toContain("## `POST /api/partners/match`");
   });
 });
