@@ -207,6 +207,37 @@ item 8.7 applies the answers.
   [items/8.7/PLAN.md](items/8.7/PLAN.md), [probes/PROBE.md](items/8.7/probes/PROBE.md) and
   [EXEC.md](items/8.7/EXEC.md).
 
+## Follow-up answers (2026-11-19, no per-run approvals)
+
+The orchestrator asked the owner, after item 8.7: "do you want a standing authorization for the
+shipped-tuple smoke (about USD 0.45 per model-path change)?" Round item 8.8 applies the answer.
+
+- **Answer.** Owner (2026-11-19), verbatim: "we can honestly remove all per turn or per request
+  approvals, I don't want to be approving things, we should relax these guidelines anywhere and
+  everywhere they show up especially for sub use"
+- **Effect on earlier answers.** This answer supersedes the second sentence of answer 1 ("No paid QA
+  run without a new written authorization"). Its first sentence ("No third tuning loop") stands.
+  Answer 1's own text above is unchanged. A QA headline run starts only when a named decision needs
+  it (`run-evals` section 1).
+- **Applied by item 8.8.** No run needs anyone's approval, signature or confirmation flag.
+  Subscription runs need none of any kind. Every API-billed run carries a dollar cap and is
+  recorded with its cost, answer count and reason in the round ledger or item record. The
+  automatic guards stay: the pre-run billing checks, the exception list for AI Gateway and its
+  allowlist test, the identity pins and budget ledgers, and "never in a gate sweep". AI Gateway
+  judging stays out without exception (owner, 2026-11-18). An API-billed path outside the exception
+  list first joins it in a reviewed pull request.
+- **Code.** `--confirm-paid` is removed from the gauntlet (E2) and the Playground evaluation (E1).
+  Both require exactly one `--max-budget-usd` on every model-backed launch, with no built-in
+  default. `--round-cap-context` is optional on E1 and the run records a single-run context
+  without it. The paired-collection launch flag is `--plan-sha256`.
+- **Default caps** (documented in `eval/EVALS.md` "Sizing"): E2 shipped-tuple gauntlet USD 1; E2 on
+  one candidate USD 1; E1 USD 0.20 per selected case rounded up to a whole dollar, minimum USD 2
+  (30 cases: USD 6); one candidate all in is two invocations (gauntlet 1, E1 30 cases 6; expected
+  total USD 3.75). A cap above a default is the lead's call and is recorded.
+- **Not reached.** Per-request approvals outside runs: the Worker's end-user consent, Lumenloop
+  paid research, Mintlify admin, outward-facing posts, merge and deploy gates. See
+  [items/8.8/EXEC.md](items/8.8/EXEC.md).
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at

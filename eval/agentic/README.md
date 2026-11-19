@@ -2,7 +2,7 @@
 
 This paid diagnostic checks whether an agent selects the expected service after searching the catalog.
 Use the [QA guide](../qa/README.md) to measure final-answer correctness.
-Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to obtain approval before paid collection.
+Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to size and cap paid collection.
 
 ## Method
 

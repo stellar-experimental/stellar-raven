@@ -102,15 +102,38 @@ export function treeGenerationSha256(tree) {
   });
 }
 
-export function assertModelBackedRunInputs({ serverGeneration, roundCapContext }) {
+export function assertModelBackedRunInputs({ serverGeneration }) {
   if (typeof serverGeneration !== "string" || !/^[a-f0-9]{64}$/.test(serverGeneration)) {
     throw new Error(
       "--server-generation is required for a model-backed run and must be a lowercase SHA-256 operator assertion"
     );
   }
-  if (typeof roundCapContext !== "string" || !roundCapContext) {
-    throw new Error(`--round-cap-context is required for a model-backed run (${PLAYGROUND_ROUND_CAP_CONTRACT})`);
-  }
+}
+
+/**
+ * The round cap context a run records when `--round-cap-context` is absent: a
+ * single run with no cumulative call-cap file. `experimentId` is the run ID.
+ * The stored field name `roundAuthorization` and `kind` values are contract names.
+ */
+export function singleRunRoundCapContext(runId) {
+  return {
+    contract: PLAYGROUND_ROUND_CAP_CONTRACT,
+    experimentId: runId,
+    kind: "not-applicable",
+    runAllocation: null,
+    reason: "single run: no round cap context given",
+    sourceFile: null,
+    plannedAnswerCalls: null,
+    absoluteAnswerCallCap: null,
+    answerCallsConsumedBeforeRun: null,
+    plannedJudgeCalls: null,
+    absoluteJudgeCallCap: null,
+    judgeCallsConsumedBeforeRun: null,
+    infraRetryReserve: null,
+    infraRetryConsumedBeforeRun: null,
+    savedAnswerRejudgeReserve: null,
+    savedAnswerRejudgesConsumedBeforeRun: null
+  };
 }
 
 export function buildPlaygroundArtifactMeta({
@@ -682,11 +705,14 @@ function assertRoundCapContext(round, evaluator, fail) {
   if (typeof round.experimentId !== "string" || !round.experimentId) {
     fail("capContext.roundAuthorization.experimentId is required");
   }
-  if (typeof round.sourceFile?.path !== "string" || !round.sourceFile.path) {
-    fail("capContext.roundAuthorization.sourceFile.path is required");
-  }
-  if (typeof round.sourceFile?.sha256 !== "string" || !/^[a-f0-9]{64}$/.test(round.sourceFile.sha256)) {
-    fail("capContext.roundAuthorization.sourceFile.sha256 must be a lowercase SHA-256");
+  // A null sourceFile is valid only for a single run with no cap file (not-applicable).
+  if (round.sourceFile !== null || round.kind !== "not-applicable") {
+    if (typeof round.sourceFile?.path !== "string" || !round.sourceFile.path) {
+      fail("capContext.roundAuthorization.sourceFile.path is required");
+    }
+    if (typeof round.sourceFile?.sha256 !== "string" || !/^[a-f0-9]{64}$/.test(round.sourceFile.sha256)) {
+      fail("capContext.roundAuthorization.sourceFile.sha256 must be a lowercase SHA-256");
+    }
   }
   const fields = [
     "plannedAnswerCalls",

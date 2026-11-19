@@ -2,7 +2,7 @@
 
 This evaluation measures whether an agent gives a correct, current answer through `search` and `execute`.
 It is the headline instrument in the [evaluation map](../EVALS.md).
-Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to plan a round and obtain paid-call approval.
+Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to plan and size a round.
 
 ## Directory / lane map
 
@@ -66,7 +66,7 @@ The review file uses these collections and exact selectors:
 Each closure needs `verdict: "consistent"`, `lastChecked`, matching `reSwept` evidence, and `clearReopened: true`.
 The helper preserves member hashes and authoritative values. It rejects unknown collections and ambiguous selectors.
 
-For paid collection, reuse an authorized `dev:eval` server with the expected revision.
+For paid collection, reuse a running `dev:eval` server with the expected revision.
 The launcher requires a clean worktree and includes that revision in MCP `serverInfo`.
 Follow the run-evals workflow if the required server is absent.
 
@@ -111,7 +111,7 @@ Pin the versioned executable, not a self-updating launcher.
 A launcher such as `~/.local/bin/claude` is a link that another session can move during an update.
 Put a private directory that holds only a link to the versioned executable first on `PATH`.
 Turn off the CLI's auto-update in the collection shell; for Claude Code, set `DISABLE_AUTOUPDATER=1`.
-A changed pin stops the method before the next paid call. A new pin needs a new authorization.
+A changed pin stops the method before the next paid call. A new pin starts a new run.
 
 Compute every pin in the collection shell, after all Claude-related variables have their final values:
 
@@ -128,7 +128,7 @@ The artifact records environment names and hashes, never their values.
 After collection, confirm the `meta.*` identity fields and `meta.comparable` in the artifact.
 Loopback sessions use a fixed `dev-local` artifact owner and write artifacts to the local simulated R2 binding.
 
-Before a new paid authorization, run the committed public identity probe:
+Before a new paid run, run the committed public identity probe:
 
 ```sh
 REMOTE_IDENTITY_PROBE=eval/qa/probe-remote-identities.mjs
@@ -164,11 +164,11 @@ A repeated capture goes through the same vector checks. The guard never repeats 
 Four failed attempts for one capture, or a changed vector, stop further spending and suppress aggregates.
 The artifact keeps completed rows, unattempted IDs, and the failed guard.
 It records `meta.comparable: false` and `meta.aggregatesSuppressed: true`.
-A stopped artifact cannot resume under the same authorization.
+A stopped artifact cannot resume under the same budget ledger.
 Comparable artifacts require a matching final postflight and `skippedReason: null` for a successful attempted postflight.
 
 `--max-budget-usd` sets the total method cap.
-Each answering, judging, panel, or retry call receives only the remaining authorization.
+Each answering, judging, panel, or retry call receives only the remaining budget.
 Each reported cost reduces the same ledger. Missing cost data invalidates the method.
 A judge CLI that the harness kills prints no cost, so the judge CLI owns stall handling.
 `judge.mjs` sets its fetch timeout and ordinary retry count, and the harness timeout is a chosen backstop.
@@ -370,7 +370,7 @@ The first answer, agent outcome, and verdict remain the top-level values.
 Retries stay in `attempts.agent[]` and `attempts.judge[]`; they do not replace first-attempt evidence.
 
 New attempts record `startedAt` and `endedAt` as UTC ISO timestamps.
-Answering timestamps start before spend authorization and the before-call identity capture.
+Answering timestamps start before the spend budget check and the before-call identity capture.
 They end at the completed CLI result and preserve the existing duration interval.
 The interval excludes the after-call identity capture.
 Judge attempts span the method, including panel calls; each `attempts.judge[].calls[]` entry also records its CLI interval.
@@ -439,7 +439,7 @@ The default answering model and the default judge model are both the Claude Code
 The artifact records the exact IDs that ran (`meta.model`, `meta.judgeModel`) beside the aliases requested (`meta.requestedModel`, `meta.judgeRequestedModel`).
 Within a run, the first response pins the resolved ID for every later call of that role. A call that reports no resolved ID stops judging, or makes the answering rows non-comparable.
 A resumed or re-judged file keeps the judge it recorded; an explicit different `--judge-model` is refused or labeled non-identical, as before.
-Stored verdicts from `claude-sonnet-5` are a different judge from the current default. The first judged run on the new judge sets a new baseline, after the paid seven-case self-test on that judge under its own authorization.
+Stored verdicts from `claude-sonnet-5` are a different judge from the current default. The first judged run on the new judge sets a new baseline, after the paid seven-case self-test on that judge.
 The self-test calibrates one exact judge, so it requires `--judge-model <exact ID>` and refuses an alias. Resolve the alias first with the roster's one-call read (`claude -p --model sonnet --output-format json "Reply ok" | jq '.modelUsage|keys'`), then pass that exact ID. Each candidate runs on that ID and fails when its verdict reports a different model. The strict call record has no model key, so record the exact ID beside the summary.
 `meta.judgeTiering.stabilityRegisterJudgeMatch` says whether the local judge-stability register was built from the judge in use (`true`, `false`, or `null` when the register predates the list). It stays advisory.
 An artifact answered by an earlier model differs in answering identity; compare it with a new one only as a labeled cross-model comparison.
@@ -578,7 +578,7 @@ Freeze one register for paired comparisons and use the same `--stability-registe
 
 ## Paid judge self-test
 
-Run this only after approval for the paid rubric, prompt, pack, or adapter check:
+Run this only for the paid rubric, prompt, pack, or adapter check:
 
 ```sh
 npm run eval:qa:selftest -- \
@@ -650,7 +650,7 @@ node eval/qa/re-judge.mjs eval/qa/results/<stamp>-variantA.json \
   --dry-run
 ```
 
-For an approved paid run, replace `--dry-run` with these flags:
+For a paid run, replace `--dry-run` with these flags:
 
 ```text
 --max-budget-usd <usd>
@@ -788,7 +788,7 @@ npm run eval:qa:paired:capacity -- --out /absolute/path/to/paired-capacity.json
 npm run eval:qa:paired:plan-sha256 -- /absolute/path/to/paired-collection-plan.json
 npm run eval:qa:paired:collect -- \
   --plan /absolute/path/to/paired-collection-plan.json \
-  --authorized-plan-sha256 <owner-authorized-canonical-sha256>
+  --plan-sha256 <canonical-plan-sha256>
 ```
 
 The capacity command makes live public requests without model calls or a local server.
@@ -797,10 +797,10 @@ It requires matching vectors, actual request concurrency, and no errors, retries
 Each capture and the complete check must finish within 120,000 ms.
 The artifact remains valid through exactly 86,400,000 ms after completion. Future timestamps fail.
 
-Freeze the capacity artifact and every command array before requesting the owner's signature.
-Keep the authorization outside the plan and bind it to the canonical plan hash and every command array.
-Any plan edit requires a new hash and authorization.
-Run the exact approved P6 command before launching the supervisor within the capacity window.
+Freeze the capacity artifact and every command array, then record the canonical plan hash.
+The launch hash binds the run to the canonical plan contents and the ordered command arguments (key order and whitespace do not change it); keep the hash outside the plan.
+Any plan edit requires a new hash.
+Run the exact planned P6 command before launching the supervisor within the capacity window.
 
 The plan binds these inputs:
 
@@ -822,7 +822,7 @@ The supervisor runs collection only. Run stored judging later with artifact path
 The collection arms inherit the supervisor's process group; cancellation signals each recorded child directly.
 The launch operator owns group cleanup and verifies all surviving group members before signaling.
 After each stored judge, the operator requires complete judging evidence and unsuppressed aggregates before the next phase.
-Each arm's plan sets a collection cap and a higher cumulative cap for stored judging, and the two-arm cap must equal the sum of the two cumulative caps (the reviewed run used `$80`, `$120` and `$240`). The owner-signed plan holds the authorized values.
+Each arm's plan sets a collection cap and a higher cumulative cap for stored judging, and the two-arm cap must equal the sum of the two cumulative caps (the reviewed run used `$80`, `$120` and `$240`). The frozen plan holds the cap values.
 
 The P6 block fixes seven `$0.50` calls, the launch's `--paired-listeners` record and its digest (`p6.listenersSha256`), and a new output path.
 The supervisor requires that record to match its digest and the ports and revisions of both collection commands.
@@ -848,7 +848,7 @@ Repeats preserve each arm's port pair. Baseline and candidate retain different e
 
 CI regenerates and compares `cases.json`, `sample.json`, `tool-cases.json`, and `lifecycle-registry.json` byte-for-byte.
 It runs the offline corpus, consistency-register, and frozen-contract checks.
-The paid judge self-test requires separate approval and does not run in CI.
+The paid judge self-test is paid and runs only when its trigger holds; it does not run in CI.
 The [golden-truth workflow](../../.agents/skills/golden-truth/SKILL.md) defines verification and independent-review requirements.
 The [truth-maintenance workflow](../../.agents/skills/truth-maintenance/SKILL.md) owns expired verification schedules.
 

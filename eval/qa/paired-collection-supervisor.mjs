@@ -96,14 +96,12 @@ export function pairedCollectionPlanSha256(plan) {
   return sha256(JSON.stringify(canonicalize(plan)));
 }
 
-export function validateAuthorizedPairedCollectionPlan(plan, authorizedPlanSha256) {
-  validateHash(authorizedPlanSha256, "authorized plan SHA-256");
+/** The launch hash binds the run to the canonical plan contents and the ordered command arguments. */
+export function validateFrozenPairedCollectionPlan(plan, planSha256) {
+  validateHash(planSha256, "plan SHA-256");
   const actual = pairedCollectionPlanSha256(plan);
-  if (authorizedPlanSha256 !== actual) {
-    throw new Error(`authorized plan SHA-256 does not match the canonical plan: expected ${actual}`);
-  }
-  if (Object.hasOwn(plan ?? {}, "authorization")) {
-    throw new Error("the authorization record must stay external to the canonical plan");
+  if (planSha256 !== actual) {
+    throw new Error(`plan SHA-256 does not match the canonical plan: expected ${actual}`);
   }
   return actual;
 }
@@ -1163,14 +1161,14 @@ async function main() {
     process.stdout.write(`${pairedCollectionPlanSha256(parsedPlan)}\n`);
     return;
   }
-  if (args.length !== 4 || args[0] !== "--plan" || args[2] !== "--authorized-plan-sha256") {
+  if (args.length !== 4 || args[0] !== "--plan" || args[2] !== "--plan-sha256") {
     throw new Error(
-      "usage: paired-collection-supervisor.mjs --plan <plan.json> --authorized-plan-sha256 <sha256> | --print-plan-sha256 <plan.json>"
+      "usage: paired-collection-supervisor.mjs --plan <plan.json> --plan-sha256 <sha256> | --print-plan-sha256 <plan.json>"
     );
   }
   const planPath = path.resolve(args[1]);
   const parsedPlan = JSON.parse(readFileSync(planPath, "utf8"));
-  validateAuthorizedPairedCollectionPlan(parsedPlan, args[3]);
+  validateFrozenPairedCollectionPlan(parsedPlan, args[3]);
   const plan = validatePairedCollectionPlan(parsedPlan);
   const controlDir = mkdtempSync(path.join(os.tmpdir(), "qa-paired-control-"));
   const cancellationFile = path.join(controlDir, "cancelled");

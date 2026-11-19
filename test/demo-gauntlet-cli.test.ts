@@ -39,14 +39,18 @@ describe("demo model gauntlet CLI safety", () => {
     expect(existsSync(outDir)).toBe(false);
   });
 
-  it("prints the validated plan but makes no output before --confirm-paid", async () => {
+  it("prints the validated plan but makes no output without --max-budget-usd", async () => {
     const outDir = await scratchOutDir();
     const result = runCli(["--models", "openai/test", "--prompts", "rpc-simulate", "--out-dir", outDir]);
 
     expect(result.status).toBe(1);
     expect(result.stdout).toContain("planned Playground chat turns: 1 (not guaranteed provider calls)");
-    expect(result.stderr).toContain("--confirm-paid");
+    expect(result.stderr).toContain("pass --max-budget-usd <usd> to launch (the shipped-tuple smoke uses 1)");
     expect(existsSync(outDir)).toBe(false);
+  });
+
+  it("rejects the removed --confirm-paid flag as unknown", () => {
+    expect(() => parseGauntletArgs(["--confirm-paid"])).toThrow("Unknown argument: --confirm-paid");
   });
 
   it("rejects an invalid invocation before creating its requested output", async () => {
@@ -100,7 +104,7 @@ describe("demo model gauntlet CLI safety", () => {
 
     const unbudgeted = validateGauntletInvocation(parseGauntletArgs(["--models", "model-a", "--prompts", "rpc-simulate"]));
     expect(unbudgeted.maxBudgetUsd).toBeNull();
-    expect(formatLaunchPlan(buildLaunchPlan(unbudgeted))).toContain("budget: none (no cost accounting; read the Gateway logs)");
+    expect(formatLaunchPlan(buildLaunchPlan(unbudgeted))).toContain("budget: no cap supplied; preview only");
 
     for (const value of ["0", "abc", "1e3", "$2"]) {
       expect(() => validateGauntletInvocation(parseGauntletArgs(["--max-budget-usd", value]))).toThrow(
@@ -138,8 +142,10 @@ describe("demo model gauntlet CLI safety", () => {
     { name: "accounting error", cost: { costUsd: 0.1, error: "unsettled-call", calls: 1, reportedCalls: 1 }, repeats: 2, error: "unknown turn cost" },
     { name: "unsettled call count", cost: { costUsd: 0.1, calls: 2, reportedCalls: 1 }, repeats: 2, error: "unknown turn cost" },
     { name: "last-turn overspend", cost: { costUsd: 1.01, calls: 1, reportedCalls: 1 }, repeats: 1, error: "exceeds the authorized budget" },
-    { name: "budget exhaustion", cost: { costUsd: 1, calls: 2, reportedCalls: 2, logIds: ["offline-gateway-log-1", "offline-gateway-log-2"] }, repeats: 2, error: "budget stopped the matrix" }
-  ])("saves an incomplete matrix after $name without another turn", async ({ cost, repeats, error }) => {
+    { name: "budget exhaustion", cost: { costUsd: 1, calls: 2, reportedCalls: 2, logIds: ["offline-gateway-log-1", "offline-gateway-log-2"] }, repeats: 2, error: "budget stopped the matrix" },
+    // The Worker accepts only a plain decimal budget header; String(5e-7) would be rejected with HTTP 400.
+    { name: "tiny cap", budgetUsd: "0.0000005", cost: { costUsd: 0.0000005, calls: 1, reportedCalls: 1 }, repeats: 2, error: "budget stopped the matrix" }
+  ])("saves an incomplete matrix after $name without another turn", async ({ budgetUsd = "1", cost, repeats, error }) => {
     const directory = await mkdtemp(path.join(os.tmpdir(), "gauntlet-offline-server-"));
     temporaryDirectories.push(directory);
     let port: number;
@@ -152,6 +158,7 @@ describe("demo model gauntlet CLI safety", () => {
       await new Promise<void>((resolve) => reservation.close(() => resolve()));
     } while (port > 64000);
     const countFile = path.join(directory, "turns");
+    const headerFile = path.join(directory, "budget-header");
     const fakeNpx = path.join(directory, "npx");
     await writeFile(fakeNpx, `#!/usr/bin/env node
 const http = require('node:http');
@@ -160,6 +167,7 @@ let turns = 0;
 http.createServer((req, res) => {
   if (req.method !== 'POST') { res.end('ready'); return; }
   fs.writeFileSync(${JSON.stringify(countFile)}, String(++turns));
+  fs.writeFileSync(${JSON.stringify(headerFile)}, String(req.headers['x-raven-eval-max-budget-usd']));
   res.writeHead(200, {'content-type': 'text/event-stream'});
   for (const frame of ${JSON.stringify([{ type: "ready" }, { type: "token", text: "Offline fixture" }, { type: "done", reason: "stop" }, ...(cost ? [{ type: "eval-cost", ...cost }] : [])])}) {
     res.write('data: ' + JSON.stringify(frame) + '\\n\\n');
@@ -171,7 +179,7 @@ http.createServer((req, res) => {
     const outDir = path.join(directory, "results");
     const result = spawnSync(process.execPath, ["scripts/run-demo-model-gauntlet.mjs",
       "--models", "openai/offline-fixture", "--prompts", "rpc-simulate", "--repeats", String(repeats),
-      "--max-budget-usd", "1", "--confirm-paid", "--port-base", String(port),
+      "--max-budget-usd", budgetUsd, "--port-base", String(port),
       "--run-id", "missing-cost", "--out-dir", outDir
     ], {
       cwd: process.cwd(), encoding: "utf8", timeout: 20_000,
@@ -180,6 +188,9 @@ http.createServer((req, res) => {
     expect(result.status, result.stderr).toBe(1);
     expect(result.stderr).toContain(error);
     expect(await readFile(countFile, "utf8")).toBe("1");
+    const header = await readFile(headerFile, "utf8");
+    expect(header).toBe(budgetUsd);
+    expect(header).toMatch(/^(?:\d+\.?\d*|\.\d+)$/);
     const artifact = JSON.parse(await readFile(path.join(outDir, "missing-cost.json"), "utf8"));
     expect(artifact.completion).toEqual({ plannedTurns: repeats, completedTurns: 1, status: "incomplete" });
     expect(artifact.results).toHaveLength(1);

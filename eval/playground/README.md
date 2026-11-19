@@ -1,6 +1,6 @@
 # Playground semantic evaluation
 
-`scripts/run-demo-model-gauntlet.mjs` remains the eight-case transport and tool-loop smoke test. It checks that models can complete the SSE chat path cleanly; it does not establish factual answer quality. It prints the validated matrix first and will not create artifacts, read `.dev.vars`, mint cookies, or start Wrangler unless the operator explicitly supplies `--confirm-paid` (for example: `node scripts/run-demo-model-gauntlet.mjs --models <provider>/<catalog-id> --max-budget-usd 1 --confirm-paid`). The printed total is planned Playground chat turns, not guaranteed provider calls. It starts its own Wrangler per model on its own port. Without `--models` it runs the shipped tuple, the Playground primary then the fallback (`DEMO_MODELS`), each model alone: 16 turns, about USD 0.40 to 0.45, run with `--max-budget-usd 1`. It is not a hand-off test: no run makes the primary fail over to the fallback, and offline tests cover the hand-off. A tuple change moves the default with it. Select any other model explicitly with `--models` and state in the run plan the decision it serves.
+`scripts/run-demo-model-gauntlet.mjs` remains the eight-case transport and tool-loop smoke test. It checks that models can complete the SSE chat path cleanly; it does not establish factual answer quality. It prints the validated matrix first and will not create artifacts, read `.dev.vars`, mint cookies, or start Wrangler unless the operator supplies exactly one `--max-budget-usd` (for example: `node scripts/run-demo-model-gauntlet.mjs --models <provider>/<catalog-id> --max-budget-usd 1`). Without the cap it prints the plan and exits non-zero, which is the free way to check a launch. The printed total is planned Playground chat turns, not guaranteed provider calls. It starts its own Wrangler per model on its own port. Without `--models` it runs the shipped tuple, the Playground primary then the fallback (`DEMO_MODELS`), each model alone: 16 turns, about USD 0.40 to 0.45, run with `--max-budget-usd 1`. It is not a hand-off test: no run makes the primary fail over to the fallback, and offline tests cover the hand-off. A tuple change moves the default with it. Select any other model explicitly with `--models` and state in the run plan the decision it serves.
 
 `npm run eval:playground` is the complementary semantic lane. It sends existing QA cases to the real `POST /playground/chat` SSE route, captures the final assistant text, search/execute outcomes, terminal reason, latency, HTTP/SSE errors, and grades the final answer with the existing `eval/qa` golden, evidence-pack, and judge contract. It introduces no new quality rubric and does not change corpus or golden content.
 
@@ -18,20 +18,20 @@ npm run eval:playground -- --preflight
 # Print the source-tree generation after the reviewed tree is frozen.
 npm run eval:playground -- --print-generation
 
-# Small paid run. Both provenance assertions are mandatory before model spend.
-npm run eval:playground -- --confirm-paid --max-budget-usd 10 --url http://localhost:8787 \
+# Small paid run. A cap and the server generation are mandatory before model spend.
+# The cap is USD 0.20 per selected case, rounded up to a whole dollar, minimum 2 (eval/EVALS.md "Sizing").
+npm run eval:playground -- --max-budget-usd 2 --url http://localhost:8787 \
   --server-generation <sha256-from-print-generation> \
-  --round-cap-context /tmp/playground-round-cap.json \
   --sample 5 --seed baseline-a
 
 # Targeted reproduction.
-npm run eval:playground -- --confirm-paid --max-budget-usd 10 \
+npm run eval:playground -- --max-budget-usd 2 \
   --server-generation <sha256-from-print-generation> \
-  --round-cap-context /tmp/playground-round-cap.json \
   --ids q-aas-burn-clawback-redemption-mechanics
 
 # Whole named contract, only when it stays within the one-subject 30/hour cap.
-npm run eval:playground -- --confirm-paid --max-budget-usd 10 \
+# --round-cap-context is optional: your own cumulative call-cap file for a round of several invocations.
+npm run eval:playground -- --max-budget-usd 6 \
   --server-generation <sha256-from-print-generation> \
   --round-cap-context /tmp/playground-round-cap.json \
   --cases eval/qa/corpus/live/live-cases.json --full
@@ -39,7 +39,7 @@ npm run eval:playground -- --confirm-paid --max-budget-usd 10 \
 
 ## Comparing candidate models
 
-Size the comparison to the number of candidates. Each tier needs its own written authorization. One candidate: the gauntlet on it, then one paired run of this lane on the shipped model's case IDs (the [worked example](../../research/audits/2026-11-10-playground-gpt61-terra-recheck.md) cost USD 3.75 all in). Several candidates: the gauntlet on each, a paired screen, then a disjoint confirmation for the one that advances (the 2026-11-09 design in [`research/audits/2026-11-09-playground-product-decision.md`](../../research/audits/2026-11-09-playground-product-decision.md)). Never run a full matrix. For a prompt or loop change, run both arms on one tree with a default sample of 5 cases (at most 30), and reuse a stored run only when its identities match.
+Size the comparison to the number of candidates. Each tier runs under its default cap ([`eval/EVALS.md`](../EVALS.md) "Sizing"). One candidate: the gauntlet on it, then one paired run of this lane on the shipped model's case IDs (the [worked example](../../research/audits/2026-11-10-playground-gpt61-terra-recheck.md) cost USD 3.75 all in). Several candidates: the gauntlet on each, a paired screen, then a disjoint confirmation for the one that advances (the 2026-11-09 design in [`research/audits/2026-11-09-playground-product-decision.md`](../../research/audits/2026-11-09-playground-product-decision.md)). Never run a full matrix. For a prompt or loop change, run both arms on one tree with a default sample of 5 cases (at most 30), and reuse a stored run only when its identities match.
 
 To change the Playground primary or fallback, first run the gauntlet on the candidate, then run this lane on the same case IDs as the shipped model's run. Run each candidate at effort `none` when it supports it, otherwise at its lowest supported effort. Effort `none` is the shipped latency default, not an eligibility rule. Set `DEMO_MODEL_OVERRIDE` and `DEMO_REASONING_EFFORT_OVERRIDE` on both the server and the harness, and record the effort beside each result. Switch only when the candidate passes the gauntlet and shows no tool-loop regressions on the paired run. Cost and latency then decide, unless the cheaper candidate is far less correct. Report each candidate's count of new wrong answers beside its cost and latency as the evidence for that call.
 
@@ -107,7 +107,7 @@ They do not establish live model availability or live cost reporting.
 ### Results and provenance
 
 Results retain `budget.selectedCaseIds`, `incompleteCaseIds`, and `unattemptedCaseIds`.
-The ledger records each authorization and reported cost.
+The ledger records each run, its cap and reported cost.
 `meta.totalCostUsd` sums reported complete-call costs; invalid methods can have additional unknown costs.
 Each row retains the answer-cost frame, including any reported partial amount.
 Missing or excessive costs produce an invalid method with exit code 1.
@@ -124,9 +124,14 @@ operator must ensure the reused `dev` terminal represents that generation. A gen
 machine-local, not a portable build or deployment identity; the value only attests to the named
 operator's local tree at the harness checkpoints.
 
-`--round-cap-context` is a JSON `playground-semantic-round-cap/v1` input. A reviewed round uses
-non-negative integer ceilings and consumption counters; the harness refuses before spend when
-the selected answer/judge calls would exceed an absolute cap:
+`--round-cap-context` is optional. It is your own cumulative call-cap file for a round that runs
+several E1 invocations: a JSON `playground-semantic-round-cap/v1` input with non-negative integer
+ceilings and consumption counters; the harness refuses before spend when the selected answer/judge
+calls would exceed an absolute cap. What makes an E1 result evidence is the pre-registered decision
+and stop rule (`run-evals` section 1), not this file. Without it the run records
+`kind: "not-applicable"`, `experimentId` set to the run ID, the reason "single run: no round cap
+context given", `sourceFile: null` and null caps. The stored names `reviewed-round` and
+`roundAuthorization` are contract names, kept so stored artifacts stay valid:
 
 ```json
 {
@@ -147,15 +152,15 @@ the selected answer/judge calls would exceed an absolute cap:
 }
 ```
 
-Do not copy those example numbers into a real run: encode the independently reviewed round's
-actual authorization and current consumption. Set `runAllocation` to `planned` for ordinary calls
+Do not copy those example numbers into a real run: encode the round's actual caps and current
+consumption. Set `runAllocation` to `planned` for ordinary calls
 or `infra-retry` for a transcript-proven retry; the latter is bounded by the remaining retry
-reserve. A one-off unreviewed diagnostic must instead use `kind: "not-applicable"`, a non-empty
-`reason`, `runAllocation: null`, and all ten numeric cap fields present as explicit `null`; such an
-artifact is labeled diagnostic and is not evidence for a reviewed eval-round conclusion.
+reserve. A `reviewed-round` always needs its file and the file's hash. A file that sets
+`kind: "not-applicable"` needs a non-empty `reason`, `runAllocation: null`, and all ten numeric cap
+fields present as explicit `null`; the harness accepts `sourceFile: null` only for that kind.
 
 The cap context is an operator-maintained cumulative ledger, not a shared transactional counter:
-the named round owner updates `*ConsumedBeforeRun` between invocations and verifies the next
+the round's lead updates `*ConsumedBeforeRun` between invocations and verifies the next
 projection before spending. The harness fail-closes an inconsistent or over-cap input, but cannot
 account for model calls made outside the supplied machine-local context.
 
@@ -163,7 +168,7 @@ account for model calls made outside the supplied machine-local context.
 
 If a required local generation checkpoint observes a mismatch after an answer call has started, or the checkpoint itself fails after spend, the invocation fails closed (exit 1) without writing a normal result. It instead makes a best-effort local-only `playground-semantic-quarantine/v1` file at `<out-dir>/quarantine/<runId>-playground-semantic-quarantine.json`. A quarantine has `quarantinedMeta` and `quarantinedRows`, never normal top-level `meta`, `rows`, or `summary`; it is non-promotable and may be used only for spend reconciliation and runner forensics. It cannot support factual, upstream, eval, causal, scoring, re-judge, aggregate, or comparison claims. A quarantined transcript may motivate an investigation, but any finding needs fresh non-quarantined evidence from a clean rerun or recurrence probe.
 
-Quarantined spend still increments the operator ledger's `*ConsumedBeforeRun` counters by the saved started-call minimums. Exit 1 with a quarantine file means update the ledger from its `spend` block; exit 1 without one means reconstruct the conservative counts from the stderr marker. `infraRetryAuthorized: false` is not a retry authorization: any retry needs a new reviewed cap context. The harness checks before each answer, after each answer before any judge, and before normal finalization; it does not prove the bytes loaded by an already-running Worker or continuously observe edit/revert cycles.
+Quarantined spend still increments the operator ledger's `*ConsumedBeforeRun` counters by the saved started-call minimums. Exit 1 with a quarantine file means update the ledger from its `spend` block; exit 1 without one means reconstruct the conservative counts from the stderr marker. `infraRetryAuthorized: false` is a stored field name: a quarantine does not mark a retry as an infra retry, so a retry is a new run under its own `--max-budget-usd` (and a new cap context when you keep one). The harness checks before each answer, after each answer before any judge, and before normal finalization; it does not prove the bytes loaded by an already-running Worker or continuously observe edit/revert cycles.
 
 Their saved transcript uses `mcp__playground__search` / `mcp__playground__execute` aliases with full JSON-stringified inputs and results, so the existing plan grader works directly:
 

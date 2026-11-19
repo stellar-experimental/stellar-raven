@@ -116,7 +116,7 @@ const argValue = (flag) => {
 
 /**
  * Required paid-run flags use only the space-separated `--flag value` form. Parse
- * them before any live preflight so malformed approval cannot reach an agent.
+ * them before any live preflight so malformed flags cannot reach an agent.
  */
 function requiredPaidFlag(args, flag) {
   if (args.some((arg) => arg.startsWith(`${flag}=`))) {
