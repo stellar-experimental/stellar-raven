@@ -48,7 +48,8 @@
  *     same PreToolUse hookSpecificOutput deny contract and empty-stdout allow. When
  *     toolInputTruncated is true on a guarded tool, deny (tail of input is hidden).
  *   - Antigravity (1.5.12): stdin JSON with toolCall.{name,args}, cwd, workspacePaths; deny is
- *     exit 0 with {"decision":"deny","reason":"..."}; pass-through is {} on stdout, exit 0.
+ *     exit 0 with {"decision":"deny","reason":"..."}; pass-through is empty stdout, exit 0
+ *     ({} would deny via proto3 allow_tool=false).
  *
  * The guard blocks and never rewrites. It imports Node built-ins only.
  */
@@ -917,13 +918,16 @@ function firstNonEmptyString(...values) {
 function extractCommand(toolInput) {
   if (!toolInput || typeof toolInput !== "object") return null;
   if (typeof toolInput.command === "string") return toolInput.command;
+  if (Array.isArray(toolInput.command) && toolInput.command.length > 0 && toolInput.command.every((s) => typeof s === "string")) {
+    return toolInput.command.map((s) => (/[\s"'\\$`]/.test(s) ? `'${s.replace(/'/g, "'\\''")}'` : s)).join(" ");
+  }
   if (typeof toolInput.CommandLine === "string") return toolInput.CommandLine;
   return null;
 }
 
 function extractToolCwd(toolInput, home) {
   if (!toolInput || typeof toolInput !== "object") return null;
-  const raw = firstNonEmptyString(toolInput.working_directory, toolInput.cwd, toolInput.Cwd, toolInput.workdir);
+  const raw = firstNonEmptyString(toolInput.working_directory, toolInput.cwd, toolInput.Cwd);
   return raw === null ? null : normalizePathString(raw, home);
 }
 
@@ -943,12 +947,7 @@ function extractGrepArgs(toolInput, home) {
   } else if (typeof toolInput.Includes === "string" && toolInput.Includes !== "") {
     globs.push(...toolInput.Includes.split(/\s+/).filter(Boolean));
   }
-  const rawPath = firstNonEmptyString(
-    toolInput.path,
-    toolInput.target_directory,
-    toolInput.SearchPath,
-    toolInput.SearchPathUri,
-  );
+  const rawPath = firstNonEmptyString(toolInput.path, toolInput.target_directory, toolInput.SearchPath);
   return { globs, searchPath: rawPath === null ? null : normalizePathString(rawPath, home) };
 }
 

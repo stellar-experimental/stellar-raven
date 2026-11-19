@@ -323,7 +323,8 @@ path (`eval/qa/*`, `*/*/*.json`, `"$PWD/eval"/*`); a `$(...)` file list; and `xa
 `find -exec` running `grep` or `rg`. The Grep tools (`Grep`, `grep`, `grep_search`) are denied for
 a positive glob (`glob`, `glob_pattern`, `Includes`) that matches a listed name through an unset or
 ancestor path (`path`, `target_directory`, `SearchPath`). It blocks and never rewrites, and fails
-open on a parse or internal error.
+open on a parse or internal error (or when the hook process cannot start, such as a missing script
+path or unset workspace variable).
 A positive glob is denied even when a later negative glob excludes every listed path (`rg -g '*.json'
 -g '!eval/**' X`): an accepted false positive, with `rg X src` as the substitute.
 
@@ -336,10 +337,12 @@ No other lane uses it.
 
 **What the guard does not stop.** `cat`, the Read tool, `git diff`, `git show`, `git log -p`, an
 explicit path to a listed file, a pull request's diff, a script file or a pipe into a shell
-(`echo '...' | bash`), `ag`, `ack` and `ugrep`, a Codex session in an untrusted worktree or without
-hook trust, a Grok session in an untrusted folder, and any CLI outside the four above. `rg -g '*.json'`
-re-includes a file-level entry, so the hook denies it where active; untrusted Codex/Grok sessions and
-other CLIs rely on the rule in `AGENTS.md`.
+(`echo '...' | bash`), `ag`, `ack` and `ugrep`, an unglobbed search through an agent's built-in
+grep tool if that tool does not honor `.ignore` (unverified for Grok `grep` and for Antigravity's
+in-process fallback when embedded ripgrep is unavailable), a Codex session in an untrusted worktree
+or without hook trust, a Grok session in an untrusted folder, and any CLI outside the four above.
+`rg -g '*.json'` re-includes a file-level entry, so the hook denies it where active; untrusted
+Codex/Grok sessions and other CLIs rely on the rule in `AGENTS.md`.
 
 **Copies of golden text.** `eval/qa/case-text-scan.mjs` counts 8-word golden shingles (unique to at
 most two cases) that a file git lists outside the paths above repeats. `npm test` fails when a file

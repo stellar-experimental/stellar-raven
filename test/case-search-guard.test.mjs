@@ -356,6 +356,8 @@ describe("case-search guard decisions", () => {
 
   it("covers Grok and Antigravity tool shapes, tool-level cwd, and truncated inputs", () => {
     expect(decide({ toolName: "run_terminal_command", toolInput: { command: "grep -r X ." }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "Bash", toolInput: { command: ["grep", "-r", "X", "."] }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "Bash", toolInput: { command: ["rg", "X", "src"] }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
     expect(decide({ toolName: "Shell", toolInput: { command: "rg -g '*.json' X eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
     expect(decide({ toolName: "run_terminal_command", toolInput: { command: "rg -g '*.json' X", working_directory: "eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
     expect(decide({ toolName: "run_terminal_command", toolInput: { command: "rg -g '*.json' X", cwd: "eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
