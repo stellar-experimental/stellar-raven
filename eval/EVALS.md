@@ -29,7 +29,7 @@ The client set is in [the roster](../.agents/model-roster.md#models-for-evals-an
 | [QA battery](qa/README.md) | Final-answer correctness | Paid; use matched cases before and after substantial changes | Headline; membership comes from the [registry](qa/lifecycle-registry.json) |
 | [Canonical live QA](qa/corpus/live/live-cases.json) | Live-data behavior on 15 cases | Paid; test grounding after executor or adapter changes | Separate diagnostic: `live-data-canonical-v3` |
 | [Digest QA](qa/corpus/live/live-digest-supplement-cases.json) | Recency-digest grounding on two cases | Paid; test digest or skill-run questions | Separate diagnostic: `live-digest-supplement-v2` |
-| [Playground](playground/README.md) | The public `/playground/chat` model and tool loop | Paid and API-billed through AI Gateway (exception E1 in [Model-call billing](#model-call-billing)); uses selected QA cases | Diagnostic; keep its denominator separate from MCP QA |
+| [Playground](playground/README.md) | The public `/playground/chat` model and tool loop | Paid and API-billed through AI Gateway for Playground product questions only (exceptions E1 and E2 in [Model-call billing](#model-call-billing)); uses selected QA cases | Diagnostic; keep its denominator separate from MCP QA |
 | [Plan](plan/README.md) | Service coverage and broad-to-detail call order | Offline; grades stored QA transcripts | Diagnostic; progression is informational |
 | [Temporal](temporal/README.md) | Answer behavior for temporal questions | Offline; grades stored results | Diagnostic |
 | [Partner docs](partner-docs/README.md) | Required facts in partner documentation | Live source checks; see the instrument guide | Diagnostic |
@@ -97,14 +97,40 @@ command: without it the CLI uses a shared background service that runs on the de
 
 Anthropic through OpenCode is API-key only: never.
 
-**Exceptions.** Each reaches a model only through the Playground's own transport.
+**Exceptions.** E1 (`scripts/run-playground-semantic-eval.mjs`, `npm run eval:playground`) and E2
+(`scripts/run-demo-model-gauntlet.mjs`) answer through the local `/playground/chat` route, which calls
+the model through AI Gateway. E1's judge half is Claude Code on the subscription. Each question goes
+to the cheapest path that measures it accurately. A subscription CLI differs from the Playground in its
+system prompt, tool presentation, tool-result clips, effort, temperature, loop limits and transport,
+so it decides a question only when none of those differences is what the question measures.
 
-| ID | Path | Reason | A subscription CLI instead? |
-|---|---|---|---|
-| E1 | `scripts/run-playground-semantic-eval.mjs` (`npm run eval:playground`) | It answers through the local `/playground/chat` route, which calls the model through AI Gateway. The subject under test is the Playground's own model and transport. Its judge half is Claude Code on the subscription. | No: a CLI would test a different client. |
-| E2 | `scripts/run-demo-model-gauntlet.mjs` | The eight-case transport and tool-loop smoke test on the same route. | No, same reason. |
+| Question | Path | Reason |
+|---|---|---|
+| Does a model route through the Playground's Gateway transport (slug, provider quirks, tool `strict` on xAI, the logged model ID)? | E2 with `--models` | Gateway routing and the AI SDK transport are not reachable from a CLI |
+| Does each shipped model, run alone, complete the stream and tool loop after a model-path change? | E2 default: the shipped primary and fallback | The Playground route itself |
+| Should a candidate replace the Playground primary or fallback? | E2 on the candidate, then E1 paired | The decision is about the prompt, loop, caps, effort, temperature and model together |
+| Did a Playground prompt, preamble, tool-loop or cap change move answer quality or plan? | E1 on both arms, then `npm run eval:plan` | `DEMO_PREAMBLE`, the caps and the loop exist only in the Playground |
+| Does a model that only the Gateway or Workers AI reaches (such as Kimi) fit the Playground? | E2 and E1, as above | No subscription CLI exists |
+| Which model family answers Raven questions best, or how does it use `search` and `execute`? | Subscription: the QA runner, and Codex and Grok `hc` lanes | The MCP client and model decide it, not the Playground |
+| Did a tool description, MCP instruction, catalog or executor change help or hurt answers? | Subscription QA. Add an E1 sample only when the change is about call counts, step order or the search-evidence rule, or stored transcripts show more tool calls per answer than the Playground caps allow | The MCP surface decides it |
+| Does the fallback hand-off, the harness contract or a deployed Playground read healthy? | Free: offline tests, `--dry-run`, `--preflight`, and the Gateway log read in `cloudflare-observability-review` | No model call is needed |
 
-[`eval/playground/`](playground/README.md) holds the contract for both.
+Sizing. Every tier needs its own written authorization; none is standing.
+
+1. **Shipped-tuple gauntlet.** Primary and fallback, each alone, 8 prompts each: 16 turns, about USD 0.40
+   to 0.45, run with `--max-budget-usd 1`. Run it for a model-path change only (`src/demo/model-config.ts`,
+   the request building in `src/demo/chat.ts`, an `ai`, `@ai-sdk/*`, `workers-ai-provider` or `agents`
+   bump, a catalog ID bump or a Gateway setting). `npm run test:smoke` gates other `src/demo` changes.
+2. **E1 sample.** 5 cases by default, at most 30 (the `chatsPerHour` cap, not a target). Pair on the
+   same case IDs. Reuse a stored run when its identities match; a prompt or loop change needs both
+   arms on one tree.
+3. **Model selection.** One candidate: the gauntlet plus one paired E1 run on the shipped model's case
+   IDs. Several candidates: the gauntlet on each, then a paired screen and a disjoint confirmation for
+   the one that advances. No full matrix, and no eval-client matrix through the Gateway.
+
+Haiku is out of every test and eval except as the Playground fallback
+([roster](../.agents/model-roster.md#models-for-evals-and-tests)). [`eval/playground/`](playground/README.md)
+holds the contract for both lanes.
 
 **Not exceptions.** The product's runtime is not an eval or a build step: `src/demo/chat.ts` calls AI
 Gateway and Workers AI for the public Playground, and `src/demo/eval-cost.ts` reads Gateway logs for

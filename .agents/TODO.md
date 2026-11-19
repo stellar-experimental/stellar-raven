@@ -1064,12 +1064,12 @@ use the owner's rule leaves open.
 The repository has one judge: Claude Sonnet on the Claude Code subscription (`eval/qa/judge.mjs`).
 Round item 8.6 removed the AI Gateway judge, which existed because the Codex CLI could not be shown
 tool-blind (#387). No current decision needs judge-vendor diversity, so nothing is built. Checked
-offline on agentpc, 2026-11-18 (no model call):
+on agentpc, 2026-11-18 and 2026-11-19 (Codex offline with no model call; one Grok probe call):
 
 | CLI | Tool control | Tool-blind? |
 |---|---|---|
-| Codex (`codex-cli 0.169.0`) | `--disable <FEATURE>` and per-feature switches; no all-tools-off control | No. A deny-list goes stale when a release adds a tool. Stays unsupported |
-| Grok (`grok 1.0.88`) | `--tools` (an allowlist), `--disallowed-tools`, `--deny` | Unproven: help does not say what an empty `--tools` means, and user MCP servers still load. The fallback if OpenCode fails |
+| Codex (`codex-cli 0.169.0`) | `--disable <FEATURE>` and per-feature switches; no all-tools-off control | No. Offline `codex debug prompt-input` with every plausible `--disable` flag, web search disabled and an empty `CODEX_HOME` still defines the `exec` host, `wait`, `request_user_input` and the `collaboration` tools (2026-11-19, no model call; the command and tool list are in [EXEC.md](rounds/2026-11-16-next-phase/items/8.7/EXEC.md)). A deny-list also goes stale when a release adds a tool. Stays unsupported |
+| Grok (`grok 1.0.88`) | `--tools` (an allowlist), `--disallowed-tools`, `--deny` | No. Probe 2026-11-19 ([PROBE.md](rounds/2026-11-16-next-phase/items/8.7/probes/PROBE.md)): with `--tools ""`, `--deny 'mcp__*'` and no web search, `read_file` returned the canary and the full built-in set stayed defined. Not execution-blind. A different configuration (a non-empty allowlist of one inert built-in, or a permission mode that refuses every tool) would need its own pre-registered probe, and a Grok version change reopens this row |
 | OpenCode (`v2.3.0`) | Agent `permission` rules; an agent with `permission: {"*": "deny"}` resolves to a deny-all rule in `opencode debug agents --standalone` | Yes at the execution boundary (config verified offline). Tool definitions may still reach the model |
 
 Trigger: a decision that needs a second, non-Claude judge, such as a cross-arm grade difference that
@@ -1282,13 +1282,13 @@ ID.
 ### Bump the Playground catalog IDs when the AI Gateway lists a newer model
 
 No provider offers a family alias, so `DEMO_CATALOG_LATEST` in `src/demo/model-config.ts` (Terra,
-Haiku, Grok) and the one Sonnet literal in the default matrix of `scripts/run-demo-model-gauntlet.mjs`
-name exact AI Gateway catalog IDs (item 8.3). The gauntlet takes Terra and Grok from the constant.
+Haiku, Grok) names exact AI Gateway catalog IDs (item 8.3). The gauntlet default follows
+`DEMO_MODELS`, the shipped primary and fallback.
 
-Trigger: the AI Gateway catalog lists a newer Terra, Haiku, Sonnet or Grok. Owner: the orchestrator,
-when it next reads the catalog. Bump the constant, plus the gauntlet's Sonnet literal for
-a new Sonnet. Check `DEMO_ANTHROPIC_5X_MODEL` in the same change: it matches generation 5 only,
-and an unmatched Claude ID silently loses the adaptive-thinking options. A new primary or fallback
+Trigger: the AI Gateway catalog lists a newer Terra, Haiku or Grok. Owner: the orchestrator,
+when it next reads the catalog. Bump the constant. Check `DEMO_ANTHROPIC_5X_MODEL` in the same
+change: it matches generation 5 only, and an unmatched Claude ID silently loses the
+adaptive-thinking options. A new primary or fallback
 model is a Playground change, so run the gauntlet on the candidate first
 (`eval/playground/README.md`).
 
@@ -1398,8 +1398,8 @@ Both Playground tools set `strict: false`, and the field reaches the OpenAI-comp
 transport of the Grok control model (`DEMO_GROK_CONTROL_MODEL`, the newest Grok in the AI Gateway
 catalog). xAI acceptance is unverified.
 
-Done when: the model gauntlet shows the Grok control model accepts the request before the next
-control-model lane, or a reviewed change omits the field for that transport.
+Done when: the gauntlet with the Grok control model selected by `--models` shows it accepts the
+request before the next control-model lane, or a reviewed change omits the field for that transport.
 
 ### Confirm `npm run mcp-key` on wrangler 4.164.0
 
