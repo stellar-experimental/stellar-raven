@@ -7,7 +7,7 @@ Research notes and possible future work. These notes are not committed product p
 | [Observability R2 retention](./observability-r2-retention.md) | Held | A forensic question needs request, log, or trace evidence older than seven days, or another trigger in the note | None |
 | [Retrieval demand report](./retrieval-demand-report.md) | Held | An operator needs question text, or the same ranking after the Workers Logs window, with purpose, access, retention, and disclosure written first | None |
 | [User-controlled personalization](./user-controlled-personalization.md) | Deferred | An owner decision to build personalization | None |
-| [Live ecosystem-partner documentation](./partner-doc-live-sources.md) | Held; review dated 2026-10-31 is overdue | The note's triggers, or the overdue review | "Run the overdue partner-documentation review" |
+| [Live ecosystem-partner documentation](./partner-doc-live-sources.md) | Held (reviewed 2026-11-19) | The note's triggers | None |
 | [ChatGPT subscription login for `/playground`](./playground-chatgpt-subscription-login.md) | Research note | One of the note's four reopen triggers | None |
 | [Shareable durable `/playground` sessions](./shareable-durable-playground-sessions.md) | Deferred | An owner decision, then the note's four deferred choices | None |
 | [Skill discovery measurements](./skill-discovery-without-bundling.md) | Measuring; the read dated 2026-09-30 is overdue | 100 organic `skill_read` events, or the date | "Read the `skill_read` shape distribution" |
