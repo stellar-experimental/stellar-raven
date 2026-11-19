@@ -76,6 +76,7 @@ Full per-file rationale and named remaining guards live in [INVENTORY.md](INVENT
 | **N5** | Note | **Accepted & fixed** | Restored `routing*` in `test/README.md:33` (`test/routing-qa-overlap.test.mjs` still exists). |
 | **N6** | Note | **Passed to lead** | See Open Questions below (`partialRecoverySource` dead-code follow-up). |
 | **N8** | Note | **Recorded** | Reviewer disclosed passing `eval/qa/*.mjs` (code files only) to `rg -l` in one command; printed only matching code-file paths and opened/printed zero case text, corpus, split, or golden paths. |
+| **CI** | Race fix | **Fixed** | On CI (`CI/test`), `test/playground-transport.test.mjs` hit a pre-existing `once(child, 'exit')` vs `child.stdout` flush race under Node 24 load (`code === 0`, empty `stdout`). Changed to `once(child, 'close')` so stdio flushes before assertions (plus bumped loopback idle/block to `150ms`/`350ms`); passed 10/10 local stress runs and full CI. |
 
 ## 6. TODO Item Closed
 

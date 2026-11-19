@@ -26,7 +26,7 @@ const server = http.createServer(async (req, res) => {
     'data: {"type":"done","reason":"stop"}\\n\\n' +
     'data: {"type":"eval-cost","costUsd":0}\\n\\n'), 10);
 });
-server.keepAliveTimeout = 100;
+server.keepAliveTimeout = 150;
 server.keepAliveTimeoutBuffer = 0;
 server.on('connection', socket => { socket.id = ++id; socket.raw = []; socket.on('data', chunk => socket.raw.push(chunk)); });
 process.on('message', message => {
@@ -74,7 +74,7 @@ describe('Playground answer HTTP transport', () => {
       const rows = [];
       for (let index = 0; index < 4; index++) {
         rows.push(await runCase(item, options(fixture.endpoint)));
-        if (index < 3) judgeBlock(index === 0 ? 0 : 200);
+        if (index < 3) judgeBlock(index === 0 ? 0 : 350);
       }
       expect(rows.map(row => row.clientError)).toEqual([null, null, null, null]);
       expect(rows.every(row => row.responseStatus === 200 && row.costUsd === 0 && row.finishReason === 'stop')).toBe(true);
@@ -127,7 +127,8 @@ describe('Playground answer HTTP transport', () => {
       try {
         let stdout = ''; child.stdout.on('data', chunk => { stdout += chunk; });
         child.stderr.resume();
-        const [code] = await once(child, 'exit');
+        // Await `close` (not `exit`) so stdout finishes flushing before assertions.
+        const [code] = await once(child, 'close');
         expect(code).toBe(0); expect(stdout).toContain('preflight complete');
         const requests = await fixture.requests();
         expect(requests).toHaveLength(1); expect(requests[0].body).toBe('{}');
