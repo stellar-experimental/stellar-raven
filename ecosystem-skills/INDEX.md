@@ -69,7 +69,7 @@ _Third-party Stellar platform skills — integrate hosted ecosystem services fro
 
 ## Ecosystem directory (stellarlight.xyz catalog snapshot)
 
-_The broader map of what exists across the Stellar agent-skill ecosystem — 83 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-11-16T22:24:20Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
+_The broader map of what exists across the Stellar agent-skill ecosystem — 84 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-11-19T21:48:44Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
 
 | Entry | Source | Kind |
 | --- | --- | --- |
@@ -98,6 +98,7 @@ _The broader map of what exists across the Stellar agent-skill ecosystem — 83 
 | `nirium-agentic-payments` | `community` | `skill-md` |
 | `pmll` | `community` | `skill-md` |
 | `pollar-wallet-auth` | `community` | `skill-md` |
+| `relay-task-market` | `community` | `skill-md` |
 | `rozo-checkout` | `community` | `skill-md` |
 | `rozo-intents` | `community` | `skill-md` |
 | `scopuly-wallet` | `community` | `skill-md` |
@@ -159,8 +160,8 @@ _The broader map of what exists across the Stellar agent-skill ecosystem — 83 
 
 ## Community directory (stellar/stellar-dev-skill main source snapshot)
 
-The snapshot lists 51 Community skills from [stellar/stellar-dev-skill main](https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/site/src/data/skills.ts).
-The snapshot date is 2026-11-16T22:24:28.798Z.
+The snapshot lists 52 Community skills from [stellar/stellar-dev-skill main](https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/site/src/data/skills.ts).
+The snapshot date is 2026-11-19T21:48:43.998Z.
 Source changes can precede deployment or never deploy.
 These links support discovery. Each skill needs a separate pin and exposure review before Raven can serve it.
 
@@ -195,7 +196,7 @@ These links support discovery. Each skill needs a separate pin and exposure revi
 | Stellar Project Dossier | [Source](https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-project-dossier/SKILL.md) |
 | Soroban Common Mistakes | [Source](https://raw.githubusercontent.com/mariaelisaaraya/stellar-security-guide/main/skills/soroban-common-mistakes/SKILL.md) |
 | MPP Discover | [Source](https://raw.githubusercontent.com/mpprouter/stellar-agent-wallet-skill/main/skills/discover/SKILL.md) |
-| Nirium Agentic Payments | [Source](https://raw.githubusercontent.com/nirium-protocol/nirium-sdk/main/skills/nirium-agentic-payments/SKILL.md) |
+| Nirium Agentic Payments | [Source](https://raw.githubusercontent.com/nirium-protocol/nirium/main/skills/nirium-agentic-payments/SKILL.md) |
 | DeFindex SDK | [Source](https://raw.githubusercontent.com/paltalabs/defindex-sdk/main/defindex-sdk-skill.md) |
 | StellarTools | [Source](https://raw.githubusercontent.com/payrouteshq/stellartools/main/SKILL.md) |
 | Pollar Wallets & Fiat Ramps | [Source](https://raw.githubusercontent.com/pollar-xyz/pollar/main/skills/pollar-wallet-auth/SKILL.md) |
@@ -203,6 +204,7 @@ These links support discovery. Each skill needs a separate pin and exposure revi
 | Soroswap SDK | [Source](https://raw.githubusercontent.com/soroswap/sdk/main/soroswap-sdk-skill.md) |
 | Stellar Registry | [Source](https://raw.githubusercontent.com/stellar-registry/cli/main/skills/stellar-registry/SKILL.md) |
 | Wasit | [Source](https://raw.githubusercontent.com/wasit-dev/wasit/main/skills/wasit/SKILL.md) |
+| RELAY Task Market | [Source](https://raw.githubusercontent.com/yssoft-gif/relay-agent-client/c4bae7df04dbe99b23b1b071b4ef0ad0a7b65584/SKILL.md) |
 | Cryptography Benchmarking | [Source](https://raw.githubusercontent.com/ziyang-theory/cryptography-research-skills/main/implementation/crypto-benchmarking/SKILL.md) |
 | Cryptographic Protocol Implementation | [Source](https://raw.githubusercontent.com/ziyang-theory/cryptography-research-skills/main/implementation/crypto-protocol-implementation/SKILL.md) |
 | Cryptography Research Artifacts | [Source](https://raw.githubusercontent.com/ziyang-theory/cryptography-research-skills/main/implementation/crypto-research-artifacts/SKILL.md) |
