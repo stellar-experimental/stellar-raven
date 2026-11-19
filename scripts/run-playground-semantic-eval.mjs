@@ -8,6 +8,10 @@
  * end-to-end answer quality over the same golden, evidence-pack, and judge
  * semantics as eval/qa/run-qa.mjs.
  *
+ * This is billing exception E1, for Playground product questions only (its
+ * prompt, tool loop, caps, fallback or a Gateway-only model); see eval/EVALS.md
+ * "Model-call billing". Model and MCP-surface questions run on subscriptions.
+ *
  * Results are local-only under eval/local-lanes/ (gitignored). A live request
  * invokes the playground model, so --confirm-paid is required. --full is an
  * additional explicit acknowledgement before selecting the complete battery.

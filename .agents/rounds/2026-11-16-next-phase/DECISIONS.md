@@ -177,6 +177,36 @@ The owner asked why the repository holds an AI Gateway judge. Round item 8.6 app
   holds the rule, and `eval/EVALS.md` "Model-call billing" holds the exception list and the OpenCode
   probe.
 
+## Follow-up answers (2026-11-19, Playground billing)
+
+The owner asked whether the two Playground exceptions (E1 and E2) can run on subscriptions. Round
+item 8.7 applies the answers.
+
+- **E1 and E2 scope.** Owner (2026-11-19): "That might be fine unless the models it's testing exist
+  and are able to be tested with subs vs ai gateway"
+- **Balance.** Owner (2026-11-19), after the orchestrator replied that Terra (Codex), Haiku (Claude
+  Code) and Grok (Grok CLI) exist on subscriptions, Kimi (Workers AI) does not, and no subscription
+  CLI reproduces the Playground's own system prompt, tool loop and Gateway routing: "These are good
+  points and may be a good reason to allow tests to run on cloudflare ai gateway. REview carefully
+  and ensure there's the right balance there to ensure we can run fully accurate tests but where
+  subs can reasonably and accurately be used, do that"
+- **Second judge.** Owner (2026-11-19): "Why use opencode for chatgpt vs just using codex or grok?"
+  The orchestrator answered: tool-blindness. Codex has no all-tools-off control, Grok's empty
+  `--tools` allowlist is unproven, and OpenCode's deny-all is verified offline.
+- **Outcome.** E1 and E2 stay as product exceptions, scoped by question: the Gateway path serves
+  only questions about the Playground's own transport, prompt, tool loop, caps, fallback or a
+  Gateway-only model. Questions about which model answers Raven questions best, or about the MCP
+  tool surface, go to subscriptions (the QA runner, and Codex and Grok `hc` lanes). A shared MCP text
+  change adds a Playground E1 sample only when it is about a constraint the Playground caps or
+  overrides, or matched stored transcripts show it moves top-level `search` and `execute` calls across
+  a cap (the rule in the `eval/EVALS.md` question table). The gauntlet
+  default is the shipped tuple, each model alone, not the three eval clients. Q9 and Q10 (model and
+  surface questions) run on subscriptions. Second judge: Codex 0.169.0 is not tool-blind at the
+  definition level (offline `codex debug prompt-input`, no model call). Grok 1.0.88 is not
+  execution-blind on one probe (`--tools ""` restricts nothing). OpenCode stays the candidate. See
+  [items/8.7/PLAN.md](items/8.7/PLAN.md), [probes/PROBE.md](items/8.7/probes/PROBE.md) and
+  [EXEC.md](items/8.7/EXEC.md).
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at
