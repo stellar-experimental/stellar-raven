@@ -466,3 +466,4 @@ the gauntlet now stops on missing or inconsistent cost and records incomplete ma
 The primary remains `openai/gpt-5.6-terra` and fallback remains `openai/gpt-5.6-luna`.
 No paid run was resumed during cleanup. See [the cleanup ledger](2026-11-06-main-only-cleanup.md)
 for final validation, review findings and branch dispositions.
+Retained for: `.agents/TODO.md` (and links `2026-11-06-main-only-cleanup.md`).

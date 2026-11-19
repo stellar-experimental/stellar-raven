@@ -86,3 +86,7 @@ model call on the search path. That needs an owner decision; see `.agents/TODO.m
 
 Independent review of this decision: not run. No candidate ships, so there is no change to review.
 The contract, its amendments, and every lane report are in this folder.
+
+## Outcome
+
+Retained for: `.agents/TODO.md` ("Preserve structured routing intent…"). Uncited intermediate reports in `2026-11-02-routing-repair/` were removed in the 2026-11-19 retention sweep.

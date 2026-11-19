@@ -147,3 +147,4 @@ The 21 confirmed decisions have durable destinations. The independent Fable gate
 supplemental Sol audit passed. No original grill question remains open. Queued implementation stays
 in `.agents/TODO.md` and [`.agents/NEXT.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/.agents/NEXT.md). Deferred ideas and externally blocked work remain in
 their recorded locations. This round is closed.
+Retained for: `research/decisions/0008-human-review-eval-and-playground-policy.md`.

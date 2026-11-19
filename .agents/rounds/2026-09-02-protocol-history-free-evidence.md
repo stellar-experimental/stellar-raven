@@ -199,6 +199,7 @@ The Node check verified result stamps, result hashes, cache hashes, payload hash
 This record completes the permitted free evidence.
 The three-attempt closure remains unchanged.
 T1 through T4 remain the existing trigger-only paths.
+Retained for: `.agents/TODO.md`, `eval/protocol-history-cases-v2.json`, `eval/protocol-history-blind-cases-v2.json`, and `eval/self-test.mjs`.
 
 ## 2026-09-02 reconciliation after the A/V catalog commit
 

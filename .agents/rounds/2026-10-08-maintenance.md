@@ -62,3 +62,5 @@ measurement, and the `ai`/`@ai-sdk/*` upgrade (held by its own TODO item).
   set in the owner's local archive `eval/results/2026-10-08-routing-repair-evidence.tar.gz`.
 - **Flagged-row eval:** no 2026-10-07 drop held at n = 5 (two not detected, one inconclusive). Spend $18.9254812 of $45. Retained evidence: `2026-10-08-flagged-row-recollection/`
   (needed by the annotation TODO item).
+- **2026-11-19 retention note:** `2026-10-08-routing-repair/` stays for `.agents/TODO.md`; the
+  annotation TODO item was closed in #433, so `2026-10-08-flagged-row-recollection/` was removed.
