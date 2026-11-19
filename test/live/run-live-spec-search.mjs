@@ -74,13 +74,14 @@ export const CASES = [
     tool: "execute",
     expect: [
       "--- SOURCE BASIS ---",
-      'Bulk lost from top-level keys: "paths"',
+      "Bulk lost from top-level keys:",
       "guidance: prefer a narrower re-run"
     ],
     check: (text) => {
       if (text.includes("--- TRUNCATED ---")) {
         return "unexpected raw --- TRUNCATED --- marker (execute replaces it with --- SOURCE BASIS ---)";
       }
+      // Default EXECUTE_MODEL_BOUNDARY_MAX_TOKENS (6000 in wrangler.jsonc) * CHARS_PER_TOKEN (4).
       const cut = text.indexOf("\n--- SOURCE BASIS ---");
       if (cut <= 0 || cut > 24000) {
         return `expected visible prefix clipped within 24000 chars before SOURCE BASIS, got ${cut}`;

@@ -94,7 +94,7 @@ export const CASES = [
       const dir = await lumenloop.search_directory({ query: "soroswap", limit: 2 });
       const failed = await lumenloop.search_directory({ limit: 2 }); // missing required query -> guard error
       const sp = await scout.searchProjects({ q: "soroban", limit: 1 });
-      const out = { okGuard: null, errGuardIsUndefined: null, metaGuard: null, writeBack: null, viaData: dir.ok ? dir.data.count : null, raw: dir };
+      const out = { okGuard: null, errGuardIsUndefined: null, metaGuard: null, spOk: sp.ok, writeBack: null, viaData: dir.ok ? dir.data.count : null, raw: dir };
       try { void dir.projects; out.okGuard = "NOT THROWN — guard missing"; }
       catch (e) { out.okGuard = String(e.message).slice(0, 160); }
       out.errGuardIsUndefined = typeof failed.data === "undefined";
@@ -108,11 +108,17 @@ export const CASES = [
       if (!text.includes("[envelope] lumenloop.search_directory")) {
         return "console block missing the [envelope] lumenloop.search_directory warning";
       }
-      const body = text.split(
-        /\n+--- (?:SOURCE METADATA|SOURCE BASIS|EVIDENCE|SERVICE|INCONCLUSIVE|PRIOR-ART|console)/
-      )[0];
+      // execute emits compact single-line JSON before any host-appended blocks or console output.
+      const nl = text.indexOf("\n");
+      const body = nl === -1 ? text : text.slice(0, nl);
       try {
         const out = JSON.parse(body);
+        if (!out.raw?.ok || out.viaData === null) {
+          return "precondition: lumenloop.search_directory not ok (upstream)";
+        }
+        if (!out.spOk) {
+          return "precondition: scout.searchProjects not ok (upstream)";
+        }
         if (out.errGuardIsUndefined !== true) {
           return "failed.data was not undefined (errGuardIsUndefined false)";
         }
