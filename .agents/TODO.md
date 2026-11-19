@@ -27,9 +27,7 @@ approval, and each runs under a dollar cap and is recorded with its cost.
    distribution"), and the read-only remote `kv key list` for `mcp-key` ("Confirm `npm run
    mcp-key` on wrangler 4.164.0").
 3. Owner decisions (the list at the end).
-4. Free own-repo fixes that need no paid measurement: the Freighter and Scout SDK-status golden
-   look ("Look at the Freighter and Scout SDK-status goldens"), the overdue partner-documentation
-   review ("Run the overdue partner-documentation review"), the smart-contracts malformed-input
+4. Free own-repo fixes that need no paid measurement: the smart-contracts malformed-input
    recurrence probe ("Probe the malformed-input gap in the pinned smart-contracts skill"), the
    canonical-page Docs search re-probe ("Fix Docs search misses on canonical pages"), the two unread
    corpus guides ("Audit the two corpus guides no lane has read"), and the case-file move once every
@@ -241,19 +239,6 @@ Done when: such a test is written and the rows are spent on it once, or the owne
 record which.
 
 ## Golden answers
-
-### Look at the Freighter and Scout SDK-status goldens
-
-Docs retitled the Freighter guides "Varial" (2026-11-16), and Scout 1.9.150 added SDK-status
-fields ([record](rounds/2026-11-16-next-phase/items/0.2/REPORT.md)). `q-tool-freighter-wallet`,
-`q-tool-wallets-comparison`, and the matching `eval/qa/cases.json` entries need a `golden-truth`
-look. A stale golden mis-grades answers, and the fix is free.
-
-Next: one `golden-truth` lane whose brief claims the maintenance exception and names the trigger:
-an upstream event shown by a primary source (the Docs retitle of 2026-11-16, Scout 1.9.150). Open
-no case beyond these.
-
-Done when: each case is edited through `golden-truth` or confirmed unchanged.
 
 ### Prove the stellar.org source
 
@@ -915,23 +900,6 @@ Done when: one read on 2026-11-25 shows no unexplained rejects, or each one is f
 Workers Logs keep at most 7 days, so a later read loses deploy days; if the read slips, the record
 states the window it read.
 
-### Confirm the WorkOS GitHub sign-in recovery and decide its record
-
-One person's GitHub sign-in reaches an older, unverified WorkOS user instead of their active one.
-WorkOS support confirmed this is expected behavior, not a defect. The owner approved and sent a
-reply asking support to remove only the GitHub link from the older user.
-
-Still outstanding: support's confirmation of the removal, and the person's verified GitHub
-sign-in. Raven's callback keys on the WorkOS user ID (`src/auth/workos.ts`), so no Raven code
-change follows.
-
-The record is an untracked file on the Mac checkout,
-`research/audits/2026-11-17-workos-github-email-collision.md`. It is not on agentpc and is not
-recreated here. Owner decision 4 covers whether to commit it, and with what redaction. Until it
-is decided, the orchestrator keeps a second copy outside the checkout.
-
-Done when: the recovery is confirmed and the record is committed or discarded.
-
 ## Observability and retention
 
 ### Keep 30 days of observability data, including queries and responses
@@ -978,7 +946,7 @@ security review, because this stores user content):
 The work stays inside the `/terms` text as written, so no counsel review is needed; capturing
 anything the terms do not name would need the legal lane first.
 
-Next: an owner go ("Owner decisions", decision 6) to start the design study. It touches no file
+Next: an owner go ("Owner decisions", decision 5) to start the design study. It touches no file
 the dated runs read.
 
 Done when: the Raven-controlled observability archive keeps 30 days and deletes after it (native
@@ -1347,20 +1315,6 @@ before any change:
 Done when: the owner accepts a reviewed design note and it ships, or the owner keeps the split
 and this item is deleted.
 
-### Run the overdue partner-documentation review
-
-[`ideas/partner-doc-live-sources.md`](../ideas/partner-doc-live-sources.md) holds the partner
-Markdown source lane behind a four-phase gate and set its review for 2026-10-31. The date passed
-with no recorded result. The first step costs no model call: re-evaluation step 1 is the paired
-12-case `npm run eval:partner-docs -- --raven-url <bound URL>` against the reused `dev` terminal.
-The baseline arm is the unmeasured half, and stellar.org and the newer Scout index now exist.
-
-Next: run it once, then follow the note's re-evaluation steps. Stop at an empty residue and close the
-idea again without an implementation round.
-
-Done when: the result is recorded in the note's status and the idea is held, closed, or promoted to
-the gate's next phase.
-
 ### Read the `skill_read` shape distribution
 
 [`ideas/skill-discovery-without-bundling.md`](../ideas/skill-discovery-without-bundling.md)
@@ -1449,16 +1403,12 @@ decision record, then delete it here.
    publish Raven's pinned ecosystem skills through native client skill listing and reading. Its
    `attach` is experimental. A new client-visible surface falls under ADR-0003, so it needs this
    decision, a design study and a measured A/B. Safe default: not started.
-4. **The WorkOS recovery record.** Commit it (and with what redaction) or discard it. See
-   "Confirm the WorkOS GitHub sign-in recovery and decide its record". Safe default: it stays
-   untracked on the Mac, and the orchestrator keeps a second copy outside the checkout until it is
-   decided.
-5. **A production bearer credential for post-deploy checks**
+4. **A production bearer credential for post-deploy checks**
    (`research/audits/2026-11-06-remaining-sweep/live-host-check.mjs`, not run after the round item
    7.3 deploys because no production bearer credential exists on the Mac or agentpc). It is the
    only free check of both wire eras on all three hosts. Safe default: none. Deploy checks stay on
    the OAuth metadata, the `/mcp` 401 and one connector `execute`.
-6. **Keep 30 days of observability data, including queries and responses.** Whether to start the
+5. **Keep 30 days of observability data, including queries and responses.** Whether to start the
    design study for 30-day observability retention and query/response capture (see "Keep 30 days of
    observability data, including queries and responses"). `/terms` (counsel-owned, the outer bound
    of what the service may do, which the owner treats as a 30-day allowance) says observability
