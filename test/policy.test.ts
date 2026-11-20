@@ -1,9 +1,4 @@
-/**
- * Policy tests — arg validation, secret redaction, and model-boundary
- * truncation. Everything host-side, pure Node. There is no runtime deny/
- * metered layer to test: exposure is filtered at build time (ADR-0003), so
- * the excluded ops simply do not exist in the manifest.
- */
+/** Host-side policy tests: arg validation, secret redaction, and model-boundary truncation. */
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -336,16 +331,9 @@ describe("truncation at the model boundary", () => {
   });
 
   it("redact-then-clip: a secret straddling the result clip boundary leaks NO prefix", () => {
-    // Mirrors run.ts's ordering (redactSecrets THEN truncateForModel): the
-    // secret starts just before the 24k-char cut and ends after it. Clip-then-
-    // redact would keep an un-scrubbable secret prefix; redact-first collapses
-    // it to [REDACTED] before the cut lands.
+    // Mirrors run.ts (redactSecrets before truncateForModel) with the secret straddling the 24k cut.
     const secret = "llmcp_secret_value_1234567890"; // secret-scan:allow — synthetic fixture
     const maxChars = 6000 * 4;
-    // Serialization overhead before the leak value: {"pad":" (8) + pad + ",
-    // (2) + "leak":" (8) — pad sized so the 29-char secret starts ~12 chars
-    // before the cut and ends ~17 past it (straddles), while the shorter
-    // [REDACTED] marker lands fully inside the kept prefix.
     const value = {
       pad: "x".repeat(maxChars - 30),
       leak: `${secret} plus trailing context`,

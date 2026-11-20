@@ -1,17 +1,6 @@
 /**
- * Focused tests for the four eval-harness preconditions that a description
- * A/B depends on. Each one exists because the 2026-08-26 connectors item-8
- * round hit its absence (`.agents/rounds/2026-08-26-connectors-contract.md`):
- *
- *  P1  search results were discarded, so hit differences between arms were
- *      unreviewable — and the search query was sliced to 600 chars.
- *  P2  the answering agent read this repository's AGENTS.md in both arms.
- *  P4  a lane that loses rows still prints a clean percentage.
- *  P5  an arm was pinned by a fingerprint computed inside the runner, with no
- *      standalone way to check the bound server BEFORE spending.
- *
- * No test here reaches a provider or spends a token. The CLI process tests
- * use a local fake Claude executable.
+ * Offline tests for eval-harness preconditions (P1 search projection, P2 isolated settings,
+ * P4 completeness, P5 bound-server pin). CLI process tests use a local fake Claude executable.
  */
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
@@ -823,7 +812,7 @@ describe("assertClaudeSubscription refuses a Claude run that would bill an API",
   });
 
   it("never repeats an authMethod value, an environment value or the status body", () => {
-    // `sk-test-abc` matches the short-token shape that an earlier version printed verbatim.
+    // Short-token shape that must not appear in refusal output.
     for (const body of [
       { authMethod: "sk-test-abc", email: "private@example.test", subscriptionType: "max" },
       { authMethod: "sk-ant-secret value", email: "private@example.test", subscriptionType: "max" }

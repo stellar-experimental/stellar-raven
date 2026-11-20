@@ -1,11 +1,4 @@
-/**
- * Simulated free-phase and P6 records for paired collection plan tests.
- *
- * The supervisor validator reads a capacity artifact and a P6 summary from
- * disk. Both the hand-written supervisor plan and the assembled launch plan
- * need records that satisfy those contracts, so they are built here once.
- * The values are simulated; no capacity probe or paid call produced them.
- */
+/** Simulated free-phase capacity and P6 records for paired collection plan tests (no live probes or paid calls). */
 import { PAIRED_CAPACITY_CONTRACT, PAIRED_CAPACITY_SCHEMA } from "../../eval/qa/check-paired-capacity.mjs";
 import { P6_SELF_TEST_CALL_SCHEMA, P6_SELF_TEST_SUMMARY_SCHEMA } from "../../eval/qa/run-p6-judge-self-test.mjs";
 

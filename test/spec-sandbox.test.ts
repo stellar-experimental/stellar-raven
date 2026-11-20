@@ -1,17 +1,7 @@
 /**
- * Spec-sandbox tests for the code-shaped spec-search machinery that
- * mirrors @cloudflare/codemode@0.5.6's openApiMcpServer internals. Since
- * ADR-0001 (research/decisions/0001-search-tool-shape.md) this is no longer
- * a top-level tool: resolveSpecRefs feeds `execute`'s codemode.spec(), and
- * the wrapper backs the retained (unregistered) spec-search runner.
- *
- * The generated wrapper is plain JavaScript (an async arrow function source
- * string), so beyond asserting its shape we EVALUATE it directly under Node —
- * exercising the real in-sandbox behavior: lazy $ref resolution (cache,
- * cycles, external refs) and the raw returned value. Output shaping is
- * host-side (run.ts `specResponseText`); the Dynamic Worker transport and
- * that shaping run in test/smoke/executor.test.ts. The manual live scripts
- * additionally check service traffic against an existing local server.
+ * Spec-sandbox tests (src/executor/spec-sandbox.ts): evaluates the generated plain-JS
+ * wrapper in Node to verify lazy $ref resolution; Dynamic Worker transport and host shaping
+ * run in test/smoke/executor.test.ts.
  */
 import { describe, expect, it } from "vitest";
 import {

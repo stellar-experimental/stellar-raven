@@ -169,8 +169,7 @@ describe("partner docs eval harness", () => {
     const suite = validateSuite(JSON.parse(readFileSync(new URL("../eval/partner-docs/cases.json", import.meta.url), "utf8")));
     const alchemy = suite.cases.filter((testCase) => testCase.partner === "alchemy");
 
-    // #657 anchored the provider-roster docs on the research lane for exactly these questions, so
-    // excluding it would measure Raven minus the lane that answers them.
+    // Provider-roster docs live on the research lane, so Alchemy cases must include it.
     expect(alchemy.length).toBeGreaterThan(0);
     for (const testCase of alchemy) {
       expect(testCase.baseline.map((source) => source.id)).toContain("scout.searchResearch");

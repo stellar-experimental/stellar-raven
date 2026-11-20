@@ -1,15 +1,4 @@
-/**
- * The skill-availability canary (src/skills/canary.ts).
- *
- * This is the only detector for a Cloudflare-side failure of the
- * serve-don't-store path, so the properties worth pinning are the ones whose
- * absence would make it LOOK healthy while telling us nothing:
- *
- *   - it must bypass the caches (a warm colo entry answers reads for a year)
- *   - it must not pollute the shared memo (it probes; real traffic serves)
- *   - a never-run canary must not read as healthy
- *   - the endpoint must report, never probe (it is unauthenticated)
- */
+/** Skill-availability canary tests (src/skills/canary.ts): cache bypass, memo isolation, and public health output. */
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -110,8 +99,7 @@ describe("runSkillCanary", () => {
     const verdict = await runSkillCanary(catalog, { fetchImpl: impl });
     expect(verdict.ok).toBe(false);
     expect(verdict.error).toMatch(/could not fetch .*HTTP 404/);
-    // One pin, one attempt (a 4xx on an immutable url is not retried) — it does
-    // not march through all ~30 urls to reach the same conclusion.
+    // Fail fast on a 4xx: one attempt on the first pin, not every pinned URL.
     expect(calls()).toBe(1);
   });
 });
@@ -137,9 +125,7 @@ describe("cache bypass — the property that makes the canary mean anything", ()
   }
 
   it("goes to upstream even when a colo cache holds the file", async () => {
-    // Pinned urls are cached `immutable` for a year. A canary on the normal
-    // read path would answer from that cache and report healthy forever after
-    // egress died — the same bug `check-mirrors --fetch` had at the build layer.
+    // Pinned URLs are cached immutable for a year; probes must bypass the cache.
     resetSkillSourceMemo();
     const pin = await pinFor(BODY);
     let fetches = 0;
@@ -173,10 +159,6 @@ describe("cache bypass — the property that makes the canary mean anything", ()
   });
 
   it("a FAILED probe does not evict the serving path's memo entry", async () => {
-    // The rejection handler used to delete the memo key unconditionally, so a
-    // failing probe threw away a perfectly good serving entry for the same pin
-    // — the canary amplifying the outage it exists to measure. The passing
-    // probe in the test above could never catch it.
     resetSkillSourceMemo();
     const pin = await pinFor(BODY);
     const serving = createSkillSource({

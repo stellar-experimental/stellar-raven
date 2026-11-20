@@ -1,11 +1,4 @@
-/**
- * Modern-wire smoke: a real MCP 2026 client
- * (@modelcontextprotocol/client 2.0) connects to the assembled worker over
- * streamable HTTP through the named-API-key bypass. Under the pre-2.0 stack
- * the client's `server/discover` negotiation probe was answered 400 and the
- * client silently fell back to the 2025 lifecycle. This test pins the probe
- * response to 2xx. A regression to legacy-only serving must fail this test.
- */
+/** Pins MCP 2026 client negotiation (`server/discover` -> 2xx) against the assembled worker. */
 import { env, SELF } from "cloudflare:test";
 import { beforeAll, describe, expect, it } from "vitest";
 import { Client } from "@modelcontextprotocol/client";
@@ -47,8 +40,6 @@ describe("modern (2026-07-28) client end-to-end", () => {
     });
     await client.connect(transport);
     try {
-      // The negotiation probe is the modern era's entry ticket: 400 here means
-      // the server fell back to legacy-only serving.
       const probe = exchanges.find((e) => e.mcpMethod === "server/discover");
       expect(probe).toBeDefined();
       expect(probe!.status).toBeLessThan(300);

@@ -1,23 +1,10 @@
-/**
- * One fake `claude` CLI on PATH, for judgeCase tests.
- *
- * Every judge test needs the same scaffolding: a temp directory, an executable
- * named `claude` inside it, a PATH swap around the call, and cleanup that runs
- * even when the assertion throws. Only the script and the judgeCase options
- * differ, so the scaffolding lives here once and each named helper below
- * supplies its own script.
- */
+/** Fake `claude` CLI helpers on PATH for offline judgeCase tests. */
 import { chmodSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { judgeCase } from "../../eval/qa/judge.mjs";
 
-/**
- * The single graded input behind every fake-CLI judge test. The fake CLI
- * decides the verdict, so the case only has to be a well-formed one; keeping
- * it identical across tests means a failure is always about the CLI evidence
- * path and never about the case.
- */
+/** Shared well-formed input for fake-CLI judge tests. */
 export const FAKE_JUDGE_INPUT = {
   question: "What does a null Scout vertical mean?",
   golden: {

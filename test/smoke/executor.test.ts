@@ -1,16 +1,6 @@
 /**
- * Offline smoke of src/executor/run.ts at the real worker boundary. It covers
- * the pieces that plain-Node tests cannot touch: `cloudflare:workers`
- * tracing, `@cloudflare/codemode`'s DynamicWorkerExecutor, and a genuine
- * Dynamic Worker isolate via the LOADER binding.
- *
- * Offline is ENFORCED, not assumed: the lane's miniflare `outboundService`
- * (test/smoke/vitest.config.ts) turns any un-stubbed host-side fetch into a
- * 503. Sandbox-side there is no network at all (globalOutbound: null —
- * asserted below). The single vi.stubGlobal'd fetch exists to produce a real
- * { ok: true } envelope so the guard's payload-read trap can be exercised at
- * the true boundary. The live counterpart (test/live/run-live-execute.mjs)
- * still owns real-traffic coverage.
+ * Offline workerd smoke tests for src/executor/run.ts (Dynamic Worker isolate via LOADER;
+ * un-stubbed outbound fetches fail with 503 via test/smoke/vitest.config.ts).
  */
 import { env } from "cloudflare:test";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -874,15 +864,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }
   });
 
-  /**
-   * The full artifact-continuation sequence at the real worker boundary. This
-   * test proves that a lost tail remains recoverable from the artifact.
-   *
-   * The sentinel exists ONLY near the tail of the original result, so it is
-   * absent from the truncated first result by construction — recovering it in
-   * the answer proves continuation, not luck. Nothing here raises the result
-   * cap and nothing reads the artifact automatically.
-   */
+  // Sentinel sits near the tail of the oversized result so recovering it proves artifact continuation.
   describe("artifact continuation recovers a lost tail through the artifact store", () => {
     const SENTINEL = "RAVEN-TAIL-SENTINEL-7f3a";
     // `tailNote` is serialized LAST, so the model boundary cuts it first.
@@ -897,15 +879,12 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(first.ok).toBe(true);
       if (!first.ok) throw new Error(first.error);
 
-      // 1–2: an oversized result, one owner-bound handle, and a genuinely lost tail.
       expect(first.truncated).toBe(true);
       expect(first.result).toContain("--- SOURCE BASIS ---");
       expect(first.result).not.toContain(SENTINEL);
       const id = artifactIdFrom(first.result);
       expect(first.sourceBasis?.artifact?.state).toBe("available");
 
-      // 3–7: ONE follow-up execute calls info, then read, branches on r.ok,
-      // reads the full value from r.data, and returns a bounded projection.
       const continuation = await run(`async () => {
         const meta = await codemode.artifact.info("${id}");
         if (!meta.ok) return { stage: "info", ok: false, error: meta.error };
@@ -932,11 +911,9 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
         originalChars: number;
       };
       expect(projection.stage).toBe("projection");
-      // 1 (host-side proof): the original result really exceeded 24,000 chars.
       expect(projection.originalChars).toBeGreaterThan(24_000);
       expect(projection.bytes).toBeGreaterThan(24_000);
       expect(projection.rowCount).toBe(900);
-      // 8–9: the sentinel survives and the projection itself does not truncate.
       expect(projection.tail).toBe(SENTINEL);
       expect(continuation.truncated).toBe(false);
       expect(continuation.result).not.toContain("--- SOURCE BASIS ---");
@@ -944,7 +921,6 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(continuation.artifactReadBytes).toBeGreaterThan(24_000);
       expect(continuation.evidenceSummary?.kind).toBe("artifact-data");
 
-      // 10: the answer built from that projection carries the fact, not the handle.
       const finalAnswer = `The stored tail marker is ${projection.tail} across ${projection.rowCount} rows.`;
       expect(finalAnswer).toContain(SENTINEL);
       expect(finalAnswer).not.toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/);
@@ -1247,7 +1223,6 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
   });
 
   it("turns each mechanical script failure into a hint that says how to fix it", async () => {
-    // The execute description no longer spells these out; the host error does.
     for (const [code, fix] of [
       [`async () => { return await scout.notAnOperation({}); }`, "operation ids are exact-match"],
       [`async () => { return (await fetch("https://example.com")).status; }`, "the sandbox has no network"],
@@ -1324,15 +1299,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
 });
 
 describe("codemode.skill.run at the real worker boundary (design §12 smoke)", () => {
-  /**
-   * Route the host-side lumenloop adapter to the captured runner
-   * fixtures (test/fixtures/skill-runners/, production 2026-07-06) by tool
-   * name — the run crosses the true chain: sandbox prelude → provider RPC →
-   * runSkill → recording sub-facade → adapter fetch. This lane is offline by
-   * design (miniflare outboundService), so the wrangler-dev/live lane guards
-   * against upstream payload drift. This smoke pins the full dispatch path
-   * and envelope semantics at the workerd boundary.
-   */
+  /** Stubs host-side lumenloop fetches with test/fixtures/skill-runners/ payloads. */
   const stubLumenloop = (routes: Record<string, unknown>) => {
     vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
       const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
@@ -1423,7 +1390,6 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
       expect(parsed.message).toContain('unknown runnable skill "skills.lumenloop.stellar-ecosystem-diges"');
       expect(parsed.message).toContain("skills.lumenloop.stellar-ecosystem-digest");
       expect(parsed.message).toContain('Did you mean "skills.lumenloop.stellar-ecosystem-digest"?');
-      // The retired dossier runner must not be advertised as runnable.
       expect(parsed.message).not.toContain("stellar-project-dossier");
       expect(parsed.dataIsUndefined).toBe(true);
     }
@@ -1432,7 +1398,7 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
 
 describe("spec-search runner (kept for explicit evaluation callers, ADR-0001)", () => {
   it("evaluates codemode.spec() queries in a no-provider sandbox", async () => {
-    const runSearch = createSpecSearchRunner(env as unknown as Env); // same OAUTH_PROVIDER bridge as above
+    const runSearch = createSpecSearchRunner(env as unknown as Env);
     const outcome = await runSearch(`async () => {
       const spec = await codemode.spec();
       return { services: Object.keys(spec).length };

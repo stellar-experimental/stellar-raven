@@ -1,15 +1,4 @@
-/**
- * The canary classifier decides whether the daily drift issue gets to say
- * "production is failing". Getting it wrong in either direction is costly:
- * a false `failing` trains people to ignore the one alert that must be
- * believed, and a false `clean` is the monitor actively reassuring you while
- * the thing it watches is broken.
- *
- * It is a separate module for a reason — the first version of this logic was
- * inline `node -e` inside refresh.yml, used top-level `return`, and was a
- * SyntaxError. It would have crashed on every scheduled run, forever, without
- * ever once classifying anything.
- */
+/** Canary verdict classifier tests (scripts/classify-canary.mjs). */
 import { describe, expect, it } from "vitest";
 // @ts-expect-error — plain .mjs script, no type declarations
 import { classifyCanary, STALE_AFTER_MS } from "../scripts/classify-canary.mjs";
@@ -63,10 +52,7 @@ describe("classifyCanary", () => {
   });
 
   it("the endpoint's real no-record body is an error, never an outage", () => {
-    // THE regression that matters. This is exactly what /health/skills returns
-    // on a first deploy, before the first cron fires, and when the KV read
-    // throws. Mapping `ok !== true` straight to `failing` announced a live
-    // production outage the moment the canary shipped.
+    // Returned on first deploy before the first cron or when KV throws; must be error, not failing.
     const noRecord = JSON.stringify({ ok: false, reason: "no usable canary verdict recorded" });
     expect(classify("503", noRecord)).toBe("error");
   });

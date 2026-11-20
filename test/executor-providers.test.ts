@@ -1,8 +1,4 @@
-/**
- * Sandbox-surface tests — the providers `execute` wires into the Dynamic
- * Worker, exercised directly (pure Node; the isolate itself is covered by
- * the live integration script test/live/run-live-execute.mjs).
- */
+/** Sandbox provider tests in Node; isolate execution is covered by test/smoke/executor.test.ts. */
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -241,7 +237,6 @@ describe("host structural service evidence", () => {
       content: "chunk text",
       ...extra
     });
-    // Shapes taken from the production responses the plan recorded: the named file first, a file that only cites it second.
     const sep43 = { results: [row("sep", "sep-0043"), row("sep", "sep-0060"), row("cap", "cap-0038")] };
     const keys = (query: string, data: unknown = sep43, args: Record<string, unknown> = { query }) =>
       exactRowsOf(research, args, data).map(({ index, key }) => ({ index, key }));
@@ -406,8 +401,7 @@ describe("sandbox surface shape", () => {
       expect(fnsOf(providers, e.service)[name], `missing ${e.id}`).toBeTypeOf("function");
       counted += 1;
     }
-    expect(counted).toBe(ops.length); // 21 + 24 + 12
-    // skills are NOT callable operations
+    expect(counted).toBe(ops.length);
     expect(providers.find((p) => p.name === "skills")).toBeUndefined();
   });
 
@@ -446,11 +440,8 @@ describe("sandbox surface shape", () => {
 
   it("the skill prelude carries the run wrapper: flat skill_run dispatch + the shared envelope guard", () => {
     const codemode = providers.find((p) => p.name === "codemode")!;
-    // run is read's sibling over the flat dispatch (design §6) …
     expect(codemode.prelude).toContain("run: async (name, input)");
     expect(codemode.prelude).toContain("codemode.skill_run(name, input)");
-    // … and RETURNS the service envelope through the SAME guard operations
-    // get, with the same envelope shape as skill.read.
     expect(codemode.prelude).toContain('__guardEnvelope(raw, "codemode.skill.run")');
   });
 });
@@ -706,13 +697,7 @@ describe("dispatch behavior (error-as-data, exposure, parallelism)", () => {
   });
 });
 
-// Mimic codemode's generated evaluate() scope: one mutable namespace object
-// per provider (own-property get/set — same observable behavior as the
-// generated Proxy, whose get trap checks own properties first and whose
-// default set trap lands on the target), then run the concatenated
-// preludes over them exactly as the executor module does. Shared by the
-// envelope-guard and skill.read-guard suites so the scope reconstruction
-// cannot drift from itself.
+// Mirror codemode's evaluate() scope: one mutable namespace per provider, then run preludes.
 function guardedNamespaces(
   fetchImpl?: FetchLike,
   beforePrelude?: (namespaces: Record<string, Record<string, unknown>>) => void
@@ -777,7 +762,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
       data: { count: number; projects: { slug: string }[] };
     };
     expect(r.ok).toBe(true);
-    expect(r.data.projects[0]!.slug).toBe("soroswap"); // correct path untouched
+    expect(r.data.projects[0]!.slug).toBe("soroswap");
     expect(() => (r as Record<string, unknown>).projects).toThrow(/use r\.data\.projects/);
     expect(() => (r as Record<string, unknown>).count).toThrow(/use r\.data\.count/);
   });
@@ -815,8 +800,6 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
   });
 
   it("payload meta is trapped too: r.meta on a scout-shaped envelope points at r.data.meta", async () => {
-    // scout payloads carry their own meta{} — it lives at r.data.meta now
-    // that the envelope has no meta of its own.
     const scoutFetch: FetchLike = async () =>
       new Response(JSON.stringify({ projects: [], meta: { total: 0 } }), {
         status: 200,
@@ -838,9 +821,9 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
         data?: unknown;
         error: { kind: string };
       };
-      expect(r.ok).toBe(false); // guard refusal: missing required query, no network
-      expect(r.error.kind).toBe("error"); // legit failure introspection untouched
-      expect(r.data).toBeUndefined(); // no throw
+      expect(r.ok).toBe(false);
+      expect(r.error.kind).toBe("error");
+      expect(r.data).toBeUndefined();
       expect(envelopeLines()).toHaveLength(1);
       expect(envelopeLines()[0]).toContain("lumenloop.search_directory");
       expect(envelopeLines()[0]).toContain('error.kind="error"');
@@ -853,7 +836,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
         ok: boolean;
         data?: unknown;
       };
-      expect(r2.ok).toBe(false); // invalid args → guard refusal
+      expect(r2.ok).toBe(false);
       expect(r2.data).toBeUndefined();
       expect(envelopeLines()).toHaveLength(2);
       expect(envelopeLines()[1]).toContain("stellarDocs.search_docs");
@@ -869,7 +852,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     };
     expect(Object.keys(r).sort()).toEqual(["asOf", "asOfBasis", "data", "ok"]);
     expect(r.data).toBeInstanceOf(Object);
-    expect(JSON.stringify(r)).toContain('"count":1'); // stringify never hits a trap
+    expect(JSON.stringify(r)).toContain('"count":1');
     // A script returning the raw envelope must still serialize across RPC.
     expect(() => structuredClone(r)).not.toThrow();
     expect((structuredClone(r) as { data: { count: number } }).data.count).toBe(1);
@@ -955,14 +938,14 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
         string,
         unknown
       > & { data: { count: number } };
-      expect(() => r.count).toThrow(/use r\.data\.count/); // read-before-write still throws
-      r.count = 99; // does not throw
-      expect(r.count).toBe(99); // reads back
-      expect(Object.keys(r).sort()).toEqual(["asOf", "asOfBasis", "count", "data", "ok"]); // enumerable now
+      expect(() => r.count).toThrow(/use r\.data\.count/);
+      r.count = 99;
+      expect(r.count).toBe(99);
+      expect(Object.keys(r).sort()).toEqual(["asOf", "asOfBasis", "count", "data", "ok"]);
       expect(JSON.parse(JSON.stringify(r)).count).toBe(99);
       expect((structuredClone(r) as unknown as { count: number }).count).toBe(99);
-      expect(r.data.count).toBe(1); // the payload is NOT written through to
-      expect(() => r.projects).toThrow(/use r\.data\.projects/); // other traps intact
+      expect(r.data.count).toBe(1);
+      expect(() => r.projects).toThrow(/use r\.data\.projects/);
     });
 
     it("Object.assign onto the envelope works via the setters", async () => {
@@ -1008,13 +991,13 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
           string,
           unknown
         > & { error: { kind: string } };
-        r.data = null; // succeeds
-        expect(envelopeLines()).toHaveLength(1); // the unchecked write warned once
+        r.data = null;
+        expect(envelopeLines()).toHaveLength(1);
         expect(envelopeLines()[0]).toContain("lumenloop.search_directory");
-        expect(r.data).toBeNull(); // subsequent reads return the written value…
         expect(r.data).toBeNull();
-        expect(envelopeLines()).toHaveLength(1); // …warn-free
-        expect(r.error.kind).toBe("error"); // error untouched
+        expect(r.data).toBeNull();
+        expect(envelopeLines()).toHaveLength(1);
+        expect(r.error.kind).toBe("error");
       } finally {
         logSpy.mockRestore();
       }
@@ -1431,8 +1414,6 @@ describe("codemode fns", () => {
   });
 
   it("describe preserves the full output after the super spec compacts it", async () => {
-    // scout.searchProjects is the motivating monster: its search hit stubs
-    // the ~12.7KB output type; describe must carry the whole thing.
     const entry = catalog.entries.find((e) => e.id === "scout.searchProjects")!;
     const superSpec = JSON.parse(readFileSync(join(ROOT, "specs", "super-spec.json"), "utf8")) as {
       paths: Record<
@@ -1490,8 +1471,6 @@ describe("codemode fns", () => {
   });
 
   it("describe on a prose skill: availableSections (same derivation as search hits) + skill.read usage", async () => {
-    // A non-runnable skill. The dossier runner was retired, so
-    // its entry is back to read-only and pins the reversion here.
     const skillId = "skills.lumenloop.stellar-project-dossier";
     expect(catalog.entries.find((e) => e.id === skillId)?.runnable).toBeUndefined();
     const r = (await codemode.describe!(skillId)) as {
@@ -1661,12 +1640,8 @@ describe("codemode fns", () => {
 });
 
 /**
- * codemode.skill.run end-to-end through the provider path (design §11 row 6,
- * §12): the REAL manifest + RUNNERS registry, the generated-scope prelude
- * reconstruction (guardedNamespaces), and stub ADAPTERS via fetchImpl — the
- * same stubbing seam every dispatch test above uses, so the whole chain
- * prelude wrapper → flat skill_run dispatch → runSkill → declared-ops
- * sub-facade → guard → adapter → redact runs for real; only HTTP is fake.
+ * End-to-end codemode.skill.run through the real manifest, RUNNERS registry,
+ * and prelude wrapper, with only HTTP stubbed via fetchImpl.
  */
 describe("codemode.skill.run through the provider path (end-to-end, stub adapters)", () => {
   const DIGEST_ID = "skills.lumenloop.stellar-ecosystem-digest";
@@ -1743,7 +1718,6 @@ describe("codemode.skill.run through the provider path (end-to-end, stub adapter
     expect(r.error.kind).toBe("error");
     expect(r.error.message).toContain("skills.lumenloop.stellar-ecosystem-digest");
     expect(r.error.message).toContain("Did you mean");
-    // The retired dossier runner is not advertised as runnable.
     expect(r.error.message).not.toContain("stellar-project-dossier");
   });
 
@@ -1833,13 +1807,8 @@ describe("skill_read telemetry (ideas/skill-discovery-without-bundling.md)", () 
   });
 
   it("records a TRANSPORT failure — the availability signal the posture depends on", async () => {
-    // The test above fails at id resolution and never reaches the network, so
-    // it cannot prove the case that actually matters: a real, cataloged pin
-    // whose upstream fetch fails. `ARCHITECTURE.md` §6 accepts the availability
-    // risk on the grounds that it is OBSERVABLE — and `skill_read outcome:error` is
-    // the entire observation. If a transport failure escaped as a throw, or
-    // logged nothing, the accepted risk would be an unmonitored one and the
-    // only way to notice would be a user complaint.
+    // Real pin transport failures must log skill_read outcome:error rather than throw;
+    // ARCHITECTURE.md relies on this event to observe upstream outages.
     const events: Record<string, unknown>[] = [];
     const spy = vi.spyOn(console, "log").mockImplementation((line: unknown) => {
       try {

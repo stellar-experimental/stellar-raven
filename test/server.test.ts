@@ -1,17 +1,4 @@
-/**
- * Unit tests for tool registration — no running worker needed.
- *
- * Wires the registered McpServer to an in-memory MCP client (from the
- * @modelcontextprotocol/server and /client v2 packages) and asserts the two
- * tools exist with the expected schemas and stub behavior.
- *
- * Under ADR-0001 (research/decisions/0001-search-tool-shape.md), the shipped
- * `search` is the host-side ranked query
- * ({query, kind?, service?, limit?}); the code-shaped {code} search is no
- * longer a top-level tool — that discovery path lives inside `execute`'s
- * sandbox (codemode.spec()/search/catalog, covered by spec-sandbox.test.ts
- * and executor-providers.test.ts).
- */
+/** MCP tool registration and /docs page tests in Node via an in-memory MCP client. */
 import { describe, expect, it, beforeAll, vi } from "vitest";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -277,16 +264,8 @@ describe("public page metadata", () => {
 });
 
 /**
- * Runs the rendered /docs text through the SAME ADR-0003 guard the catalog
- * build runs, by handing it to assertNoNonExposedRefs as one more entry.
- *
- * assertNoNonExposedRefsInText alone is not enough: it is allowlist-free by
- * design, so it catches excluded lumenloop names, raw scout paths, and retired
- * skill ids, but knows nothing about which service.op tokens the manifest
- * actually exposes — a leaked "scout.submitFeedback" walks straight past it.
- * assertNoNonExposedRefs owns that manifest comparison, so the page borrows the
- * manifest's operation ids as its allowlist and this test defines no second
- * exposure list of its own.
+ * Runs /docs text through assertNoNonExposedRefs using the manifest's exposed op IDs
+ * (assertNoNonExposedRefsInText alone is allowlist-free and cannot catch non-exposed service.op tokens).
  */
 function assertDocsExposureClean(pageText: string): void {
   const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -366,13 +345,6 @@ describe("docs page truthfulness", () => {
     expect(topReadIndex).toBeGreaterThan(emptyGuardIndex);
   });
 
-  /**
-   * The trace's operation ids are bound to the scorer by the tests above. Its
-   * ARGUMENT and FIELD names are bound here, against the same manifest schemas
-   * the sandbox validates calls with. Without this, an upstream rename of `q`,
-   * of `projects`, or of a row's `name` would leave the page showing a script
-   * that no longer runs, and every other docs test would still pass.
-   */
   it("binds the trace's argument and field names to the manifest schemas", () => {
     const root = join(dirname(fileURLToPath(import.meta.url)), "..");
     const manifest = JSON.parse(
@@ -402,7 +374,6 @@ describe("docs page truthfulness", () => {
     );
     const script = pres[1]!.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
 
-    // Every argument key the script passes must exist on that operation's input schema.
     for (const id of DOC_TRACE_EXAMPLE.executeOperationIds) {
       const literal = script.match(new RegExp(`${id.replace(".", "\\.")}\\(\\{([^}]*)\\}`));
       expect(literal, `no argument object rendered for ${id}`).not.toBeNull();
@@ -414,8 +385,6 @@ describe("docs page truthfulness", () => {
       }
     }
 
-    // The payload field the script reads under .data, and the row field it
-    // reads off the first element, must both exist on the output schema.
     const rowRead = script.match(/const (\w+) = \w+\.data\.(\w+)\[0\]/);
     expect(rowRead, "the trace no longer reads a row out of the payload").not.toBeNull();
     const [, rowVar, payloadField] = rowRead!;
@@ -502,8 +471,6 @@ describe("docs page truthfulness", () => {
       expect(page).toContain(`<code>${helper}</code>`);
     }
 
-    // All eight hang off ONE provider. The page copy that states this is
-    // asserted by "splits service adapters from the one codemode host provider".
     expect(buildCodemodeProvider(getCatalog(), skillSource).name).toBe("codemode");
   });
 
@@ -511,10 +478,7 @@ describe("docs page truthfulness", () => {
     expect(() => assertDocsExposureClean(docsPage())).not.toThrow();
   });
 
-  // Real Stellar Light operationIds held off the exposed manifest by
-  // scripts/exposure.mjs. None carries an excluded lumenloop name, a raw scout
-  // path, or a retired-skill id, so the allowlist-free text guard cannot see
-  // them — only the manifest comparison can. These pin that half.
+  // Non-exposed Scout ops that bypass the allowlist-free text guard and need the manifest check.
   it.each(["scout.submitFeedback", "scout.partnerAssistant", "scout.partnerOnboard"])(
     "rejects a /docs reference to non-exposed %s",
     (opId) => {
@@ -542,8 +506,6 @@ describe("docs page truthfulness", () => {
     expect(page).toMatch(
       /Service\s+operations\s+run\s+through\s+host-side\s+adapters\s+that\s+hold\s+the\s+upstream\s+credentials/
     );
-    // buildCodemodeProvider returns a single provider named "codemode"; the
-    // eight helpers are its fns.
     expect(page).toMatch(/functions on one host provider/);
     expect(page).not.toMatch(/codemode helpers[^.]*host-side adapters/s);
   });
@@ -551,34 +513,24 @@ describe("docs page truthfulness", () => {
   it("scopes the .data envelope rule to service calls", () => {
     const page = docsPage();
 
-    // Discovery helpers retain top-level fields; skill reads use data.
     expect(page).not.toMatch(/Every call resolves to/);
     expect(page.match(/Every service call resolves to/g)?.length).toBe(2);
 
-    // Each helper name and the result field it returns are asserted as ONE
-    // pattern, never as two independent substring checks. Independent checks
-    // pass whenever both strings appear anywhere on the page, so they keep
-    // passing when a name is documented against the wrong field — which is the
-    // only failure these assertions exist to catch.
+    // Match each helper and its return field in one regex so independent checks cannot cross-match.
     const mappings: ReadonlyArray<readonly [string, RegExp]> = [
-      // providers.ts search branch: top-level hits/total/truncated
       ["codemode.search → r.hits", /<code>codemode\.search<\/code>\s+gives\s+<code>r\.hits<\/code>/],
-      // providers.ts describeCatalogEntry: top-level signature/inputSchema/usage
       [
         "codemode.describe → r.signature + r.inputSchema",
         /<code>codemode\.describe<\/code>\s+gives\s+entry\s+fields\s+such\s+as\s+<code>r\.signature<\/code>\s+and\s+<code>r\.inputSchema<\/code>/
       ],
-      // skills/store.ts whole read: data.content
       [
         "whole codemode.skill.read → r.data.content",
         /<code>codemode\.skill\.read\(id\)<\/code>\s+gives\s+<code>r\.data\.content<\/code>/
       ],
-      // skills/store.ts sectional read: data.sections
       [
         "sectional codemode.skill.read → r.data.sections",
         /<code>codemode\.skill\.read\(id, \{ sections \}\)<\/code>\s+gives\s+<code>r\.data\.sections<\/code>/
       ],
-      // skill.run and both artifact reads keep the service-call envelope
       [
         "skill.run + artifact.info + artifact.read → r.data envelope",
         /<code>codemode\.skill\.run<\/code>,\s+<code>codemode\.artifact\.info<\/code>,\s+and\s+<code>codemode\.artifact\.read<\/code>\s+use\s+the\s+same\s+envelope\s+without\s+the\s+<code>asOf<\/code>\s+and\s+<code>caveat<\/code>\s+signals/
@@ -588,7 +540,6 @@ describe("docs page truthfulness", () => {
       expect(page, label).toMatch(pattern);
     }
 
-    // Service calls keep the `.data` envelope.
     expect(page).toMatch(/<code>r\.data\.projects<\/code>/);
   });
 
@@ -1113,9 +1064,7 @@ describe("search behavior (host-side ranked)", () => {
   });
 
   it("returns an empty-hits result with guidance for a no-match query", async () => {
-    // Truly zero-overlap tokens: since the M1 tiered backfill, any single
-    // matched token (even a prefix overlap like "nonexistent" ~ "no") fills
-    // an otherwise-empty page instead of returning [].
+    // Zero-overlap tokens so tier-2 backfill does not fill the page.
     const result = await client.callTool({
       name: "search",
       arguments: { query: "zzzzqqqq zzqqzzqq" }
@@ -1135,9 +1084,7 @@ describe("search behavior (host-side ranked)", () => {
   });
 
   it("keeps a valid service-scoped zero-hit search successful", async () => {
-    // Truly zero-overlap tokens: since the M1 tiered backfill, any single
-    // matched token (even a prefix overlap like "nonexistent" ~ "no") fills
-    // an otherwise-empty page instead of returning [].
+    // Zero-overlap tokens so tier-2 backfill does not fill the page.
     const result = await client.callTool({
       name: "search",
       arguments: { query: "zzzzqqqq zzqqzzqq", service: "stellarDocs" }
@@ -1760,9 +1707,6 @@ describe("execute behavior", () => {
   });
 
   it("budgets the logs block so console output cannot bypass the result cap", async () => {
-    // shapeLogs' structural caps still admit ~200k chars of logs; the tool
-    // boundary must clip the joined block to the same configured-token budget
-    // the result gets, with the logs-specific footer.
     const execClient = await connectedClient({
       runExecute: async () => ({
         ok: true,
@@ -1913,9 +1857,6 @@ describe("execute behavior", () => {
   });
 
   it("budgets error text so a thrown payload cannot bypass the result cap", async () => {
-    // Error text is model-authored (`throw new Error(bigPayload)`) — without
-    // its own budget it would be the third smuggling channel after result
-    // and logs.
     const execClient = await connectedClient({
       runExecute: async () => ({
         ok: false,

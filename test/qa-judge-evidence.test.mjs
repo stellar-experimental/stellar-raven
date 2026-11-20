@@ -1,11 +1,4 @@
-/**
- * CLI-failure evidence and credential redaction for the QA judge.
- *
- * Covers eval/qa/evidence-sanitizer.mjs directly, and end to end through
- * judgeCase: a fake `claude` on PATH produces the failure, and the assertions
- * check what reaches a committed results file. Verdict-vs-lists rules live in
- * test/qa-verdict-consistency.test.mjs.
- */
+/** CLI-failure evidence and credential redaction for eval/qa/evidence-sanitizer.mjs and judgeCase. */
 import { createHash } from "node:crypto";
 import { describe, expect, it, vi } from "vitest";
 import { decodeCliEvidenceText, sanitizeCliEvidenceText } from "../eval/qa/evidence-sanitizer.mjs";
@@ -1047,7 +1040,6 @@ describe("QA judge CLI evidence", () => {
     expect(envelope.kept).toBe("safe-sibling");
     expect(envelope.total_cost_usd).toBe(0.5);
     expect(verdict.costUsd).toBe(0.5);
-    // Raw stream metadata still describes the bytes as captured.
     expect(verdict.cliFailure.stdout.totalBytes).toBe(stdout.length);
     expect(verdict.cliFailure.stdout.sha256).toBe(createHash("sha256").update(stdout).digest("hex"));
     expect(Buffer.byteLength(verdict.cliFailure.parsedEnvelope.excerpt)).toBeLessThanOrEqual(8_192);
@@ -1100,15 +1092,11 @@ describe("QA judge CLI evidence", () => {
     const envelope = JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt);
     expect(envelope.colored).toBe(colored);
     expect(envelope.jsonish).toBe(jsonish);
-    // The `token` KEY is sensitive, so its value collapses — a key rule, not a
-    // leaf rule, and unchanged by this repair.
     expect(envelope.token).toBe("[redacted]");
   });
 
   it("classifies structured property names after control normalization", () => {
-    // Confirmed reproducer: the NUL breaks the api_key match, so the value was
-    // emitted in full. The property NAME is preserved either way — only the
-    // classification is normalized, and only the value collapses.
+    // Control bytes in a key name cannot bypass classification; only the value collapses.
     expect(
       sanitizeCliEvidenceText(JSON.stringify({ [`API${NUL}_KEY`]: "NUL_KEY_SECRET_SENTINEL" }))
     ).toBe(JSON.stringify({ [`API${NUL}_KEY`]: "[redacted]" }));
@@ -1180,17 +1168,13 @@ describe("QA judge CLI evidence", () => {
     expect(envelope.kept).toBe("safe-sibling");
     expect(envelope.total_cost_usd).toBe(0.5);
     expect(verdict.costUsd).toBe(0.5);
-    // Raw stream metadata still describes the bytes as captured.
     expect(verdict.cliFailure.stdout.totalBytes).toBe(stdout.length);
     expect(verdict.cliFailure.stdout.sha256).toBe(createHash("sha256").update(stdout).digest("hex"));
     expect(Buffer.byteLength(verdict.cliFailure.parsedEnvelope.excerpt)).toBeLessThanOrEqual(8_192);
   });
 
   it("redacts a property whose name holds a truncated control sequence", () => {
-    // Confirmed reproducer: the unterminated OSC swallows `0;x_KEY`, so the
-    // normalized name is just `API` and the key predicate finds nothing.
-    // The value fails closed (round 7) and the NAME is scanned too (round 8),
-    // so the swallowed suffix cannot survive in key position either.
+    // Unterminated control sequences in a key name fail closed on both key and value.
     expect(
       sanitizeCliEvidenceText(JSON.stringify({ [`API${ESC}]0;x_KEY`]: "TRUNCATED_KEY_SECRET" }))
     ).toBe(JSON.stringify({ "API[redacted]": "[redacted]" }));
@@ -1237,7 +1221,6 @@ describe("QA judge CLI evidence", () => {
     const envelope = JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt);
     expect(envelope["API[redacted]"]).toBe("[redacted]");
     expect(envelope.kept).toBe("safe-sibling");
-    // Raw stream metadata still describes the bytes as captured.
     expect(verdict.cliFailure.stdout.totalBytes).toBe(stdout.length);
     expect(verdict.cliFailure.stdout.sha256).toBe(createHash("sha256").update(stdout).digest("hex"));
   });
@@ -1279,8 +1262,6 @@ describe("QA judge CLI evidence", () => {
   });
 
   it("redacts a credential carried by the property name itself", () => {
-    // Confirmed reproducer: the key predicate saw `password` and collapsed the
-    // VALUE, but the key was emitted verbatim and kept the secret.
     expect(sanitizeCliEvidenceText(JSON.stringify({ "PASSWORD=SECRET": "safe" }))).toBe(
       JSON.stringify({ "PASSWORD=[redacted]": "[redacted]" })
     );
@@ -1437,12 +1418,8 @@ describe("QA judge CLI evidence", () => {
     }
   });
 
-  // A sensitive word followed by another word is ordinary CLI prose far more
-  // often than a credential. Redacting on the word alone would rewrite the
-  // failure cause a reader needs, so a standalone name must also LOOK like a
-  // credential name: flag-prefixed, quoted, all-caps, or underscored. The
-  // credential forms below are the same words in those shapes and still
-  // redact, so the narrower rule never weakens the boundary.
+  // Bare sensitive words in prose stay intact; flag-prefixed, quoted, all-caps,
+  // or underscored credential shapes still redact.
   it.each([
     ["prose after token", "token balance lookup failed"],
     ["prose after prompt", "This prompt was rejected"],

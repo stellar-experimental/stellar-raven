@@ -1,13 +1,6 @@
 /**
- * Builder drift-guard tests for the runnable-skill attachment
- * (scripts/build-catalog.mjs attachRunnableSkills / assertNoNonExposedRefs,
- * src/skills/README.md): a registry key with no emitted
- * skill entry throws; a declared op that resolves to no emitted operation
- * throws; a planted non-exposed reference inside a runnable schema trips the
- * ADR-0003 leak guard. A `.test.mjs` file (the test/plan-grade.test.mjs
- * precedent) because the guards live in a plain-JS script the TS config
- * deliberately does not type (no allowJs) — build-catalog.mjs gates its
- * main() so importing the exports here never triggers a build.
+ * Builder drift-guard tests for runnable-skill attachment (scripts/build-catalog.mjs).
+ * Plain .test.mjs because tsconfig excludes plain JS scripts; build-catalog.mjs is main-guarded.
  */
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
@@ -124,11 +117,7 @@ describe("Scout exposure data matches the source contract", () => {
   });
 });
 
-/**
- * The committed manifest's entries with the runnable attachment UNDONE —
- * the exact pre-attach shape attachRunnableSkills receives in the builder
- * (skill entries carry null schemas until the registry attaches them).
- */
+/** Committed manifest entries with runnable schemas cleared, matching pre-attach builder input. */
 function preAttachEntries() {
   return MANIFEST_ENTRIES.map((entry) => {
     if (entry.runnable !== true) return entry;

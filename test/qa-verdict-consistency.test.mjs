@@ -1,9 +1,4 @@
-/**
- * Deterministic verdict-consistency rules for the QA judge: which
- * coreAnswer/missingFacts/wrongClaims/avoidMatches combinations contradict a
- * score, and what judgeCase emits when one does. CLI-failure evidence and
- * credential redaction live in test/qa-judge-evidence.test.mjs.
- */
+/** Verdict-consistency rules for eval/qa/judge.mjs; CLI-failure evidence lives in test/qa-judge-evidence.test.mjs. */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -103,8 +98,7 @@ describe("QA verdict consistency", () => {
   });
 
   it("bounds the freeze-clause exemption under rubric v2.11", () => {
-    // Compound avoid item shaped like the control case q-eco-defi-market-map:
-    // the freeze clause is exempt on a dated list; the other conditions are not.
+    // Compound avoid item: the freeze clause is exempt on a dated list; other conditions are not.
     const golden = {
       answer: "A defensible market map is a dated, source-relative snapshot. As of 2026-07-10 the directory showed many DEX and lending entries; oracles have several live providers.",
       keyFacts: ["Uses dated source-relative counts with operator and status checks."],

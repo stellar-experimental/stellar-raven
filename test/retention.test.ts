@@ -1,11 +1,4 @@
-/**
- * Binds src/auth/retention.ts to the runtime constants it represents.
- *
- * Four of the seven durations derive FROM the leaf, so those assertions are
- * structural. The other three are independent literals the leaf only mirrors;
- * for those this file is the only thing standing between a moved TTL and a
- * published retention figure that is no longer true.
- */
+/** Binds src/auth/retention.ts to the seven runtime TTL constants (four derived, three mirrored). */
 import { describe, expect, it } from "vitest";
 import { RETENTION } from "../src/auth/retention";
 import {

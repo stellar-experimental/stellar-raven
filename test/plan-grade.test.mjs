@@ -1,10 +1,4 @@
-/**
- * Plan-eval tests (eval/plan/*) — rule matching (override + refinement +
- * catch-all), op extraction from realistic execute code, broad→detail
- * progression ordering, legacy-truncation flagging, and op-classes
- * generation. Pure Node, no network; uses the real committed rules/classes
- * so the tests also pin the data contracts.
- */
+/** Offline tests for eval/plan/* against the committed rules and op-classes data. */
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";

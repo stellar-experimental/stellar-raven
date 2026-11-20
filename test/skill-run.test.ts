@@ -1,12 +1,4 @@
-/**
- * runSkill dispatcher tests — resolution ladder,
- * host-owned call ledger, deadline race, warn belts, and assertRunnersWired
- * in every drift direction.
- *
- * The catalog here is hand-built. It pins the runtime semantics against
- * synthetic runnable entries whose schemas come from the real runners. The
- * wiring assertions therefore exercise the real registry.
- */
+/** runSkill dispatcher and assertRunnersWired tests over a hand-built catalog with real runner schemas. */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Catalog, CatalogEntry } from "../src/catalog/types.ts";
 import type { AdapterResult } from "../src/adapters/types.ts";
@@ -21,9 +13,6 @@ import fxEntity from "./fixtures/skill-runners/lumenloop.find_content_by_entity.
 
 const DIGEST_ID = "skills.lumenloop.stellar-ecosystem-digest";
 
-// ---------------------------------------------------------------------------
-// synthetic catalog + facade builders
-// ---------------------------------------------------------------------------
 const provenance = { source: "test://catalog", fetchedAt: "2026-07-06T00:00:00Z" };
 
 const opEntry = (id: string): CatalogEntry => ({
@@ -178,9 +167,6 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-// ===========================================================================
-// resolution ladder
-// ===========================================================================
 describe("runSkill resolution ladder", () => {
   const catalog = realCatalog();
 
@@ -252,9 +238,6 @@ describe("runSkill resolution ladder", () => {
   });
 });
 
-// ===========================================================================
-// execution: envelope, ledger, deadline, belts
-// ===========================================================================
 describe("runSkill execution", () => {
   it("happy digest run (theme mode): service envelope out, host-attached calls, output validates", async () => {
     const { lines } = captureEvents();
@@ -420,9 +403,6 @@ describe("runSkill execution", () => {
   });
 
   it("shape-drifted digest upcoming-events call: section null, call still ledgered", async () => {
-    // §12 row 1 ("shape-drift fixture → section null + ledger entry") at the
-    // dispatcher level: the audit guarantee is that a call whose payload the
-    // runner discarded as drift can never disappear from the calls report.
     const facade = realFacade({ "lumenloop.list_documents": okData({ weird: 1 }) });
     const r = await runSkill(realCatalog(), RUNNERS, facade, DIGEST_ID, { subject: "RWA tokenization" });
     expect(r.ok).toBe(true);
@@ -486,9 +466,6 @@ describe("runSkill execution", () => {
   });
 });
 
-// ===========================================================================
-// assertRunnersWired — every drift direction throws
-// ===========================================================================
 describe("assertRunnersWired", () => {
   it("passes on a consistent catalog/registry pair (the real registry)", () => {
     expect(() => assertRunnersWired(realCatalog(), RUNNERS)).not.toThrow();

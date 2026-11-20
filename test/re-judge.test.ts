@@ -211,8 +211,6 @@ function writeFlipsPair(tuple: JudgeTuple, baselineMeta: Record<string, unknown>
   return { resultsPath, baselinePath, ids: selected.map((item: { id: string }) => item.id) };
 }
 
-// PATH for a refusal test: `claude` exists but fails immediately, so a missed
-// guard shows up as a wrong exit status instead of a paid judge call.
 // A source and a baseline that each reproduce their own snapshot, but whose
 // shared case id carries different content. Only a cross-comparison catches it.
 function writeDivergentCasesPair(tuple: JudgeTuple, id = "shared-drift-case") {
@@ -235,6 +233,8 @@ function writeDivergentCasesPair(tuple: JudgeTuple, id = "shared-drift-case") {
   return { resultsPath: write("results", "Question as judged in the source.", "correct"), baselinePath: write("baseline", "A different question under the same id.", "partial") };
 }
 
+// PATH for a refusal test: `claude` exists but fails immediately, so a missed
+// guard shows up as a wrong exit status instead of a paid judge call.
 function stubClaudeDirectory(): string {
   const directory = mkdtempSync(join(tmpdir(), "raven-rejudge-stub-"));
   temporaryDirectories.push(directory);

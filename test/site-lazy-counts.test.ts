@@ -1,12 +1,6 @@
 /**
- * src/site.ts must not validate the catalog manifest at module scope.
- *
- * Every request the auth handler serves — /authorize, /callback, /health, the
- * static pages — imports src/site.ts. A module-scope `getCatalog()` call made
- * every isolate init pay for validating catalog/manifest.json (~700 KB) even
- * when the response never renders a count. These tests pin the counts to a
- * memoized accessor: nothing on import, one catalog read on first use, cached
- * for the isolate afterwards.
+ * Pins lazy catalog count loading in src/site.ts: auth/health routes import src/site.ts,
+ * so catalog/manifest.json must be validated only on first count access and memoized per isolate.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

@@ -12,21 +12,9 @@ import { DEMO_SYSTEM_PROMPT } from "../../src/demo/prompt";
 import { prepareDemoStep } from "../../src/demo/steps";
 import { buildDemoTools } from "../../src/demo/tools";
 
-// The Playground sends its two tools to OpenAI through the Responses API. The
-// wire shape of those tools is model-facing, and the provider package decides
-// part of it. `@ai-sdk/openai` 4.0.77 changed an omitted `strict` from "not
-// sent" to `strict: false`, and 4.0.88 wrapped tool-error output in an `error`
-// object. Typecheck, unit, build, and smoke gates all passed across both.
-//
-// These tests take the tools from the production builder and the model from
-// the production factory, capture the requests, and fail when the `strict`
-// field, a parameter schema, or the reviewed follow-up request shape changes.
-// Descriptions are not pinned here; other tests own them.
-//
-// The tool-loop test rebuilds the `streamText` call from the production tool
-// builder, model factory, settings, and `prepareDemoStep`. It does not run
-// `src/demo/chat.ts`, so it omits `abortSignal`, `onStepFinish`, and the step
-// limit. test/smoke/server.test.ts covers the assembled route.
+// Captures OpenAI Responses API requests built from the production Playground tool builder and
+// model factory to detect silent wire-shape changes (`strict`, parameter schemas, follow-up steps)
+// across provider SDK updates. Descriptions are tested elsewhere; assembled routing is in server.test.ts.
 
 type FunctionTool = { type: string; name: string; strict?: unknown; parameters: unknown };
 type RequestBody = {
@@ -181,26 +169,21 @@ describe("Playground tools on the OpenAI Responses wire", () => {
       max_output_tokens: DEMO_CAPS.maxOutputTokens,
       reasoning: { effort: "none" },
       stream: true,
-      // Zero Data Retention wire (reviewed 2026-11-04): nothing is stored, and
-      // reasoning items travel as encrypted content so a later step can replay
-      // them instead of referencing an id OpenAI never kept.
+      // Zero Data Retention wire: nothing is stored, so reasoning replays via encrypted content.
       store: false,
       include: ["reasoning.encrypted_content"]
     };
-    // Exact top-level keys: a new provider field fails here until reviewed.
     expect(Object.keys(first).sort()).toEqual(
       ["include", "input", "max_output_tokens", "model", "reasoning", "store", "stream", "temperature", "tool_choice", "tools"]
     );
     expect(first).toMatchObject({ ...settings, tool_choice: "auto" });
     expect(first.tools?.map((entry) => entry.name)).toEqual(["search", "execute"]);
 
-    // The tools-disabled final step sends no tools and no tool choice.
     expect(Object.keys(final).sort()).toEqual(
       ["include", "input", "max_output_tokens", "model", "reasoning", "store", "stream", "temperature"]
     );
     expect(final).toMatchObject(settings);
 
-    // Every input item, in order: the system text, the user turn, then the tool loop.
     const items = (input: RequestBody["input"]) =>
       (input ?? []).map((item) => [item.role ?? item.type, item.call_id ?? null]);
     expect(items(first.input)).toEqual([["developer", null], ["user", null]]);

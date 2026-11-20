@@ -1,12 +1,6 @@
 /**
- * Real workers-oauth-provider 1.x built from oauthProviderOptions(), one
- * provider per served origin, over a KV fake that keeps key metadata and
- * lists (test/helpers/memory-kv.ts). Plain Node, `cloudflare:workers` stubbed.
- *
- * Covers the per-origin provider design (DESIGN.md D1), the callback
- * allowlist at registration and at authorization (D2), and the token-endpoint
- * rules this upgrade turns on (D5). src/server.ts cannot load in plain Node;
- * test/smoke/host-routing.test.ts runs the assembled dispatch in workerd.
+ * Per-origin OAuthProvider tests in Node over test/helpers/memory-kv.ts;
+ * assembled host routing runs in test/smoke/host-routing.test.ts.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { OAuthProvider, getOAuthApi } from "@cloudflare/workers-oauth-provider";
@@ -187,9 +181,6 @@ afterEach(() => {
   mcpFetch.mockClear();
 });
 
-// ---------------------------------------------------------------------------
-// D1: one provider per origin
-
 describe.each(ORIGINS)("provider for %s", (origin) => {
   const provider = providerFor(origin);
 
@@ -321,9 +312,6 @@ describe("tokens and grants stay on their own origin", () => {
     log.mockRestore();
   });
 });
-
-// ---------------------------------------------------------------------------
-// D2: callback allowlist at registration and authorization
 
 describe("registration callback rule", () => {
   const provider = providerFor(CANONICAL);
@@ -515,9 +503,6 @@ describe("callback allowlist at authorization (real provider and handler)", () =
   });
 });
 
-// ---------------------------------------------------------------------------
-// D5: token-endpoint rules this upgrade enables
-
 describe("token endpoint", () => {
   const provider = providerFor(CANONICAL);
 
@@ -619,8 +604,7 @@ describe("token endpoint", () => {
     await mintTokens(provider, env, CANONICAL, clientId, HTTPS_CALLBACK);
     expect(env.OAUTH_KV.expirationTtl.get(key)).toBe(365 * 24 * 60 * 60);
 
-    // A record written before the stamp existed (every registration made under
-    // 0.10.x) cannot be told from a permanent one, so it keeps its schedule.
+    // Unstamped legacy registrations cannot be distinguished from permanent ones and keep their schedule.
     const { registrationExpiresAt: _stamp, ...unstamped } = JSON.parse(env.OAUTH_KV.store.get(key)!);
     env.OAUTH_KV.store.set(key, JSON.stringify(unstamped));
     env.OAUTH_KV.expirationTtl.set(key, 100 * 24 * 60 * 60);

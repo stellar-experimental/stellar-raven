@@ -1,16 +1,4 @@
-/**
- * Focused tests for eval/qa/agent-result.mjs. The pure parser turns one
- * `claude -p --output-format stream-json` spawn into one structured outcome.
- *
- * The parser is the seam: run-qa.mjs's runAgent and these fixtures are its
- * only two adapters, so classification rules are pinned here against
- * sanitized real stream shapes rather than against a live provider.
- *
- * Fixtures are sanitized copies of observed shapes (test/fixtures/qa-agent-streams/):
- * the provider-safeguard stream reproduces q-n3-ssrf-metadata-endpoint from
- * the 2026-08-14 canonical round (two attempts, zero output tokens, empty
- * transcript, is_error with subtype "success").
- */
+/** Unit tests for eval/qa/agent-result.mjs against sanitized stream fixtures (test/fixtures/qa-agent-streams/). */
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -347,14 +335,6 @@ describe("parseAgentResult — assistant message IDs", () => {
 });
 
 describe("parseAgentResult — artifact continuation outcomes", () => {
-  /**
-   * The first telemetry cut mixed three different things under names that read
-   * like one: STATIC `codemode.artifact.*` occurrences in execute source, the
-   * number of executes containing them, and per-read outcomes. Its buckets also
-   * did not partition — the two historical `Cannot read properties of undefined`
-   * rows (q-pc-sponsored-reserves, q-protocol-operation-types-list) landed in no
-   * field at all. These tests pin the replacement shape and its arithmetic.
-   */
   const totalOf = (readExecutes) =>
     READ_EXECUTE_OUTCOMES.reduce((sum, outcome) => sum + readExecutes[outcome], 0);
 
@@ -390,13 +370,7 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
       // either direction (a loop undercounts, a string or comment overcounts).
       callSites: { info: 1, read: 1 },
       readExecutes: { total: 1, bounded: 1, truncated: 0, guardFailed: 0, hostDenied: 0, otherFailed: 0 },
-      // The execute is a clean bounded projection — the BUCKET records that. The
-      // read OUTCOME is still indeterminate: this script guarded on `r.ok` and
-      // projected `r.data.tailNote`, but it returned a small answer instead of
-      // the envelope, so no `ok:true` was ever visible. Source text is not
-      // evidence, so a correctly written continuation
-      // reads as unproven here. That is the fail-closed direction and it is the
-      // superseded expectation from the earlier `successful: 1` contract.
+      // Bounded execute without a visible ok:true envelope stays indeterminate (fail-closed).
       readOutcomes: { total: 1, successful: 0, denied: 0, indeterminate: 1 },
       hostDenialReasons: {},
       finalProjection: "bounded",
@@ -541,13 +515,7 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
   });
 
   it("does not call a truncated read execute successful on a data reference alone", () => {
-    // Sanitized from q-agent-identity-erc8004-stellar, transcript entry 6 of
-    // eval/qa/results/2026-07-11T15-36-44-variantA.json (artifact ids, hashes
-    // and bodies replaced; the `info.data ?? info` shape is the observed one).
-    // The script never branches on `info.ok`, the execute's own result truncated
-    // again, and the visible body carries no `ok:true` envelope. Nothing here
-    // proves the read returned data, so the outcome must stay indeterminate — a
-    // `.data` reference is source text, not read evidence.
+    // Truncated execute with no visible ok:true envelope stays indeterminate.
     const outcome = parseAgentResult({ stdout: stream("artifact-unproven-read"), stderr: "", status: 0, signal: null });
 
     expect(outcome.artifacts.readExecutes).toEqual({
@@ -569,10 +537,6 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
   });
 
   it("does not call a bounded read execute successful on a data reference alone", () => {
-    // Same fail-closed rule in the completed-execute case: the projection ran to
-    // a bounded result, but `r.data ?? fallback` tolerates a failed read, no
-    // `r.ok` was consulted, and the visible body shows no envelope. Bounded is
-    // the only success BUCKET; it is still not success EVIDENCE by itself.
     const stdout = [
       JSON.stringify({
         type: "assistant",
@@ -614,11 +578,7 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
   });
 
   it("does not accept a bare r.ok consult as a fail-fast guard", () => {
-    // Consulting `r.ok` is not branching on it. Both scripts below read the
-    // status and then use `r.data ?? fallback` anyway, so execution proves
-    // nothing: a denied read produces the same bounded body. Only a guard that
-    // LEAVES on failure (`if (!r.ok) return …`) makes the later `r.data` use
-    // evidence that the read returned data.
+    // Reading r.ok without early-returning on failure proves nothing about the read.
     const bodies = [
       // consulted by logging only
       "async () => { const r = await codemode.artifact.read('11111111-2222-4333-8444-555555555555'); console.log('read ok?', r.ok); return { rows: (r.data ?? {}).rows ?? [] }; }",
@@ -662,9 +622,6 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
   });
 
   it("does not accept a fail-fast guard that exists only inside a comment", () => {
-    // Text is not code. A commented-out guard and a commented-out `.data` use
-    // never ran, so the execute proves nothing about the read — the parser must
-    // read the source as source, not as a string to grep.
     const code = 'async () => { const r = await codemode.artifact.read("11111111-2222-4333-8444-555555555555"); /* if (!r.ok) return {}; r.data */ return {rows: []}; }';
     const stdout = [
       JSON.stringify({
@@ -699,13 +656,7 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
     });
   });
 
-  /**
-   * Reproductions A, B and C. Each one
-   * writes a real fail-fast guard and then puts `.data` somewhere that proves
-   * nothing: on the FAILURE return, inside a string, inside a comment. Source
-   * text cannot carry read evidence at all, which is why the static-source
-   * inference was removed rather than made cleverer.
-   */
+  // Source text alone never counts as read evidence (failure branch, string, or comment).
   it("reproduction A: .data on the failure return is not success evidence", () => {
     const outcome = parseAgentResult({
       stdout: oneExecute(`async () => { ${READ} if (!r.ok) return { via: r.data }; return { tail: 'ok' }; }`, '{"via":null}'),
@@ -758,10 +709,6 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
   });
 
   it("does not count a visible ok:true envelope from a FAILED execute", () => {
-    // The execute errored, so whatever body it left behind is the wreckage of a
-    // run that did not complete. An `ok:true` envelope inside it is not a
-    // projection the answer could use. The bucket says otherFailed; the read
-    // outcome must agree rather than claim a success the run never delivered.
     const outcome = parseAgentResult({
       stdout: oneExecute(`async () => { ${READ} return r; }`, '{"ok":true,"data":{}}', true),
       stderr: "",
@@ -792,13 +739,8 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
   });
 
   it("ignores artifact API text in a NON-execute tool input", () => {
-    // Only execute source can contain runnable artifact calls. A search query
-    // that quotes `codemode.artifact.read(...)` is prose, not work. Here the
-    // mention comes AFTER the real (failed) read, so a leak would also
-    // overwrite finalProjection with a phantom success.
-    // keepWholeResult mirrors run-qa's per-operation surface, where NON-execute
-    // tool results are stored too — so the non-execute result below is really
-    // present and really scanned.
+    // Ignore artifact API text in non-execute tool calls; keepWholeResult ensures
+    // non-execute results are stored and scanned here.
     const outcome = parseAgentResult(
       { stdout: stream("nonexecute-artifact-mention"), stderr: "", status: 0, signal: null },
       { keepWholeResult: () => true }
@@ -817,7 +759,6 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
     // ONE handle: the execute's own. The search result quotes a second, different
     // id — a handle named by a search hit was never issued to this run.
     expect(outcome.artifacts.handlesObserved).toBe(1);
-    // The non-execute call still belongs in the transcript.
     expect(outcome.transcript.map((entry) => entry.tool)).toEqual([
       "mcp__raven__execute",
       "mcp__raven__execute",

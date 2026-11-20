@@ -1,9 +1,4 @@
-/**
- * Live skill retrieval (src/skills/source.ts) — the properties that replace
- * the vendored copy: commit-pinned immutability, byte integrity, the
- * retired-ref scrub on every served body, and failure that surfaces as an
- * ordinary error envelope instead of a throw or a silent partial answer.
- */
+/** Live skill retrieval tests (src/skills/source.ts): commit pinning, digest verification, scrub, and error envelopes. */
 import { describe, expect, it, beforeEach } from "vitest";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -199,12 +194,7 @@ describe("createSkillSource — memo identity", () => {
   });
 
   it("does NOT serve a memoized body to a pin whose git blob sha disagrees", async () => {
-    // The case the test above cannot reach: changing the body changes BOTH
-    // digests, so it never exercises a memo key that omits one of them. Here
-    // url and sha256 are identical and only the provenance hash differs — if
-    // the key drops `sha`, the second read is served from memo and `verify`'s
-    // git-blob half never runs, quietly voiding the guarantee that both digests
-    // are checked on every read.
+    // Same url and sha256 with a different git blob sha proves the memo key includes `sha`.
     const { impl } = fakeFetch([ok(BODY)]);
     const source = createSkillSource({ fetchImpl: impl });
     const good = await pinFor(BODY);

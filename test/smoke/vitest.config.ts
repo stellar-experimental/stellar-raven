@@ -1,18 +1,6 @@
 /**
- * Smoke-lane vitest config. It runs test/smoke/ inside workerd
- * via @cloudflare/vitest-plugin, with the real wrangler.jsonc bindings
- * (including the LOADER worker_loaders binding the executor needs).
- *
- * Deliberately a separate project from the root vitest.config.ts: the main
- * unit suite stays plain-Node and fast; this lane boots workerd. Run it with
- * `npm run test:smoke`.
- *
- * Worker execution is offline. Setup fetches pinned GitHub files if the local cache is cold.
- * Tests exercise sandbox wiring, envelope guards, policy refusals, and route dispatch.
- *
- * Miniflare injects test authentication values. The tests do not require real service credentials.
- *
- * Note: `cloudflareTest` is a Vite plugin.
+ * Workerd smoke-lane config (`npm run test:smoke`) using @cloudflare/vitest-plugin.
+ * Runs offline against wrangler.jsonc bindings; a cold skill cache fetches pinned files during setup.
  */
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -20,17 +8,7 @@ import { cloudflareTest } from "@cloudflare/vitest-plugin";
 import { defineConfig } from "vitest/config";
 import { loadSkillTexts, skillFileUrl } from "../../scripts/lib/skill-mirror.mjs";
 
-/**
- * Pinned skill bodies, keyed by the exact raw.githubusercontent.com URL the
- * catalog transports carry. Skill content is no longer bundled into the
- * Worker, so `codemode.skill.read` performs a host-side fetch — the smoke lane
- * models upstream as a local stub rather than punching a hole in the offline
- * wall. Bytes are served UNSCRUBBED, exactly as upstream has them, so the
- * Worker's git-blob-sha verification runs for real inside workerd.
- *
- * Read from the builders' working cache (populated by any catalog/spec build);
- * a cold cache fetches once here and never again.
- */
+// Serve unscrubbed pinned skill bytes locally so workerd runs real sha256/git-blob verification offline.
 const manifest = JSON.parse(
   // .href for the same @types/node-vs-lib URL mismatch noted on wrangler.configPath below.
   readFileSync(fileURLToPath(new URL("../../ecosystem-skills/MANIFEST.json", import.meta.url).href), "utf8")
@@ -55,35 +33,17 @@ export default defineConfig({
       // the process cwd, not this config file. (.href because @types/node 26
       // and lib es2022 disagree on the URL type itself.)
       wrangler: { configPath: fileURLToPath(new URL("../../wrangler.jsonc", import.meta.url).href) },
-      // The demo's `ai` binding is remote-only; with the default
-      // remoteBindings:true the plugin opens a Cloudflare remote-proxy session
-      // at startup, which needs credentials CI deliberately lacks (offline
-      // lane). No smoke test calls the model — the /demo/chat tests stop at
-      // the auth/origin gauntlet — so remote bindings stay off.
+      // Keep remoteBindings off so the offline lane does not open a Cloudflare AI remote-proxy session.
       remoteBindings: false,
       miniflare: {
         bindings: {
-          // Fake key so the lumenloop adapter passes its config guard; the
-          // only "upstream" it can reach is a test-local fetch stub.
+          // Fake adapter keys keep the lane .dev.vars-independent; outbound fetches are stubbed per test.
           LUMENLOOP_API_KEY: "smoke-test-lumenloop-key",
-          // Same for the docs adapter's config guard: without it the
-          // stellarDocs ops fail before dispatch, which silently changed
-          // recovery-hint assertions depending on whether a local .dev.vars
-          // happened to exist. Fakes keep the lane .dev.vars-independent, as
-          // its docstring promises (outbound is stubbed per test anyway).
           MINTLIFY_ASSISTANT_API_KEY: "smoke-test-mintlify-key",
-          // Set so server.test.ts can assert the bypass's hostname second
-          // factor AT THE ASSEMBLY LEVEL: honored on localhost, inert on the
-          // public hostname (gate.ts logic itself is unit-tested).
+          // Enables assembly-level localhost vs public-hostname bypass tests in server.test.ts.
           DEV_ALLOW_UNAUTHENTICATED: "true"
         },
-        // Offline ENFORCED: any outbound fetch that escapes the tests' local
-        // stubs hits this wall instead of the network — EXCEPT pinned skill
-        // files, which are served from the local map above so skill.read (and
-        // its integrity check) is exercised without real network. (`cloudflare:test`
-        // has no `fetchMock`, so enforcement lives here and per-test mocking
-        // uses vi.stubGlobal; tests run in the same isolate as the main worker,
-        // so global stubs apply to host-side adapter fetches too.)
+        // Block all outbound fetches except pinned skill URLs served from pinnedBodies above.
         outboundService(request: Request) {
           const body = pinnedBodies.get(request.url);
           if (body !== undefined) {

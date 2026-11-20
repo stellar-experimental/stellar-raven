@@ -1,11 +1,6 @@
 /**
- * In-memory KV for plain-Node OAuth tests.
- *
- * It keeps what workers-oauth-provider 1.x reads back: `{ type: "json" }`
- * reads, the key metadata a `put` attaches, and `list` with prefix, limit and
- * cursor. Grant replacement judges grants from `list()` key metadata, so a
- * fake that drops put options and lists nothing never runs that path.
- * Expiry is recorded, not enforced.
+ * In-memory KV for Node OAuth tests. Supports `{ type: "json" }`, put metadata,
+ * and prefix/limit/cursor `list()` needed by workers-oauth-provider 1.x; expiry is recorded, not enforced.
  */
 export type MemoryKv = KVNamespace & {
   store: Map<string, string>;

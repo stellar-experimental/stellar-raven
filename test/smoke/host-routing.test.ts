@@ -132,8 +132,7 @@ describe.each(ALIASES)("legacy host %s", (origin) => {
 
   it.each([true, false])("accepts existing bearer and refresh grants without re-registration (explicit resource: %s)", async (includeResource) => {
     const bindings = testEnv();
-    // Mint through the unchanged provider directly, as before host redirects
-    // existed. No call to the restored router creates this client or grant.
+    // Mint directly through OAuthProvider without calling the router.
     const options = oauthProviderOptions({ fetch: () => new Response("unused") }, `${origin}/mcp`);
     const provider = new OAuthProvider(options);
     const helpers = getOAuthApi(options, bindings);
@@ -256,12 +255,8 @@ describe.each([CANONICAL, ...ALIASES])("complete OAuth flow at %s", (origin) => 
 });
 
 /**
- * oauth-provider 1.x caches its helpers on `env.OAUTH_PROVIDER`, bound to the
- * provider that made them. The real Worker `env` is shared by every request in
- * an isolate, so without the per-dispatch copy in src/server.ts the first
- * origin served would pin its helpers and every later /authorize on another
- * origin would bind the wrong resource. These go through SELF.fetch, the real
- * shared env, in both orders and concurrently.
+ * oauth-provider 1.x caches helpers on `env.OAUTH_PROVIDER` per provider instance; because `env`
+ * is shared across an isolate, src/server.ts must copy it per dispatch so origins do not cross-bind.
  */
 describe("one isolate serves all three origins", () => {
   const ORIGIN_ORDERS = [

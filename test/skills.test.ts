@@ -1,12 +1,4 @@
-/**
- * Skills store tests — pinned-source read, sectioned retrieval, exact-match
- * discipline. Exposure is build-time (ADR-0003): everything cataloged is
- * readable; anything excluded has no entry and fails exact-match resolution.
- *
- * Bodies come from the pinned upstream commit (test/helpers/skill-source.ts),
- * not from a vendored copy — the same bytes, verified the same way, the Worker
- * serves at runtime.
- */
+/** Skills store tests over pinned upstream bodies (test/helpers/skill-source.ts). */
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -203,9 +195,6 @@ describe("readSkill", () => {
   });
 
   it("has no lumenloop.skill.* alias — the twin namespace is dead (ADR-0003)", async () => {
-    // Twins were removed from the catalog entirely; the old back-compat read
-    // alias went with them. Unknown ids fail exact-match, with the canonical
-    // mirror id suggested (suggestion only, never a resolution).
     const r = await readSkill(catalog, source, "lumenloop.skill.stellar-project-dossier");
     expect(r.ok).toBe(false);
     if (r.ok) return;
@@ -282,12 +271,7 @@ describe("readSkill", () => {
   });
 
   it("oversized whole-reads return the FULL body plus an advisory notice (content is never withheld)", async () => {
-    // skills.stellar-light.stellar-scout remains larger than the advisory
-    // boundary after stellar-dev split its large bodies into companion files.
-    // Sandbox scripts legally grep and
-    // aggregate full bodies in-sandbox — the ~6k-token cap applies only to
-    // what a script RETURNS (run.ts truncateForModel), never to data flowing
-    // INTO the sandbox — so the content must be present; the notice is advice.
+    // The model-boundary cap applies to script return values, not data flowing into the sandbox.
     const r = await readSkill(catalog, source, "skills.stellar-light.stellar-scout");
     expect(r.ok).toBe(true);
     if (!r.ok) return;

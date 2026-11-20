@@ -145,9 +145,7 @@ describe("QA measurement metrics", () => {
   });
 
   it("derives no coverage share from a panel union that exceeds the key facts", async () => {
-    // Three votes, three paraphrases of one missing fact, two key facts. The
-    // retired formula 1 - missingFacts / keyFacts produced -0.5 on this shape
-    // (`q-jutsu-what-is-a-memo`, 2026-09-04 500-case arm).
+    // Three paraphrases of one missing fact exceed the 2 key facts; no coverage share is emitted.
     const panel = await judgeCasePanel(
       { golden: { keyFacts: ["Defines a memo.", "Explains the crediting use."] } },
       {

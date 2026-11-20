@@ -1,17 +1,6 @@
 /**
- * Playground answer-copy tests — the behavior half of the feature.
- *
- * DEMO_COPY_CORE is the copy action's source, split out of the page IIFE so it
- * can be evaluated and driven here (same trick as demo-markdown-commit.test.ts for
- * mdCommitIndex). The page has no DOM library in its test lane, so this file
- * carries a minimal fake node — enough for createElement/appendChild/
- * insertBefore/nextSibling/addEventListener, which is all the core touches.
- * Each row carries its own role="status" node, so feedback is read from the
- * row rather than from an injected announce callback.
- *
- * The load-bearing assertion is that the clipboard receives the raw accumulated
- * Markdown, not the bubble's rendered text: the fake bubble deliberately
- * carries flattened textContent that differs from the source.
+ * Evaluates DEMO_COPY_CORE in Node with a minimal fake DOM to verify that the
+ * copy button writes the raw accumulated Markdown rather than rendered bubble text.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DEMO_COPY_CORE } from "../src/demo/page";

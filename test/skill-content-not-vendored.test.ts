@@ -1,13 +1,6 @@
 /**
- * Third-party skill CONTENT is not vendored in this repo, and does not ship
- * inside the Worker — it is fetched from upstream at the pinned commit and
- * hash-verified at read time (src/skills/source.ts).
- *
- * What this repo may commit about a skill: its address (upstream url + git
- * blob sha), its id/slug structure, and the one-line frontmatter description
- * that drives routing. Not: bodies, section prose, or body-derived keyword
- * bags. These assertions are the standing guard on that line — they fail if a
- * future change starts re-copying upstream text into a committed artifact.
+ * Standing guard that third-party skill bodies, section prose, and body-derived keywords
+ * stay out of committed artifacts; only upstream pin addresses, slugs, and frontmatter descriptions commit.
  */
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
@@ -54,12 +47,8 @@ describe("skill bodies are not vendored", () => {
   });
 
   it("holds the committed skills-derived text to a routing-descriptions budget", () => {
-    // Canary, not a style rule: the ~18 frontmatter descriptions are what
-    // routing scores (see research/decisions/0005-skills-form-sections-out-of-search.md).
-    // Everything else is a heading. If
-    // this leaps, body text has crept back into a committed artifact.
-    // Currently ~11.6 KB (7.5 KB of frontmatter descriptions + headings); the
-    // pre-change catalog carried 33.7 KB with excerpts and keyword bags.
+    // Budget canary: only skill frontmatter descriptions and section headings should commit
+    // (research/decisions/0005-skills-form-sections-out-of-search.md).
     const bytes = skillEntries.reduce((n, e) => n + e.description.length, 0);
     expect(bytes).toBeLessThan(16_000);
   });
