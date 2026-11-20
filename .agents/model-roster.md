@@ -16,7 +16,7 @@ a different measurement.
 | Grok | `scripts/latest-model.mjs grok` |
 
 - Always pass the model flag; unflagged Codex inherits `~/.codex/config.toml`.
-- Claude Code resolves family aliases directly. Codex and Grok use `scripts/latest-model.mjs <family>`, which reads the CLI's offline catalog cache, prints one ID (and `fetched_at` on stderr), and exits non-zero if missing or unmatched.
+- Claude Code resolves family aliases directly. Codex and Grok use `scripts/latest-model.mjs <family>`, which reads the CLI's offline catalog cache, prints one ID (and `fetched_at` on stderr when present), and exits non-zero if missing or unmatched.
 - **Record the resolved ID for every run and review gate.** Claude: `modelUsage` key of `--output-format json` or `model` on stream-json `system/init`. Codex: resolver output. Grok: resolver output plus reported `modelUsage` key (which can be a server-side name).
 - `ultra` delegates to subagents; it is a separate execution system, not a higher effort.
 - Unlisted catalog entries are not tiers until `AGENTS.md` names them.

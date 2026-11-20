@@ -4,7 +4,7 @@ Public source code for the owner's private Sites dashboard (`.openai/hosting.jso
 
 ## Data
 
-See [`usage/README.md`](../README.md) for collection, retention, migration 0003, and [the data boundary](../README.md#owner-data-stays-outside-the-repository). The CLI and API share `cloudflare/queries.js`. Never sum distinct account counts across months. Commit synthetic test fixtures only.
+See [`usage/README.md`](../README.md) for collection, retention, and [the data boundary](../README.md#owner-data-stays-outside-the-repository). The CLI and API share `cloudflare/queries.js`. Never sum distinct account counts across months. Commit synthetic test fixtures only. Apply migration 0003 before deploying the report API or collector, and import trusted operator-generated launch JSON into D1 privately with bound parameters.
 
 ## Development and release
 

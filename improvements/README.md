@@ -61,7 +61,7 @@ Own-repo fixes (adapters, normalizers, catalog, goldens, evals) go to [`.agents/
 npm run improvements:file -- --file improvements/<collection>/<finding>.md --dry-run
 ```
 
-Filed bodies include a `generated-by-stellar-raven` marker, an active `main` link, and an immutable commit-pinned snapshot. Search Raven-filed issues with the quoted marker (older filings predate the marker):
+Filed bodies include a `generated-by-stellar-raven` marker, an active `main` link, and (when committed cleanly) an immutable commit-pinned snapshot. Search Raven-filed issues with the quoted marker (older filings predate the marker):
 
 ```sh
 gh search issues --match body '"generated-by-stellar-raven"'

@@ -11,9 +11,13 @@ Separate Worker serving Raven's public OpenAI domain challenge (no MCP code or s
 Requires Node `>=24.22` in the Node 24 line. Run from this directory:
 
 ```sh
-npm ci --ignore-scripts
-npm run typecheck && npm run build && npm audit
-cf deploy   # with an SDF Cloudflare credential (never in a file or arg)
+npm ci --ignore-scripts && npm run typecheck && npm run build && npm audit
+```
+
+After validation passes, deploy with an SDF Cloudflare credential (never in a file or arg):
+
+```sh
+cf deploy
 ```
 
 After deploying, verify both the challenge response and the main Raven deployment independently (first check recorded in [VERIFICATION.md](../VERIFICATION.md)).

@@ -47,11 +47,11 @@ submission; the package does not prove business verification.
 - **Tool exposure:** [OpenAI's guidelines](https://developers.openai.com/plugins/plugin-guidelines#tool-independence-and-exposure) expect one reviewable tool per callable operation, conflicting with Raven's `search` + `execute` design. The owner chose an exception request and authorized submitting the existing design while it is pending (resolve required portal errors first).
 - **Annotations:** `execute` can persist large results for seven days, conflicting with `readOnlyHint: true` under OpenAI's artifact persistence rule (cannot be overridden in the ZIP). Assess `openWorldHint` against actual retrieval scope.
 - **Authentication:** OAuth resource and scope checks may be reviewed; keep the shared Claude contract unchanged without a separate reviewed change.
-- **Privacy:** `/terms` still states 30-day query/response logging while [operations](../../docs/operations.md#data-retention) states at most 7-day metadata retention ([recorded check](VERIFICATION.md#policy-observation)). Resolve this and confirm third-party source terms before publication.
+- **Privacy:** the existing privacy URL does not prove full coverage of stored results, upstream recipients, and usage records; `/terms` still states 30-day query/response logging while [operations](../../docs/operations.md#data-retention) states at most 7-day metadata retention ([recorded check](VERIFICATION.md#policy-observation)). Resolve this and confirm third-party source authorization and terms before publication.
 
 ## Review materials
 
-- **Reviewer access:** the portal does not support API-key setup. Reviewers use a dedicated Raven OAuth account (email + password stored in the portal's secure fields; no MFA, email codes, or owner-mailbox access). Never weaken verification for all Raven users to fix one reviewer account. Check the portal before acting (last checked 2026-10-23).
+- **Reviewer access:** the portal does not support API-key setup. Prepare a dedicated Raven OAuth account (complete registration, email verification, and password setup; confirm it can run all eight review cases without MFA, email codes, or owner-mailbox access; never weaken verification for all Raven users to fix one reviewer account) and store its credentials only in the portal's secure fields. Check the portal before acting (last checked 2026-10-23).
 - **Demo recording:** `review.demo_recording_url` points to the [verified recording](https://pub-b2eaaee2bbe74d70820bacb7298958f5.r2.dev/stellar-raven/openai-review/2026-10-07/stellar-raven-demo-c0fcfd39.mp4) (shows the authenticated connection, not install/sign-in). [`r2.dev` is dev-only](https://developers.cloudflare.com/r2/buckets/public-buckets/); move to an SDF-approved domain if permanent hosting is needed.
 
 ### Portal update
@@ -72,7 +72,7 @@ Sign-in instructions for the portal field:
 
 ### Demo recording
 
-Connect and sign in via ChatGPT or Codex, then record all four prompts (screenshots or scripts do not count): persistent storage TTL (tool result + official link), lending/SCF (source records + submissions vs awards), passkey (retrieved playbook + links), and transfer (capability limit, no tool call). Verify playback and absence of credentials, host publicly without login, update `review.demo_recording_url`, and rebuild the ZIP.
+Connect and sign in via ChatGPT or Codex, then record all four prompts (screenshots or scripts do not count): persistent storage TTL (tool result + official link), lending/SCF (source records + submissions vs awards), passkey (retrieved playbook + links), and transfer (capability limit, no tool call). Play back to verify readable text, working playback, and absence of credentials or private account content, host publicly without login, update `review.demo_recording_url`, and rebuild the ZIP.
 
 ## Build the draft archive
 

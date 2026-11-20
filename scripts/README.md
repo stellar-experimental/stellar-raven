@@ -12,7 +12,7 @@ Files under `scripts/lib/` are shared helpers. Files under `scripts/catalog-data
 Keep a command when a package command, CI check, maintenance workflow, or generated artifact uses it.
 Delete a command only after checking package commands, workflows, documentation, and imports.
 
-`npm run mcp:surface` runs `run-mcp-surface.mjs` in a temporary directory that it removes on exit, forwarding arguments (including `--json`).
+`npm run mcp:surface` bundles `report-mcp-surface.mjs` into a temporary directory (removed on exit) and runs it in the caller's working directory, forwarding arguments (including `--json`).
 
 ## Generated-output entrypoints
 

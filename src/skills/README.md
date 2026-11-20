@@ -26,7 +26,7 @@ async () => {
 }
 ```
 
-- **Success:** `{ ok: true, data: { id, url, content | sections, availableSections, notice? } }`. Whole reads return `data.content` (preserving license material; large reads add an advisory `notice`; model-output caps apply only to the script's final return). Section reads return `data.sections` (`{ section, content, url }[]` in request order, no `data.content`) accepting slugs, exact heading text, or `file:` keys. Unknown or uncataloged sections fail the whole request and list `availableSections`.
+- **Success:** `{ ok: true, data: { id, url, content | sections, availableSections, notice? } }`. Whole reads return `data.content` (preserving license material; large reads add an advisory `notice`; model-output caps apply only to the script's final return). Section reads return `data.sections` (`{ section, content, url }[]` in request order, no `data.content`) accepting slugs, exact heading text, or `file:` keys. Unknown sections fail the whole request and list `availableSections`; a heading present in the body but absent from the catalog fails closed with an indexing-drift error.
 - **Failure:** `{ ok: false, error: { kind, message, hint? } }`.
 
 ## `codemode.skill.run`

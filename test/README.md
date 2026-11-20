@@ -13,7 +13,7 @@ See [README.md](../README.md#run-locally) for installation and generated type se
 
 The root [configuration](../vitest.config.ts) excludes smoke tests, report-site tests, `research/`, and copied worktrees. Run `npm run test:smoke` when you change `src/executor` or `src/demo`; [smoke/vitest.config.ts](smoke/vitest.config.ts) runs under `@cloudflare/vitest-plugin` with test auth values and an outbound wall serving only pinned skill files locally.
 
-Tests need no service credentials. Catalog, spec, provider, and smoke tests read pinned skill files from `ecosystem-skills/.cache/` (a cold cache downloads from GitHub). Freshness and improvement write tests run in temporary paths with substituted `gh`/`git` commands so tracked files stay untouched.
+Tests need no service credentials. Catalog, spec, provider, and smoke tests read pinned skill files from `ecosystem-skills/.cache/` (a cold cache downloads from GitHub). Catalog/spec freshness tests write to temporary paths, and improvement write tests copy scripts into temporary repos with substituted `gh`/`git` commands, so tracked files stay untouched.
 
 The table names groups, not every file; unlisted tests belong to the nearest group.
 

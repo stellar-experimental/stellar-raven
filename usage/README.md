@@ -6,7 +6,8 @@ A distinct active account has at least one recorded response in the UTC month, k
 
 ## Privacy rules
 
-- Treat account hashes as pseudonymous personal data with defined purpose, restricted access, retention, and deletion rules.
+- Treat account hashes as pseudonymous personal data.
+- Give every user-level dataset a defined purpose, restricted access, and retention and deletion rules.
 - Never infer organizations from user, client, network, geo, TLS, or user-agent data.
 - Never publish raw query previews or reversible short-query hashes as top-query reports.
 
@@ -16,8 +17,8 @@ A distinct active account has at least one recorded response in the UTC month, k
 
 - `usage_responses`: one row per response (`timestamp`, `tool`, `surface`, `access_mode`, optional `subjectHash`), deduplicated by invocation ID + log index.
 - `usage_receipts`: response counts, log truncation, and the hourly producer canary.
-- Neither table stores headers, queries, answers, code, exceptions, or raw account IDs. Writes retry up to three times before logging permanent failure.
-- Daily cleanup deletes rows older than the current UTC month plus `USAGE_RETENTION_MONTHS` (`src/auth/retention.ts`; [operations guide](../docs/operations.md#data-retention)) and expired historical snapshots (migration 0003; served only after bearer auth). Account deletion also removes response rows ([deletion procedure](../docs/operations.md#account-data-deletion)).
+- Neither table stores headers, queries, answers, code, exceptions, or raw account IDs. Each database write gets up to three attempts total before logging permanent failure.
+- Daily cleanup keeps `USAGE_RETENTION_MONTHS` UTC calendar months including the current month (`src/auth/retention.ts`; [operations guide](../docs/operations.md#data-retention)) and deletes older rows plus expired historical snapshots (migration 0003; served only after bearer auth). Account deletion also removes response rows ([deletion procedure](../docs/operations.md#account-data-deletion)).
 
 ## Report
 
@@ -38,9 +39,9 @@ npx wrangler d1 migrations apply stellar-raven-usage --config usage/wrangler.jso
 npx wrangler deploy --config usage/wrangler.jsonc
 ```
 
-Attach via `tail_consumers: [{ service: "stellar-raven-usage" }]` in Raven's Wrangler config (preserving other consumers) after publishing matching usage disclosures. Verify a known tool response in logs and D1, confirm hourly canaries arrive, and inspect collector logs for write errors.
+Attach via `tail_consumers: [{ service: "stellar-raven-usage" }]` in Raven's Wrangler config (preserving other consumers) after publishing matching usage disclosures, then deploy the producer with `npm run deploy` ([operations guide](../docs/operations.md#deploy); its `postdeploy` check authenticates via `wrangler auth token`: `CLOUDFLARE_API_TOKEN`, then `WRANGLER_PROFILE`, then checkout profile). Verify a known tool response in logs and D1, confirm hourly canaries arrive, run the monthly report, and inspect collector logs for write errors.
 
-Deploy the producer with `npm run deploy` ([operations guide](../docs/operations.md#deploy)); its `postdeploy` check authenticates via `wrangler auth token` (`CLOUDFLARE_API_TOKEN`, then `WRANGLER_PROFILE`, then checkout profile). To stop collection, remove only this tail consumer and keep D1 for the retention period. The hourly `usage-health` workflow skips with a notice when `USAGE_REPORT_TOKEN` is unset.
+To stop collection, remove only this tail consumer and keep D1 for the retention period. The hourly `usage-health` workflow skips with a notice when `USAGE_REPORT_TOKEN` is unset.
 
 ## Dashboard
 

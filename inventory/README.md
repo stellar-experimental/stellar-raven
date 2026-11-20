@@ -13,7 +13,7 @@ node scripts/refresh-inventory.mjs
 Requires Node 24 (`.nvmrc`), no dependencies, and `LUMENLOOP_API_KEY` + `MINTLIFY_ASSISTANT_API_KEY` in `.env` or the environment.
 
 - **Idempotent & deterministic:** rewrites a file only when content (ignoring `fetchedAt`) changes, sorting keys and tool/skill arrays so diffs reflect real contract changes.
-- **Secret guard:** refuses to write any output containing a `.env` value.
+- **Secret guard:** refuses to write outputs containing `.env` values (≥6 chars) or the two auth env vars (`LUMENLOOP_API_KEY`, `MINTLIFY_ASSISTANT_API_KEY`).
 
 ### Daily refresh in CI
 

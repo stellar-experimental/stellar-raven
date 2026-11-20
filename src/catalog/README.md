@@ -7,7 +7,7 @@ The generated [manifest](../../catalog/manifest.json) defines exposed operations
 - [search.ts](search.ts): `searchCatalogPage` and the frozen hits-only `searchCatalog` (keeps silent filter behavior for eval/test callers).
 - [search-resolution.ts](search-resolution.ts): neutral interface for MCP and sandbox adapters (validates service and exact recovery IDs, then resolves hits and recovery candidates; adapters own schemas, errors, prose, and telemetry).
 
-Default page limits: 10 for catalog and sandbox `codemode.search`, 7 for public MCP `search`; maximum 50 (non-finite values fall back to default before clamping). `kind` and `service` filters are exact; unknown services fail at the adapter boundary.
+Default page limits: 10 for catalog and sandbox `codemode.search`, 7 for public MCP `search`; maximum 50 (catalog/sandbox fall back to default on non-finite limits before clamping; public MCP `search` validates limits at schema parsing). `kind` and `service` filters are exact; unknown services fail at the adapter boundary.
 
 ## Scoring and admission
 
@@ -41,9 +41,9 @@ Each hit has `tier: "gated" | "backfill"`. For full gated pages, `total` is the 
 
 `widerCandidates` and `recovery` never alter ranked scores, membership, or totals ([ADR-0007](../../research/decisions/0007-structural-recovery-guidance.md)):
 
-- Zero-hit and all-backfill pages receive up to 3 broad recommendations; an unresolved one-content-token op query (including plurals) gets one directory anchor (constrained by service filters, suppressed for skill-only queries).
+- Zero-hit and all-backfill pages can receive up to 3 broad recommendations; an unresolved one-content-token op query (including plurals) can receive one directory anchor (constrained by service filters, suppressed for skill-only queries).
 - All-backfill pages prefer page-resident broad ops before catalog anchors, except unfiltered proper-name `Who is/was ...?` queries, which put canonical broad anchors first.
 - Explicit `recoverFrom` exact op IDs return bounded recovery candidates (`reason` selects context; never authorizes guessed IDs).
-- `detail` profile edges (e.g., Docs search hit → `stellarDocs.get_doc_page`) require target lane `detail` and all required target inputs present on source rows. `recovery`, `widerCandidates`, and execute's three alternatives skip them; the execute checkpoint renders each uncalled target once for successful row-returning calls (`on` is cosmetic).
+- `detail` profile edges (e.g., Docs search hit → `stellarDocs.get_doc_page`) require target lane `detail` and all required target inputs present on source rows. `recovery`, `widerCandidates`, and execute's three alternatives skip them; the execute checkpoint renders each uncalled target once for successful source calls where at least one returned row carries every join key as a non-empty string (`detail-relation.ts`; `on` is cosmetic).
 
 `confidence` and `recoveryMetadata` describe navigation evidence (including out-of-scope skill matches); search hits are navigation metadata, not answer evidence.

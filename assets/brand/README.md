@@ -4,8 +4,8 @@ Versioned brand uploads for external dashboards (such as the WorkOS AuthKit sign
 
 URL-loaded assets for external listings live in [`public/`](../../public/) (served as Workers static assets with `public/_headers`):
 
-- `/raven-icon.svg`, `/raven-logo-dark.svg`, `/raven-logo-light.svg` (outlined IBM Plex glyphs because `<img>` SVGs cannot load web fonts; `test/auth.test.ts` requires the site's mark path).
-- `/listing/`: Claude connector directory header logo, carousel images, and pattern ([`listing.md`](listing.md), [`research/listing-carousel-evidence-2026-10-07.md`](../../research/listing-carousel-evidence-2026-10-07.md), rebuilt by `tools/`).
+- `/raven-icon.svg` (mark only), `/raven-logo-dark.svg`, and `/raven-logo-light.svg` (logos use outlined IBM Plex glyphs because `<img>` SVGs cannot load web fonts; `test/auth.test.ts` requires the site's mark path on all three).
+- `/listing/`: Claude connector directory header logo, carousel images, and pattern ([`listing.md`](listing.md), [`research/listing-carousel-evidence-2026-10-07.md`](../../research/listing-carousel-evidence-2026-10-07.md); `tools/` rebuilds the outlined logos and pattern).
 
 Live site assets are generated code in `src/site.ts` (`FAVICON`, `ravenSvg()`, source of truth for `RAVEN_PATH` and `TOKENS`), `src/fonts.ts`, and `src/og.ts`. Regenerate files here if `RAVEN_PATH` or `TOKENS` change.
 

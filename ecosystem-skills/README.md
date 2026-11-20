@@ -58,7 +58,7 @@ node scripts/refresh-skill-directories.mjs   # refresh directory snapshots and I
 node ecosystem-skills/build-index.mjs        # rebuild the index only (after editing groups.json)
 ```
 
-`update.sh` resolves each source's commit, records file paths/sizes/blob hashes, drops deleted skills, refreshes directory snapshots, builds `INDEX.md`, and atomically swaps `MANIFEST.json`, `catalog.json`, `community.json`, and `INDEX.md` (rolling back on rename error). It aborts before swapping on unresolved sources, fetch/truncation errors, missing `SKILL.md`, diff-print failures, or index build errors.
+`update.sh` resolves each source's commit, records file paths/sizes/blob hashes, drops deleted skills, refreshes directory snapshots, builds `INDEX.md`, and swaps `MANIFEST.json`, `catalog.json`, `community.json`, and `INDEX.md` into place together (renaming sequentially with rollback on failure). It aborts before swapping on unresolved sources, fetch/truncation errors, missing `SKILL.md`, diff-print failures, or index build errors.
 
 After a re-pin:
 
@@ -79,7 +79,7 @@ node scripts/check-mirrors.mjs --fetch   # also verify upstream resolution and h
 
 Both guards fail loudly rather than changing exposure silently:
 
-- **Retirement guard** (`assertRetirementNamesResolve`, `scripts/build-catalog.mjs`): fails if a sync renames or removes a skill listed in `RETIRED_ONBOARDING_SKILLS` (`scripts/exposure.mjs`). Update the deny-list accordingly. `RETIRED_PARTNER_ONBOARDING_SKILLS` lists unpinned partner skills that `src/skills/scrub.ts` strips at read time.
+- **Retirement guard** (`assertRetirementNamesResolve`, `scripts/build-catalog.mjs`): fails if a sync renames or removes a skill listed in `RETIRED_ONBOARDING_SKILLS` (`scripts/exposure.mjs`). Retire the new name if renamed, or drop the entry if removed upstream. `RETIRED_PARTNER_ONBOARDING_SKILLS` lists unpinned partner skills that `src/skills/scrub.ts` strips at read time.
 - **Orphaned description notes** (`scripts/description-notes.mjs`): keyed by exact upstream ID, so renames fail affected generators. Overrides change only host discovery text, never pinned bytes.
 
 **Eval coupling.** When a skill leaves exposure, move its `eval/skills-cases.json` rows to `retiredCases` (with rationale and date), re-baseline the skills floor in `eval/gates.json` in the same commit, and log the decision ([`run-evals`](../.agents/skills/run-evals/SKILL.md)).
