@@ -323,7 +323,7 @@ The [2026-11-02 trial](../../research/audits/2026-11-02-golden-freshness-probe/R
 
 [agent-result.mjs](agent-result.mjs) parses each agent process into `qa-agent-result-v4` (`agent.failure` holds one failure class or `null`). Only a first-pass answering `transport` failure gets one retry (identical input bytes); only judge `cli` and `parse` failures get one total retry across collection and stored-judge resumes. Safeguards, timeouts, spawn/protocol/consistency/limit failures never retry. First-attempt answers, outcomes, and verdicts remain top-level values; retries live in `attempts.agent[]` and `attempts.judge[]`.
 
-Answering agents run outside the repo with empty setting sources, disabled slash commands, and strict MCP config; every row must confirm `raven` connected (failure stops the batch and marks the artifact non-comparable). Search calls retain full inputs and bounded `resultProjection`; execute calls retain bounded text—compare usage tokens, not captured char counts, across surfaces. Attempt timestamps (`startedAt`/`endedAt`), `assistantTurn`/`assistantTurnBasis`, `agent.usage`, `originalFailureClass`, and redaction semantics are owned by [agent-result.mjs](agent-result.mjs) and [evidence-sanitizer.mjs](evidence-sanitizer.mjs); older artifacts may omit newer metadata fields.
+Answering agents run outside the repo with empty setting sources, disabled slash commands, and strict MCP config; every row must confirm `raven` connected (failure stops the batch and marks the artifact non-comparable). Search calls retain full inputs and bounded `resultProjection`; execute calls retain bounded text—compare usage tokens, not captured char counts, across surfaces. Shared `assistantTurn` ordinals show calls requested in one assistant message, not overlapping host execution. Attempt timestamps (`startedAt`/`endedAt`) and `originalFailureClass` are written by [run-qa.mjs](run-qa.mjs); `assistantTurn`/`assistantTurnBasis`, `agent.usage`, and redaction semantics are owned by [agent-result.mjs](agent-result.mjs) and [evidence-sanitizer.mjs](evidence-sanitizer.mjs); older artifacts may omit newer metadata fields.
 
 ## Five-track result contract
 
@@ -391,7 +391,7 @@ The pack omits detected A/V `created_at` values and preserves source-basis bound
 
 [verdict-consistency.mjs](verdict-consistency.mjs) checks issue arrays, avoid indexes, and score consistency (preserving `judgeScore`, setting `coreAnswer: null` on error, never parsing answer prose).
 
-Compare artifacts only when case content, model, rubric, pack, prompt semantics, and judge-tier policy match; otherwise label the comparison explicitly. Grading changes require a rubric-version bump; evidence selection/serialization changes require a pack-version bump. Code keeps only the current pack—to import earlier packs from git, use `d15a4ce5` (`p6`), or `7e00ede2` (`p7`) / `36e77d40` (`p8`) after `git fetch origin pull/264/head` (see [the p9 replay](../../.agents/rounds/2026-10-12-pack-p9/replay-p9.mjs)).
+Compare artifacts only when case content, model, rubric, pack, prompt semantics, and judge-tier policy match; otherwise require an explicitly labeled comparison under a common target contract. Grading changes require a rubric-version bump; evidence selection/serialization changes require a pack-version bump; use prompt-hash fixtures to prove comment/formatting edits preserve prompt bytes. Code keeps only the current pack—to import earlier packs from git, use `d15a4ce5` (`p6`), or `7e00ede2` (`p7`) / `36e77d40` (`p8`) after `git fetch origin pull/264/head` (see [the p9 replay](../../.agents/rounds/2026-10-12-pack-p9/replay-p9.mjs)).
 
 The sampler allocates by service, sorts IDs, and selects evenly spaced cases; corpus growth shifts membership even at fixed sample size, so match IDs or disclose membership changes before comparing aggregates. Single-run movement needs transcript review or repeats before claiming a regression ([retained QA records](reviewed/2026-09-30-qa-guide-records.md)).
 
@@ -442,6 +442,7 @@ npm run eval:qa:selftest -- \
   --claude-path <absolute-path> \
   --expect-claude-binary-sha256 <sha256> \
   --expect-claude-environment-sha256 <sha256> \
+  --judge-model <exact-judge-model-id> \
   --out eval/qa/results/<stamp>-p6-selftest.json
 ```
 
@@ -462,7 +463,7 @@ node eval/qa/diagnose-stable-evidence.mjs eval/qa/results > tmp/stable-evidence.
 node eval/qa/diagnose-stable-evidence.mjs <saved-result.json> --all-freshness --ids <case-id>
 ```
 
-Only probes present in the saved answer count (`prose-match` / `term-match`; source-only matches go to `excludedMatches` / `judge-text-only`). Matches are fragment support only—neither proof of correctness nor fabrication on absence—and never modify saved artifacts, grades, or denominators. See [diagnose-stable-evidence.mjs](diagnose-stable-evidence.mjs) for probe normalization and output fields.
+Only probes present in the saved answer count (`prose-match` / `term-match`; source-only matches go to `excludedMatches` / `judge-text-only`). Matches are fragment support only—neither proof of correctness nor fabrication on absence—and never modify saved artifacts, grades, or denominators. Pass `--help` or `-h` for full CLI usage; see [diagnose-stable-evidence.mjs](diagnose-stable-evidence.mjs) for probe normalization and output fields.
 
 ## Re-judge stored results
 
@@ -586,9 +587,9 @@ npm run eval:qa:paired:collect -- \
 ```
 
 - **Capacity check:** live public check (no model calls or local server) requiring two overlapping captures, 12 clean responses (Scout 2, Lumenloop 6, Docs 4) within 120 s, zero retries/`Retry-After`; valid for 24 hours (`86,400,000 ms`).
-- **Plan pinning:** freeze capacity artifact and command arrays, record `--plan-sha256` outside the plan, and run the planned P6 self-test (`7 × $0.50`, `--paired-listeners`) before launching. Keep the plan uncommitted and delete it after the run.
-- **Bound invariants:** four distinct worktrees (two runners, two servers) and four distinct ports with different server revisions/surface hashes; identical binary, env, remote-probe, remote-vector, and stability-register hashes; salted `.dev.vars` hash (fresh 64-hex salt + sorted `[name, value]` entries, no raw values); explicit `--ids` and `--no-judge` (no `--sample`); per-arm collection + higher cumulative stored-judge caps summing to the two-arm cap; directed flip re-judge capped at `$15` with `--allow-empty` and no drift/non-identical overrides.
-- **Execution:** supervisor enforces row barriers, alternating IPC release order, 4-hour deadline, and pre-row/pre-attempt listener checks (`lsof`/`git`, cancelling both arms on `paired-server-lost`, guard failure, budget exhaustion, or child error without restarting servers). Emits a receipt only after both complete artifacts pass all checks; run stored judging afterwards (requires `meta.comparable === true` and matching identities). Repeats preserve each arm's port pair.
+- **Plan pinning:** freeze capacity artifact and command arrays, record `--plan-sha256` outside the plan, and run the planned P6 self-test (`7 × $0.50`, `--paired-listeners`) before launching (note: `run-p6-judge-self-test.mjs` requires `--judge-model <exact-id>`, while `paired-collection-supervisor.mjs` currently checks an `expectedCommand` array without `--judge-model`—reconcile that code mismatch before launching a paired run). Keep the plan uncommitted and delete it after the run.
+- **Bound invariants:** four distinct worktrees (two runners, two servers) and four distinct ports with different server revisions/surface hashes; pinned `selected.activeCorpusCount` (≥ 200) and ordered active-ID hash reproduced by both runners; identical binary, env, remote-probe, remote-vector, and stability-register hashes; salted `.dev.vars` hash (fresh 64-hex salt + sorted `[name, value]` entries, no raw values); baseline `add-missing` and candidate `verify-native` adapter modes; explicit `--ids`, `--no-judge`, and `--paired-control-arm` (no `--sample`); per-arm collection cap and higher cumulative stored-judge cap, with `twoArmCumulativeUsd` equal to the sum of the two cumulative arm caps; directed flip re-judge capped at `$15` with `--allow-empty` and no drift/non-identical overrides.
+- **Execution:** supervisor enforces row barriers, alternating IPC release order, 4-hour deadline, and pre-row/pre-attempt listener checks (`lsof`/`git`, cancelling both arms on `paired-server-lost`, guard failure, budget exhaustion, or child error without restarting servers; the launch operator verifies surviving process-group members before signaling). Emits a receipt only after both complete artifacts pass all checks; run stored judging afterwards (requires `meta.comparable === true`, matching identities, and complete judging evidence with unsuppressed aggregates before advancing). Repeats preserve each arm's port pair.
 
 ## CI contract and evidence
 

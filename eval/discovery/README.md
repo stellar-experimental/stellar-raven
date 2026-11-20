@@ -1,6 +1,6 @@
 # Discovery evaluation
 
-Measures whether MCP `search` over HTTP exposes an expected source family and usable operation or skill: one-shot (1 search), agent (≤3 searches, paid), and replay (stored agent queries). Rows matching a QA headline question are confirmation-only; one-shot and replay tag and hide per-row outcomes while agent and classifier do not ([routing guide](../README.md#confirmation-only-rows)).
+Measures whether MCP `search` over HTTP exposes an expected source family and usable operation or skill: one-shot (1 search), agent (≤3 searches, paid), and replay (stored agent queries). Committed rows matching a QA headline question are listed by ID in `routing-qa-overlap.json` (confirmation-only); one-shot and replay tag and hide per-row outcomes by committed ID (custom `--cases` IDs are not screened automatically), while agent and classifier do not tag ([routing guide](../README.md#confirmation-only-rows)).
 
 ## Commands
 

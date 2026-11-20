@@ -11,7 +11,7 @@ npm run eval:plan -- eval/qa/results/<stamp>.json
 node eval/plan/grade-plan.mjs <file> --rules eval/plan/coverage-rules.json
 ```
 
-Writes `<file>.plan.json` next to the input and prints a summary table (no live server).
+Writes `<stem>.plan.json` (replacing trailing `.json`, e.g., `run.json` → `run.plan.json`) next to the input and prints a summary table (no live server).
 
 ## Rule schema (`coverage-rules.json`)
 
@@ -42,7 +42,7 @@ Ordered rules, **first match wins**, ending with a catch-all; `overrides` (by ca
 
 ## Op extraction and classes
 
-Extracts direct calls via `\b(lumenloop|scout|stellarDocs|stellarOrg)\.(\w+)\s*\(`, recognizes `codemode.skill.read`/`run` (and aliases) as `skills`, expands known `skill.run` IDs through declared runner operations (`via: <skillId>`, not proof of host execution), and extracts direct `mcp__<server>__<service>_<operation>` tools. `codemode.search`/`catalog`/`spec`/`describe` are `meta-discovery` (outside touched services; `search` counts as broad before a skill call).
+Extracts direct calls via `\b(lumenloop|scout|stellarDocs|stellarOrg)\.(\w+)\s*\(`, recognizes `codemode.skill.read`/`run` (and aliases) as `skills`, expands known `skill.run` IDs through declared runner operations (`via: <skillId>`, not proof of host execution), and extracts direct `mcp__<server>__<service>_<operation>` tools. Top-level MCP `search` and `codemode.search`/`catalog`/`spec`/`describe` are `meta-discovery` (outside touched services; MCP `search`, `codemode.search`, and `codemode.catalog` satisfy the broad step before a skill call).
 
 Rebuild generated `op-classes.json` with `node eval/plan/build-op-classes.mjs` after catalog changes (never hand-edit). Operations class as `broad` (`search_`/`list_`/`find_` + plural `get*` overrides), `detail` (`get_`/`read_`/`explain`/`compare`), or `meta` (default, warning on unmatched ops).
 

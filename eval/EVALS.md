@@ -62,7 +62,7 @@ Evals, judging, testing, and building run on subscription CLIs as `hc` children 
 
 | CLI | Check |
 |---|---|
-| Claude Code | `claude auth status --json` shows `authMethod: "claude.ai"`, `apiProvider: "firstParty"`, and a `subscriptionType`, with no model-endpoint override (`ANTHROPIC_BASE_URL`, cloud variants, or `CLAUDE_CODE_USE_*`). `assertClaudeSubscription` (`eval/lib/harness-guards.mjs`) enforces this before the first model call in every paid Claude harness using the child's env, cwd, and `--setting-sources ""` flags. |
+| Claude Code | `claude auth status --json` shows `authMethod: "claude.ai"`, `apiProvider: "firstParty"`, and a `subscriptionType`, with no model-endpoint override (`ANTHROPIC_BASE_URL`, cloud variants, or `CLAUDE_CODE_USE_*`). `assertClaudeSubscription` (`eval/lib/harness-guards.mjs`) enforces this before the first model call in every paid Claude harness using the child's env, cwd, and root settings/isolation flags (`--setting-sources ""`, `--disable-slash-commands`, `--safe-mode`, `--strict-mcp-config`, passed before `auth status`). |
 | Codex | `codex login status` prints "Logged in using ChatGPT"; `OPENAI_API_KEY` unset. |
 | Grok | Establish SuperGrok login interactively (no offline CLI check); `XAI_API_KEY` unset. |
 | OpenCode | Run the probe below. |
@@ -70,7 +70,7 @@ Evals, judging, testing, and building run on subscription CLIs as `hc` children 
 **OpenCode probe** (always pass `--standalone` so OpenCode does not use a shared daemon on the default config; never use Anthropic through OpenCode—it is API-key only):
 
 1. Set a private `XDG_CONFIG_HOME` whose `opencode.json` sets `enabled_providers` to `openai` (ChatGPT) or `xai` (SuperGrok), keeping the real data dir (`opencode.db`). Set `OPENCODE_DISABLE_PROJECT_CONFIG=1` and `OPENCODE_DISABLE_CLAUDE_CODE=1`.
-2. `opencode auth list --standalone --format json`: verify `connections[].method` is `oauth` (not `key`; ignore `type: "credential"`).
+2. `opencode auth list --standalone --format json`: read only `connections[].method` and verify it is `oauth` (never `key`; `type: "credential"` proves nothing).
 3. `opencode models --standalone` lists only that provider and the exact model; no provider API key is set.
 
 **Exceptions.** E1 (`scripts/run-playground-semantic-eval.mjs`, `npm run eval:playground`) and E2 (`scripts/run-demo-model-gauntlet.mjs`) answer through local `/playground/chat` (AI Gateway); E1 judges via subscription Claude Code. Route each question to the cheapest accurate path:
@@ -82,10 +82,10 @@ Evals, judging, testing, and building run on subscription CLIs as `hc` children 
 | Does the route's cost accounting settle for a model? | Offline tests; live check only inside a real product run | `--max-budget-usd` is a cap, not a standalone cost test |
 | Does each shipped model complete the stream and tool loop alone after a model-path change? | E2 default (shipped primary + fallback) | Verifies isolated per-model requests on test Gateway `stellar-raven-demo` with slug-only overrides |
 | Should a candidate replace the Playground primary or fallback? | E2 on candidate, then paired E1 | Tests prompt, loop, caps, effort, temperature, and model together |
-| Did a Playground-specific change (`DEMO_PREAMBLE`, caps, loop) move quality or plan? | Paired E1 (or stored traces / E1 `--no-judge` + `eval:plan` for plan-only) | Exists only in Playground |
+| Did a Playground-specific change (`DEMO_PREAMBLE`, caps, loop) move quality or plan? | Paired E1 (for plan-only, prefer matched stored traces where possible, else E1 `--no-judge` + `eval:plan`) | Exists only in Playground |
 | Does a Gateway/Workers-AI-only model (e.g., Kimi) fit the Playground? | E2 then E1 | No subscription CLI exists |
 | Which model family answers best, or how does it use `search` and `execute`? | Subscription QA runner and Codex/Grok `hc` lanes | MCP client and model decide it, not Playground |
-| Did a tool description, MCP instruction, catalog, or executor change help or hurt answers? | Subscription QA first; add E1 only if changed text affects Playground-overridden constraints or moves top-level MCP `search`/`execute` call counts across a Playground cap | MCP surface decides it; Playground shares text with its own caps |
+| Did a tool description, MCP instruction, catalog, or executor change help or hurt answers? | Subscription QA first; add E1 only if changed text affects Playground-overridden constraints or matched stored transcripts show top-level MCP `search`/`execute` calls per answer crossing a Playground cap (count directly; `eval:plan`'s `searchQueries` also counts nested `codemode.search`) | MCP surface decides it; Playground shares text with its own caps |
 | Does fallback hand-off, harness contract, or deployed Playground look healthy? | Free: offline tests, `--dry-run`, `--preflight`, Gateway log read (`cloudflare-observability-review`) | No model call needed |
 
 **Sizing.** Both E1 and E2 require exactly one `--max-budget-usd` (no built-in default; missing flag refuses before spend). Caps stop the next call once reported spend reaches the limit—one in-flight call can overshoot ([`eval/playground/README.md`](playground/README.md#dollar-accounting)). Raising a default cap is the lead's call; record cap, reason, and cost in the ledger.

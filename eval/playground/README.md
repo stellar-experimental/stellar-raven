@@ -2,7 +2,7 @@
 
 Two API-billed AI Gateway lanes—exceptions E1 and E2 in [Model-call billing](../EVALS.md#model-call-billing), which owns the question→path table, sizing caps, and selection tiers. Use them only for Playground product questions (transport, prompt, loop, caps, effort/temperature, fallback, or Gateway-only models). Scope runs with [run-evals](../../.agents/skills/run-evals/SKILL.md).
 
-- **E2 (`scripts/run-demo-model-gauntlet.mjs`):** 8-case SSE transport and tool-loop smoke test (does not measure factual quality or fallback hand-off). Starts its own Wrangler per model; defaults to the shipped tuple (`DEMO_MODELS`), each model alone; pass `--models <provider>/<catalog-id>` for other models. Without exactly one `--max-budget-usd`, prints the launch plan and exits non-zero without spending or starting Wrangler.
+- **E2 (`scripts/run-demo-model-gauntlet.mjs`):** 8-case SSE transport and tool-loop smoke test (does not measure factual quality or fallback hand-off). Starts its own Wrangler per model; defaults to the shipped tuple (`DEMO_MODELS`), each model alone; pass `--models <provider>/<catalog-id>` for other models. When `--max-budget-usd` is omitted, prints the launch plan and exits non-zero without spending or starting Wrangler (duplicate or invalid cap flags fail before printing a plan).
 - **E1 (`npm run eval:playground`):** sends QA cases to the running local `npm run dev` server's `POST /playground/chat` route (never starts Wrangler) and grades answers with the `eval/qa` golden, evidence-pack, and subscription Claude judge contract. Keep its denominator separate from MCP QA.
 
 ```sh
@@ -15,7 +15,12 @@ npm run eval:playground -- --print-generation
 npm run eval:playground -- --max-budget-usd 2 --url http://localhost:8787 \
   --server-generation <sha256-from-print-generation> --sample 5 --seed baseline-a
 
-# Targeted case IDs or <=30-case contract with optional cumulative round cap file.
+# Targeted single-case reproduction:
+npm run eval:playground -- --max-budget-usd 2 \
+  --server-generation <sha256-from-print-generation> \
+  --ids q-aas-burn-clawback-redemption-mechanics
+
+# Whole <=30-case named contract with optional cumulative round cap file:
 npm run eval:playground -- --max-budget-usd 6 \
   --server-generation <sha256-from-print-generation> \
   --round-cap-context /tmp/playground-round-cap.json \
@@ -46,9 +51,9 @@ The shipped tuple (OpenAI Responses primary + Anthropic run-path fallback) share
 
 ### Results and provenance
 
-- **Artifacts:** gitignored timestamped JSON under `eval/local-lanes/playground-semantic/` (`playground-semantic-result/v3`, `playground-semantic-input/v1`). `--no-judge` captures route/trace diagnostics only. Internal hashes are revalidated by `re-judge.mjs`; older result contracts are refused.
-- **Model provenance:** the harness verifies Gateway-logged `models` against the configured tuple (exact string match; non-OpenAI live IDs are listed in [`2026-11-03-sweep-probe-summary.md`](../../research/gauntlets/2026-11-03-sweep-probe-summary.md)) and stops with `observed-model-mismatch` before judging if an unconfigured model answers. Always match `DEMO_MODEL_OVERRIDE` between server and harness.
-- **`--server-generation`:** machine-local assertion checked against the working tree before spend and before writing; does not prove the running Worker loaded those bytes (operator verifies the reused `dev` terminal). A post-spend mismatch fails closed (exit 1) and writes a non-promotable `playground-semantic-quarantine/v1` file under `<out-dir>/quarantine/` for spend reconciliation and forensics only—never for factual, eval, or comparison claims.
-- **`--round-cap-context` (optional):** operator-maintained `playground-semantic-round-cap/v1` JSON tracking cumulative ceilings and `*ConsumedBeforeRun` counters across multi-run rounds (`runAllocation: "planned" | "infra-retry"`; see `eval/playground/artifact-contract.mjs` for schema). Update counters after quarantined runs too; quarantine does not authorize `infra-retry`.
+- **Artifacts:** gitignored timestamped JSON under `eval/local-lanes/playground-semantic/` (`playground-semantic-result/v3`, `playground-semantic-input/v1`). `--no-judge` captures route/trace diagnostics only. Internal hashes are revalidated by `re-judge.mjs`; older result contracts are refused. Exhausting the budget with unfinished cases also exits 1, sets `nonPromotable: true`, and suppresses `summary`.
+- **Model provenance:** the harness verifies Gateway-logged `models` against the configured tuple (exact string match; non-OpenAI live IDs are listed in [`2026-11-03-sweep-probe-summary.md`](../../research/gauntlets/2026-11-03-sweep-probe-summary.md)) and stops with `observed-model-mismatch` before judging if a turn reports an unconfigured model or none. Always match `DEMO_MODEL_OVERRIDE` between server and harness.
+- **`--server-generation`:** machine-local assertion checked against the working tree before spend and before writing; does not prove the running Worker loaded those bytes (operator verifies the reused `dev` terminal). A post-spend mismatch or generation-check error fails closed (exit 1) and makes a best-effort `playground-semantic-quarantine/v1` file under `<out-dir>/quarantine/` for spend reconciliation and forensics only—never for factual, eval, or comparison claims.
+- **`--round-cap-context` (optional):** operator-maintained `playground-semantic-round-cap/v1` JSON tracking cumulative ceilings and `*ConsumedBeforeRun` counters across multi-run rounds (`runAllocation: "planned"` or transcript-proven `"infra-retry"`; see `eval/playground/artifact-contract.mjs` for schema). Update `*ConsumedBeforeRun` after quarantined runs too (from the quarantine `spend` block, or from the stderr marker if the quarantine write failed); quarantine does not authorize `infra-retry`.
 - **Auth & throttle:** loopback runs read `MCP_SERVER_SECRET` from env/`.dev.vars` (never logged) to mint an ephemeral run-scoped cookie, enforcing the real `DEMO_CAPS.chatsPerHour` ceiling (30). Selections above 30 fail before any request.
-- **Plan grading:** saved transcripts use `mcp__playground__search`/`execute`, so `npm run eval:plan -- <result.json>` works directly.
+- **Plan grading:** saved transcripts use `mcp__playground__search`/`execute`, so `npm run eval:plan -- <result.json>` works directly; run it after Playground prompt or tool-loop changes.

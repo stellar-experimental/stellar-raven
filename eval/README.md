@@ -38,11 +38,11 @@ The compiler reads inputs in [corpus/PROVENANCE.md](corpus/PROVENANCE.md), maps 
 
 Any routing or discovery row whose question has token Jaccard ≥ 0.8 against a question in `qa/cases.json` is confirmation-only and listed by routing row ID (no QA ID or score) in [routing-qa-overlap.json](routing-qa-overlap.json). `npm test` checks sync; regenerate with `npm run eval:routing:overlap` after routing recompiles or golden question edits.
 
-No lane tunes on a listed row or reads its per-row output (aggregates only). `run-routing.mjs`, `run-protocol-history.mjs`, `discovery/run-discovery.mjs`, and `discovery/run-replay.mjs` tag listed rows `confirmationOnly: true` and print `confirmation-only` instead of rank/hit/miss while counting them in aggregates (preserving grades in result files). The agentic workflow and agent discovery runner do not tag rows—report listed rows as counts only. Add any new question set to `routing-qa-overlap.mjs` and `lib/confirmation-only.mjs`.
+No lane tunes on a listed row or reads its per-row output (aggregates only). `run-routing.mjs`, `run-protocol-history.mjs`, `discovery/run-discovery.mjs`, and `discovery/run-replay.mjs` tag listed rows `confirmationOnly: true` and print `confirmation-only` instead of rank/hit/miss while counting them in aggregates (preserving grades in result files). The agentic workflow and agent discovery runner do not tag rows—report listed rows as counts only. Add any new question set to `routing-qa-overlap.mjs`, and have its runner pass its set name and row IDs to `lib/confirmation-only.mjs`.
 
 ### Row output
 
-`run-routing.mjs` and `run-protocol-history.mjs` print aggregates only by default (CI runs without `--rows`). Pass `--rows` to print holdout and protocol-history per-row tables; result files carry every row regardless. Error text names files and positions rather than case IDs, questions, or cards (except warnings on `build-question-overlay.json`, which name a legacy routing case).
+`run-routing.mjs` and `run-protocol-history.mjs` print aggregates only by default (routine runs and CI omit `--rows`). Pass `--rows` only when you need holdout or protocol-history per-row tables; result files carry every row regardless. Error text names files and positions rather than case IDs, questions, or cards (except warnings on `build-question-overlay.json`, which name a legacy routing case).
 
 ### Card-name normalizer
 
@@ -50,7 +50,7 @@ No lane tunes on a listed row or reads its per-row output (aggregates only). `ru
 
 ### Gate evidence
 
-[gates.json](gates.json) owns legacy bands, skills top-1 floor, holdout floors/forbidden ceiling, and required input SHA-256s/counts (missing skills or holdout files fail; overlay and protocol-history v1 are optional). Update hashes, totals, thresholds, and the decision record together on approved baseline changes. Never tune on individual failed holdout cases; freeze blind labels before reading scorer traces.
+[gates.json](gates.json) owns legacy bands, skills top-1 floor, holdout floors/forbidden ceiling, and required input SHA-256s/counts (missing skills or holdout files fail; overlay and protocol-history v1 are optional). Update hashes, totals, thresholds, and the decision record together on approved baseline changes. Never tune on individual failed holdout cases; freeze blind labels before reading scorer details or result traces.
 
 ### Protocol-history diagnostics
 

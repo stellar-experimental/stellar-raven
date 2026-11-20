@@ -4,9 +4,9 @@ Paid diagnostic measuring whether an agent selects the expected service after se
 
 ## Method
 
-[sample.json](sample.json) fixes 30 legacy routing cases (12 Stellar Docs, 10 Scout, 8 Lumenloop). Rows matching a QA headline question are listed in `routing-qa-overlap.json` (set `agentic`; see [confirmation-only rows](../README.md#confirmation-only-rows)); this workflow does not tag them, so report them as counts only. [workflow-agentic-routing.js](workflow-agentic-routing.js) runs each case at low and medium effort (60 rows) using the `sonnet` alias—record the resolved model ID.
+[sample.json](sample.json) fixes 30 legacy routing cases (12 Stellar Docs, 10 Scout, 8 Lumenloop). Rows matching a QA headline question are listed in `routing-qa-overlap.json` (set `agentic`; see [confirmation-only rows](../README.md#confirmation-only-rows)); this workflow does not tag them, so report them as counts only. [workflow-agentic-routing.js](workflow-agentic-routing.js) schedules 60 attempts (30 cases × low/medium effort; failed jobs are dropped before aggregation) using the `sonnet` alias—record the resolved model ID.
 
-Each agent gets up to 3 local MCP `search` calls and returns `queriesUsed`, `primaryToolId`, `primaryService`, `alternateToolIds`, and `reasoning`. The harness records per-call search pages (`zeroGated`, `widerCandidateIds`, `primaryInHits`). Primary grade matches exact `expected_service` (no `expected_any` tolerance); any-hit accepts it in primary or alternates.
+Each agent is instructed to make 1–3 local MCP `search` calls and returns `queriesUsed`, `primaryToolId`, `primaryService`, `alternateToolIds`, and `reasoning`. The harness records per-call search pages (`zeroGated`, `widerCandidateIds`, `primaryInHits`). Primary grade matches exact `expected_service` (no `expected_any` tolerance); any-hit accepts it in primary or alternates.
 
 ## Re-run
 

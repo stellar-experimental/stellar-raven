@@ -2,7 +2,7 @@
 
 Offline, deterministic, judge-blind diagnostic measuring whether the host observation anchor improves answer-time dating of mutable facts without promoting the anchor into evidence. Scores only the 12 preregistered cases in `expectations.json` (`temporal-expectations-v1`: 6 mutable positives × 2 rows, 6 controls × 1 row per surface/arm) from saved QA `/mcp` or `/playground/chat` artifacts (`{ meta, rows }`), passed with explicit `--input` labels.
 
-Attribution is fail-closed: candidate rows must contain `--- OBSERVATION CONTEXT ---` inside a recorded `execute` result; baseline rows must lack it. Reported metrics per surface and arm:
+Attribution is fail-closed: candidate rows must contain `--- OBSERVATION CONTEXT ---` inside a recorded `execute` result; baseline rows must lack it in every tool result. Reported metrics per surface and arm:
 
 - `asOfDatingRate`: positive answers binding an answer-time date/qualifier to the mutable claim.
 - `staleAsCurrent`: stale assertions lacking their historical/as-of guard.
