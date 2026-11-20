@@ -23,7 +23,8 @@ import {
   P6_SELF_TEST_CALL_SCHEMA,
   P6_SELF_TEST_CALLS,
   P6_SELF_TEST_PER_CALL_BUDGET,
-  P6_SELF_TEST_SUMMARY_SCHEMA
+  P6_SELF_TEST_SUMMARY_SCHEMA,
+  requireExactJudgeModel
 } from "./run-p6-judge-self-test.mjs";
 import { JUDGE_RUBRIC } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
@@ -325,6 +326,8 @@ function validateP6Contract(plan, identities) {
   const runner = plan.worktrees[`${p6.runnerArm}Runner`];
   const runnerIdentity = identities[p6.runnerArm === "baseline" ? 0 : 1];
   const hashes = plan.arms[p6.runnerArm].inputHashes;
+  // The self-test calibrates the exact judge the collection uses.
+  const judgeModel = requireExactJudgeModel(flagValue(plan.arms[p6.runnerArm].collectionCommand, "--judge-model"));
   const expectedCommand = [
     process.execPath,
     CONTRACT_FILES.p6Wrapper,
@@ -336,6 +339,8 @@ function validateP6Contract(plan, identities) {
     hashes.agentBinarySha256,
     "--expect-claude-environment-sha256",
     hashes.agentEnvironmentSha256,
+    "--judge-model",
+    judgeModel,
     "--paired-listeners",
     p6.listenersPath,
     "--expect-paired-listeners-sha256",

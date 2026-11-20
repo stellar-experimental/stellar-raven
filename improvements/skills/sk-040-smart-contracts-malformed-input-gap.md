@@ -1,7 +1,7 @@
 ---
 id: sk-040
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-08-07
 upstreamTitle: "smart-contracts security.md omits malformed and short-input guards before decoding or slicing"
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "2026-11-20 timeline calibration: commit 5907afc60100650305355e74632cb5254e1b90bb (2026-06-29) introduced security.md without malformed-input guidance. Raven first observed the gap on 2026-08-07 at commit 52baea1d8cb1aa9441004ce44b723f55cbc90901. Only one SEP-55 checklist line changed security.md between 2026-08-07 and 2026-11-20. Commit 452b954d2b59cf41294401186461c583a8350c38 added that line, and commit a5921875c3c7c63886f5a6204b5dd55b0ebf9b90 revised it."
   - "2026-11-20 SDK verification on stellar/rs-soroban-sdk main 27ae4ffd9fce7cb93dcd704582f7540cc88f0701. Bytes::slice panics on out-of-bounds ranges (soroban-sdk/src/bytes.rs:738-762, tested at lines 1926-1927). Bytes::copy_into_slice panics on length mismatch (soroban-sdk/src/bytes.rs:726-733). FromXdr::from_xdr panics on invalid ScVal XDR (soroban-sdk/src/xdr.rs:91-94, 114-117). Generated contract wrappers unwrap BytesN<N> arguments (soroban-sdk-macros/src/derive_fn.rs:137-147). BytesN::<N>::try_from returns Result<BytesN<N>, ConversionError> (soroban-sdk/src/bytes.rs:1088-1116)."
   - "2026-11-20 dedupe: scanned all 189 issues and pull requests (state=all) in stellar/stellar-dev-skill. Also scanned all active and resolved local findings in improvements/. Zero duplicates cover malformed or short-input guards in skills/smart-contracts/."
+  - upstream issue filed 2026-11-20: https://github.com/stellar/stellar-dev-skill/issues/193
 ---
 
 ## Finding

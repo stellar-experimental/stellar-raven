@@ -68,8 +68,8 @@ The repo is self-contained, including `usage/`. The owner keeps private folders 
   accuracy in every comparison and state the trade. For accuracy work, check upstream sources and
   golden errors before surface or prompt tuning.
 - **Subscriptions first. No AI Gateway judging.** Evals, judging, testing, and building run on
-  subscription CLIs as `hc` children: Claude Code, Codex, Grok, and OpenCode only after its
-  subscription-provider probe, never on API keys. Tests and evals run against the local
+  subscription CLIs as `hc` children: Claude Code, Codex, Grok, Antigravity (`agy`), and OpenCode
+  only after its subscription-provider probe, never on API keys. Tests and evals run against the local
   `wrangler dev` server. AI Gateway or a provider API is allowed only for an exception listed with
   its reason in [`eval/EVALS.md`](eval/EVALS.md#model-call-billing). Every API-billed run carries a
   dollar cap and is recorded with its cost; an unlisted path first joins that list in a reviewed PR.
@@ -154,6 +154,7 @@ runs, and other tools do not merge or deploy; they report to their lead.
 
 | Tier | Use for |
 |---|---|
+| Gemini Neon | Default implementation lane: multi-file changes, docs and records passes |
 | Codex frontier | Hard implementation, dense analysis, security review |
 | Codex workhorse | Routine implementation, bounded verification |
 | Claude Fable | Product, API, documentation, taste |
@@ -206,8 +207,6 @@ The independent reviewer:
   pathspec in `eval/qa/README.md` ("Searching without reading case text"). Only a
   golden-maintenance lane opens case text, and it names the exact path.
 - Skills are timeless: no todo IDs, run stamps, or dated state in skill text.
-- Solo, a retired task tracker, is not a live path. Add no `solo://` reference, Solo todo, or Solo
-  scratchpad. Leave Solo references in dated records unchanged.
 - Never reference a retired sibling repo as a live path. Prior art under `eval/corpus/` is
   read-only (the routing eval's label source); the QA battery under `eval/qa/corpus/` does not read
   it.

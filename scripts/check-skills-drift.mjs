@@ -15,7 +15,7 @@
 // Exit codes (consumed by .github/workflows/refresh.yml):
 //   0 = clean, 1 = drift, 2 = error (error beats drift).
 
-import { readFileSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { fetchJson, parseEnvFile } from "./lib/shared.mjs";
@@ -273,7 +273,17 @@ async function main() {
   process.exit(errored.length ? 2 : drifted.length ? 1 : 0);
 }
 
-if (resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
+// realpath: on macOS tmpdir() is /var, a symlink to /private/var.
+function isMainModule() {
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(resolve(process.argv[1])) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (isMainModule()) {
   main().catch((err) => {
     console.error(`check-skills-drift failed: ${err.message}`);
     process.exit(2); // check error, not drift — see the exit-code contract above

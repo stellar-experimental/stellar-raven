@@ -254,6 +254,16 @@ shipped-tuple smoke (about USD 0.45 per model-path change)?" Round item 8.8 appl
   them now, just don't write and maintain permanent tests for ephemeral issues". Applied in #508: each
   mismatch is fixed in the code (a returned field, one shared path matcher, CommonMark fence matching),
   and no test pins today's wording, counts or upstream text.
+- **Second assessment follow-ups and slimming** (round item 8.13). Owner (2026-11-20), verbatim: "yes, do
+  all of it via Neon reviewed by Sol and Opus here before shipping it all, cleaning and completing our
+  work here in this session for now", then "review docs and todos and readmes for accuracy and
+  opportunities to slim up, ensure and improve accuracy and clarity and brevity. Go through code as
+  well and trim up verbosity especially around comments. Do this work in agentpc with agy agents.
+  Where we can clear up and out and slim up the TODOs we should but don't drop legit and viable items.
+  Same for improvements and ideas, ensure those are up-to-date, clean and viable, otherwise clear out."
+- **Owner answers during 8.13** (2026-11-20, chosen options): add Gemini Neon (Antigravity `agy`) to
+  the `AGENTS.md` subscription list and routing table; remove the Solo rule; post `sk-040` and
+  `sd-114` upstream; delete `sd-113`; keep `ll-022`, `ll-023` and `ll-024` open as they are.
 
 ## Timing
 

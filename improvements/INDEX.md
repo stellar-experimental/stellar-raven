@@ -21,7 +21,7 @@ Total findings: 94
 | sk-029 | The Core API emits error type URLs of the form …/api-rest/errors/<code-in-kebab-case>. The docs site redirects that ungrouped path to the…  | reported-upstream | 2026-10-27 | 2           |
 | sk-030 | Six Lumenloop skill files still name the wallet Freighter and omit its current name, Varial. SDF announced the rename on 2026-10-29. The…   | reported-upstream | 2026-11-02 | 2           |
 | sk-031 | skills.stellar.org/skills/soroban/SKILL.md still returns the deleted soroban skill with obsolete build guidance. The source repository…     | reported-upstream | 2026-11-02 | 2           |
-| sk-040 | skills/smart-contracts/security.md lists 11 numbered vulnerability classes and omits malformed or short-input handling. No file in…         | verified          | 2026-08-07 | 0           |
+| sk-040 | skills/smart-contracts/security.md lists 11 numbered vulnerability classes and omits malformed or short-input handling. No file in…         | reported-upstream | 2026-08-07 | 0           |
 
 ## stellar-light-scout
 
@@ -64,7 +64,7 @@ Total findings: 94
 | sd-110 | The Lab Contract Explorer page gives a wrong list of Stellar CLI binding languages. It says the CLI generates bindings in "TypeScript,…     | reported-upstream | 2026-11-14 | 2           |
 | sd-111 | The stellar.org audit register at https://stellar.org/audit-bank/projects gives 4 of its 77 records the title "Unnamed record". Each title… | reported-upstream | 2026-11-17 | 0           |
 | sd-112 | Docs search does not return the SEP-7 page, /docs/build/apps/wallet/sep7, for the query web+stellar:pay payment request QR code. The page…  | reported-upstream | 2026-11-17 | 0           |
-| sd-114 | Docs search omits or buries /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction for natural questions…  | verified          | 2026-11-20 | 0           |
+| sd-114 | Docs search omits or buries /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction for natural questions…  | reported-upstream | 2026-11-20 | 0           |
 
 ## lumenloop
 

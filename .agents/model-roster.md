@@ -9,6 +9,7 @@ a different measurement.
 
 | Tier | Family |
 |---|---|
+| Gemini Neon | Antigravity (`agy`), newest `gemini-<v>-neon` in `agy models` |
 | Codex frontier | Astra (`scripts/latest-model.mjs astra`) |
 | Codex workhorse | Sol (`scripts/latest-model.mjs sol`) |
 | Claude Fable | `fable` alias |
@@ -46,9 +47,11 @@ Launch each lane as a background `hc` child with a one-line task pointing to a b
 M=$(node <worktree>/scripts/latest-model.mjs <sol|astra|terra>) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> codex --no-daemon --dangerously-bypass-hook-trust -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<task>"
 hc run --bg --name <lane> --cwd <worktree> claude --model <sonnet|opus|fable> --effort high --permission-mode bypassPermissions "<task>"
 M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> grok --model "$M" --reasoning-effort high --always-approve "<task>"
+M=$(agy models | awk '{print $1}' | grep -E '^gemini-[0-9.]+-neon-high$' | sort -V | tail -1 | sed 's/-high$//') && [ -n "$M" ] && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> agy --model "$M" --effort high --dangerously-skip-permissions --output-format json --print-timeout 0 -p "<task>"
 ```
 
 - **Codex**: needs `--no-daemon` under `hc`. `workspace-write` cannot write under `.agents/` or commit to shared `.git` (have it write findings to ignored `tmp/`, then copy and commit yourself). `-a never` cannot approve MCP tool calls. Before a paid lane, confirm `codex login status` prints "Logged in using ChatGPT" and keep `OPENAI_API_KEY` unset. `--dangerously-bypass-hook-trust` enables `.codex/hooks.json` (the case-search guard) without `/hooks` approval. Antigravity (`agy`) runs `.agents/hooks.json` with no extra flag; Grok runs `.grok/hooks/` in a trusted folder.
+- **Antigravity**: headless `-p` runs one task and exits, so a lane must run long gates in the foreground (it exits if it goes idle while a background command runs). Resume a lane with `--conversation <conversation_id>` from its JSON output. On agentpc wrap it in `systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0`. The Neon resolver needs GNU `sort -V`.
 - **Grok**: no offline login check; establish SuperGrok login interactively and keep `XAI_API_KEY` unset. If a Claude Code auto-mode orchestrator rejects `--always-approve`, do not retry—use the `AGENTS.md` tier fallback or ask the owner to launch it.
 
 ## How to re-verify
