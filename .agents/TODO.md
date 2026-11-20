@@ -903,19 +903,6 @@ per-row `classify-misses.mjs` output (unless owner accepts the guide rule). Wire
 
 Done when: every runner replaying listed rows tags them, or owner accepts the guide rule.
 
-### Run the judge self-test on the resolved judge model
-
-The QA judge defaults to Claude Code alias `sonnet` (resolving to `claude-sonnet-5-5` as of
-2026-11-18) and launches with `--setting-sources ""`. The paid 7-case `npm run eval:qa:selftest` has
-not graded that model or launch flag yet.
-
-Trigger: first headline judged run or any run with comparable verdicts (also repeat whenever the
-resolved judge ID moves). Resolve `sonnet` via `modelUsage`, pass the exact `--judge-model` ID
-(aliases are refused), run under a cap to set the new baseline (`eval/EVALS.md`, rule 7), and record
-the resolved ID beside the summary.
-
-Done when: self-test passes under its cap with the resolved judge ID recorded.
-
 ### Bump the Playground catalog IDs when the AI Gateway lists a newer model
 
 `DEMO_CATALOG_LATEST` in `src/demo/model-config.ts` pins exact AI Gateway IDs for Terra, Haiku, and
