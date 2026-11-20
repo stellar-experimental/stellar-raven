@@ -49,8 +49,8 @@ export async function fetchLiveSurface(url, { fetchImpl = fetch, token = null } 
     });
     const text = await response.text();
     if (!response.ok) {
-      // A proxy can echo the Authorization header; never print the token.
-      const excerpt = token ? text.split(token).join("[redacted]") : text;
+      // A proxy can echo the Authorization header; never print the token. fetch trims header values, so redact the trimmed token too.
+      const excerpt = token ? text.split(token).join("[redacted]").split(token.trim()).join("[redacted]") : text;
       throw new Error(`${url} → HTTP ${response.status}: ${excerpt.slice(0, 200)}`);
     }
     return parseMcpHttpPayload(text);

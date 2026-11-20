@@ -590,7 +590,7 @@ extraction caps and gate tiers") gains headroom. Then add routing cases for both
 must be general and pass a free retrieval A/B ([`docs/stellar-docs.md`](../docs/stellar-docs.md#maintenance))
 and `npm run eval:routing -- --gate`.
 
-Done when: both questions reach an operation that can return the canonical page.
+Done when: for both questions, the top-ranked operation can return the canonical page.
 
 ### Clarify the model-facing `codemode.describe` response shape
 

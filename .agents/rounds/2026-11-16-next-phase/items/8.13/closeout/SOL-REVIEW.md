@@ -1,0 +1,12 @@
+Reviewed `e23eb7ea` against `AGENTS.md`. Found six defects.
+
+| Severity | Location | Failure scenario |
+|---|---|---|
+| Medium | [eval/qa/paired-collection-supervisor.mjs:356](eval/qa/paired-collection-supervisor.mjs:356) | The frozen P6 command pins the judge model, but the summary records no model identity. An operator who changes the plan from judge A to judge B and leaves A’s passing summary at the same output path can launch the collection using calibration from A. The new test checks command mismatch only. |
+| Medium | [eval/report-live-surface.mjs:53](eval/report-live-surface.mjs:53) | The redactor matches the raw environment value. Fetch strips trailing whitespace from the Authorization header, so a token copied with a trailing space can appear unredacted in a proxy’s echoed 401 response. Reproduced with a synthetic token. |
+| Medium | [.agents/model-roster.md:50](.agents/model-roster.md:50) | The resolver proceeds with `--model ""` if `agy models` fails or the catalog has no matching Neon entry. Under the default shell settings, the final `sed` succeeds on empty input, so the launch proceeds without the required model pin. |
+| Low | [scripts/check-skills-drift.mjs:277](scripts/check-skills-drift.mjs:277) | Importing the module from `node --input-type=module -` throws `ENOENT` because the guard resolves `process.argv[1]`, which is `-`. A stdin-based diagnostic that imports `DIRECTORY_SOURCE_IDS` exits before it can use the export. |
+| Low | [ideas/skill-discovery-without-bundling.md:42](ideas/skill-discovery-without-bundling.md:42) | At exactly 25 section or file reads out of 100, `>= 25%` says to close the question, while “up to 25%” can also include that result in the inconclusive range. The wording resolves the 10% boundary and leaves the 25% decision ambiguous. |
+| Low | [.agents/TODO.md:593](.agents/TODO.md:593) | The closure criterion is already met by lower-ranked operations that can return the canonical pages. A maintainer could close the item even while the top-ranked operation still excludes both pages, which is the defect the item tracks. |
+
+`git diff --check`, JavaScript syntax checks, and `npm run improvements:lint` passed. Both upstream issue references matched their findings. The full test suite was outside this read-only review. No files were edited or test-case text opened.

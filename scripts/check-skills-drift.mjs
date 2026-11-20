@@ -274,7 +274,16 @@ async function main() {
 }
 
 // realpath: on macOS tmpdir() is /var, a symlink to /private/var.
-if (process.argv[1] && realpathSync(resolve(process.argv[1])) === realpathSync(fileURLToPath(import.meta.url))) {
+function isMainModule() {
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(resolve(process.argv[1])) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (isMainModule()) {
   main().catch((err) => {
     console.error(`check-skills-drift failed: ${err.message}`);
     process.exit(2); // check error, not drift — see the exit-code contract above

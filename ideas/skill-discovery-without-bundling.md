@@ -39,7 +39,7 @@ guidance and new-field filter traps in
   - `whole` above 90% (`sections + files + mixed` under 10%): delete section entries, section builder,
     and read-time sectioning invariant (routing cannot regress since sections are `searchable: false`).
   - `>= 25%` section/file reads: sections earn their place; close question 2.
-  - From 10% up to 25%: inconclusive; keep and re-read with more data.
+  - From 10% to under 25%: inconclusive; keep and re-read with more data.
 - **`id` distribution informs question 1:** rank skills by read count. A never-read tail supports
   narrowing, not deleting, the read surface; deleting the read surface still requires a full A/B
   (skills + QA + agentic) — the distribution only decides whether to run that A/B.
