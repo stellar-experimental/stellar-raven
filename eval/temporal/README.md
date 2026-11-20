@@ -1,45 +1,21 @@
 # Temporal observation scorer (Lane T)
 
-This offline diagnostic measures whether the host observation anchor changes answer-time treatment
-of mutable facts without turning the anchor into evidence. It is deterministic, judge-blind, and
-fixture-driven: only the 12 preregistered case IDs and their case-specific regexes in
-`expectations.json` are scored. It does not change serving behavior, QA goldens, or judge semantics.
+Offline, deterministic, judge-blind diagnostic measuring whether the host observation anchor improves answer-time dating of mutable facts without promoting the anchor into evidence. Scores only the 12 preregistered cases in `expectations.json` (`temporal-expectations-v1`: 6 mutable positives × 2 rows, 6 controls × 1 row per surface/arm) from saved QA `/mcp` or `/playground/chat` artifacts (`{ meta, rows }`), passed with explicit `--input` labels.
 
-## Contract
+Attribution is fail-closed: candidate rows must contain `--- OBSERVATION CONTEXT ---` inside a recorded `execute` result; baseline rows must lack it in every tool result. Reported metrics per surface and arm:
 
-The lane has six mutable positives and six controls, fixed by `temporal-expectations-v1`. Every
-surface/arm must contain two rows per positive and one row per control. The scorer accepts ordinary
-saved QA `/mcp` artifacts and `/playground/chat` artifacts (`{ meta, rows }`) through explicit input
-labels; it never infers an experiment arm from filenames.
+- `asOfDatingRate`: positive answers binding an answer-time date/qualifier to the mutable claim.
+- `staleAsCurrent`: stale assertions lacking their historical/as-of guard.
+- `anchorAsFact`: control answers promoting the July 14 observation date into the CCTP publication or Meridian event date.
+- `spuriousHedge`: hedging on a stable control core.
 
-Attribution is fail-closed. Every candidate row must contain `--- OBSERVATION CONTEXT ---` inside a
-recorded `execute` result in its transcript. Every baseline row must lack that block. A marker in an
-answer, search result, or tool input does not satisfy attribution.
-
-The four reported metrics are separate per surface and arm:
-
-- `asOfDatingRate`: positive answers whose case-specific qualifier regex binds an answer-time date
-  or observation qualifier to the mutable claim.
-- `staleAsCurrent`: preregistered stale assertions made without that trap's historical/as-of guard.
-- `anchorAsFact`: a control answer that promotes the July 14 observation date into the CCTP
-  publication date or Meridian event date.
-- `spuriousHedge`: case-specific hedging attached to a stable/closed-world control core.
-
-`perSurfaceBaseline` records the preregistration's already-observed QA grades for context only. The
-scorer does not read saved verdicts, goldens, or truth metadata. Headline C/P/W remains the separate
-QA guardrail under its frozen judge tuple.
+Does not read verdicts, goldens, or truth metadata (`perSurfaceBaseline` is context only; headline C/P/W stays separate).
 
 ## Commands
 
-Run the free detector self-test:
-
 ```sh
 npm run eval:temporal:selftest
-```
 
-Score saved artifacts (repeat an `--input` label when replicates are split across files):
-
-```sh
 node eval/temporal/score-temporal.mjs \
   --input mcp:baseline:eval/qa/results/<mcp-baseline>.json \
   --input mcp:candidate:eval/qa/results/<mcp-candidate>.json \
@@ -48,6 +24,4 @@ node eval/temporal/score-temporal.mjs \
   --output /tmp/temporal-score.json
 ```
 
-Malformed or missing expectations, invalid regexes, non-selected IDs, wrong classes, missing
-replicates, mislabeled surfaces, and attribution failures exit nonzero with a `Temporal scorer:`
-error. The scorer performs no network or model calls.
+Repeat an `--input` label when replicates span files. Schema, replicate, surface, or attribution errors exit non-zero (`Temporal scorer:`). No network or model calls.

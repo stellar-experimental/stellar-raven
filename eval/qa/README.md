@@ -137,45 +137,11 @@ REMOTE_IDENTITY_PROBE_SHA256=$(shasum -a 256 "$REMOTE_IDENTITY_PROBE" | cut -d '
 REMOTE_IDENTITY_SHA256=$(env -i PATH="$PATH" "$REMOTE_IDENTITY_PROBE" --stable-sha256)
 ```
 
-This command makes live, read-only requests without model calls.
-It captures three vectors, waits five minutes between captures, and requires all hashes to match.
-The probe covers Scout OpenAPI, Lumenloop's public inventory, and the Stellar Docs Mintlify files.
-For Stellar Docs, it records the SHA-256 and byte length of `llms.txt` and `llms-full.txt`.
-`llms.txt` identifies the page index. `llms-full.txt` identifies the published page content.
-It receives only `PATH` and records no repository credentials.
-[probe-remote-identities.mjs](probe-remote-identities.mjs) defines canonicalization, retry limits, and timeout bounds.
+This live read-only command makes no model calls: it captures three vectors five minutes apart (Scout OpenAPI, Lumenloop public inventory, and keyless Stellar Docs `llms.txt` / `llms-full.txt`, avoiding the org's 10,000 req/hr Mintlify API quota) and requires matching hashes. It receives only `PATH` and records no credentials; it does not detect Mintlify ranking changes without content changes. See [probe-remote-identities.mjs](probe-remote-identities.mjs) for canonicalization, retries, and timeouts.
 
-The runner checks remote identity around every answering call and during final postflight.
-A before-call check reuses the previous call's after-call capture when no call started since and that capture is at most 60 s old.
-The guard measures that age on a monotonic clock. Otherwise it captures fresh.
-The first before-call check and the postflight always capture fresh.
-A reused vector goes through the same comparisons, and its entry in `meta.remoteIdentityGuard.checks[]` records `reusedFromSequence`.
-A reuse cannot see an identity change that starts and ends between two fresh captures.
-Each check and failed attempt records a wall-clock time for reports and `elapsedMs`, the monotonic time since the guard started.
-The paired validator binds each before and after pair to the rows' `attempts.agent[]` in execution order.
-It orders checks and failed attempts by `elapsedMs`. Each wall-clock time must stay within 300,000 ms of that elapsed time.
-The probe reads the two Stellar Docs files without a key and makes no Mintlify API call.
-Thus it does not use the 10,000 requests per hour that the answering server shares on the Mintlify organization key.
-The identity does not cover Mintlify search ranking. A ranking change with no content change is not detected.
-When the probe is unavailable, the guard repeats that one capture after 30 s, 60 s, and 120 s.
-`meta.remoteIdentityGuard.failedCaptureAttempts[]` records each failed attempt with its kind and sanitized probe reason.
-The reason is the last `remote-identity-probe: ` stderr line, kept only when it matches a known probe message form.
-In a paired run, the guard checks cancellation before each probe, during each wait, and before the answering call.
-A repeated capture goes through the same vector checks. The guard never repeats a mismatch or a missing baseline.
-Four failed attempts for one capture, or a changed vector, stop further spending and suppress aggregates.
-The artifact keeps completed rows, unattempted IDs, and the failed guard.
-It records `meta.comparable: false` and `meta.aggregatesSuppressed: true`.
-A stopped artifact cannot resume under the same budget ledger.
-Comparable artifacts require a matching final postflight and `skippedReason: null` for a successful attempted postflight.
+The runner checks remote identity around every answering call and at final postflight. A before-call check may reuse an after-call capture ≤ 60 s old on a monotonic clock when no call intervened (first check and postflight always capture fresh). On probe unavailability, it retries after 30 s, 60 s, and 120 s (never retrying mismatches or missing baselines); four failed attempts or a changed vector stop spend, suppress aggregates (`meta.comparable: false`, `meta.aggregatesSuppressed: true`), and prevent resuming under the same budget ledger. See [run-qa.mjs](run-qa.mjs) for check-entry timestamps and `elapsedMs` fields.
 
-`--max-budget-usd` sets the total method cap.
-Each answering, judging, panel, or retry call receives only the remaining budget.
-Each reported cost reduces the same ledger. Missing cost data invalidates the method.
-A judge CLI that the harness kills prints no cost, so the judge CLI owns stall handling.
-`judge.mjs` sets its fetch timeout and ordinary retry count, and the harness timeout is a chosen backstop.
-These settings reduce harness kills; they do not guarantee that every judge call reports a cost.
-Stored judging restores earlier spend; its new cap applies to the cumulative total.
-A reported total with missing costs is a lower bound, never a complete spend figure.
+`--max-budget-usd` caps cumulative spend across answering, judging, panels, retries, and stored-judge resumes; each call receives only the remaining budget and missing cost data invalidates the method. Because a harness-killed judge prints no cost, `judge.mjs` owns fetch timeouts and retries with the harness timeout as backstop; a total with missing costs is a lower bound only.
 
 ## Case schema and golden lifecycle
 
@@ -309,25 +275,7 @@ into four CLIs:
 | Grok | `.grok/hooks/case-search-guard.json` | `Bash` (`run_terminal_command`, `Shell`), `Grep` (`grep`) | Probed live (shell and built-in `grep`) in a trusted project under `--always-approve`. Grok also reads `.claude/settings.json` when Claude compatibility is enabled; the native `.grok/hooks/` file keeps the guard active when Claude compatibility is off. Truncated inputs (`toolInputTruncated: true`) on guarded tools deny. |
 | Antigravity (`agy`) | `.agents/hooks.json` | `run_command`, `grep_search` | `run_command` probed live under `--dangerously-skip-permissions`; `grep_search` unit-tested only. Allowed calls emit empty stdout (pass-through); `{}` would default proto3 `allow_tool` to `false`. |
 
-It stops accidental, ordinary command forms; a deliberate bypass is out of scope. Where it cannot
-establish the scope of a search, it denies the risky form (a positive glob, a recursive grep, a
-shell glob) instead of allowing it. It parses the command quote-aware, resolves env prefixes and
-wrappers (`env`, `sudo`, `command -p`, `xargs`, `timeout`, `nice`, and others, each with its own
-options), and analyzes command substitutions and strings a shell runs (`bash -c`, `eval`, a heredoc
-fed to a shell). It tries every working directory the line could reach (the start directory, any
-tool-level working directory such as `working_directory`/`cwd`/`Cwd`, and each `cd` target) and
-denies when any of them denies. For a segment whose command word is the search tool it denies:
-`grep -r`/`-R`/`--recursive` (GNU abbreviations such as `--rec` included) and `-d recurse`;
-`git grep` without the full exclusion above; `rg -u`/`--unrestricted`/`--no-ignore*`; a positive
-`-g`, `--glob` or `--iglob` that matches a listed name; a shell glob that could expand to a listed
-path (`eval/qa/*`, `*/*/*.json`, `"$PWD/eval"/*`); a `$(...)` file list; and `xargs` or
-`find -exec` running `grep` or `rg`. The Grep tools (`Grep`, `grep`, `grep_search`) are denied for
-a positive glob (`glob`, `glob_pattern`, `Includes`) that matches a listed name through an unset or
-ancestor path (`path`, `target_directory`, `SearchPath`). It blocks and never rewrites, and fails
-open on a parse or internal error (or when the hook process cannot start, such as a missing script
-path or unset workspace variable).
-A positive glob is denied even when a later negative glob excludes every listed path (`rg -g '*.json'
--g '!eval/**' X`): an accepted false positive, with `rg X src` as the substitute.
+The hook stops accidental, ordinary search forms (deliberate bypasses are out of scope): recursive `grep`, `git grep` without the full exclusions above, `rg -u`/`--unrestricted`/`--no-ignore*`, positive `-g`/`--glob`/`--iglob` or Grep-tool globs matching a listed name, shell globs or `$(...)` lists expanding to a listed path, and `xargs`/`find -exec` invoking `grep`/`rg`. It parses quote-aware across wrappers, subshells, and `cd` targets, blocks without rewriting, fails open on parse/startup errors, and accepts the false positive of `rg -g '*.json' -g '!eval/**'` (use `rg X src` instead). See [`scripts/agent-hooks/case-search-guard.mjs`](../../scripts/agent-hooks/case-search-guard.mjs) for full parser rules.
 
 **Opt-in.** A golden-maintenance lane working under the maintenance exception above prefixes the
 search segment with `CASE_TEXT=maintenance` (a segment-level environment prefix, for example
@@ -373,57 +321,9 @@ The [2026-11-02 trial](../../research/audits/2026-11-02-golden-freshness-probe/R
 
 ## Stored outcomes and retries
 
-[agent-result.mjs](agent-result.mjs) parses each agent process into `qa-agent-result-v4`.
-`agent.failure` holds one failure class or `null`.
-Only a first-pass `transport` failure can receive one answering retry with identical input bytes.
-Safeguards, timeouts, spawn failures, protocol failures, agent limits, and unclassified failures do not retry.
+[agent-result.mjs](agent-result.mjs) parses each agent process into `qa-agent-result-v4` (`agent.failure` holds one failure class or `null`). Only a first-pass answering `transport` failure gets one retry (identical input bytes); only judge `cli` and `parse` failures get one total retry across collection and stored-judge resumes. Safeguards, timeouts, spawn/protocol/consistency/limit failures never retry. First-attempt answers, outcomes, and verdicts remain top-level values; retries live in `attempts.agent[]` and `attempts.judge[]`.
 
-Only judge `cli` and `parse` failures can receive one total retry across collection and stored-judge resumes.
-Judge safeguards, timeouts, consistency errors, and incomplete prompt writes are terminal.
-Stored judging records each completed attempt before an eligible retry.
-The first answer, agent outcome, and verdict remain the top-level values.
-Retries stay in `attempts.agent[]` and `attempts.judge[]`; they do not replace first-attempt evidence.
-
-New attempts record `startedAt` and `endedAt` as UTC ISO timestamps.
-Answering timestamps start before the spend budget check and the before-call identity capture.
-They end at the completed CLI result and preserve the existing duration interval.
-The interval excludes the after-call identity capture.
-Judge attempts span the method, including panel calls; each `attempts.judge[].calls[]` entry also records its CLI interval.
-Identity captures record `meta.remoteIdentityGuard.captures[].capturedAt`; guard failures record `meta.remoteIdentityGuard.failure.failedAt`.
-Join answering attempts to identity captures with the row `id` and the attempt `number` matching capture `attempt`.
-A failed after-call guard retains the completed attempt and its timestamps.
-A failed before-call guard creates no answering attempt; its failure context identifies the unattempted call.
-Partial artifacts retain timestamps for saved attempts without creating attempts for unattempted IDs.
-Older artifacts can omit all timestamp fields; readers do not infer absolute times from durations.
-
-Budget-stopped judge verdicts keep the budget class in `failureClass`.
-They also record `originalFailureClass` from the judge call that caused the budget stop, such as `timeout`.
-`originalFailureClass` is `null` when no such call exists or the call has no failure class.
-Older verdicts can omit `originalFailureClass`; their per-call records remain the original failure evidence.
-
-Answering agents run outside the repository with empty setting sources, disabled slash commands, and strict MCP configuration.
-Each row must confirm the explicit `raven` MCP server as connected.
-A failed connection stops the batch and makes the artifact non-comparable.
-Other agent failures remain visible as error rows in a complete QA artifact.
-
-Search calls retain full inputs and bounded ranking evidence in `resultProjection`.
-Execute calls retain bounded result text. Compare usage tokens, not captured character counts, across surfaces.
-New transcript entries record `assistantTurn`, a one-based ordinal within that answering attempt.
-The parser groups consecutive assistant events that share `message.id`, including events without usage counters.
-These entries record `assistantTurnBasis: "message-id"`.
-Tool calls with the same message ordinal belong to one assistant message, even across separate events.
-An assistant event without a message ID consumes its own ordinal and records `assistantTurnBasis: "event"`.
-An event without a message ID also ends the previous message group.
-Readers must treat message boundaries for these event-based entries as unknown.
-Text-only assistant messages consume an ordinal, so transcript ordinals can have gaps.
-The ordinal resets for each answering retry.
-Shared message ordinals show calls requested together; they do not prove that host execution overlapped.
-Older transcripts can omit `assistantTurn` and `assistantTurnBasis`; readers must treat their message boundaries as unknown.
-`agent.usage.final` preserves provider usage; `agent.usage.perTurn` contains normalized numeric counters.
-`agent.usage.perTurn[].turn` keeps the existing assistant-event ordinal, including events without usage counters.
-It can differ from `assistantTurn` when several events share a message ID.
-The usage records, provider totals, and reported costs retain their existing values.
-Missing counters remain `null`. [evidence-sanitizer.mjs](evidence-sanitizer.mjs) bounds and redacts CLI evidence before storage.
+Answering agents run outside the repo with empty setting sources, disabled slash commands, and strict MCP config; every row must confirm `raven` connected (failure stops the batch and marks the artifact non-comparable). Search calls retain full inputs and bounded `resultProjection`; execute calls retain bounded text—compare usage tokens, not captured char counts, across surfaces. Shared `assistantTurn` ordinals show calls requested in one assistant message, not overlapping host execution. Attempt timestamps (`startedAt`/`endedAt`) and `originalFailureClass` are written by [run-qa.mjs](run-qa.mjs); `assistantTurn`/`assistantTurnBasis`, `agent.usage`, and redaction semantics are owned by [agent-result.mjs](agent-result.mjs) and [evidence-sanitizer.mjs](evidence-sanitizer.mjs); older artifacts may omit newer metadata fields.
 
 ## Five-track result contract
 
@@ -483,77 +383,17 @@ The pack omits detected A/V `created_at` values and preserves source-basis bound
 
 ### Claim support in pack `p9`
 
-The `claimSupport` section shows execute-result text for the candidate's claims.
-Anchors come only from the answer and the saved results; judge verdicts never select judge input.
-Anchors are quoted clauses, complete version strings, exact terms, candidate terms, and phrases shared by the answer and the results.
-Claims take turns inside each anchor tier, and an anchor with no transcript match takes no turn.
-A claim-word fallback then covers words that no anchor unit shows, including lowercase words.
-It adds the source sentence with the most new, rare claim words; a light stem lets "maturing" meet "mature".
-That sentence must be about the claim: it shares at least three claim words and 30% of its own content words.
-A claim word counts as shown only in a span related to that claim.
-The fallback also keeps one differing related statement for a claim (`role=related-statement`) and does not decide which statement is true.
-An entity-list unit (`role=entity-list`) serves a claim that names two or more records of one source array.
-A record is an identified object (title, name, fullName, label, or slug) in an array; a plain lowercase word is not a name.
-The unit shows the claim fields of every named record, such as `{name: Comet | status: Inactive}`.
-A field is a claim field when the claim names it (TVL for `tvlUSD`) or states a listed record's text value for it.
-Null fields are not shown. A later claim that names only records an earlier unit shows adds no unit.
-The requirements are every named record and every claim field, before any rendering limit.
-Rendering limits (3 groups for each claim, 24 records for each unit, 4 fields, 12 units) apply after that.
-The audit's `entityListLimits` names each record or field that a limit removed.
-The pack measures entity-list coverage on the serialized text after every budget cut, and after a clip.
-A small parser reads each line. Each object in braces is one record scope that owns only its direct fields.
-A nested object is its own scope, and a quoted value is read whole, so text inside it never reads as a field.
-A quoted token without its closing quote is unfinished and never counts. A complete double-quoted token is decoded by JSON string rules.
-The text outside braces is one more scope. A source-item line's `fields="..."` value reads as fields of that item.
-A record counts as shown when one scope holds its exact identity value and the exact value of each non-null claim field.
-A scope outside braces that names two records never counts. Two records with one name need two scopes.
-A coverage gap adds the general `claimSupportNotice` line. `entityListCoverage` applies the same measure to any pack version.
-Each unit names its execute entry, truncation state, JSON path, and source record.
-Entry numbers name transcript calls, not sources; two calls can return the same source.
-It names the tool only for a direct operation result, and the outcome only for an error.
-A span keeps whitespace normalized and URLs sanitized; `...` marks a cut, and a cut never splits an anchor.
-Short field values carry their field name, and a small record keeps its fields together in one span.
-Span labels never include a generated array index, and the day of a written date is not an anchor.
-The anchors and claim words that selected a unit stay out of the pack.
-When matched text does not fit, the pack shows only the general `claimSupportNotice` line.
-It says only that some execute-result text did not fit; it names no anchor, entry, or count.
-`explainTranscriptEvidencePack` returns the pack and audit-only metadata: each unit's anchors and claim words, each omitted anchor with its entries, and the entity-list coverage of the final text.
-That metadata never enters the judge prompt.
-`findTranscriptEvidencePackOmissions` counts only source text in a pack.
-That is spans, snippets, summaries, source record names, and source field names with their values.
-It also counts the values in a `provenance:` line's `sourceMetadata`, such as a `generatedAt` date or `counts.total`.
-Those values come from the service response.
-Headings, anchor and term labels, match lists, and notices never count as support.
-Counters never count either: entry and `alsoIn` numbers, paths and array indexes, and the `truncation:` footer.
-`(+N more)` suffixes and the provenance line's operation names, shape, character, token, timing, and call counts never count.
-This filter is diagnostic only; it never changes the judge pack or the judge prompt.
-`caseSnippets` holds question and golden terms that the answer does not use.
-The budget stays 12,000 characters.
-Entity-list units rank with specific-anchor units, right after their claim's first specific-anchor unit.
-Summaries shrink first, then source items go to 8 and fields to 16, then spans shrink.
-Support units then drop to 28 before source items drop below 8, so roster answers keep their records.
-After that, items, fields, URLs, and case-snippet text shrink.
-Then units drop to 12, case snippets go, and the last units go.
-Stable rows still receive no pack.
+`claimSupport` shows execute-result text for candidate claims within the 12,000-character budget (stable rows still receive no pack). Anchors derive strictly from the candidate answer and saved execute results—never from judge verdicts—covering quoted/exact/phrase anchors, claim-word fallback sentences (with differing related statements kept neutrally), and `role=entity-list` units for multi-record claims.
 
-[verdict-consistency.mjs](verdict-consistency.mjs) validates issue arrays, avoid indexes, and score consistency.
-A consistency error preserves `judgeScore`, sets `coreAnswer: null`, and records violations.
-It does not parse answer prose to decide which avoid fired.
+- Selection anchors/claim words never enter the pack; when matched text does not fit or entity-list coverage has a gap, the pack emits only the general `claimSupportNotice` (naming no anchor, entry, or count).
+- `caseSnippets` holds question/golden terms absent from the answer.
+- `explainTranscriptEvidencePack` and `findTranscriptEvidencePackOmissions` (which counts only source text and `sourceMetadata` values, never labels or counters) are audit/diagnostic-only and never enter the judge prompt. See [evidence-pack.mjs](evidence-pack.mjs) for anchor tiers, entity-list parsing, and budget shrinking order.
 
-Compare artifacts only when case content, model, rubric, pack, prompt semantics, and judge-tier policy match.
-A model or contract mismatch requires an explicitly labeled comparison under a common target contract.
-Changes to grading semantics require a rubric-version change.
-Changes to evidence selection or serialization require a pack-version change.
-Use prompt-hash fixtures to demonstrate that a comment or formatting change preserves prompt bytes.
-The code keeps only the current pack. To rebuild an earlier pack, import `eval/qa/evidence-pack.mjs` from the revision that defined it.
-For `p6`, use revision `d15a4ce5`; for `p7`, use `7e00ede2`; for `p8`, use `36e77d40`. [The p9 replay](../../.agents/rounds/2026-10-12-pack-p9/replay-p9.mjs) loads all three.
-`7e00ede2` and `36e77d40` exist only on closed PR #264; run `git fetch origin pull/264/head` before importing them.
+[verdict-consistency.mjs](verdict-consistency.mjs) checks issue arrays, avoid indexes, and score consistency (preserving `judgeScore`, setting `coreAnswer: null` on error, never parsing answer prose).
 
-The sampler allocates by service, sorts IDs, and selects evenly spaced cases.
-Corpus growth can change membership even when the requested sample size stays fixed.
-Use matched IDs or disclose membership changes before comparing aggregates.
-Single-run movement requires transcript review or repeated evidence before a regression claim.
-The [retained QA records](reviewed/2026-09-30-qa-guide-records.md) include the earlier variance and membership evidence.
+Compare artifacts only when case content, model, rubric, pack, prompt semantics, and judge-tier policy match; otherwise require an explicitly labeled comparison under a common target contract. Grading changes require a rubric-version bump; evidence selection/serialization changes require a pack-version bump; use prompt-hash fixtures to prove comment/formatting edits preserve prompt bytes. Code keeps only the current pack—to import earlier packs from git, use `d15a4ce5` (`p6`), or `7e00ede2` (`p7`) / `36e77d40` (`p8`) after `git fetch origin pull/264/head` (see [the p9 replay](../../.agents/rounds/2026-10-12-pack-p9/replay-p9.mjs)).
+
+The sampler allocates by service, sorts IDs, and selects evenly spaced cases; corpus growth shifts membership even at fixed sample size, so match IDs or disclose membership changes before comparing aggregates. Single-run movement needs transcript review or repeats before claiming a regression ([retained QA records](reviewed/2026-09-30-qa-guide-records.md)).
 
 ### Measurement shares
 
@@ -602,6 +442,7 @@ npm run eval:qa:selftest -- \
   --claude-path <absolute-path> \
   --expect-claude-binary-sha256 <sha256> \
   --expect-claude-environment-sha256 <sha256> \
+  --judge-model <exact-judge-model-id> \
   --out eval/qa/results/<stamp>-p6-selftest.json
 ```
 
@@ -615,40 +456,14 @@ This command is paid and does not run in CI.
 
 ## Offline stable-row evidence diagnostic
 
-[diagnose-stable-evidence.mjs](diagnose-stable-evidence.mjs) checks each saved `verdict.wrongClaims` entry against saved execute results.
-It selects rows with saved `freshness: "stable"` tags by default.
-It reads files only and prints a separate JSON report.
+[diagnose-stable-evidence.mjs](diagnose-stable-evidence.mjs) checks saved `verdict.wrongClaims` against saved execute results (default: `freshness: "stable"` rows; read-only, prints JSON; excludes search hits, execute inputs, errors, console output, and host footers):
 
 ```sh
 node eval/qa/diagnose-stable-evidence.mjs eval/qa/results > tmp/stable-evidence.json
 node eval/qa/diagnose-stable-evidence.mjs <saved-result.json> --all-freshness --ids <case-id>
 ```
 
-Directories include JSON files in subdirectories.
-The report records source hashes, skipped files, selected rows, and each disputed claim.
-It uses saved tags only; missing tags remain unknown.
-It excludes search results, execute inputs, tool errors, console output, and host footers from matches.
-Missing transcripts, missing results, and detected truncation remain explicit evidence limits.
-
-The diagnostic first checks each probe against the saved answer.
-It pads trailing sentence punctuation in a temporary copy before probing the answer.
-It preserves decimal points and dots within identifiers.
-Only probes present in that answer can count as evidence matches.
-`prose-match` means that a short prose fragment matched the answer and a saved result.
-`term-match` means that only exact terms matched both.
-The summary counts number-only term matches separately.
-`excludedMatches` records source matches absent from the answer under `judge-text-only`.
-The summary's `judgeTextOnly` count includes uncertain claims with only those excluded matches.
-Missing answers and bounded probe-list limits receive separate uncertainty reasons.
-Exact matching still misses some typographic variants, including nonbreaking hyphens.
-A match does not prove the full claim, its source authority, or the answer's correctness.
-`uncertain` means that the available evidence cannot establish a match.
-An absent match does not prove fabrication.
-The diagnostic does not check unlisted answer claims or individual panel votes.
-It preserves judge inputs, grades, saved artifacts, rubric, pack version, and comparison denominators.
-Its counts describe saved observations, including repeated cases across files.
-`--help` and `-h` print usage even with other arguments.
-If sanitization fails, the CLI emits `[redacted]` instead of parsing that sentinel as JSON.
+Only probes present in the saved answer count (`prose-match` / `term-match`; source-only matches go to `excludedMatches` / `judge-text-only`). Matches are fragment support only—neither proof of correctness nor fabrication on absence—and never modify saved artifacts, grades, or denominators. Pass `--help` or `-h` for full CLI usage; see [diagnose-stable-evidence.mjs](diagnose-stable-evidence.mjs) for probe normalization and output fields.
 
 ## Re-judge stored results
 
@@ -716,49 +531,18 @@ needs one".
 
 ### Flip panel annotations
 
-Flip reports identify `verdict.meta.panelEscalationSkipped: "max-panel-cases"` separately for each compared verdict.
-The label is `skipped-max-panel-cases`.
-The marker `judgeTierUsed: "panel"` gives the label `panel-result`.
-Other verdicts receive `no-panel-metadata`; `panelSize` does not determine the label.
-The last label does not prove panel agreement.
-
-The `--flips-vs` dry run prints `flipPanelConfidence`; paid artifacts retain it under `meta`.
-Its `source` field describes the saved source verdict before re-judging.
-Its `flipsVs` field describes the verdict from the `--flips-vs` file.
-The field `skippedPanelRoles` lists the affected roles without assuming paired-arm identity.
-Paired JSON reports include the case ID, look, grades, labels, and `skippedPanelArms` for each flip.
-The paired text report lists skipped-panel rows and their arms.
-These annotations change no selected ID, grade, panel cap, or comparison denominator.
+Flip and paired reports annotate each compared verdict as `skipped-max-panel-cases` (`panelEscalationSkipped: "max-panel-cases"`), `panel-result` (`judgeTierUsed: "panel"`), or `no-panel-metadata` (never inferred from `panelSize`), exposed under `flipPanelConfidence` / `skippedPanelRoles` / `skippedPanelArms`. Annotations change no IDs, grades, caps, or denominators.
 
 ### Offline planning-text diagnostic
 
-[planning-text.mjs](planning-text.mjs) scans saved `rows[].answer` fields without model calls.
-It scans JSON files recursively and records source hashes.
-It reports possible action statements and answer preparation preambles.
-It excludes common Markdown quotations, code examples, uncertainty explanations, and conditional follow-up offers.
-[Reviewed examples](../../test/fixtures/qa-planning-text-examples.json) define the tested positive and negative cases.
-A leading readiness preamble qualifies when it introduces an answer, introduces source evidence, or explicitly confirms completed preparation.
-Source transitions follow the same rule as answer transitions.
+[planning-text.mjs](planning-text.mjs) scans saved `rows[].answer` fields recursively (no model calls) for action statements and preparation preambles, excluding markdown quotes, code examples, uncertainty notes, and conditional offers ([fixture examples](../../test/fixtures/qa-planning-text-examples.json)):
 
 ```sh
 node eval/qa/planning-text.mjs <results-directory> --sample-size 20
 node eval/qa/planning-text.mjs <results-directory> --sample-size 20 --review <review.json>
 ```
 
-The sample uses SHA-256 order over each file path, row index, and answer hash.
-Review rows contain `file`, `rowIndex`, `answerSha256`, `label`, and `reason`.
-Review labels are `planning`, `falsePositive`, or `uncertain`; the review also records `inputSha256`.
-The review must include `counts` and `summary` that match the recomputed values.
-The CLI rejects different source hashes and rows that do not match candidates.
-It also rejects mismatched counts, mismatched summaries, and reviews that do not cover the sample.
-It reports precision among decided labels and bounds that include uncertain labels.
-
-The screen can mistake evidence summaries for answer preparation.
-Unusual quotation forms can produce false positives; unmatched English forms can produce false negatives.
-Counts measure saved row occurrences, including repeated answers and mixed historical runs.
-The diagnostic changes no answer, judge grade, prompt, or release gate.
-[The 2026-10-09 review](reviewed/2026-10-09-planning-text.json) records the screen's measured precision and cue coverage.
-The counts it reports do not establish recall or production prevalence.
+Samples use deterministic SHA-256 order; `--review` validates `inputSha256`, row match, `label` (`planning` | `falsePositive` | `uncertain`), and recomputed counts/summaries. Report-only (changes no grade, prompt, or gate); see [the 2026-10-09 review](reviewed/2026-10-09-planning-text.json) for measured precision (does not establish recall or production prevalence).
 
 ## Paired `PASS` / `FAIL` / `INDETERMINATE` verdict
 
@@ -792,12 +576,7 @@ Do not repeat guard failures, insufficient denominators, or candidate-only T4/T5
 
 ### Concurrent paired collection
 
-[paired-collection-supervisor.mjs](paired-collection-supervisor.mjs) validates and runs the `qa-paired-collection-plan-v2` contract.
-Read that validator before preparing a plan; do not infer accepted fields from a prior result.
-The contract fixes 200 selected IDs.
-The plan pins `selected.activeCorpusCount` as an integer of at least 200.
-Each runner must reproduce that exact count and the ordered active-ID hash.
-It does not select from the current battery automatically.
+[paired-collection-supervisor.mjs](paired-collection-supervisor.mjs) validates and runs `qa-paired-collection-plan-v2` (200 fixed selected IDs; read its validator before authoring a plan):
 
 ```sh
 npm run eval:qa:paired:capacity -- --out /absolute/path/to/paired-capacity.json
@@ -807,58 +586,10 @@ npm run eval:qa:paired:collect -- \
   --plan-sha256 <canonical-plan-sha256>
 ```
 
-The capacity command makes live public requests without model calls or a local server.
-Its artifact requires two overlapping captures and 12 successful responses: Scout 2, Lumenloop 6, and Stellar Docs 4.
-It requires matching vectors, actual request concurrency, and no errors, retries, or `Retry-After` headers.
-Each capture and the complete check must finish within 120,000 ms.
-The artifact remains valid through exactly 86,400,000 ms after completion. Future timestamps fail.
-
-Freeze the capacity artifact and every command array, then record the canonical plan hash.
-The launch hash binds the run to the canonical plan contents and the ordered command arguments (key order and whitespace do not change it); keep the hash outside the plan.
-Any plan edit requires a new hash.
-Run the exact planned P6 command before launching the supervisor within the capacity window.
-
-The plan binds these inputs:
-
-- Four distinct worktrees: two runners and two servers in one repository.
-- Selected ID order, full active membership, selected content, case bytes, and identical runner inputs.
-- Binary, environment, implementation, remote-probe, remote-vector, and stability-register hashes.
-- Different server revisions and surface hashes, with four distinct public and upstream ports.
-- Baseline `add-missing` and candidate `verify-native` adapter modes, with matching measurement flags.
-- Collection, stored-judge, P6, directed flip re-judge, and paired-comparison command arrays.
-
-Both servers must reproduce one salted `.dev.vars` identity without storing values in the plan.
-Use a fresh 64-character lowercase hexadecimal salt and exact code-unit ordering for names.
-Hash the UTF-8 bytes of `JSON.stringify({ salt, entries })` with sorted `[name, value]` entries.
-Keep the plan uncommitted and delete it after success or failure.
-
-Collection commands use explicit `--ids`, `--no-judge`, and the supervisor's arm flag; `--sample` is forbidden.
-The executable is the absolute `process.execPath`.
-The supervisor runs collection only. Run stored judging later with artifact paths from the successful receipt.
-The collection arms inherit the supervisor's process group; cancellation signals each recorded child directly.
-The launch operator owns group cleanup and verifies all surviving group members before signaling.
-After each stored judge, the operator requires complete judging evidence and unsuppressed aggregates before the next phase.
-Each arm's plan sets a collection cap and a higher cumulative cap for stored judging, and the two-arm cap must equal the sum of the two cumulative caps (the reviewed run used `$80`, `$120` and `$240`). The frozen plan holds the cap values.
-
-The P6 block fixes seven `$0.50` calls, the launch's `--paired-listeners` record and its digest (`p6.listenersSha256`), and a new output path.
-The supervisor requires that record to match its digest and the ports and revisions of both collection commands.
-Each directed flip re-judge has a `$15` cap, pinned executable identity, fixed judge tuple, and `--allow-empty`.
-It cannot use selection overrides, dry-run mode, or non-identical and golden-drift overrides.
-The supervisor validates the retained P6 summary before starting a child.
-
-The supervisor enforces row barriers, alternating release order, shared cancellation, bounded child shutdown, and a four-hour deadline.
-A failed guard, budget, child, or deadline cancels both arms.
-Before it releases each row and the postflight, the supervisor checks the four signed listeners with local `lsof` and `git` reads.
-A missing listener, or another process on a recorded port, cancels both arms. The supervisor never restarts a server.
-Each paired arm also checks its own listener pair before each answering attempt, including a retry, and again before the call.
-A lost listener stops that arm with code `paired-server-lost`, and the supervisor cancels both arms.
-It emits a receipt only after both complete artifacts pass content, selection, revision, comparability, and location checks.
-Each artifact must reside inside its arm's results directory.
-A failure emits no paired aggregate or success receipt.
-Release order records IPC order; it does not prove provider-call start order.
-
-Stored judging requires `meta.comparable === true` and matching collection and judge identities.
-Repeats preserve each arm's port pair. Baseline and candidate retain different exact server revisions.
+- **Capacity check:** live public check (no model calls or local server) requiring two overlapping captures, 12 clean responses (Scout 2, Lumenloop 6, Docs 4) within 120 s, zero retries/`Retry-After`; valid for 24 hours (`86,400,000 ms`).
+- **Plan pinning:** freeze capacity artifact and command arrays, record `--plan-sha256` outside the plan, and run the planned P6 self-test (`7 × $0.50`, `--paired-listeners`) before launching (note: `run-p6-judge-self-test.mjs` requires `--judge-model <exact-id>`, while `paired-collection-supervisor.mjs` currently checks an `expectedCommand` array without `--judge-model`—reconcile that code mismatch before launching a paired run). Keep the plan uncommitted and delete it after the run.
+- **Bound invariants:** four distinct worktrees (two runners, two servers) and four distinct ports with different server revisions/surface hashes; pinned `selected.activeCorpusCount` (≥ 200) and ordered active-ID hash reproduced by both runners; identical binary, env, remote-probe, remote-vector, and stability-register hashes; salted `.dev.vars` hash (fresh 64-hex salt + sorted `[name, value]` entries, no raw values); baseline `add-missing` and candidate `verify-native` adapter modes; explicit `--ids`, `--no-judge`, and `--paired-control-arm` (no `--sample`); per-arm collection cap and higher cumulative stored-judge cap, with `twoArmCumulativeUsd` equal to the sum of the two cumulative arm caps; directed flip re-judge capped at `$15` with `--allow-empty` and no drift/non-identical overrides.
+- **Execution:** supervisor enforces row barriers, alternating IPC release order, 4-hour deadline, and pre-row/pre-attempt listener checks (`lsof`/`git`, cancelling both arms on `paired-server-lost`, guard failure, budget exhaustion, or child error without restarting servers; the launch operator verifies surviving process-group members before signaling). Emits a receipt only after both complete artifacts pass all checks; run stored judging afterwards (requires `meta.comparable === true`, matching identities, and complete judging evidence with unsuppressed aggregates before advancing). Repeats preserve each arm's port pair.
 
 ## CI contract and evidence
 
@@ -868,6 +599,4 @@ The paid judge self-test is paid and runs only when its trigger holds; it does n
 The [golden-truth workflow](../../.agents/skills/golden-truth/SKILL.md) defines verification and independent-review requirements.
 The [truth-maintenance workflow](../../.agents/skills/truth-maintenance/SKILL.md) owns expired verification schedules.
 
-The [headline baseline record](reviewed/2026-07-super-corpus-baseline.md) and [canonical live baseline](reviewed/2026-07-12-live-v3-baseline.md) preserve their separate contracts.
-[Cited QA records](reviewed/2026-09-30-qa-guide-records.md) retain additional evidence used by current artifacts.
-[Earlier QA history](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/qa/README.md) remains available at the audit base.
+The [headline baseline record](reviewed/2026-07-super-corpus-baseline.md), [canonical live baseline](reviewed/2026-07-12-live-v3-baseline.md), and [cited QA records](reviewed/2026-09-30-qa-guide-records.md) retain evidence referenced by current artifacts.

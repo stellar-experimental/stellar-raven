@@ -1,36 +1,26 @@
 # Playground semantic evaluation
 
-`scripts/run-demo-model-gauntlet.mjs` remains the eight-case transport and tool-loop smoke test. It checks that models can complete the SSE chat path cleanly; it does not establish factual answer quality. It prints the validated matrix first and will not create artifacts, read `.dev.vars`, mint cookies, or start Wrangler unless the operator supplies exactly one `--max-budget-usd` (for example: `node scripts/run-demo-model-gauntlet.mjs --models <provider>/<catalog-id> --max-budget-usd 1`). Without the cap it prints the plan and exits non-zero, which is the free way to check a launch. The printed total is planned Playground chat turns, not guaranteed provider calls. It starts its own Wrangler per model on its own port. Without `--models` it runs the shipped tuple, the Playground primary then the fallback (`DEMO_MODELS`), each model alone: 16 turns, about USD 0.40 to 0.45, run with `--max-budget-usd 1`. It is not a hand-off test: no run makes the primary fail over to the fallback, and offline tests cover the hand-off. A tuple change moves the default with it. Select any other model explicitly with `--models` and state in the run plan the decision it serves.
+Two API-billed AI Gateway lanes—exceptions E1 and E2 in [Model-call billing](../EVALS.md#model-call-billing), which owns the question→path table, sizing caps, and selection tiers. Use them only for Playground product questions (transport, prompt, loop, caps, effort/temperature, fallback, or Gateway-only models). Scope runs with [run-evals](../../.agents/skills/run-evals/SKILL.md).
 
-`npm run eval:playground` is the complementary semantic lane. It sends existing QA cases to the real `POST /playground/chat` SSE route, captures the final assistant text, search/execute outcomes, terminal reason, latency, HTTP/SSE errors, and grades the final answer with the existing `eval/qa` golden, evidence-pack, and judge contract. It introduces no new quality rubric and does not change corpus or golden content.
-
-Use a terminal already running `npm run dev` and its bound loopback URL; do not start Wrangler for this command.
-
-Both lanes are API-billed: the Playground route itself calls models through Cloudflare AI Gateway, so no subscription CLI can stand in for it. They are exceptions E1 and E2 in [Model-call billing](../EVALS.md#model-call-billing), which holds the question → path table and the reasons. They belong to questions about the Playground product: its transport and routing, prompt, tool loop, caps, effort and temperature, fallback, or a model only the Gateway reaches. Questions about which model family answers Raven questions best, or how the MCP tool surface performs, go to the subscription instruments in the [evaluation map](../EVALS.md) (the QA runner, and Codex and Grok `hc` lanes). The [run-evals skill](../../.agents/skills/run-evals/SKILL.md) owns the scoping and spend rules.
+- **E2 (`scripts/run-demo-model-gauntlet.mjs`):** 8-case SSE transport and tool-loop smoke test (does not measure factual quality or fallback hand-off). Starts its own Wrangler per model; defaults to the shipped tuple (`DEMO_MODELS`), each model alone; pass `--models <provider>/<catalog-id>` for other models. When `--max-budget-usd` is omitted, prints the launch plan and exits non-zero without spending or starting Wrangler (duplicate or invalid cap flags fail before printing a plan).
+- **E1 (`npm run eval:playground`):** sends QA cases to the running local `npm run dev` server's `POST /playground/chat` route (never starts Wrangler) and grades answers with the `eval/qa` golden, evidence-pack, and subscription Claude judge contract. Keep its denominator separate from MCP QA.
 
 ```sh
-# Free validation: default seeded, stratified five-case selection; no HTTP/model/judge calls.
+# Free checks: seeded 5-case dry run, route-auth preflight, and local source-tree generation.
 npm run eval:playground -- --dry-run
-
-# Free route-auth validation: signed run cookie reaches body validation before throttle/model work.
 npm run eval:playground -- --preflight
-
-# Print the source-tree generation after the reviewed tree is frozen.
 npm run eval:playground -- --print-generation
 
-# Small paid run. A cap and the server generation are mandatory before model spend.
-# The cap is USD 0.20 per selected case, rounded up to a whole dollar, minimum 2 (eval/EVALS.md "Sizing").
+# Paid run: --max-budget-usd and --server-generation are mandatory (see eval/EVALS.md "Sizing").
 npm run eval:playground -- --max-budget-usd 2 --url http://localhost:8787 \
-  --server-generation <sha256-from-print-generation> \
-  --sample 5 --seed baseline-a
+  --server-generation <sha256-from-print-generation> --sample 5 --seed baseline-a
 
-# Targeted reproduction.
+# Targeted single-case reproduction:
 npm run eval:playground -- --max-budget-usd 2 \
   --server-generation <sha256-from-print-generation> \
   --ids q-aas-burn-clawback-redemption-mechanics
 
-# Whole named contract, only when it stays within the one-subject 30/hour cap.
-# --round-cap-context is optional: your own cumulative call-cap file for a round of several invocations.
+# Whole <=30-case named contract with optional cumulative round cap file:
 npm run eval:playground -- --max-budget-usd 6 \
   --server-generation <sha256-from-print-generation> \
   --round-cap-context /tmp/playground-round-cap.json \
@@ -39,145 +29,31 @@ npm run eval:playground -- --max-budget-usd 6 \
 
 ## Comparing candidate models
 
-Size the comparison to the number of candidates. Each tier runs under its default cap ([`eval/EVALS.md`](../EVALS.md) "Sizing"). One candidate: the gauntlet on it, then one paired run of this lane on the shipped model's case IDs (the [worked example](../../research/audits/2026-11-10-playground-gpt61-terra-recheck.md) cost USD 3.75 all in). Several candidates: the gauntlet on each, a paired screen, then a disjoint confirmation for the one that advances (the 2026-11-09 design in [`research/audits/2026-11-09-playground-product-decision.md`](../../research/audits/2026-11-09-playground-product-decision.md)). Never run a full matrix. For a prompt or loop change, run both arms on one tree with a default sample of 5 cases (at most 30), and reuse a stored run only when its identities match.
-
-To change the Playground primary or fallback, first run the gauntlet on the candidate, then run this lane on the same case IDs as the shipped model's run. Run each candidate at effort `none` when it supports it, otherwise at its lowest supported effort. Effort `none` is the shipped latency default, not an eligibility rule. Set `DEMO_MODEL_OVERRIDE` and `DEMO_REASONING_EFFORT_OVERRIDE` on both the server and the harness, and record the effort beside each result. Switch only when the candidate passes the gauntlet and shows no tool-loop regressions on the paired run. Cost and latency then decide, unless the cheaper candidate is far less correct. Report each candidate's count of new wrong answers beside its cost and latency as the evidence for that call.
+Follow the candidate tiers and caps in [Model-call billing](../EVALS.md#model-call-billing). Run each candidate at effort `none` if supported, else its lowest supported effort (set `DEMO_MODEL_OVERRIDE` and `DEMO_REASONING_EFFORT_OVERRIDE` identically on server and harness, and record effort beside results). Switch only if the candidate passes E2 with no E1 tool-loop regressions; then decide on cost and latency unless the cheaper option is far less correct (report new wrong answers beside cost and latency).
 
 ## Dollar accounting
 
-Each paid invocation requires exactly one spaced `--max-budget-usd USD` flag.
-The existing runner counts answer costs and judge costs in one sequential ledger.
-It sends the remaining amount to each answer turn and each judge call.
-The next call stops when the reported costs exhaust the amount.
-An excess cost invalidates the method and stops further calls.
-A provider can exceed the remaining amount within its last call.
-This checkpoint limit does not reserve funds or guarantee a provider-side dollar ceiling.
+Every paid invocation requires one spaced `--max-budget-usd USD` flag. One sequential ledger tracks answer and judge costs, sending remaining budget on each loopback request (`x-raven-eval-max-budget-usd`) and stopping the next call when exhausted (one in-flight call can overshoot; this is a checkpoint, not a provider hard ceiling).
 
-Loopback requests carry `x-raven-eval-max-budget-usd` to the existing chat route.
-The route records each provider response's `cf-aig-log-id`.
-It reads the reported USD cost with `AI.gateway(id).getLog(logId)` after the stream finishes.
-It settles each previous call before the next provider call, including fallback calls.
-It disables automatic SDK retries and permits one Gateway attempt per provider call.
-It enables Gateway metadata logging and disables payload logging for these evaluation requests.
-Ordinary Playground requests keep their existing logging settings.
-The [Gateway log API](https://developers.cloudflare.com/api/resources/ai_gateway/subresources/logs/methods/get/) defines the reported cost field.
-
-The route emits one `eval-cost` frame before stream closure, after any terminal frame.
-Its `logIds` preserve the identities of the answer's provider calls in call order, so the operator can
-independently reconcile exact Gateway records. Missing or duplicate identities still invalidate
-accounting; this list does not establish a settled cost.
-The runner reads through stream closure to collect this frame.
-Missing log identities, missing costs, duplicate identities, and failed requests never imply zero cost.
-Five bounded log reads permit a short reporting delay.
-A missing cost invalidates the method and prevents the next answer or judge call.
-The current accounting path requires a provider transport that returns raw responses with Gateway log identities.
-An unsupported transport stops before its provider call.
-Live cost reporting remains a measurement prerequisite; offline mocks cannot prove Gateway availability.
+The chat route disables SDK retries, allows one Gateway attempt per provider call, enables metadata logging (no payload logging), reads `cf-aig-log-id` costs via `AI.gateway(id).getLog(logId)` (up to 5 bounded retries; [Gateway log API](https://developers.cloudflare.com/api/resources/ai_gateway/subresources/logs/methods/get/)), settles each call before the next (including fallbacks), and emits one final `eval-cost` frame with ordered `logIds` and logged `models`. Missing/duplicate log IDs, missing/excess costs, or unsupported transports stop further calls and invalidate the method (exit 1, aggregates suppressed).
 
 ### Supported accounting transports
 
-Evaluation accounting captures raw responses through these paths in the installed `workers-ai-provider@4.0.1`:
+In `workers-ai-provider@4.0.1` ([coverage audit](../../research/audits/2026-10-01-playground-accounting-coverage.md)):
 
 | Path | Supported configurations |
 |---|---|
-| `AI.gateway(id).run` | OpenAI Responses, OpenAI Chat, and Grok with the production transport settings |
-| `AI.run` with `returnRawResponse: true` | Plugin-based run transport, including Anthropic, Google, and explicit OpenAI Chat run transport |
-| Native chat through `AI.run` | Native Workers AI and no-plugin catalog chat, including `@cf/moonshotai/kimi-k2.7-code` and `moonshotai/kimi-k3` |
+| `AI.gateway(id).run` | OpenAI Responses, OpenAI Chat, and Grok with production transport settings |
+| `AI.run` with `returnRawResponse: true` | Plugin-based run transport (Anthropic, Google, explicit OpenAI Chat run transport) |
+| Native chat through `AI.run` | Native Workers AI / no-plugin catalog chat (e.g., `@cf/moonshotai/kimi-k2.7-code`, `moonshotai/kimi-k3`) |
 
-The shipped tuple uses two of these paths: the OpenAI Responses primary and the Anthropic run-path fallback. Both share one accounting ledger.
-Each Gateway dispatch must contain one entry; evaluation accounting rejects hidden server-side fallback entries.
-These statements describe dispatch coverage, not verified live cost availability for every vendor.
-
-Native chat calls request `returnRawResponse: true` through the accounting binding.
-The binding captures each log identifier before it returns output to the installed native parser.
-The parser receives the body stream for `text/event-stream` and parsed JSON for `application/json`.
-Missing or unrecognized content types produce `unsupported-answer-content-type`. Accounting retains the captured cost.
-Native HTTP errors include the upstream error code and message when an 8 KiB body read supplies them.
-Existing raw-response callers receive the full `Response`.
-Native calls share the settlement and budget checks, including fallback calls.
-The guard still rejects non-chat calls without raw-response support before any upstream call.
-Missing or duplicate log identifiers block further calls and produce an incomplete receipt.
-Ordinary requests without the evaluation budget header retain their existing model support.
-
-The [coverage review](../../research/audits/2026-10-01-playground-accounting-coverage.md) records the accounting coverage by transport.
-The current regressions use the real handler and installed parser with mocked upstream responses and costs.
-They cover both named models, JSON responses to streaming requests, and fallback into a native model.
-They do not establish live model availability or live cost reporting.
+The shipped tuple (OpenAI Responses primary + Anthropic run-path fallback) shares one accounting ledger. Evaluation accounting rejects hidden server-side fallback entries and non-chat calls without raw-response support. Native chat captures log IDs before handing `text/event-stream` or `application/json` to the native parser (other content types fail with `unsupported-answer-content-type` while retaining cost). Live cost availability still requires live verification.
 
 ### Results and provenance
 
-Results retain `budget.selectedCaseIds`, `incompleteCaseIds`, and `unattemptedCaseIds`.
-The ledger records each run, its cap and reported cost.
-`meta.totalCostUsd` sums reported complete-call costs; invalid methods can have additional unknown costs.
-Each row retains the answer-cost frame, including any reported partial amount.
-Missing or excessive costs produce an invalid method with exit code 1.
-Budget exhaustion with unfinished cases produces an incomplete method with exit code 1.
-Both suppress the aggregate and block downstream grading.
-Generation quarantines also retain the budget ledger for cost reconciliation.
-The judge tuple records the executable path, real path, version, and SHA-256 before spend.
-
-`--server-generation` is deliberately an operator assertion, not runtime introspection. The
-harness requires it, checks it against the complete local working-tree generation before the
-first model call, checks that the tree stayed unchanged before writing, and records the limit
-honestly: this does not prove that an already-running Worker loaded those bytes. The reviewed
-operator must ensure the reused `dev` terminal represents that generation. A generation is
-machine-local, not a portable build or deployment identity; the value only attests to the named
-operator's local tree at the harness checkpoints.
-
-`--round-cap-context` is optional. It is your own cumulative call-cap file for a round that runs
-several E1 invocations: a JSON `playground-semantic-round-cap/v1` input with non-negative integer
-ceilings and consumption counters; the harness refuses before spend when the selected answer/judge
-calls would exceed an absolute cap. What makes an E1 result evidence is the pre-registered decision
-and stop rule (`run-evals` section 1), not this file. Without it the run records
-`kind: "not-applicable"`, `experimentId` set to the run ID, the reason "single run: no round cap
-context given", `sourceFile: null` and null caps. The stored names `reviewed-round` and
-`roundAuthorization` are contract names, kept so stored artifacts stay valid:
-
-```json
-{
-  "contract": "playground-semantic-round-cap/v1",
-  "experimentId": "2026-07-15-playground-round-a",
-  "kind": "reviewed-round",
-  "runAllocation": "planned",
-  "plannedAnswerCalls": 10,
-  "absoluteAnswerCallCap": 12,
-  "answerCallsConsumedBeforeRun": 0,
-  "plannedJudgeCalls": 10,
-  "absoluteJudgeCallCap": 12,
-  "judgeCallsConsumedBeforeRun": 0,
-  "infraRetryReserve": 2,
-  "infraRetryConsumedBeforeRun": 0,
-  "savedAnswerRejudgeReserve": 3,
-  "savedAnswerRejudgesConsumedBeforeRun": 0
-}
-```
-
-Do not copy those example numbers into a real run: encode the round's actual caps and current
-consumption. Set `runAllocation` to `planned` for ordinary calls
-or `infra-retry` for a transcript-proven retry; the latter is bounded by the remaining retry
-reserve. A `reviewed-round` always needs its file and the file's hash. A file that sets
-`kind: "not-applicable"` needs a non-empty `reason`, `runAllocation: null`, and all ten numeric cap
-fields present as explicit `null`; the harness accepts `sourceFile: null` only for that kind.
-
-The cap context is an operator-maintained cumulative ledger, not a shared transactional counter:
-the round's lead updates `*ConsumedBeforeRun` between invocations and verifies the next
-projection before spending. The harness fail-closes an inconsistent or over-cap input, but cannot
-account for model calls made outside the supplied machine-local context.
-
-`--no-judge` captures a route/trace diagnostic only; omit it for the semantic result. Results are timestamped JSON below `eval/local-lanes/playground-semantic/`, which is gitignored. Newly produced files use metadata contract `playground-semantic-result/v3` and input snapshot `playground-semantic-input/v1`. They pin the ordered configured primary/fallback models, effective/requested API mode, reasoning effort, answering temperature, explicit judge model/rubric/pack/unpinned-temperature semantics, demo/evaluator/round caps, local tree generation, and raw corpus/manifest/super-spec plus evaluator-source hashes. The configured tuple comes from the evaluator's process environment or `.dev.vars`, so a server started with a different `--var DEMO_MODEL_OVERRIDE` would mislabel it. The route therefore reports the AI Gateway-logged model of every provider call in each `eval-cost` frame (`models`). The harness stops with `observed-model-mismatch` before any judge call when a turn reports a model outside the configured tuple, or reports none. `answering.observedAttemptedModels` lists the configured models that answered; a stopped row keeps the unconfigured model in `provenanceError`. The comparison is an exact string match. The Gateway logs `openai/*` models under the configured id. Other vendors have dated live IDs in [`research/gauntlets/2026-11-03-sweep-probe-summary.md`](../../research/gauntlets/2026-11-03-sweep-probe-summary.md) (Haiku, Sonnet, Kimi and Grok); verify any other vendor's logged id before relying on this check. Set the same override in the harness environment as on the server. Internal hashes are revalidated by the re-judge reader; omission or mismatch fails. `inputSnapshot.answeringConfigSha256` excludes `observedAttemptedModels`, so equal configurations hash equally. Historical artifacts remain untouched, and re-judge refuses an older `playground-semantic-result/*` contract.
-
-If a required local generation checkpoint observes a mismatch after an answer call has started, or the checkpoint itself fails after spend, the invocation fails closed (exit 1) without writing a normal result. It instead makes a best-effort local-only `playground-semantic-quarantine/v1` file at `<out-dir>/quarantine/<runId>-playground-semantic-quarantine.json`. A quarantine has `quarantinedMeta` and `quarantinedRows`, never normal top-level `meta`, `rows`, or `summary`; it is non-promotable and may be used only for spend reconciliation and runner forensics. It cannot support factual, upstream, eval, causal, scoring, re-judge, aggregate, or comparison claims. A quarantined transcript may motivate an investigation, but any finding needs fresh non-quarantined evidence from a clean rerun or recurrence probe.
-
-Quarantined spend still increments the operator ledger's `*ConsumedBeforeRun` counters by the saved started-call minimums. Exit 1 with a quarantine file means update the ledger from its `spend` block; exit 1 without one means reconstruct the conservative counts from the stderr marker. `infraRetryAuthorized: false` is a stored field name: a quarantine does not mark a retry as an infra retry, so a retry is a new run under its own `--max-budget-usd` (and a new cap context when you keep one). The harness checks before each answer, after each answer before any judge, and before normal finalization; it does not prove the bytes loaded by an already-running Worker or continuously observe edit/revert cycles.
-
-Their saved transcript uses `mcp__playground__search` / `mcp__playground__execute` aliases with full JSON-stringified inputs and results, so the existing plan grader works directly:
-
-```sh
-npm run eval:plan -- eval/local-lanes/playground-semantic/<stamp>-playground-semantic.json
-```
-
-Run that regrade after playground prompt or tool-loop changes. Treat this as a separate Playground lane: do not merge its denominator or scores with the main MCP QA battery.
-
-For live loopback runs, the harness reads `MCP_SERVER_SECRET` from the environment or `.dev.vars` without logging it and mints an ephemeral run-scoped demo cookie. This exercises the normal cookie-authenticated per-subject throttle while avoiding collisions in the shared `dev-loopback` bucket; it never uses this cookie against a non-loopback URL.
-
-One run-scoped subject is intentionally limited to the real `DEMO_CAPS.chatsPerHour` ceiling (currently 30). Selection over that cap, including `--full` against the main battery, is rejected before the harness mints a cookie or sends a request. Use `--sample 30`, a <=30-case named contract, or an explicit `--ids` shard; it never rotates subjects to evade the safeguard.
+- **Artifacts:** gitignored timestamped JSON under `eval/local-lanes/playground-semantic/` (`playground-semantic-result/v3`, `playground-semantic-input/v1`). `--no-judge` captures route/trace diagnostics only. Internal hashes are revalidated by `re-judge.mjs`; older result contracts are refused. Exhausting the budget with unfinished cases also exits 1, sets `nonPromotable: true`, and suppresses `summary`.
+- **Model provenance:** the harness verifies Gateway-logged `models` against the configured tuple (exact string match; non-OpenAI live IDs are listed in [`2026-11-03-sweep-probe-summary.md`](../../research/gauntlets/2026-11-03-sweep-probe-summary.md)) and stops with `observed-model-mismatch` before judging if a turn reports an unconfigured model or none. Always match `DEMO_MODEL_OVERRIDE` between server and harness.
+- **`--server-generation`:** machine-local assertion checked against the working tree before spend and before writing; does not prove the running Worker loaded those bytes (operator verifies the reused `dev` terminal). A post-spend mismatch or generation-check error fails closed (exit 1) and makes a best-effort `playground-semantic-quarantine/v1` file under `<out-dir>/quarantine/` for spend reconciliation and forensics only—never for factual, eval, or comparison claims.
+- **`--round-cap-context` (optional):** operator-maintained `playground-semantic-round-cap/v1` JSON tracking cumulative ceilings and `*ConsumedBeforeRun` counters across multi-run rounds (`runAllocation: "planned"` or transcript-proven `"infra-retry"`; see `eval/playground/artifact-contract.mjs` for schema). Update `*ConsumedBeforeRun` after quarantined runs too (from the quarantine `spend` block, or from the stderr marker if the quarantine write failed); quarantine does not authorize `infra-retry`.
+- **Auth & throttle:** loopback runs read `MCP_SERVER_SECRET` from env/`.dev.vars` (never logged) to mint an ephemeral run-scoped cookie, enforcing the real `DEMO_CAPS.chatsPerHour` ceiling (30). Selections above 30 fail before any request.
+- **Plan grading:** saved transcripts use `mcp__playground__search`/`execute`, so `npm run eval:plan -- <result.json>` works directly; run it after Playground prompt or tool-loop changes.
