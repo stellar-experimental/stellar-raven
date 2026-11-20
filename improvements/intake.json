@@ -283,6 +283,10 @@
       "intake": "unclear",
       "reason": "Net-new content request. No stellar.org or developers.stellar.org page undertakes the topic, and the stellar.org page copy has no public issue tracker (checked 2026-11-17)."
     },
+    "sd-114": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Mintlify search ranking for developers.stellar.org: the docs team owns the Mintlify project (rankingRule)."
+    },
     "sk-040": {
       "repo": "stellar/stellar-dev-skill",
       "reason": "stellar/stellar-dev-skill owns skills/smart-contracts/security.md and testing.md."
