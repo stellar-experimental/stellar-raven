@@ -1,11 +1,4 @@
-/**
- * Tests for the agentic-eval harness-owned capture pair. capture-proxy.mjs
- * runs as a real child process against an in-process stub upstream
- * (passthrough + JSONL capture +
- * marker recording), and reconcile-capture.mjs's wire-vs-transcript logic is
- * pinned on the four outcomes that matter — faithful transcript, mistranscribed
- * page, fabricated call, omitted call — plus the stripped-marker rejection.
- */
+/** Tests for capture-proxy.mjs (real child process) and reconcile-capture.mjs wire-vs-transcript checks. */
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import http from "node:http";
@@ -316,8 +309,7 @@ describe("reconcile-capture", () => {
     const a = transcribedCall("q");
     const reordered = { widerCandidateIds: a.widerCandidateIds, zeroGated: a.zeroGated, truncated: a.truncated, total: a.total, hits: a.hits, limit: a.limit, query: a.query };
     expect(callKey(reordered)).toBe(callKey(a));
-    // The agent's structured output does not guarantee {id, tier, score} order;
-    // key order inside a hit used to be load-bearing and rejected honest rows.
+    // Key order inside nested hit objects must not affect callKey.
     const nestedReorder = { ...a, hits: a.hits.map((h) => ({ score: h.score, tier: h.tier, id: h.id })) };
     expect(callKey(nestedReorder)).toBe(callKey(a));
     for (const changed of [

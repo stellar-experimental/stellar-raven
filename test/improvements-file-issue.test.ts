@@ -28,17 +28,12 @@ function runFiler(args: string[], env?: NodeJS.ProcessEnv): Promise<CliResult> {
   });
 }
 
-// Fixtures live inside the repo, not in os.tmpdir(). The filer refuses to post a finding that
-// resolves outside the repository, so an out-of-tree fixture would be blocked by THAT gate before
-// reaching the guard a given test is actually exercising — every "did not reach filing" assertion
-// below would then pass even if its own guard were deleted. `tmp/` is already gitignored.
+// Fixtures live under gitignored tmp/ inside the repo so the filer's in-repo gate does not
+// preempt the specific guard under test.
 const FIXTURE_ROOT = path.join(ROOT, "tmp");
 mkdirSync(FIXTURE_ROOT, { recursive: true });
 
-// These two assertions are about the TEMPLATE, not about any particular finding, so they run
-// against a fixture. Pointing them at a live finding file coupled the suite to the improvements
-// queue: retiring that finding — the normal, expected end of its lifecycle — turned the build red
-// for a reason that had nothing to do with the template.
+// Template assertions run against a fixture rather than a live finding that may be retired.
 async function withFixtureFinding<T>(body: (findingPath: string) => Promise<T>): Promise<T> {
   const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-template-test-"));
   try {
@@ -70,9 +65,7 @@ Use the upstreamTitle, never the bare finding id.
   }
 }
 
-// Same reason as test/scan-secrets-gitleaks.test.mjs: every case spawns the filer plus git
-// plumbing over a fixture repo, so the 5s default times out under parallel load and passes in
-// isolation. Bound the real hang, not the subprocess cost.
+// Spawns git + the filer per case; 30s avoids parallel-load timeouts while still catching hangs.
 describe("improvements issue filing template", { timeout: 30_000 }, () => {
   test.concurrent("uses an explicit reader-first upstream title for an unreported finding", async () => {
     const result = await withFixtureFinding((finding) =>
@@ -102,11 +95,8 @@ describe("improvements issue filing template", { timeout: 30_000 }, () => {
     expect(output.indexOf(marker)).toBeLessThan(output.indexOf("## Finding"));
   });
 
-  // This guards a PUBLIC-WRITE boundary, so the test must never be able to reach real `gh`.
-  // A stub `gh` is prepended to PATH: it answers the state query the guard makes and exits 42
-  // for anything else, so "did we reach the filing call?" is observable and a regression posts
-  // nothing. The first version of this test used --dry-run for the accept case, which exits
-  // BEFORE the guard runs and therefore asserted nothing at all.
+  // Prepend a stub `gh` to PATH that answers state queries and exits 42 on any filing call,
+  // so a guard regression posts nothing and is observable.
   async function withSuccessorFixture<T>(
     body: (ctx: {
       run: (extra: string[], citedState?: string) => Promise<CliResult>;
@@ -351,10 +341,7 @@ Terminal for filing.
 Do not re-file.
 `,
         );
-        // Stub `gh` here too. Without it, deleting the guard would send this test to the real
-        // `gh issue create` on an authenticated machine — a test that can post a public issue
-        // when it regresses is worse than no test. This is the same hazard the successor test
-        // above was rewritten to remove; it must not come back through the side door.
+        // Stub `gh` so a guard regression posts nothing.
         const bin = path.join(dir, "bin");
         mkdirSync(bin);
         writeFileSync(
@@ -411,10 +398,7 @@ Keep the main link and omit the immutable snapshot.
     }
   });
 
-  // This one genuinely needs a real, committed finding — it asserts the commit-pinned blob URL,
-  // which a temp fixture cannot have. So it picks whichever committed finding exists rather than
-  // naming one: hardcoding an id re-arms the trap that turned the suite red when sd-019 was
-  // retired, and every finding in this directory is expected to be retired eventually.
+  // Needs a real committed finding for the commit-pinned blob URL; pick one dynamically.
   test.concurrent("links the exact source record and gives upstream a resolution handoff", async () => {
     const finding = execFileSync(
       "git",
@@ -438,10 +422,7 @@ Keep the main link and omit the immutable snapshot.
     expect(output).toContain("Raven verifies the live surface");
     expect(output).toContain("Raven retires the active finding");
   });
-  // The incident this guards: a fixture in os.tmpdir() reached the live `gh issue create` and
-  // became stellar/stellar-docs#2716. `path.relative` does not fail on an out-of-tree path, it
-  // walks up with `../`, and that string is joined onto a blob URL — so the published source
-  // record was a link that could never resolve.
+  // path.relative walks up with `../` on out-of-tree paths, which would produce a broken blob URL.
   test.concurrent("refuses to file a finding that resolves outside the repository", async () => {
     const dir = mkdtempSync(path.join(tmpdir(), "improvement-outoftree-test-"));
     try {

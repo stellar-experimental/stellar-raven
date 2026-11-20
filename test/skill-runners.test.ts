@@ -1,12 +1,6 @@
 /**
- * Runner unit tests (design §12, unit row 1) — each runner against a stub
- * facade serving live-captured fixtures (test/fixtures/skill-runners/,
- * production capture 2026-07-06), plus the two confinement drift belts:
- * the import/token lint and the behavioral fetch-stub test.
- *
- * The self-authored outputSchema is reused as the oracle (validateArgs) —
- * outputs, with a host-style `calls` array attached the way runSkill does,
- * must validate against the runner's own contract.
+ * Skill runner tests against captured fixtures (test/fixtures/skill-runners/),
+ * plus static import/token confinement checks and outputSchema validation.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
@@ -25,10 +19,6 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 const DIGEST_ID = "skills.lumenloop.stellar-ecosystem-digest";
 
-// ---------------------------------------------------------------------------
-// stub facade — records every call's op + args so default-application and
-// mode-routing assertions read the wire, not runner internals.
-// ---------------------------------------------------------------------------
 type Recorded = { op: string; args: Record<string, unknown> };
 type StubValue = AdapterResult | ((args: Record<string, unknown>) => AdapterResult);
 
@@ -76,9 +66,6 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-// ===========================================================================
-// stellar-ecosystem-digest
-// ===========================================================================
 describe("stellar-ecosystem-digest runner", () => {
   it("theme happy path on live fixtures: window framing, flat items, counts, upcoming", async () => {
     vi.useFakeTimers();
@@ -345,9 +332,6 @@ describe("stellar-ecosystem-digest runner", () => {
   });
 });
 
-// ===========================================================================
-// confinement drift belts (design §2/§12)
-// ===========================================================================
 describe("runner confinement belts", () => {
   const RUNNER_DIR = join(ROOT, "src", "skills", "runners");
   const runnerFiles = readdirSync(RUNNER_DIR).filter(
@@ -359,11 +343,8 @@ describe("runner confinement belts", () => {
   });
 
   it("import-discipline lint: specifiers ⊆ {./types.ts}, no forbidden tokens", () => {
-    // The design's §12 token set plus the dynamic-eval spellings (eval /
-    // Function / constructor) a review flagged as lint-escapable egress
-    // vectors. Still a drift BELT, not a boundary (design §2/§7) — the
-    // behavioral fetch-stub test below and first-party review remain the
-    // real enforcement.
+    // Static drift belt (not a sandbox boundary); runners run host-side, so single-input
+    // fetch-stub tests support first-party code review rather than replacing runtime isolation.
     const FORBIDDEN = [
       "fetch(",
       "env.",
@@ -408,9 +389,6 @@ describe("runner confinement belts", () => {
   });
 });
 
-// ===========================================================================
-// registry + schema dialect sanity
-// ===========================================================================
 describe("RUNNERS registry", () => {
   it("is keyed by exact catalog ids with declared ops on every runner", () => {
     expect(Object.keys(RUNNERS).sort()).toEqual([DIGEST_ID]);

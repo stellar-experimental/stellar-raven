@@ -533,7 +533,6 @@ describe("stability register judge models", () => {
   });
 
   it("adds no identity from a file that contributes no verdicts or pairs", () => {
-    // The reviewer's probe: an empty re-judge file whose judges differ from the collection's.
     const { document } = generate({
       "a-variantA.json": collection("claude-sonnet-5-5"),
       "b-rejudge.json": {

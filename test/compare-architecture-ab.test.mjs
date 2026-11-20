@@ -77,8 +77,6 @@ describe("architecture A/B metric collector", () => {
     expect(analyzed.truncatedToolResults).toBe(1);
     expect(analyzed.visibleEnvelopes["soft-empty"]).toBe(1);
     expect(analyzed.totalCostUsd).toBeCloseTo(0.25);
-    // The runner now stores ONE structured failure field; the collector must
-    // read its class instead of the retired free-text `agent.error` string.
     expect(analyzed.agentError).toBe(false);
     expect(analyzed.agentFailureClass).toBeNull();
     const failed = analyzeArchitectureRow({

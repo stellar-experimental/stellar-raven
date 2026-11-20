@@ -1,8 +1,3 @@
-/**
- * searchCatalog tests — the frozen contract: ranked hits,
- * excluded-op absence, kind/service filters, default limit 10, TS signatures on
- * operation hits. Runs against the real generated manifest.
- */
 import { describe, expect, it, beforeAll } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -91,7 +86,6 @@ describe("searchCatalog — contract shape", () => {
   });
 
   it("defaults to limit 10 and honors an explicit limit", () => {
-    // A broad query that matches far more than 10 entries.
     const defaulted = searchCatalog(catalog, { query: "stellar" });
     expect(defaulted).toHaveLength(DEFAULT_SEARCH_LIMIT);
     expect(searchCatalog(catalog, { query: "stellar", limit: 3 })).toHaveLength(3);
@@ -109,11 +103,7 @@ describe("searchCatalog — contract shape", () => {
   });
 
   it("returns [] for queries with no lexical overlap", () => {
-    // Both tokens must be true non-matches (no vendor token/prefix/substring
-    // hit anywhere in the catalog): since the M1 tiered backfill, a single
-    // matched token — even a prefix overlap like "nonexistent" ~ "no" or a
-    // single-letter catalog token like "x"/"q" — legitimately surfaces weak
-    // hits on an otherwise-empty page.
+    // Tokens must have zero lexical or prefix overlap; even weak overlap can surface tier-2 backfill on an otherwise-empty page.
     expect(searchCatalog(catalog, { query: "zzzzqqqq zzqqzzqq" })).toEqual([]);
     expect(searchCatalog(catalog, { query: "   " })).toEqual([]);
   });
@@ -496,8 +486,6 @@ describe("loadManifest — structural invariants", () => {
 
 describe("searchCatalog — excluded ops are absent by construction (ADR-0003)", () => {
   it("never surfaces build-excluded ops, even on exact id queries", () => {
-    // These are excluded at build time (paid, write, side-effecting) and have
-    // no manifest entry — search cannot surface what does not exist.
     for (const query of [
       "request research",
       "lumenloop.request_research",
@@ -515,7 +503,7 @@ describe("searchCatalog — excluded ops are absent by construction (ADR-0003)",
       expect(ids, `query: ${query}`).not.toContain("scout.submitPartnerListing");
       expect(ids, `query: ${query}`).not.toContain("scout.partnerAssistant");
     }
-    // matchPartners is excluded (no observed call succeeded since 2026-10-26); the directory read stays reachable.
+    // matchPartners is excluded; the directory read stays reachable.
     const match = searchCatalog(catalog, { query: "scout.matchPartners", limit: 50 });
     expect(match.map((h) => h.id)).not.toContain("scout.matchPartners");
     const directory = searchCatalog(catalog, { query: "scout.getPartners", limit: 50 });
@@ -902,8 +890,7 @@ describe("searchCatalog — routing quality", () => {
   });
 
   it("never surfaces skill-section hits — sections left search (2026-07-13 A/B)", () => {
-    // Sections are exposed (skill.read, availableSections) but carry
-    // searchable:false since arm B shipped; a WHOLE skill may still rank.
+    // Sections are searchable:false; whole skills still rank.
     for (const query of ["soroban storage", "when to use this skill", "worked example digest"]) {
       const hits = searchCatalog(catalog, { query, limit: 10 });
       expect(hits.some((h) => h.kind === "skill-section"), query).toBe(false);
@@ -938,17 +925,11 @@ describe("searchCatalog — routing quality", () => {
   });
 
   it("routes a topical docs question to a stellarDocs op in the top 3 (structural)", () => {
-    // Mechanism check (not a golden-corpus case): the 12 authored docs ops
-    // carry topical vocabulary, so a docs-shaped natural-language question
-    // must surface stellarDocs near the top despite 300+ competing entries.
     const hits = searchCatalog(catalog, { query: "how do I extend TTL state archival", limit: 5 });
     expect(hits.slice(0, 3).some((h) => h.service === "stellarDocs")).toBe(true);
   });
 
   it("diversifies services in the returned set (per-service quota)", () => {
-    // Broad query matching many entries: the top-5 page must not be a single
-    // service five times over (quota = 2 per service at limit 5), and the
-    // top-scoring hit is never displaced by the quota.
     const all = searchCatalog(catalog, { query: "stellar soroban contract", limit: 5 });
     const perService = new Map<string, number>();
     for (const h of all) perService.set(h.service, (perService.get(h.service) ?? 0) + 1);
@@ -959,11 +940,7 @@ describe("searchCatalog — routing quality", () => {
 });
 
 describe("searchCatalog — tiered gate-rescue backfill", () => {
-  /**
-   * Gated (tier-1) score of a returned hit, recomputed through the same
-   * public scorer searchCatalog uses for tier 1. null ⇒ the hit could only
-   * have arrived via the tier-2 (ungated) backfill.
-   */
+  /** Recomputes tier-1 (gated) score; null means the hit arrived via tier-2 backfill. */
   function gatedScore(hitId: string, query: string): number | null {
     const entry = catalog.entries.find((e) => e.id === hitId)!;
     expect(entry).toBeDefined();
@@ -992,9 +969,6 @@ describe("searchCatalog — tiered gate-rescue backfill", () => {
   }
 
   it("keeps pages without targeted replacements entirely in tier 1", () => {
-    // Tier 2 only fires when fewer than `limit` gate-passing candidates
-    // exist; a page of all-gate-passers therefore proves the backfill never
-    // ran and the results are identical to the pre-tiering pipeline.
     for (const query of ["stellar soroban contract", "search directory"]) {
       const hits = searchCatalog(catalog, { query, limit: 5 });
       expect(hits, `query: ${query}`).toHaveLength(5);
@@ -1028,33 +1002,23 @@ describe("searchCatalog — tiered gate-rescue backfill", () => {
   });
 
   it("backfills a long multi-clause query that the coverage gate zeroed out", () => {
-    // >20 tokens of content words spanning services: no entry covers 60% of
-    // the vocabulary, so the vendor gate nulls the ENTIRE catalog (measured:
-    // 58/122 extended-lane questions). Tier 2 must fill the page.
+    // >20 content tokens across services: no entry clears the 60% coverage gate, so tier 2 fills the page.
     const query =
       "design a cross chain remittance corridor that quotes fees checks anchor deposit " +
       "limits verifies trustline flags and streams payment status webhooks to a dashboard";
     const hits = searchCatalog(catalog, { query, limit: 5 });
     expect(hits).toHaveLength(5);
-    // Pure tier-2 page: nothing passes the gated scorer (this is exactly the
-    // query shape that returned [] before the backfill existed).
     for (const hit of hits) {
       expect(gatedScore(hit.id, query)).toBeNull();
       expect(hit.tier).toBe("backfill");
     }
-    // Within the tier, ranking stays score desc.
     for (let i = 1; i < hits.length; i++) {
       expect(hits[i - 1]!.score >= hits[i]!.score).toBe(true);
     }
   });
 
   it("interleaves a backfill hit when the cross-tier margin is met", () => {
-    // Extended-corpus mechanism check: this question passes the gate for
-    // only a handful of entries, so the page mixes tiers. The docs backfill
-    // hit overwhelmingly dominates the first gated hit on the common score
-    // scale and must therefore interleave above it. (The previous fixture
-    // question stopped mixing tiers at the Scout 1.7.16 absorb — its gated
-    // hits were scout ops whose fat descriptions no longer pass the gate.)
+    // Mixed-tier query: the dominant docs backfill hit must interleave above the first gated hit.
     const query =
       "In a SEP-6 programmatic deposit, which SEP actually carries the customer's KYC " +
       "data — SEP-6 itself or another SEP?";
@@ -1062,8 +1026,7 @@ describe("searchCatalog — tiered gate-rescue backfill", () => {
     expect(hits).toHaveLength(5);
     const tiers = hits.map((h) => gatedScore(h.id, query) !== null);
     expect(tiers[0], "top hit must be the dominant backfill").toBe(false);
-    expect(tiers).toContain(false); // page actually mixes tiers
-    // The tier marker must agree with the recomputed ground truth.
+    expect(tiers).toContain(false);
     for (let i = 0; i < hits.length; i++) {
       expect(hits[i]!.tier).toBe(tiers[i] ? "gated" : "backfill");
     }
@@ -1083,12 +1046,8 @@ describe("searchCatalog — tiered gate-rescue backfill", () => {
 });
 
 describe("searchCatalogPage — non-finite limit cannot disable the clamp", () => {
-  // `codemode.search` inside the sandbox forwards any `typeof opts.limit ===
-  // "number"`, and `typeof NaN === "number"`. Before the guard, a NaN limit
-  // made every comparison false, so the page returned EVERY gated candidate
-  // with `truncated: false` — the contract asserting a complete answer while
-  // silently dropping its own bounds. Model-authored code reaches this by
-  // ordinary arithmetic (`n * 2` over undefined, `+"ten"`, `0/0`).
+  // codemode.search forwards any number, including NaN/Infinity; non-finite
+  // limits must fall back to the default instead of bypassing the clamp.
   it("falls back to the default limit for NaN and infinities, and still honors real limits", () => {
     const query = "search directory";
     const baseline = searchCatalogPage(catalog, { query });
@@ -1100,14 +1059,12 @@ describe("searchCatalogPage — non-finite limit cannot disable the clamp", () =
       expect(page.hits.length).toBeLessThanOrEqual(DEFAULT_SEARCH_LIMIT);
     }
 
-    // Real values keep working — the guard must not swallow legitimate limits.
     expect(searchCatalogPage(catalog, { query, limit: 1 }).hits).toHaveLength(1);
     expect(searchCatalogPage(catalog, { query, limit: 3 }).hits).toHaveLength(3);
   });
 });
 
 describe("searchCatalogPage — tier marker + total/truncated", () => {
-  /** Hand-built operation entry (passes loadManifest's structural invariants). */
   function op(name: string, description: string) {
     return {
       id: `lumenloop.${name}`,
@@ -1121,14 +1078,7 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     };
   }
 
-  /**
-   * A catalog engineered so a long query gates MOST entries out: on the
-   * 10-content-token query below only alpha_handler covers ≥60% of the
-   * vocabulary (7/10); every other entry matches 1–2 tokens, failing the
-   * vendor coverage gate but scoring non-null ungated. Exact candidate
-   * counts are therefore known, so total/truncated are checkable as math,
-   * not just invariants.
-   */
+  // Only alpha_handler clears the >=60% coverage gate on the 10-token query below; the rest backfill.
   const tiny = loadManifest({
     version: 1,
     generatedAt: "2026-01-01T00:00:00Z",
@@ -1148,15 +1098,13 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     const page = searchCatalogPage(tiny, { query: LONG_QUERY, limit: 5 });
     expect(page.effectiveLimit).toBe(5);
     expect(page.hits).toHaveLength(5);
-    // Exactly one entry passes the coverage gate; it leads the page.
     expect(page.hits[0]!.id).toBe("lumenloop.alpha_handler");
     expect(page.hits[0]!.tier).toBe("gated");
     for (const hit of page.hits.slice(1)) expect(hit.tier).toBe("backfill");
-    // Strongest backfill is below the required margin, so the seam stays put.
     expect(page.hits[1]!.score).toBeLessThan(
       TIER_INTERLEAVE_MARGIN * page.hits[0]!.score
     );
-    // total = 1 gated + 6 novel ungated (every entry matches ≥1 token).
+    // 1 gated + 6 ungated.
     expect(page.total).toBe(7);
     expect(page.truncated).toBe(true);
   });
@@ -1208,8 +1156,6 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
   });
 
   it("excludes searchable:false entries from results and totals, keeping them exposed", () => {
-    // Skills-form arm seam: hidden entries stay in the
-    // catalog (exact-id describe/read) but never score, rank, or count.
     const hidden = loadManifest({
       version: 1,
       generatedAt: "2026-01-01T00:00:00Z",
@@ -1223,9 +1169,7 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     const ids = page.hits.map((h) => h.id);
     expect(ids).toContain("lumenloop.alpha_handler");
     expect(ids).not.toContain("lumenloop.alpha_shadow");
-    // total counts only searchable candidates (shadow matches lexically but is hidden).
     expect(page.total).toBe(ids.length);
-    // Still exposed: the entry exists in the catalog for exact-id surfaces.
     expect(hidden.entries.some((e) => e.id === "lumenloop.alpha_shadow")).toBe(true);
   });
 
@@ -1250,9 +1194,6 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
   });
 
   it("tier-1-only full page: total counts gated candidates only, truncated flags the cut", () => {
-    // 2-token query, 100%-coverage gate: exactly the four alpha+beta entries
-    // pass. Page of 2 fills from tier 1 alone, so tier 2 is never consulted
-    // and total is the gated candidate count.
     const page = searchCatalogPage(tiny, { query: "alpha beta", limit: 2 });
     expect(page.hits).toHaveLength(2);
     for (const hit of page.hits) expect(hit.tier).toBe("gated");
@@ -1261,9 +1202,6 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
   });
 
   it("total <= limit: tier 2 consulted but novel-empty, truncated false", () => {
-    // Same four gated candidates, page of 10: tier 1 leaves the page short,
-    // tier 2 re-runs ungated — but every ungated candidate is already a
-    // gated one (no other entry matches any token), so total stays 4.
     const page = searchCatalogPage(tiny, { query: "alpha beta", limit: 10 });
     expect(page.hits).toHaveLength(4);
     for (const hit of page.hits) expect(hit.tier).toBe("gated");
@@ -1293,13 +1231,10 @@ describe("searchCatalog — availableSections on skill hits", () => {
     })[0] as SearchHit;
     expect(hit.kind).toBe("skill");
     expect(hit.availableSections!.length).toBeGreaterThan(0);
-    // Shape: every ## slug precedes every file:<relpath> key.
     const firstFile = hit.availableSections!.findIndex((k) => k.startsWith("file:"));
-    expect(firstFile).toBeGreaterThan(0); // this skill has a file: reference
+    expect(firstFile).toBeGreaterThan(0);
     expect(hit.availableSections!.slice(firstFile).every((k) => k.startsWith("file:"))).toBe(true);
-    // Membership identical to readSkill's availableSections for the same
-    // skill (order may differ: the catalog is id-sorted, the store follows
-    // document order).
+    // Order may differ from readSkill (catalog is id-sorted; store follows document order).
     const r = await readSkill(catalog, skillSource, hit.id);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
@@ -1307,18 +1242,12 @@ describe("searchCatalog — availableSections on skill hits", () => {
   });
 
   it("keeps the field OFF operation hits", () => {
-    // (Skill-section hits no longer occur in search — sections carry
-    // searchable:false since the 2026-07-13 A/B; the searchable-seam test in
-    // this file guards that directly.)
     const opHit = searchCatalog(catalog, { query: "lumenloop.search_directory" })[0] as SearchHit;
     expect(opHit.kind).toBe("operation");
     expect(opHit.availableSections).toBeUndefined();
   });
 
   it("skills exist only under the canonical skills.* id — one skill, one hit (ADR-0003)", () => {
-    // The lumenloop.skill.* twin namespace was never emitted into the
-    // manifest; the only discoverable form is the readable skills.* mirror
-    // entry (which carries availableSections).
     const hits = searchCatalog(catalog, {
       query: "lumenloop.skill.stellar-project-dossier",
       kind: "skill",
@@ -1332,10 +1261,7 @@ describe("searchCatalog — availableSections on skill hits", () => {
 
 describe("searchCatalog — section entries are addresses, not content", () => {
   it("carries no body-derived keywords for out-of-search sections, and still answers from elsewhere", () => {
-    // Sections are searchable:false since the 2026-07-13 A/B, so body-derived
-    // keywords would be upstream-derived text in a committed artifact that
-    // nothing scores. The extraction machinery still exists for arm A
-    // (scripts/build-catalog.mjs emitSectionKeywords) — it just is not shipped.
+    // Sections are searchable:false, so body-derived keywords are omitted from the manifest.
     const sectionId = "skills.stellar-dev.smart-contracts#file:testing.md";
     const entry = catalog.entries.find((e) => e.id === sectionId)!;
     expect(entry).toBeDefined();
@@ -1344,7 +1270,7 @@ describe("searchCatalog — section entries are addresses, not content", () => {
     expect(entry.searchable).toBe(false);
     const hits = searchCatalog(catalog, { query: "fuzz testing smart contracts" });
     expect(hits.map((h) => h.id)).not.toContain(sectionId);
-    expect(hits.length).toBeGreaterThan(0); // other surfaces still answer
+    expect(hits.length).toBeGreaterThan(0);
   });
 
   it("keeps keywords out of the SearchHit contract (internal scoring field only)", () => {
@@ -1359,14 +1285,10 @@ describe("searchCatalog — signatures", () => {
     const opHit = searchCatalog(catalog, { query: "search directory" })[0] as SearchHit;
     expect(opHit.kind).toBe("operation");
     expect(opHit.signature).toContain("type SearchDirectoryInput");
-    // The callable line spells out the full result envelope — the signature
-    // is the model's primary teaching surface for `r.data.*` access.
     expect(opHit.signature).toContain(
       "lumenloop.search_directory(input: SearchDirectoryInput): Promise<{ ok: true, data: SearchDirectoryOutput } | { ok: false, error: { kind: \"error\" | \"soft-empty\", message: string, hint?: string } }>"
     );
 
-    // Non-operation hits carry no signature UNLESS runnable (skills carrying
-    // a bundled runner are the only exception, asserted separately).
     const proseHits = searchCatalog(catalog, { query: "soroban storage" }).filter(
       (h) => h.kind !== "operation" && !(h.id in RUNNERS)
     );
@@ -1412,7 +1334,6 @@ describe("searchCatalog — signatures", () => {
 });
 
 describe("search-hit signature compaction", () => {
-  /** Full-render output type block length for one operation entry. */
   function outputBlockLength(entry: CatalogEntry): number {
     if (!entry.outputSchema) return 0;
     const typeBase = toPascalCase(sanitizeToolName(lastIdSegment(entry.id)));
@@ -1423,17 +1344,11 @@ describe("search-hit signature compaction", () => {
     const hit = searchCatalog(catalog, { query: "scout.searchProjects" }).find(
       (h) => h.id === "scout.searchProjects"
     ) as SearchHit;
-    // The input type and callable envelope line are ALWAYS full — they are
-    // what the model needs to make the call.
     expect(hit.signature).toContain("type SearchProjectsInput");
     expect(hit.signature).toContain(
       "scout.searchProjects(input: SearchProjectsInput): Promise<{ ok: true, data: SearchProjectsOutput }"
     );
-    // The output type is the stub declaration: top-level field names stay
-    // visible (payload field selection without a describe round-trip)…
-    // (Asserting the load-bearing parts, not the prose — the stub's wording
-    // may be tuned without breaking CI; the type name, field names, and the
-    // exact describe pointer may not.)
+    // Assert type name, top-level field names, and describe pointer, not stub prose.
     expect(hit.signature).toContain("type SearchProjectsOutput");
     expect(hit.signature).toContain("codeReferences, meta, projects");
     expect(hit.signature).toContain('codemode.describe("scout.searchProjects")');
@@ -1453,12 +1368,9 @@ describe("search-hit signature compaction", () => {
       if (outputBlockLength(entry) > COMPACT_OUTPUT_THRESHOLD) {
         compacted.push(entry.id);
         expect(compact, entry.id).not.toBe(full);
-        // The describe pointer is the branch-independent stub invariant
-        // (object schemas list field names; non-object ones degrade to an
-        // `unknown` stub — both carry the pointer).
         expect(compact, entry.id).toContain(`codemode.describe(${JSON.stringify(entry.id)})`);
       } else {
-        expect(compact, entry.id).toBe(full); // byte-identical below the line
+        expect(compact, entry.id).toBe(full);
       }
     }
     expect(compacted.sort()).toEqual([
@@ -1500,15 +1412,13 @@ describe("search-hit signature compaction", () => {
       const entry = catalog.entries.find((e) => e.id === h.id)!;
       return outputBlockLength(entry) <= COMPACT_OUTPUT_THRESHOLD;
     });
-    expect(small).toBeDefined(); // the page isn't all monsters
+    expect(small).toBeDefined();
     const entry = catalog.entries.find((e) => e.id === small!.id)!;
-    expect(small!.signature).toBe(renderSignature(entry)); // full === compact below threshold
+    expect(small!.signature).toBe(renderSignature(entry));
   });
 
   it("exercises COMPACT_OUTPUT_THRESHOLD exactly at its boundary (hand-built schema)", () => {
-    // One string property whose description pads the rendered JSDoc line —
-    // the rendered block length is linear in the pad, so the entry can be
-    // calibrated to land EXACTLY on the threshold.
+    // Pad the property description to land on COMPACT_OUTPUT_THRESHOLD.
     const makeEntry = (pad: string): CatalogEntry => ({
       id: "scout.boundaryProbe",
       service: "scout",
@@ -1526,23 +1436,20 @@ describe("search-hit signature compaction", () => {
       provenance: { source: "test://boundary", fetchedAt: "2026-07-06T00:00:00Z" }
     });
     const baseLen = outputBlockLength(makeEntry("x"));
-    expect(baseLen).toBeLessThan(COMPACT_OUTPUT_THRESHOLD); // calibration sanity
+    expect(baseLen).toBeLessThan(COMPACT_OUTPUT_THRESHOLD);
     const atThreshold = makeEntry("x".repeat(COMPACT_OUTPUT_THRESHOLD - baseLen + 1));
     expect(outputBlockLength(atThreshold)).toBe(COMPACT_OUTPUT_THRESHOLD);
     const overThreshold = makeEntry("x".repeat(COMPACT_OUTPUT_THRESHOLD - baseLen + 2));
     expect(outputBlockLength(overThreshold)).toBe(COMPACT_OUTPUT_THRESHOLD + 1);
 
-    // AT the threshold: not compacted (strictly-greater comparison).
     expect(renderSignature(atThreshold, { compactOversizedOutput: true })).toBe(
       renderSignature(atThreshold)
     );
-    // ONE char over: compacted to the stub with both top-level names.
     const compacted = renderSignature(overThreshold, { compactOversizedOutput: true })!;
     expect(compacted).toContain("type BoundaryProbeOutput");
     expect(compacted).toContain("alpha, beta");
     expect(compacted).toContain('codemode.describe("scout.boundaryProbe")');
     expect(compacted).not.toContain("xxxx");
-    // Full mode never compacts, no matter the size (describe's rendering).
     expect(renderSignature(overThreshold)).toContain("alpha?: string");
   });
 });
@@ -1621,9 +1528,6 @@ describe("runnable-skill signatures (design §5)", () => {
   });
 
   it("honors COMPACT_OUTPUT_THRESHOLD for runnable skills exactly as for operations", () => {
-    // Hand-built runnable entry with an oversized output block: the search-
-    // hit rendering mode must stub it down to top-level field names + the
-    // describe pointer while keeping the callable line intact.
     const entry: CatalogEntry = {
       id: "skills.test.padded-runner",
       service: "skills",
@@ -1646,7 +1550,6 @@ describe("runnable-skill signatures (design §5)", () => {
     expect(compact).toContain('codemode.describe("skills.test.padded-runner")');
     expect(compact).not.toContain("xxxx");
     expect(compact).toContain('codemode.skill.run("skills.test.padded-runner"');
-    // Full mode (describe's rendering) never compacts, no matter the size.
     expect(renderSignature(entry)).toContain("alpha?: string");
   });
 });
@@ -1654,7 +1557,7 @@ describe("runnable-skill signatures (design §5)", () => {
 describe("runnable byte-stability — the §10.1 invariant, pinned offline (design §12)", () => {
   const RUNNABLE_IDS = new Set(Object.keys(RUNNERS));
 
-  /** The same manifest with the runnable attachment undone — "current main". */
+  /** Manifest with runnable attachment removed. */
   function strippedCatalog(): Catalog {
     const raw = JSON.parse(readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8")) as {
       entries: Record<string, unknown>[];
@@ -1670,14 +1573,11 @@ describe("runnable byte-stability — the §10.1 invariant, pinned offline (desi
   it("every pre-existing hit field is byte-identical to a non-runnable build; signature on the runnable entries is the only delta", () => {
     const stripped = strippedCatalog();
     const queries: { query: string; limit?: number }[] = [
-      // Queries that surface the runnable entry (exact id + topical), plus
-      // the retired-runner dossier skill (now a plain hit on both sides)…
       { query: "skills.lumenloop.stellar-project-dossier" },
       { query: "skills.lumenloop.stellar-ecosystem-digest" },
       { query: "project dossier scf funding history", limit: 20 },
       { query: "recent ecosystem digest news roundup", limit: 20 },
       { query: "scf funding award project", limit: 25 },
-      // …and a spread of ordinary pages (broad, op/section, backfill).
       { query: "stellar", limit: 50 },
       { query: "soroban storage" },
       {
@@ -1691,7 +1591,6 @@ describe("runnable byte-stability — the §10.1 invariant, pinned offline (desi
     for (const opts of queries) {
       const before = searchCatalog(stripped, opts);
       const after = searchCatalog(catalog, opts);
-      // Rank/membership identity: same ids in the same order.
       expect(
         after.map((h) => h.id),
         opts.query
@@ -1699,13 +1598,10 @@ describe("runnable byte-stability — the §10.1 invariant, pinned offline (desi
       for (let i = 0; i < after.length; i++) {
         const { signature: sigBefore, ...restBefore } = before[i]!;
         const { signature: sigAfter, ...restAfter } = after[i]!;
-        // Every pre-existing field byte-identical (score, tier, description,
-        // availableSections, …) — the scorer reads nothing this change touches.
         expect(JSON.stringify(restAfter), `${opts.query} #${i} (${after[i]!.id})`).toBe(
           JSON.stringify(restBefore)
         );
         if (RUNNABLE_IDS.has(after[i]!.id)) {
-          // The one permitted delta: the runnable hit GAINS a signature.
           expect(sigBefore, `${opts.query} #${i}`).toBeUndefined();
           expect(typeof sigAfter, `${opts.query} #${i}`).toBe("string");
           runnableHitsSeen += 1;
@@ -1714,7 +1610,6 @@ describe("runnable byte-stability — the §10.1 invariant, pinned offline (desi
         }
       }
     }
-    // The battery must actually exercise the delta, or it proves nothing.
     expect(runnableHitsSeen).toBeGreaterThan(0);
   });
 });
@@ -1723,22 +1618,17 @@ describe("alias canonicalization", () => {
   it("canonicalizeQuery: null when no alias token (byte-identical no-op path)", () => {
     expect(canonicalizeQuery("wallet balance lookup")).toBeNull();
     expect(canonicalizeQuery("soroban contract storage")).toBeNull();
-    // "transaction" spelled out is NOT an alias — no rewrite.
     expect(canonicalizeQuery("transaction history")).toBeNull();
   });
 
   it("canonicalizeQuery: substitutes abbreviation tokens, single-token only", () => {
     expect(canonicalizeQuery("tx history")).toBe("transaction history");
     expect(canonicalizeQuery("check acct addr")).toBe("check account address");
-    // Alias must be its own token — "taxes"/"txhash" style substrings are untouched.
     expect(canonicalizeQuery("txhash lookup")).toBeNull();
   });
 
   it("bridges the register gap: an abbreviation query hits transaction-vocabulary entries", () => {
-    // Vendor prefix matching cannot bridge tx->transaction ("transaction"
-    // does not start with "tx"); the lever must. Real-manifest behavioral
-    // pin from the live probes that motivated the lever: a transaction-
-    // related entry ranks in the top 3 for the abbreviated phrasing.
+    // Prefix matching cannot bridge tx -> transaction; query canonicalization must.
     const hits = searchCatalog(catalog, { query: "txn submit failed", limit: 5 });
     expect(
       hits.slice(0, 3).some(
@@ -1748,8 +1638,6 @@ describe("alias canonicalization", () => {
   });
 
   it("never reduces original-query scores: alias variant only adds via max", () => {
-    // An entry matching the ORIGINAL tokens keeps at least its original
-    // score when the query also contains an alias token.
     const entry = {
       id: "svc.op",
       name: "op",
@@ -1813,7 +1701,6 @@ describe("the detail relation in the recovery graph", () => {
         "stellarDocs.get_doc_page"
       );
     }
-    // The three alternatives after a Docs search are the ones the profile named before the edge.
     expect(recoveryCandidatesFromSources(catalog, ["stellarDocs.search_docs"], []).map((c) => c.id)).toEqual([
       "scout.searchResearch",
       "lumenloop.search_content_semantic",

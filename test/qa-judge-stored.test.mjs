@@ -1,12 +1,4 @@
-/**
- * Contract tests for `run-qa.mjs --judge-stored`: phase 2 of
- * the two-phase collect → checkpoint → judge flow. Judges a --no-judge
- * collection IN PLACE with an injected judge stub — no claude CLI spawn, no
- * spend. Pins: write-back shape (verdicts, summary, judge-cost meta stamps,
- * judgeStored provenance block), the judge-all-unjudged default, the empty-
- * answer error verdict, and every refusal guard (drifted case snapshot,
- * mixed judge tuple, pack-hash drift, already-fully-judged).
- */
+/** Contract tests for `run-qa.mjs --judge-stored` using an injected judge stub. */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
@@ -1107,10 +1099,7 @@ describe("run-qa --judge-stored", () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {
       const { casesPath, resultsPath } = writeFixture(root);
-      // Flip the answered row's case to a freshness the pack builder serves, so
-      // the rebuilt pack is non-empty against the recorded sha256:null. A
-      // truthiness guard skipped exactly this class (14 of 30 rows in the
-      // 2026-07-28 artifact of record).
+      // Flip freshness so the rebuilt pack is non-empty against the recorded sha256:null.
       const cases = JSON.parse(readFileSync(casesPath, "utf8"));
       cases.cases[0].tags.freshness = "live";
       writeFileSync(casesPath, JSON.stringify(cases, null, 2));
@@ -1267,9 +1256,7 @@ describe("run-qa --judge-stored", () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {
       const { resultsPath } = writeFixture(root);
-      // Same shape as the 2026-09-04T05-40-51-variantA arm: an inline run that
-      // judged every row and stamped a summary plus the retired coverage keys,
-      // but never carried a judgeStored block.
+      // Inline run with all rows judged and a summary, but no judgeStored block.
       const inline = JSON.parse(readFileSync(resultsPath, "utf8"));
       inline.meta.judgeModel = "stub-judge";
       inline.meta.judgeRubric = JUDGE_RUBRIC;

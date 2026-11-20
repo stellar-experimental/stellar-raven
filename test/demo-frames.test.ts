@@ -1,8 +1,4 @@
-/**
- * SSE frame encoding — the wire contract other /demo modules (chat.ts, the
- * client's EventSource handler) build against. Kept tiny and pure per
- * src/demo/frames.ts's own header.
- */
+/** SSE frame encoding tests (src/demo/frames.ts). */
 import { describe, expect, it } from "vitest";
 import { encodeFrame, type DemoFrame } from "../src/demo/frames";
 

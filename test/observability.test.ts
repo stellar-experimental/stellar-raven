@@ -1,10 +1,4 @@
-/**
- * Direct unit tests for the observability helpers (src/observability.ts).
- * `logEvent` and identity hashes are the whole surface — no span helpers live here
- * (the sandbox-boundary span is in src/executor/run.ts via tracing.enterSpan).
- * Covers: event naming/shape, telemetry-never-throws (error swallowing), and
- * content-free search telemetry.
- */
+/** Unit tests for src/observability.ts (`logEvent` shape, error swallowing, content-free search events). */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { hashPrefix, logEvent } from "../src/observability.ts";
 import { searchEventFields } from "../src/observability-search.ts";

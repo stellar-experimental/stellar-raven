@@ -1,15 +1,7 @@
-/**
- * DEMO_CAPS + clampHistory + demoThrottle — src/demo/budget.ts. Per design
- * Decision 5, demoThrottle is a documented best-effort bucket (no atomic
- * consume); these tests assert the honest read-then-write behavior, not a
- * hard guarantee.
- */
+/** DEMO_CAPS, clampHistory, and best-effort demoThrottle tests (src/demo/budget.ts). */
 import { describe, expect, it } from "vitest";
 import { DEMO_CAPS, clampHistory, createDemoToolBudget, demoThrottle } from "../src/demo/budget";
 import { RETENTION } from "../src/auth/retention";
-
-// ---------------------------------------------------------------------------
-// Stub (same shape as test/auth.test.ts's memoryKv)
 
 function memoryKv(): KVNamespace & { store: Map<string, string>; putCalls: { key: string; options: unknown }[] } {
   const store = new Map<string, string>();

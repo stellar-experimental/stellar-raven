@@ -134,10 +134,8 @@ describe("demo model config", () => {
   });
 
   it("builds OpenAI-wire reasoning options for OpenAI and provider-native Grok slugs", () => {
-    // `store: false` is the Zero Data Retention wire: OpenAI never persists
-    // response items for this gateway, so a stored-item replay 404s unless the
-    // SDK requests `reasoning.encrypted_content`, which it does only when
-    // store is false (gpt-6-astra at low, 2026-11-04).
+    // The gateway is Zero Data Retention; store: false makes the SDK request
+    // reasoning.encrypted_content instead of replaying unstored response IDs.
     expect(demoOpenAiProviderOptions("openai/gpt-5.4", "low")).toEqual({
       providerOptions: {
         openai: {
@@ -218,18 +216,14 @@ describe("demo model config", () => {
       resume: false,
       collectLog: false
     });
-    // Anthropic MUST omit `transport`. That selects the binding run path, whose
-    // Unified Billing catalog is wider than provider passthrough's — passthrough
-    // strips auth headers and does not carry claude-fable-5, so it was reaching
-    // api.anthropic.com with no credential and 401ing. Asserting absence, not a
-    // value, because absence is the whole fix.
+    // Anthropic must omit transport to use the binding run path (Unified Billing catalog);
+    // passthrough strips auth headers and lacks claude-fable-5.
     for (const model of ["anthropic/claude-fable-5", "anthropic/claude-sonnet-5"]) {
       const settings = demoGatewayTransportSettings(model);
       expect("transport" in settings, model).toBe(false);
       expect(settings).toEqual({ resume: false, collectLog: false });
     }
-    // Google is the opposite: the run path rejects the tool-result replay
-    // (`7003 User Input Error`, probed 2026-11-03), passthrough completes it.
+    // Google requires gateway passthrough; the run path rejects tool-result replay (7003).
     expect(demoGatewayTransportSettings("google/gemini-3.8-flash")).toEqual({
       transport: "gateway",
       resume: false,
@@ -241,7 +235,7 @@ describe("demo model config", () => {
     // workers-ai-provider has no `moonshotai` entry, so the plugin delegate
     // throws before any network call. The binding run path resolves it instead.
     expect(demoUsesUnifiedRun("moonshotai/kimi-k3")).toBe(true);
-    // Probed offline on 2026-11-03: both throw `Unknown gateway provider` on the plugin path.
+    // Both throw Unknown gateway provider on the plugin path.
     expect(demoUsesUnifiedRun("meta/muse-spark-1.3")).toBe(true);
     expect(demoUsesUnifiedRun("particle/particle-1")).toBe(true);
     expect(demoUsesUnifiedRun("anthropic/claude-fable-5")).toBe(false);
@@ -258,9 +252,7 @@ describe("demo model config", () => {
     expect(demoUsesCatalogRun("meta/muse-spark-1.3")).toBe(true);
     expect(demoUsesCatalogRun("@cf/zai-org/glm-5.3")).toBe(true);
     expect(demoUsesCatalogRun("openai/gpt-5.6-terra")).toBe(false);
-    // Third-party catalog slugs name the request format: `/run` otherwise
-    // validates the chat body against the serving provider's native schema
-    // (Muse Spark 1.3 is Responses-only and answered `7003`, probed 2026-11-03).
+    // Third-party catalog slugs specify their request format; Responses-only models reject chat bodies (7003).
     expect(demoModelSettings("particle/particle-1", "a", "none")).toEqual({
       extraHeaders: {
         "x-session-affinity": "a",
@@ -280,12 +272,8 @@ describe("demo model config", () => {
   });
 
   it("requests a JSON reply only for catalog models whose request format is Responses", async () => {
-    // A stream:true chat request to a Responses-format catalog model comes
-    // back as the provider's native Responses event stream, which the chat
-    // parser cannot read (Muse Spark 1.3, 2026-11-04: three `[object Object]`
-    // tokens, zero tool calls). A JSON reply is converted correctly, and the
-    // provider's own JSON-reply branch synthesizes the stream. Chat-format
-    // catalog models keep their live token stream.
+    // Responses-format catalog models emit native Responses events on stream:true, which the
+    // chat parser cannot read; request JSON instead while chat-format models keep streaming.
     expect([...DEMO_RESPONSES_FORMAT_CATALOG_MODELS]).toEqual(["meta/muse-spark-1.3"]);
     const calls: Array<{ model: string; inputs: Record<string, unknown>; options: unknown }> = [];
     const fake = {
@@ -414,9 +402,7 @@ describe("demo model config", () => {
     expect(calls).toHaveLength(1);
     expect(calls[0]?.model).toBe(DEMO_KIMI_CONTROL_MODEL);
     expect(calls[0]?.inputs.temperature).toBe(DEMO_TEMPERATURE);
-    // At the default effort ("none") the key must be ABSENT, not null: GLM
-    // rejects an explicit null with `8006: Invalid data for reasoning_effort`,
-    // which took a live probe to find because every other @cf model ignores it.
+    // At effort "none" omit reasoning_effort rather than sending null (GLM rejects null with 8006).
     expect(demoWorkersAiReasoningEffort(DEMO_REASONING_EFFORT)).toBeNull();
     expect("reasoning_effort" in (calls[0]?.inputs ?? {})).toBe(false);
     // A real effort still rides through.
@@ -457,8 +443,7 @@ describe("demo model config", () => {
     expect(entries).toHaveLength(1);
     expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
     expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
-    // Gateway cache_ttl is 300; without this the demo replays another visitor's
-    // answer and every measured run mixes cache hits into its numbers.
+    // Skip gateway cache (300 s TTL) so visitors and measured runs never replay cached answers.
     expect(entries[0]?.headers["cf-aig-skip-cache"]).toBe("true");
     expect(entries[0]?.headers["x-session-affinity"]).toBe("demo-test-affinity");
   });
@@ -494,8 +479,7 @@ describe("demo model config", () => {
     expect(entries[0]?.endpoint).toBe("v1/responses");
     expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
     expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
-    // Gateway cache_ttl is 300; without this the demo replays another visitor's
-    // answer and every measured run mixes cache hits into its numbers.
+    // Skip gateway cache (300 s TTL) so visitors and measured runs never replay cached answers.
     expect(entries[0]?.headers["cf-aig-skip-cache"]).toBe("true");
   });
 
@@ -529,8 +513,7 @@ describe("demo model config", () => {
     expect(entries).toHaveLength(1);
     expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
     expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
-    // Gateway cache_ttl is 300; without this the demo replays another visitor's
-    // answer and every measured run mixes cache hits into its numbers.
+    // Skip gateway cache (300 s TTL) so visitors and measured runs never replay cached answers.
     expect(entries[0]?.headers["cf-aig-skip-cache"]).toBe("true");
     expect(entries[0]?.headers["x-session-affinity"]).toBe("demo-test-affinity");
   });

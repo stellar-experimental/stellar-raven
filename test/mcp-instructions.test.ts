@@ -1,16 +1,4 @@
-/**
- * Model-facing text budget and contract. Claude Code keeps 4,096 characters of
- * injected MCP server instructions and of each tool description that loads up
- * front (the limit and its source are in test/helpers/mcp-tool-metadata.ts).
- * Grok CLI keeps 2,033, the smallest measured cut, so the instructions string
- * (BASE alone) and each description stay inside it and every measured client
- * receives them whole. Clients that show only the start of a text get a whole
- * thought there: Codex lists the first line of the instructions, OpenCode the
- * first 117 characters of each description.
- *
- * These tests hold what each contract must say and where it may say it. They
- * do not pin wording beyond the rules a model acts on.
- */
+/** Model-facing text budgets and contract checks; client limits live in test/helpers/mcp-tool-metadata.ts. */
 import { describe, expect, it } from "vitest";
 import { assertGeneratedTextNoNonExposedRefs } from "../scripts/build-family-text.mjs";
 import { getCatalog } from "../src/catalog/load";
@@ -44,15 +32,10 @@ describe("server instructions — Claude Code character budget", () => {
   });
 
   it("what survives truncation IS the whole contract — BASE ends on a sentence boundary", () => {
-    // The budget and prefix invariants make containment automatic; the check
-    // that isn't automatic is that BASE reads complete where a client cuts —
-    // it must end mid-nothing, not mid-sentence.
     expect(BASE_SERVER_INSTRUCTIONS.endsWith(".")).toBe(true);
   });
 
   it(`opens with one line of at most ${CODEX_CATALOGUE_LINE_CHARS} chars that ends in a full stop and stands alone`, () => {
-    // Codex puts one catalogue line per server in context: the first line of the instructions,
-    // about 230 characters for one server and 201 for two.
     const firstLine = SERVER_INSTRUCTIONS.split("\n")[0]!;
     expect(firstLine.length).toBeLessThanOrEqual(CODEX_CATALOGUE_LINE_CHARS);
     expect(firstLine.endsWith(".")).toBe(true);
@@ -63,16 +46,16 @@ describe("server instructions — Claude Code character budget", () => {
   it("the surviving prefix carries every load-bearing rule", () => {
     const survived = SERVER_INSTRUCTIONS.slice(0, CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS);
     for (const phrase of [
-      "ok: true, data", // envelope shape
-      "soft-empty", // two-way error.kind + inconclusive semantics
+      "ok: true, data",
+      "soft-empty",
       "NOT evidence of absence",
-      "codemode.describe(", // detail-on-demand step
-      "codemode.skill.read(id, { sections })", // skills read path
-      "codemode.skill.run(", // runnable dispatch
-      "codemode.artifact.info(id)", // truncation recovery
-      "exact-match — never guess", // id discipline
+      "codemode.describe(",
+      "codemode.skill.read(id, { sections })",
+      "codemode.skill.run(",
+      "codemode.artifact.info(id)",
+      "exact-match — never guess",
       "open-world identity, history, or topic",
-      "ok: true, data, asOf, asOfBasis, caveat?", // host-derived ok signals
+      "ok: true, data, asOf, asOfBasis, caveat?",
       '`asOf` is an upstream-stated date, or the observation time when `asOfBasis` is "observed"',
       'An ok `caveat` is "no-rows" or "unverified-match"',
       "ok results with a `caveat`, or off-target or adjacent rows, ground nothing",
@@ -95,7 +78,6 @@ describe("server instructions — Claude Code character budget", () => {
   });
 
   it("leaves answer phrasing to the asOf and caveat result signals", () => {
-    // .agents/rounds/2026-10-10-weekend/answer-style/design.md names each replacement.
     for (const phrase of ["date volatile values", "not found in these sources", "abstain after empty entity lookups"]) {
       expect(BASE_SERVER_INSTRUCTIONS, phrase).not.toContain(phrase);
     }
@@ -201,10 +183,8 @@ describe("tool descriptions — one contract inside the character cap", () => {
   it("execute carries the envelope, the evidence signals, and the helpers", () => {
     for (const phrase of [
       "sandbox with no network",
-      // Two scripting rules whose absence showed up as failed scripts.
       "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `stellarOrg`, `codemode`, and standard JavaScript",
       "Artifact reads resolve to the same envelope shape",
-      // An operation id is not a tool name: a client once called one at the top level.
       "are called inside this script, never as top-level tools",
       "Ids are exact-match",
       "capped near 6k tokens",
@@ -215,7 +195,7 @@ describe("tool descriptions — one contract inside the character cap", () => {
       "call the detail operation before answering specifics",
       "codemode.describe(id)",
       "codemode.search(query)",
-      // src/skills/store.ts returns an array; 8.3% of section reads treated it as a map.
+      // src/skills/store.ts returns an array, not a map.
       "`r.data.sections` is an ARRAY of { section, content, url }"
     ]) {
       expect(EXECUTE_DESCRIPTION, phrase).toContain(phrase);

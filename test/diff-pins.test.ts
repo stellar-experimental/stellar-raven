@@ -1,13 +1,6 @@
 /**
- * scripts/diff-pins.mjs is the re-pin REVIEW GATE. Bodies are not vendored, so
- * a re-pin commit shows hash changes only and this diff is the one place the
- * incoming prompt input is ever shown to a human before it starts being served.
- *
- * The property under test is therefore not "it prints a diff" but "no changed
- * or added file's text can reach the served surface without appearing here".
- * A file that is entirely NEW is the case with the most unreviewed text in it,
- * and printing a header for it while skipping its body let an operator follow
- * the documented procedure, see nothing, and truthfully attest to it.
+ * Verifies scripts/diff-pins.mjs prints the full body of newly added pinned files
+ * (not just a header), since skill bodies are unvendored and reviewed through this diff.
  */
 import { describe, expect, it } from "vitest";
 import { execFileSync } from "node:child_process";

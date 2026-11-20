@@ -1,16 +1,6 @@
 /**
- * Test skill sources.
- *
- * Skill bodies live upstream, not in this repo, so tests that need REAL skill
- * text build a source from the same pinned manifest the builders and the
- * Worker use: `scripts/lib/skill-mirror.mjs` reads each file from the
- * gitignored working cache (populated by any catalog/spec build) and fetches +
- * hash-verifies it only on a cache miss. That keeps the suite deterministic
- * and, after one build, offline.
- *
- * Behavior that does not depend on real content (error paths, size notices,
- * synthetic fixtures) uses `staticSkillSource` instead — no manifest, no
- * network, no cache.
+ * Test SkillSource builders: `pinnedSkillSource` loads real pinned files from the working cache
+ * (fetching and hash-verifying on a cache miss); `staticSkillSource` serves fixed in-memory maps.
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";

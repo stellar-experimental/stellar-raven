@@ -1,17 +1,7 @@
 /**
- * Unit tests for the WorkOS-backed OAuth wiring (docs/operations.md):
- *
- *  - the named API-key and local-dev bypasses;
- *  - REAL workers-oauth-provider behavior built from oauthProviderOptions()
- *    around a stub /mcp handler (401 + WWW-Authenticate, discovery docs,
- *    the path-suffixed RFC 8414 alias) — `cloudflare:workers` is aliased to
- *    test/stubs/cloudflare-workers.ts via vitest.config.ts;
- *  - the WorkOSAuthHandler defaultHandler routes (landing, health, consent
- *    page + CSRF, WorkOS redirect, callback state binding + code exchange).
- *
- * src/server.ts itself cannot load under plain Node (it imports
- * src/executor/run → cloudflare:workers via @cloudflare/codemode), so its
- * thin fetch router is exercised through these same building blocks.
+ * WorkOS-backed OAuth unit tests (docs/operations.md). `cloudflare:workers` is
+ * aliased to test/stubs/cloudflare-workers.ts so OAuthProvider runs in Node;
+ * src/server.ts routing is covered in test/smoke/server.test.ts.
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -54,9 +44,6 @@ import { DEMO_COOKIE_NAME, verifyDemoCookie } from "../src/demo/auth";
 import { FAVICON, getDocCatalogCounts } from "../src/site";
 import { memoryKv } from "./helpers/memory-kv";
 
-// ---------------------------------------------------------------------------
-// Stubs
-
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 function testEnv(overrides: Record<string, unknown> = {}): Env {
@@ -87,7 +74,6 @@ const AUTH_REQ: AuthRequest = {
   codeChallengeMethod: "S256"
 };
 
-/** Stub provider-helpers for driving WorkOSAuthHandler directly. */
 function stubHelpers(overrides: Partial<OAuthHelpers> = {}): OAuthHelpers {
   return {
     parseAuthRequest: vi.fn(async () => AUTH_REQ),
@@ -117,9 +103,6 @@ function cookieValue(response: Response, name: string): string | undefined {
 afterEach(() => {
   vi.unstubAllGlobals();
 });
-
-// ---------------------------------------------------------------------------
-// Bypass 1: named API keys (KV digest + timing-safe compare)
 
 describe("named API keys", () => {
   const token = "a".repeat(43);
@@ -230,15 +213,11 @@ describe("named API keys", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Bypass 2: local dev var
-
 describe("allowDevUnauthenticated", () => {
   it('is true only for the exact string "true" AND a loopback hostname', () => {
     for (const host of ["localhost", "127.0.0.1", "::1", "[::1]", "LOCALHOST"]) {
       expect(allowDevUnauthenticated({ DEV_ALLOW_UNAUTHENTICATED: "true" }, host)).toBe(true);
     }
-    // Wrong var value → false even on localhost.
     expect(allowDevUnauthenticated({ DEV_ALLOW_UNAUTHENTICATED: "TRUE" }, "localhost")).toBe(false);
     expect(allowDevUnauthenticated({ DEV_ALLOW_UNAUTHENTICATED: "1" }, "localhost")).toBe(false);
     expect(allowDevUnauthenticated({ DEV_ALLOW_UNAUTHENTICATED: "" }, "localhost")).toBe(false);
@@ -251,9 +230,6 @@ describe("allowDevUnauthenticated", () => {
     }
   });
 });
-
-// ---------------------------------------------------------------------------
-// Real provider behavior (constructed from our exact wiring options)
 
 describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () => {
   const mcpFetch = vi.fn(async () => new Response("mcp-ok"));
@@ -335,24 +311,13 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     expect(wwwAuthenticate).toContain(
       'resource_metadata="https://mcp.test/.well-known/oauth-protected-resource/mcp"'
     );
-    // RFC 6750 §3: a request carrying NO credentials must not be told which
-    // error occurred — there is no token to call invalid. The pointer to the
-    // protected-resource metadata is what the client actually needs.
+    // RFC 6750 §3: a credential-less 401 returns a Bearer challenge with resource_metadata, no error=, and an empty body.
     expect(wwwAuthenticate).not.toContain("error=");
-    // No body to leak an error code into either — the challenge header carries
-    // everything a credential-less client is entitled to know.
     expect(await response.text()).toBe("");
-    // The MCP handler must never run without a valid token.
     expect(mcpFetch).not.toHaveBeenCalled();
   });
 
-  /**
-   * The load-bearing contract behind the error redirects in workos.ts: the REAL
-   * provider must refuse to attach `redirectUri` until it has validated the
-   * client and the redirect URI, because that field is what we treat as
-   * permission to redirect. Stub-based tests cannot see an upstream ordering
-   * regression — this can, and it is the reason to pay for a real-provider test.
-   */
+  /** Real provider must withhold redirectUri until client and redirect_uri are validated. */
   it("real provider withholds redirect context until client + redirect_uri are validated", async () => {
     const env = testEnv();
     const registered = "https://client.example/cb";
@@ -412,19 +377,8 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     );
   });
 
-  /**
-   * `clientIdMetadataDocumentEnabled: true` is an advertised surface, and
-   * ChatGPT is its largest consumer: OpenAI's connector prefers CIMD whenever
-   * `client_id_metadata_document_supported` is true and never falls back to
-   * dynamic registration. On 2026-08-09 every ChatGPT connect to production
-   * answered 400 while the whole suite stayed green, because provider 0.10.1
-   * rejected the document's SCALAR `token_endpoint_auth_method` before it
-   * looked at the plural field offering the `none` we do support.
-   *
-   * The shape below is ChatGPT's real live document. This test fails on
-   * 0.10.1 and guards the negotiation across every future provider bump —
-   * the one thing our own code cannot assert about itself.
-   */
+  // ChatGPT's CIMD document lists a scalar unsupported auth method alongside a
+  // plural array offering "none"; the provider must negotiate down to "none".
   it("resolves a ChatGPT-shaped CIMD client_id by negotiating down to `none`", async () => {
     // CIMD is gated on the compat flag (wrangler.jsonc sets it in production).
     vi.stubGlobal("Cloudflare", { compatibilityFlags: { global_fetch_strictly_public: true } });
@@ -438,8 +392,6 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
           client_name: "ChatGPT",
           client_uri: "https://chatgpt.com/",
           redirect_uris: [redirectUri],
-          // The pair that broke it: prefers an asymmetric method we do not
-          // support, while offering one we do.
           token_endpoint_auth_method: "private_key_jwt",
           token_endpoint_auth_methods_supported: ["none", "private_key_jwt"],
           token_endpoint_auth_signing_alg: "RS256",
@@ -469,8 +421,6 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     expect(parsed.clientId).toBe(clientId);
     expect(parsed.redirectUri).toBe(redirectUri);
 
-    // Negotiated to the public method, which is what keeps PKCE load-bearing
-    // and lets the /token exchange succeed with no client credentials.
     const client = await helpers.lookupClient(clientId);
     expect(client?.tokenEndpointAuthMethod).toBe("none");
     expect(client?.redirectUris).toEqual([redirectUri]);
@@ -487,8 +437,7 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
       ctx()
     );
     expect(response.status).toBe(401);
-    // A token WAS presented and was rejected, so RFC 6750 §3 wants the reason.
-    // This is the half of the pair that must keep the error code.
+    // RFC 6750 §3: a rejected token carries error="invalid_token".
     expect(response.headers.get("www-authenticate") ?? "").toContain('error="invalid_token"');
     expect(mcpFetch).not.toHaveBeenCalled();
   });
@@ -523,9 +472,7 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
 
   it("path-suffixed RFC 8414 form works via the alias rewrite (server.ts quirk)", async () => {
     const suffixed = new Request("https://mcp.test/.well-known/oauth-authorization-server/mcp");
-    // 0.8.1 only matches the exact path — the suffixed form 404s without the alias…
     expect(isAuthServerMetadataAlias(new URL(suffixed.url))).toBe(true);
-    // …and the rewrite lands on the real metadata endpoint.
     const response = await provider.fetch(
       rewritePath(suffixed, "/.well-known/oauth-authorization-server"),
       testEnv(),
@@ -539,13 +486,11 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
   });
 
   it("OIDC discovery paths alias onto the RFC 8414 metadata (exact + path-suffixed)", async () => {
-    // RFC 8414 §5: an OAuth-only AS may publish its metadata at the OIDC
-    // discovery path; some MCP clients probe only this one.
+    // RFC 8414 §5: OAuth-only AS may publish metadata at the OIDC discovery path.
     const exact = new Request("https://mcp.test/.well-known/openid-configuration");
     const suffixed = new Request("https://mcp.test/.well-known/openid-configuration/mcp");
     expect(isAuthServerMetadataAlias(new URL(exact.url))).toBe(true);
     expect(isAuthServerMetadataAlias(new URL(suffixed.url))).toBe(true);
-    // Must not swallow unrelated well-known paths.
     expect(isAuthServerMetadataAlias(new URL("https://mcp.test/.well-known/oauth-protected-resource/mcp"))).toBe(false);
     expect(isAuthServerMetadataAlias(new URL("https://mcp.test/.well-known/openid-configuration-extra"))).toBe(false);
 
@@ -574,9 +519,6 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
   });
 });
 
-// ---------------------------------------------------------------------------
-// WorkOSAuthHandler routes (driven directly with stubbed provider helpers)
-
 describe("WorkOSAuthHandler", () => {
   it("GET /terms serves the Raven terms, linked from the consent page", async () => {
     const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
@@ -585,16 +527,12 @@ describe("WorkOSAuthHandler", () => {
     const page = await terms.text();
     expect(page).toContain("Stellar Raven Terms of Service");
     expect(page).toContain(`<link rel="canonical" href="https://raven.stellar.org/terms"/>`);
-    // Section 9 tracks the counsel-approved Terms document, not current runtime
-    // behaviour. The Terms state the OUTER BOUND of what the Service may do;
-    // today's stricter practice (content-free logs, 7-day platform retention)
-    // is described on the privacy page instead. Keeping the bound wider than
-    // the practice is deliberate: the 30-day content store is planned, and the
-    // Terms must already permit it. Do not narrow these back to the runtime.
+    // Section 9 tracks the counsel-approved Terms (outer bound, including the planned 30-day
+    // content store), not current runtime practice (described on the privacy page). Do not
+    // narrow these back to the runtime.
     expect(page).toContain("may include the queries submitted and the responses returned");
     expect(page).toContain("for 30\ndays, after which it is deleted");
     expect(page).toContain("You may opt out of query and response logging");
-    // Script-free legal surface: CSP must not allow inline script.
     expect(terms.headers.get("content-security-policy")).not.toContain("script-src");
     expect(page).not.toContain("<script");
 
@@ -611,9 +549,7 @@ describe("WorkOSAuthHandler", () => {
     expect(response.status).toBe(200);
     const page = await response.text();
     expect(page).toContain("Stellar Raven documentation");
-    // Counts come from the same accessor the page renders from, so a catalog
-    // rebuild moves the assertion with the copy instead of failing on a stale
-    // literal.
+    // Read from the page's count accessor so catalog rebuilds stay in sync.
     const counts = getDocCatalogCounts();
     expect(page).toContain(`${counts.operations} operations`);
     expect(page).toContain(`${counts.skills} skills`);
@@ -683,16 +619,12 @@ describe("WorkOSAuthHandler", () => {
     expect(csrf).toBeTruthy();
     const page = await response.text();
     expect(page).toContain("Test MCP Client");
-    // Scope is named on the consent page (rendered as a styled scope chip).
     expect(page).toContain(`<code class="scope-code">mcp</code>`);
     expect(page).toContain(`action="/authorize?client_id=client-abc"`);
     expect(page).not.toMatch(/<br\s*\/?\s*>/i);
     expect(response.headers.get("content-security-policy")).not.toContain("form-action");
-    // Double-submit: the hidden form field carries the same token as the cookie.
     expect(page).toContain(`name="csrf_token" value="${csrf}"`);
-    // Explicit Terms/Privacy acknowledgement checkbox gates the grant.
     expect(page).toContain(`type="checkbox" name="tos_agree"`);
-    // The page names the validated redirect destination and identifies the name source.
     expect(page).toContain("Return address");
     expect(page).toContain("After sign-in, your browser returns here.");
     expect(page).toContain("https://client.example/cb");
@@ -710,8 +642,7 @@ describe("WorkOSAuthHandler", () => {
       new Request("https://mcp.test/authorize?client_id=client-abc"),
       env
     );
-    // RFC 6749 §4.1.2.1: never redirect to an invalid redirect URI — local
-    // 400, no Location, no consent page, no fresh CSRF cookie.
+    // RFC 6749 §4.1.2.1: never redirect to an invalid redirect_uri.
     expect(response.status).toBe(400);
     expect(response.headers.get("location")).toBeNull();
     expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
@@ -852,11 +783,8 @@ describe("WorkOSAuthHandler", () => {
     }
   });
 
-  // `allowPlainPKCE: false` only rejects the plain METHOD. The provider leaves an
-  // absent code_challenge undefined and, at redemption, derives
-  // `isPkceEnabled = !!grantData.codeChallenge` — so a request claiming S256 with
-  // no challenge yields a grant whose code is redeemable with no verifier at all.
-  // Both /authorize legs must refuse it before a consent page is ever rendered.
+  // allowPlainPKCE: false only rejects plain; an absent code_challenge disables PKCE at
+  // redemption, so both /authorize legs must reject it before rendering consent.
   it.each([
     ["no code_challenge at all", { responseType: "code", clientId: "client-abc", redirectUri: "https://client.example/cb", scope: ["mcp"], state: "client-state", codeChallengeMethod: "S256" }],
     ["a plain challenge", { ...AUTH_REQ, codeChallengeMethod: "plain" }],
@@ -871,14 +799,12 @@ describe("WorkOSAuthHandler", () => {
       new Request("https://mcp.test/authorize?client_id=client-abc"),
       env
     );
-    // The client and redirect_uri parsed fine, so OAuth 2.1 §4.1.2.1 wants the
-    // error delivered to the client rather than rendered at the user.
+    // Client and redirect_uri are valid, so deliver the error to the client (OAuth 2.1 §4.1.2.1).
     expect(response.status).toBe(303);
     const location = new URL(response.headers.get("location") ?? "");
     expect(location.origin + location.pathname).toBe("https://client.example/cb");
     expect(location.searchParams.get("error")).toBe("invalid_request");
     expect(location.searchParams.get("state")).toBe("client-state");
-    // Never mint a consent cookie for a request that could not be safely granted.
     expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
   });
 
@@ -915,9 +841,7 @@ describe("WorkOSAuthHandler", () => {
       }),
       env
     );
-    // 303 and not 302 on this leg specifically: a 302 only PERMITS the agent to
-    // drop the method, so the consent form body — csrf_token included — could be
-    // replayed to the client's redirect URI.
+    // 303 (not 302) ensures the browser drops POST and cannot replay the consent form body.
     expect(response.status).toBe(303);
     expect(response.headers.get("location")).toContain("error=invalid_request");
     const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
@@ -939,14 +863,11 @@ describe("WorkOSAuthHandler", () => {
       }),
       env
     );
-    // Recoverable, not a dead end: back to the form action so the GET handler
-    // issues a fresh token + cookie. The old bare 400 ALSO cleared the cookie,
-    // so every retry reported a CSRF mismatch no matter what failed first.
+    // Redirect back to GET /authorize so the user gets a fresh CSRF token and cookie.
     expect(response.status).toBe(303);
     expect(response.headers.get("location")).toBe("/authorize?client_id=client-abc");
     expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
-    // The reason still has to reach the logs — the redirect is indistinguishable
-    // from the terms-acknowledgement one in platform events.
+    // Reason must still be logged; the redirect matches the terms-missing branch.
     const events = log.mock.calls.map(([line]) => JSON.parse(String(line)));
     expect(events).toContainEqual({
       evt: "auth_reject",
@@ -958,7 +879,6 @@ describe("WorkOSAuthHandler", () => {
 
   it("POST /authorize rejects a missing Terms/Privacy acknowledgement", async () => {
     const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
-    // Valid CSRF, but the tos_agree checkbox was never ticked (field absent).
     const form = new URLSearchParams({ csrf_token: "token-1" });
     const response = await WorkOSAuthHandler.fetch(
       new Request("https://mcp.test/authorize?client_id=client-abc", {
@@ -971,11 +891,9 @@ describe("WorkOSAuthHandler", () => {
       }),
       env
     );
-    // Same recovery path as the CSRF branch — the CSS gate on the button is
-    // mouse-only, so a keyboard submit lands here and must stay retryable.
+    // Same retryable redirect as CSRF failure; keyboard submit bypasses the CSS gate.
     expect(response.status).toBe(303);
     expect(response.headers.get("location")).toBe("/authorize?client_id=client-abc");
-    // No state parked when the acknowledgement is missing.
     const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
     expect(kv.store.size).toBe(0);
   });
@@ -1086,7 +1004,6 @@ describe("WorkOSAuthHandler", () => {
     expect(location.pathname).toBe("/user_management/authorize");
     expect(location.searchParams.get("provider")).toBe("authkit");
     expect(location.searchParams.get("client_id")).toBe("client_test_123");
-    // redirect_uri is origin-derived — no env switch.
     expect(location.searchParams.get("redirect_uri")).toBe("https://mcp.test/callback");
 
     const state = location.searchParams.get("state") ?? "";
@@ -1096,15 +1013,11 @@ describe("WorkOSAuthHandler", () => {
       oauthReq: AuthRequest;
       binding: string;
     };
-    // Discriminated union: the MCP flow parks its branch tag explicitly.
     expect(parked.type).toBe("mcp");
     expect(parked.oauthReq.clientId).toBe("client-abc");
-    // The browser-binding cookie matches what was parked.
     expect(cookieValue(response, "__Host-MCP_STATE")).toBe(parked.binding);
-    // The two clocks are deliberately different, and the parked-state one is the
-    // one that must stay short: /callback consumes `login:${state}` BEFORE it
-    // checks the binding cookie, so a leaked state is a login-DoS whose window
-    // this value sets. Consent dwell has no such surface.
+    // Login state TTL must stay short: /callback consumes login:${state} before checking
+    // the binding cookie, so a leaked state is a login-DoS window.
     expect(LOGIN_STATE_TTL_SECONDS).toBe(600);
     expect(CONSENT_CSRF_TTL_SECONDS).toBe(1800);
     expect(cookieValue(response, "__Host-MCP_STATE")).toBeTruthy();
@@ -1131,7 +1044,6 @@ describe("WorkOSAuthHandler", () => {
       env
     );
     expect(mismatch.status).toBe(400);
-    // Consumed on first presentation, even a failed one.
     expect(kv.store.has("login:st1")).toBe(false);
   });
 
@@ -1155,13 +1067,11 @@ describe("WorkOSAuthHandler", () => {
     expect(response.status).toBe(302);
     expect(response.headers.get("location")).toBe("https://client.example/cb?code=xyz&state=client-state");
 
-    // The code exchange hits the documented WorkOS endpoint with the pure body.
     expect(workosFetch).toHaveBeenCalledTimes(1);
     const [exchangeUrl, exchangeInit] = workosFetch.mock.calls[0] as unknown as [string, RequestInit];
     expect(exchangeUrl).toBe("https://api.workos.com/user_management/authenticate");
     expect(JSON.parse(String(exchangeInit.body))).toEqual(workosAuthenticateBody(env, "code-123"));
 
-    // completeAuthorization gets the peppered subject — never the WorkOS id/token.
     const expectedSubject = await deriveSubject("user_wos_1", "unit-test-pepper");
     expect(helpers.completeAuthorization).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -1194,10 +1104,8 @@ describe("WorkOSAuthHandler", () => {
       );
       expect(response.status).toBe(400);
       expect(response.headers.get("location")).toBeNull();
-      // State is consumed and the binding cookie cleared, as for any failed callback.
       expect(kv.store.has("login:stP")).toBe(false);
       expect(response.headers.get("set-cookie")).toContain("__Host-MCP_STATE=;");
-      // No WorkOS hop, no grant.
       expect(workosFetch).not.toHaveBeenCalled();
       expect(helpers.completeAuthorization).not.toHaveBeenCalled();
     }
@@ -1263,9 +1171,6 @@ describe("WorkOSAuthHandler", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Parked-login union and /callback demo branch
-
 describe("login-state union on /callback", () => {
   function callbackRequest(state: string, binding: string): Request {
     return new Request(`https://mcp.test/callback?code=code-123&state=${state}`, {
@@ -1328,21 +1233,17 @@ describe("login-state union on /callback", () => {
     const { response, helpers, kv, workosFetch } = await driveCallback(
       JSON.stringify({ type: "demo", binding: "bind-x", returnTo: "/playground" })
     );
-    // NOT a 302: the navigation chain is cross-site-initiated (WorkOS →
-    // /callback), so browsers would withhold the SameSite=Strict cookie on a
-    // redirect straight to /playground. The interstitial's meta-refresh starts
-    // a fresh same-origin navigation instead.
+    // 200 HTML meta-refresh (not 302): a cross-site WorkOS redirect would withhold
+    // the SameSite=Strict cookie on navigation to /playground.
     expect(response.status).toBe(200);
     expect(response.headers.get("content-type")).toContain("text/html");
     const body = await response.text();
     expect(body).toContain('content="0;url=/playground"');
     expect(body).toContain('href="/playground"');
     expect(workosFetch).toHaveBeenCalledTimes(1);
-    // A browser session, not an authorization: the provider is never involved.
     expect(helpers.completeAuthorization).not.toHaveBeenCalled();
     expect(kv.store.has("login:stX")).toBe(false);
 
-    // The Set-Cookie is a verifiable demo session for the peppered subject.
     const setCookies = (response.headers as unknown as { getSetCookie(): string[] }).getSetCookie();
     const demoCookie = setCookies.find((h) => h.startsWith(`${DEMO_COOKIE_NAME}=`));
     expect(demoCookie).toBeTruthy();
@@ -1350,7 +1251,6 @@ describe("login-state union on /callback", () => {
     const cookieHeader = `${DEMO_COOKIE_NAME}=${demoCookie?.slice(DEMO_COOKIE_NAME.length + 1).split(";")[0]}`;
     const subject = await verifyDemoCookie("unit-test-pepper", cookieHeader);
     expect(subject).toBe(await deriveSubject("user_wos_1", "unit-test-pepper"));
-    // The binding cookie is cleared alongside.
     expect(setCookies.some((h) => h.startsWith("__Host-MCP_STATE=;"))).toBe(true);
   });
 
@@ -1430,7 +1330,6 @@ describe("demoLoginRedirect", () => {
     expect(location.pathname).toBe("/user_management/authorize");
     expect(location.searchParams.get("provider")).toBe("authkit");
     expect(location.searchParams.get("client_id")).toBe("client_test_123");
-    // Same origin-derived redirect_uri as the MCP flow — one registered URI.
     expect(location.searchParams.get("redirect_uri")).toBe("https://mcp.test/callback");
 
     const state = location.searchParams.get("state") ?? "";
@@ -1442,7 +1341,6 @@ describe("demoLoginRedirect", () => {
     };
     expect(parked.type).toBe("demo");
     expect(parked.returnTo).toBe("/playground");
-    // The browser-binding cookie matches what was parked, like the MCP flow.
     expect(cookieValue(response, "__Host-MCP_STATE")).toBe(parked.binding);
   });
 });

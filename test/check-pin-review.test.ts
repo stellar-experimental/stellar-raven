@@ -1,18 +1,6 @@
 /**
- * scripts/check-pin-review.mjs is the CI half of the re-pin review gate: bodies
- * are not stored, so a change to what gets served shows up in `git diff` as
- * hashes only, and this is what forces a human attestation anyway.
- *
- * The gate is only worth its comment if it cannot be walked around, so these
- * are the walk-arounds — each one passed some earlier version of the script:
- *   - move the commit (the case it was written for)
- *   - retarget a file inside the SAME pinned commit
- *   - delete a whole source
- *   - revert to a selection the ledger attested to in the past
- *   - satisfy it with 12 hex chars that are not a `sel:` token at all
- *
- * Driven through a throwaway git repo because the check's whole job is to
- * compare a working tree against a base ref.
+ * Tests for scripts/check-pin-review.mjs against a throwaway git repo:
+ * commit moves, retargeted files, source deletions, attestation replay, and sel: token parsing.
  */
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -112,8 +100,6 @@ describe("check-pin-review.mjs — the re-pin attestation gate", () => {
   });
 
   it("fails when a file is retargeted inside the SAME pinned commit", () => {
-    // The commit-only gate reported "no skill pin moved" here, while the model
-    // would start reading a different file.
     const m = baseManifest();
     m.sources[0]!.skills[0]!.files[0]!.path = "references/OTHER.md";
     write(m, BASE_LEDGER);
@@ -121,7 +107,6 @@ describe("check-pin-review.mjs — the re-pin attestation gate", () => {
   });
 
   it("fails when an entire source is deleted", () => {
-    // Iterating only the current manifest meant a deletion moved nothing.
     const m = baseManifest();
     m.sources = [m.sources[0]!];
     write(m, BASE_LEDGER);

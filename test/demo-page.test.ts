@@ -1,15 +1,6 @@
 /**
- * /demo page tests — pure rendering, plain Node.
- *
- * The load-bearing one is the CSP hash guard: DEMO_PAGE_HEADERS pins the
- * single inline <script> by sha256 (no 'unsafe-inline' for script). The hash
- * is hard-coded in src/demo/page.ts (Web Crypto is async; the headers are a
- * sync module const), so this test recomputes it from the rendered page —
- * any edit to the client script fails here with the new value to paste in.
- *
- * ADR-0003: the page is emitted text — it must not reference non-exposed
- * ops or retired skills. Checked against the real exclusion data in
- * scripts/exposure.mjs, never a hand-copied list.
+ * Playground page rendering tests (src/demo/page.ts): verifies the CSP sha256 hash
+ * matches the inline script and checks rendered HTML against scripts/exposure.mjs (ADR-0003).
  */
 import { describe, expect, it } from "vitest";
 import { createHash } from "node:crypto";
@@ -19,8 +10,6 @@ import { fileURLToPath } from "node:url";
 import { demoPage, DEMO_PAGE_HEADERS } from "../src/demo/page";
 import { loadManifest, searchCatalogPage } from "../src/catalog/search";
 import { renderPublicHeadMetadata } from "../src/site";
-// The reusable ADR-0003 leak guard (backed by scripts/exposure.mjs data) —
-// the design requires running it over the rendered demo HTML.
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
 
 const lockedHtml = demoPage({ authenticated: false });
@@ -101,16 +90,14 @@ describe("demo page states", () => {
     expect(lockedHtml).toContain("&quot;sections&quot;: [");
     expect(lockedHtml).not.toContain("&quot;playbook&quot;: [");
     expect(lockedHtml).toContain("4 of 13 matches");
-    // The static example never shows a section HIT — sections left search at
-    // the 2026-07-13 skills-form A/B (the sample code still READS a section).
+    // Sections are searchable:false, so the static example never shows a skill-section hit.
     expect(lockedHtml).not.toContain("skill-section");
     expect(lockedHtml).toContain("The playground shows the live trace");
     expect(lockedHtml).toContain("connect an MCP client to <code>/mcp</code>");
     expect(lockedHtml).not.toContain("<script>");
     expect(lockedHtml).not.toContain("Watch an agent");
     expect(lockedHtml).not.toContain('class="flow"');
-    // No numbered step dividers: they taught a false fixed-pipeline mental
-    // model for what is a free-form tool loop (search/execute interleave).
+    // Free-form tool loop: no numbered step dividers.
     expect(lockedHtml).not.toContain("stepline");
     expect(lockedHtml).not.toContain("step 1");
     expect(lockedHtml).not.toMatch(/<br\s*\/?\s*>/i);
@@ -132,7 +119,7 @@ describe("demo page states", () => {
     expect(chatHtml).toContain("connect an MCP client to <code>/mcp</code>");
     expect(chatHtml).toContain("backdrop-filter:none");
     expect(chatHtml).not.toContain('class="flow"');
-    expect(chatHtml).not.toContain("stepline"); // no step dividers in the live trace either
+    expect(chatHtml).not.toContain("stepline");
   });
 
   it("keeps demo-facing copy free of transport and envelope jargon", () => {
@@ -144,10 +131,7 @@ describe("demo page states", () => {
 });
 
 describe("static example trace is truthful", () => {
-  // src/demo/page.ts claims its hard-coded sample is "a real
-  // searchCatalogPage page against the current catalog". Recompute it so a
-  // catalog or scoring change that moves the real page fails here with the
-  // fresh values to paste in, instead of the locked page silently lying.
+  // Recompute the static example trace against the current catalog so drift fails loudly.
   it("sample hits/scores/total match the live engine on the current catalog", () => {
     const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
     const catalog = loadManifest(

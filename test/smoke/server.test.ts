@@ -1,18 +1,4 @@
-/**
- * Offline smoke of src/server.ts — the assembled router.
- * Its building blocks (gate.ts bypass logic, provider options, site pages)
- * are unit-tested in plain Node; what plain Node cannot exercise is this
- * file's dispatch wiring: bypass-before-provider ordering, the hostname
- * second factor at the URL level, the discovery-alias rewrite into the
- * provider, and defaultHandler routing. SELF drives the real `main` worker
- * from wrangler.jsonc, so a route-assembly regression fails here instead of
- * shipping green.
- *
- * Auth values are test-only fakes stored in the local OAUTH_KV binding.
- * Requests to /mcp go through the FULL stack — McpServer construction,
- * tool registration, streamable HTTP — so the named-key case doubles as
- * an initialize smoke (server info + instructions present).
- */
+/** Offline workerd smoke tests for src/server.ts via SELF using test-only OAUTH_KV auth values. */
 import { env, SELF } from "cloudflare:test";
 import { canaryPins } from "../../src/skills/canary.ts";
 import { getCatalog } from "../../src/catalog/load.ts";
@@ -106,35 +92,21 @@ describe("defaultHandler routes", () => {
   });
 
   it("the cron handler writes a verdict the endpoint then serves", async () => {
-    // The wiring nobody else covers: cron trigger -> scheduled handler ->
-    // canary -> KV -> endpoint. The unit tests exercise each half against
-    // fakes; this proves the assembled Worker actually connects them, with the
-    // real KV binding. Without it, a `scheduled` export that was never wired
-    // (or wired to the wrong binding) would look perfectly healthy until an
-    // outage arrived and the detector had never run.
+    // Exercises the assembled scheduled -> canary -> KV -> /health/skills wiring.
     const worker = (await import("../../src/server.ts")).default;
     await worker.scheduled!(
       { scheduledTime: Date.now(), cron: "7 * * * *", noRetry() {} } as ScheduledController,
       env as never,
-      // The handler awaits its own work and never touches ctx, so a stub is
-      // enough — and passing one proves it does not secretly depend on it.
       { waitUntil() {}, passThroughOnException() {} } as unknown as ExecutionContext
     );
-    // This lane's outbound wall serves the REAL pinned bodies locally, so the
-    // sweep does genuine fetches and genuine sha256 + git-blob verification —
-    // an honest green, not an offline shrug.
+    // Outbound wall serves real pinned bodies locally so verification runs end to end.
     const res = await SELF.fetch(`${PUBLIC}/health/skills`);
     const body = (await res.json()) as { ok: boolean; checked: number; checkedAt: string };
     expect(res.status).toBe(200);
     expect(body.ok).toBe(true);
-    // Every pinned file, not a sample — a canary that quietly checked zero
-    // would also report ok:true.
     expect(body.checked).toBe(canaryPins(getCatalog()).length);
     expect(body.checked).toBeGreaterThan(0);
     expect(Number.isFinite(Date.parse(body.checkedAt))).toBe(true);
-    // Public by design (it reports, never probes) — so it must not sit behind
-    // the MCP auth wall, and must not have fallen through to the 404 handler.
-    // Short edge cache bounds the KV reads an unauthenticated route can drive.
     expect(res.headers.get("cache-control")).toBe("public, max-age=60");
   });
 
@@ -284,7 +256,6 @@ describe("/mcp auth dispatch", () => {
   });
 
   it("…but the same var is inert on the public hostname (second factor)", async () => {
-    // Same env, same path, only the hostname differs — must NOT bypass.
     const res = await postInitialize(`${PUBLIC}/mcp`);
     expect(res.status).toBe(401);
   });
@@ -382,9 +353,7 @@ describe("/playground routes", () => {
   });
 
   it("POST /playground/chat: dev bypass on localhost reaches body validation (400 pre-model)", async () => {
-    // Malformed body fails AFTER auth but BEFORE the throttle (no slot
-    // burned) and BEFORE any AI binding call — proves the gauntlet order
-    // without spending a model turn.
+    // Malformed body fails after auth and before throttle or model call.
     const res = await SELF.fetch(`${LOCAL}/playground/chat`, {
       method: "POST",
       headers: { origin: LOCAL, "content-type": "application/json" },

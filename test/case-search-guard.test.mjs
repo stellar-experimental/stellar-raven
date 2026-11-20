@@ -108,7 +108,7 @@ const MUST_DENY = [
   "grep X eval/qa/*.json",
   `grep X ${REPO}/eval/qa/*.json`,
   "cd eval/qa && rg X *",
-  // environment prefixes and wrapper options (Codex review, finding 1)
+  // environment prefixes and wrapper options
   'LC_ALL="C" grep -r X .',
   "LC_ALL='C' rg --no-ignore X eval",
   "LC_ALL=C \\\nrg --no-ignore X eval",
@@ -134,7 +134,7 @@ const MUST_DENY = [
   "CASE_TEXT=maintenance env -i grep -r X .",
   "CASE_TEXT=maintenance env -u CASE_TEXT grep -r X .",
   'CASE_TEXT="maintenance" CASE_TEXT="" grep -r X .',
-  // globs: partial quotes, wildcard ancestors, variable paths (finding 2)
+  // globs: partial quotes, wildcard ancestors, variable paths
   'grep X "eval/qa/"*.json',
   "rg X 'eval/qa/'*",
   "grep X 'eval/qa/'*.json",
@@ -149,7 +149,7 @@ const MUST_DENY = [
   "rg -g '*.json' X \"$SOMEWHERE\"",
   "rg -g '*.json' X $UNSET/x",
   'rg X "$PWD/eval/qa/"*.json',
-  // working directory: every possible cwd, subshells, substitutions, git -C (finding 3)
+  // working directory: every possible cwd, subshells, substitutions, git -C
   "(cd src && true); rg -g '*.json' X",
   "cd src; (cd .. && true); rg -g '*.json' X",
   "echo \"$(rg -g '*.json' X)\"; cd src",
@@ -160,7 +160,7 @@ const MUST_DENY = [
   `git -C . -C eval grep X -- ${FULL_EXCLUSION}`,
   "git -C eval grep X -- ':(top,exclude)eval/qa' ':!.agents'",
   "git -C \"$SOMEWHERE\" grep X",
-  // heredocs fed to a shell (finding 4)
+  // heredocs fed to a shell
   "bash <<'EOF'\ngrep -r X .\nEOF",
   "bash <<EOF\ngrep -r X .\nEOF",
   "sh <<-'EOF'\n\trg -u X\n\tEOF",
@@ -169,7 +169,7 @@ const MUST_DENY = [
   "bash <<< 'grep -r X .'",
   "env bash <<'EOF'\ngrep -r X .\nEOF",
   "cat <<'EOF' | bash\nls\nEOF\nbash <<'EOF'\ngit grep X\nEOF",
-  // option abbreviations GNU grep accepts (finding 8)
+  // option abbreviations GNU grep accepts
   "grep --rec X .",
   "grep --recur X .",
   "grep --recursive X .",
@@ -179,7 +179,7 @@ const MUST_DENY = [
   "grep --directories recurse X .",
   // ordered negative globs stay denied: an accepted false positive, `rg X src` is the substitute
   "rg --hidden -g '*.json' -g '!eval/**' -g '!.agents/**' X .",
-  // re-check: wrapper cwd carries into a shell script, timeout's terminator, brace globs
+  // wrapper cwd carries into a shell script, timeout's terminator, brace globs
   "env -C eval/qa bash -c 'grep X *.json'",
   "env -C src bash -c 'rg -g \"*.json\" X ../eval'",
   "env -C src env -C ../eval rg -g '*.json' X",
@@ -250,7 +250,7 @@ const MUST_PASS = [
   "cd eval/qa && CASE_TEXT=maintenance grep -r X corpus",
   "CASE_TEXT=maintenance git grep X",
   "CASE_TEXT=maintenance rg -u X",
-  // wrappers that only query, ordered options that stay inside the scope (finding 1, 8)
+  // wrappers that only query, ordered options that stay inside the scope
   "command -v rg",
   "command -V git grep",
   "command -v grep rg",
@@ -265,7 +265,7 @@ const MUST_PASS = [
   "grep --recursiv-ish X file",
   "grep --no-messages X file",
   "grep --regexp=rec X file",
-  // globs and variable paths that stay inside their scope (finding 2)
+  // globs and variable paths that stay inside their scope
   'grep X "src/"*.ts',
   "grep X src/*.ts",
   "rg X .agents/*",
@@ -274,28 +274,28 @@ const MUST_PASS = [
   "rg -g '*.json' X \"$PWD/src\"",
   "rg -g '*.json' X ./src ./test",
   "rg X \"$SOMEWHERE\"",
-  // cwd handling stays precise where it can (finding 3)
+  // cwd handling stays precise where it can
   "echo \"$(rg X src)\"; cd eval",
   "(cd eval && true); rg X src",
   "cd src && rg X .",
   `git -C . -C . grep X -- ${FULL_EXCLUSION}`,
   "git -c core.pager=cat grep X -- ':(top,exclude)eval' ':(top,exclude).agents'",
   "git -C eval grep X -- ':(top,exclude)eval' ':(top,exclude).agents'",
-  // heredocs that are documents, not scripts (finding 4)
+  // heredocs that are documents, not scripts
   "cat <<'EOF'\ngrep -r X .\nEOF",
   "git commit -F - <<'EOF'\nthe hook denies grep -r and rg -u\nEOF",
   "gh pr create --title t --body-file - <<'EOF'\ngrep -r X .\ngit grep X\nEOF",
   "bash script.sh <<'EOF'\ngrep -r X .\nEOF",
   "bash -c 'echo hi' <<'EOF'\ngrep -r X .\nEOF",
   "tee note.md <<EOF\nrg -u X\nEOF",
-  // opt-in: the last assignment wins and reaches a child script (finding 1, 8)
+  // opt-in: the last assignment wins and reaches a child script
   "CASE_TEXT=normal CASE_TEXT=maintenance grep -r X .",
   "CASE_TEXT=maintenance env FOO=1 grep -r X .",
   "env CASE_TEXT=maintenance grep -r X .",
   "CASE_TEXT=maintenance bash -c 'grep -r X .'",
   "CASE_TEXT=maintenance bash <<'EOF'\ngrep -r X .\nEOF",
   "CASE_TEXT=maintenance eval 'grep -r X .'",
-  // re-check: safe scopes under a wrapper, timeout, braces, interpolated documents
+  // safe scopes under a wrapper, timeout, braces, interpolated documents
   "env -C src bash -c 'rg X .'",
   "env -C src bash -c 'rg -g \"*.json\" X .'",
   "env -C eval/qa bash -c 'echo hi'",

@@ -1,11 +1,6 @@
 /**
- * oauth-provider 1.x sets `ctx.auth` on API requests, and `agents` hands it to
- * tool handlers as `authInfo`, raw bearer token included. Raven derives every
- * identity from `ctx.props` (src/server.ts), so this pins that through the
- * real handler and tool wiring: the execute call context comes from the grant
- * props, never from the auth identity, and carries no token.
- *
- * Only the sandbox runner is replaced, to capture the context it is handed.
+ * Pins that execute context comes from grant props (`ctx.props`), never from
+ * `ctx.auth`/`authInfo` or the raw bearer token. Only the sandbox runner is stubbed.
  */
 import { env, SELF } from "cloudflare:test";
 import { getOAuthApi } from "@cloudflare/workers-oauth-provider";

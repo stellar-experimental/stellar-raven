@@ -1,24 +1,7 @@
 /**
- * Scoring-layer contracts (src/catalog/scoring.ts).
- *
- * 1. Replica drift guard: scoring.ts's `scoreEntryUngated` is a
- *    line-for-line copy of the vendored scorer with EXACTLY ONE difference —
- *    the coverage gate is absent. That gives a total-equality invariant this
- *    suite pins:
- *
- *      ∀ (entry, query): scoreEntry(e, q) !== null
- *                        ⇒ scoreEntryUngated(e, q) === scoreEntry(e, q)
- *
- *    If @cloudflare/codemode is ever re-vendored with changed field weights,
- *    tokenization, phrase/prefix multipliers, or bonuses, every gate-passing
- *    comparison here fails loudly instead of tier 2 silently desyncing from
- *    tier 1. The full re-vendor checklist lives beside the replica in
- *    src/catalog/scoring.ts.
- *
- * 2. Keyword blends (levers 4 + 7): how `scoreEntryWeighted` folds the
- *    build-time `keywords` / `routingKeywords` fields into the vendor score.
- *    (How those fields are DISTILLED at build time is pinned in
- *    test/extract-keywords.test.ts.)
+ * Scoring contracts (src/catalog/scoring.ts):
+ * - Replica drift guard: whenever `scoreEntry(e, q) !== null`, `scoreEntryUngated(e, q) === scoreEntry(e, q)`.
+ * - Keyword blends: how `scoreEntryWeighted` folds `keywords` and `routingKeywords` into the vendor score.
  */
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
@@ -49,13 +32,7 @@ const scorables: ScorableEntry[] = catalog.entries.map((e) => ({
   description: e.description
 }));
 
-/**
- * Deliberately diverse battery: short/long, phrases, exact ids, abbreviation
- * register, filler-heavy natural language — chosen to exercise every scoring
- * branch (exact/prefix/phrase/token/prefix-overlap/substring matches, all
- * coverage-bonus tiers, first-token and exact-id bonuses) across the real
- * manifest, not to encode any routing expectation.
- */
+/** Diverse query battery exercising every scoring branch across the real manifest. */
 const QUERY_BATTERY = [
   "wallet",
   "soroban contract storage",

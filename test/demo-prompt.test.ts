@@ -1,10 +1,4 @@
-/**
- * ADR-0003 emitted-text discipline for the demo system prompt. The combined
- * SERVER_INSTRUCTIONS and playground preamble must not reference a
- * non-exposed operation or retired skill.
- * src/demo/prompt.ts is a pure module precisely so this test can import it
- * without the worker-only chat/tools graph.
- */
+/** Emitted-text exposure and budget-copy tests for src/demo/prompt.ts (ADR-0003). */
 import { describe, expect, it } from "vitest";
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
 import { BASE_SERVER_INSTRUCTIONS, SERVER_INSTRUCTIONS } from "../src/mcp/tools";

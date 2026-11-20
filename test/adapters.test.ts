@@ -1,9 +1,6 @@
 /**
- * Adapter unit tests — recorded live fixtures (test/fixtures/, captured
- * 2026-07-02 from one real call each, free ops only), replayed through an
- * injected FetchLike. The stellar-docs-* fixtures are synthetic bodies in the
- * Mintlify discovery API shape (research/services/stellar-docs-mintlify.md). Per service: one success, one soft-empty, one error —
- * the three-way outcome contract in ARCHITECTURE.md: soft-empty ≠ error ≠ data.
+ * Adapter unit tests against recorded fixtures and synthetic Mintlify fixtures (test/fixtures/)
+ * via an injected FetchLike. Covers success, soft-empty, and error envelopes (ARCHITECTURE.md).
  */
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
@@ -1337,9 +1334,7 @@ describe("stellarDocs adapter", () => {
     });
   }
 
-  // The documented result shape must be the shape the adapter returns. The search ops used to say
-  // "Returns: Array of hits" with no outputSchema, so callers wrote `r.data.map(...)` and the script
-  // failed with "r.data.map is not a function".
+  // Adapter responses must match their documented outputSchema.
   type Shape = { type?: string; format?: string; minimum?: number; required?: string[]; properties?: Record<string, Shape>; items?: Shape; additionalProperties?: boolean };
   function shapeErrors(value: unknown, schema: Shape, path = "data"): string[] {
     if (schema.type === "array") {

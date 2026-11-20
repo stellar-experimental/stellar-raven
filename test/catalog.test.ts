@@ -1,8 +1,6 @@
 /**
- * Catalog builder tests — determinism, entry counts, schema validity,
- * build-time exposure filtering (ADR-0003: the manifest IS the exposed
- * surface; exclusions never emit). Runs scripts/build-catalog.mjs for real
- * with temporary output. A warm skill cache avoids pinned GitHub downloads.
+ * Catalog builder tests (scripts/build-catalog.mjs to a temp path). A warm skill cache avoids
+ * pinned GitHub downloads.
  */
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import { execFileSync } from "node:child_process";
@@ -364,11 +362,7 @@ describe("build-catalog.mjs", () => {
     const count = (pred: (e: Catalog["entries"][number]) => boolean) =>
       catalog.entries.filter(pred).length;
 
-    // Lumenloop: 18 exposed operations of 21 inventory tools — request_research
-    // (metered paid trigger; excluded under the AGENTS.md hard rules) plus its read half
-    // research_result and list_my_research (account-scoped dead ends without
-    // the trigger) are excluded at build time and never emitted (ADR-0003).
-    // list_research stays: public editorial pieces, independent of the paid lane.
+    // Lumenloop: 18 of 21 ops (paid research trigger and account-scoped reads excluded; ADR-0003).
     expect(count((e) => e.service === "lumenloop" && e.kind === "operation")).toBe(18);
     expect(count((e) => e.id === "lumenloop.request_research")).toBe(0);
     expect(count((e) => e.id === "lumenloop.research_result")).toBe(0);
@@ -384,18 +378,8 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter((e) => e.service === "lumenloop" && e.kind === "skill-section")
     ).toHaveLength(0);
 
-    // Scout: 29 exposed of 42 upstream OpenAPI operations — the 4 write/
-    // side-effecting endpoints (submitFeedback, submitPartnerListing,
-    // partnerAssistant, partnerOnboard) are excluded at build time, plus getFeedbackSchema:
-    // read-only, but a dead end whose only purpose is to shape the excluded
-    // feedback submission (its upstream description names the non-exposed
-    // scout.submitFeedback), plus matchPartners: read-only, but no observed call
-    // has succeeded since 2026-10-26 (scout.getPartners is the directory path).
-    // The read-only hackathonBrief operation stays exposed. Its OpenAPI contract
-    // describes no persistence.
-    // resolveProject is read-only and fully typed. The accepted 1.9.1 surface
-    // keeps getQualityReport hidden until a general scoring repair passes. It
-    // keeps verifyClaim hidden under a separate current-surface routing decision.
+    // Scout: 29 of 42 OpenAPI ops (write/side-effecting endpoints, getFeedbackSchema, matchPartners,
+    // getQualityReport, and verifyClaim are excluded; see scripts/exposure.mjs).
     expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(29);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);
@@ -460,11 +444,7 @@ describe("build-catalog.mjs", () => {
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {
-    // No manifest-level corpus blobs: the stellarDocs taxonomy lives in
-    // specs/stellar-docs.json and reaches the model via the super spec. A
-    // `docs.taxonomy` copy lived here until 2026-07-03 with zero consumers —
-    // anything added at this level must name who reads it. Asserted on the
-    // RAW bytes (loadManifest's zod parse strips unknown keys).
+    // No manifest-level corpus blobs; asserted on raw bytes because loadManifest strips unknown keys.
     expect(Object.keys(JSON.parse(raw)).sort()).toEqual(["entries", "generatedAt", "version"]);
   });
 
@@ -699,9 +679,7 @@ describe("x-routing ingestion — routingKeywords and routingPhrases fields", ()
   });
 
   it("drops notFor — cross-op routing clauses never become this op's vocabulary", () => {
-    // Sentinel: getBuilders' upstream x-routing notFor routes stat questions
-    // to getLeaderboard. Ingesting notFor would plant "leaderboard" here and
-    // recreate the cross-capture the 1.7.16 fix removed.
+    // getBuilders' x-routing notFor names getLeaderboard and must not enter routingKeywords.
     const builders = catalog.entries.find((e) => e.id === "scout.getBuilders");
     expect(builders?.routingKeywords ?? []).not.toContain("leaderboard");
     expect(builders?.routingPhrases ?? []).not.toEqual(
