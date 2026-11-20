@@ -7,7 +7,7 @@
  *   clean   — fresh, valid, ok verdict
  *   failing — fresh, valid, non-ok verdict (only state that claims a live outage)
  *   stale   — verdict older than STALE_AFTER_MS (detector stopped; retrieval unknown)
- *   error   — unreachable, malformed, missing, future-dated, or status/body mismatch
+ *   error   — unreachable, malformed, missing, >5m future-dated, or status/body mismatch
  */
 import { readFileSync } from "node:fs";
 

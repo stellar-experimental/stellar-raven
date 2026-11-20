@@ -104,7 +104,7 @@ async function checkPinsResolve() {
 }
 
 // Exit codes (consumed by .github/workflows/refresh.yml):
-// 0 = valid/resolving, 1 = malformed manifest or missing pin, 2 = check/transport error.
+// 0 = valid/resolving, 1 = malformed manifest, missing pin, or hash mismatch, 2 = check/transport error.
 try {
   checkEcosystemSkills();
   if (process.argv.includes("--fetch")) await checkPinsResolve();

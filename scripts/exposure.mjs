@@ -1,7 +1,7 @@
 /**
  * Shared build-time exposure exclusions (ADR-0003).
  * Used by build-catalog.mjs, build-super-spec.mjs, description-notes.mjs, and
- * src/skills/source.ts so excluded items never surface anywhere. Drift guards
+ * src/skills/source.ts so excluded items are never emitted on Raven surfaces. Drift guards
  * against live inventories stay in build-catalog.mjs.
  */
 

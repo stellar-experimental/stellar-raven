@@ -5,7 +5,7 @@
 //
 // Reads .env (LUMENLOOP_API_KEY, MINTLIFY_ASSISTANT_API_KEY) + process.env.
 // Deterministic and idempotent (preserves existing fetchedAt when content is unchanged);
-// refuses to write if any secret value appears in output.
+// refuses to write if any `.env` or `SECRET_ENV_NAMES` value (>=6 chars) appears in output.
 //
 // LUMENLOOP_PARTNER_TOOLS supplies partner names hidden by GET /v1/tools (validated against
 // GET /v1/me tools.available; see ARCHITECTURE.md). Partner-lane tools and partner-set skills

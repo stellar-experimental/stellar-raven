@@ -19,8 +19,9 @@ const MAX_DOC_BYTES = 256 * 1024;
 const DEFAULT_TIMEOUT_MS = 8_000;
 
 /**
- * Phase 1 gate floor (`research/partner-doc-source-onboarding.md`): requires at least four
- * independent cases by count only; provenance independence stays human-reviewed.
+ * Phase 1 gate floor (`research/partner-doc-source-onboarding.md`): checks the independent-case
+ * count only (provenance stays human-reviewed, and fact groups still draw from candidate pages,
+ * so high Phase 1 recall does not prove generalization — Phase 3 measures that).
  */
 export const PHASE1_MIN_INDEPENDENT_CASES = 4;
 const CASE_TYPES = new Set(["page-derived", "paraphrase", "negative", "conflict"]);

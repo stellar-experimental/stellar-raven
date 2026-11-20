@@ -241,7 +241,10 @@ function assertEveryComponentRefResolves(doc) {
   }
 }
 
-/** Drop component definitions unreachable (transitively) from exposed paths (ADR-0003). */
+/**
+ * Drop component definitions unreachable (transitively) from exposed paths (ADR-0003) so
+ * schemas for excluded operations cannot leak into the spec.
+ */
 function pruneUnreachableComponents(paths, components) {
   const reachable = componentPointersIn(paths);
   for (let grew = true; grew; ) {

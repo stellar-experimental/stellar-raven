@@ -68,7 +68,7 @@ export function scoutRefRewrites(openapi) {
     for (const method of SCOUT_HTTP_METHODS) {
       const op = item[method];
       if (!op?.operationId) continue;
-      // Excluded ops are scrubbed by SCOUT_DESCRIPTION_SCRUBS, never rewritten (ADR-0003).
+      // Excluded ops are scrubbed by scrubScoutDescription, never rewritten (ADR-0003).
       if (EXCLUDED_SCOUT_OPS.has(`${method.toUpperCase()} ${path}`)) continue;
       const callable = `scout.${op.operationId}`;
       pairs.push([`${method.toUpperCase()} ${path}`, callable]);

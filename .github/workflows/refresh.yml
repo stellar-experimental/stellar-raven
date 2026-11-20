@@ -2,7 +2,8 @@ name: Refresh (live drift check)
 
 # Re-fetches live service surfaces (Lumenloop, Stellar Light, Stellar Docs) and rebuilds derived
 # artifacts. scripts/sync-drift-issues.mjs reconciles one keyed `<class>:<source>` issue per drift
-# kind and fails on drift. Diffing op-id sets is the signal (Scout may add ops without bumping info.version).
+# kind, and the workflow fails on drift. Inventory and derived diffs are the signal (not
+# info.version, which Scout may leave unchanged across new ops).
 #
 # Skills drift (check-skills-drift.mjs) is detection-only; pins require human review.
 # Three checks run before builders: upstream pin resolution (`check-mirrors --fetch`, GitHub runner
@@ -79,7 +80,7 @@ jobs:
           set -o pipefail
           ec=0
           node scripts/check-mirrors.mjs --fetch 2>&1 | tee pin-availability.txt || ec=$?
-          # Only exit 1 proves a missing pin; other non-zero exits map to error, not an outage issue.
+          # Only exit 1 proves a pin or manifest failure; other non-zero exits map to error, not an outage issue.
           case "$ec" in
             0) echo "state=clean" >> "$GITHUB_OUTPUT" ;;
             1) echo "state=unresolvable" >> "$GITHUB_OUTPUT" ;;
@@ -126,7 +127,7 @@ jobs:
             *) echo "state=error" >> "$GITHUB_OUTPUT" ;;
           esac
           exit "$ec"
-      # refresh-inventory.mjs reads .env; removed before later steps and never uploaded.
+      # refresh-inventory.mjs reads .env; removed in detect-drift and never uploaded.
       - name: materialize .env from repo secrets
         run: |
           {
@@ -142,7 +143,7 @@ jobs:
           node scripts/build-catalog.mjs
           npm run family-text:build
           npm run spec:build
-      # Detection only (pins require human review); reads LUMENLOOP_API_KEY from .env.
+      # Detection only (pins require human review); keyless (uses GITHUB_TOKEN for rate limits).
       # Exit codes: 0=clean, 1=drift, 2=error.
       - name: check skills-mirror drift
         id: skills

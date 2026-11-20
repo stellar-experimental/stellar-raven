@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Print a unified diff of pinned skill bodies between two manifests for human review
- * (stdout only; writes nothing to the repo).
+ * (stdout only; writes no tracked files — cold fetches still populate gitignored ecosystem-skills/.cache/).
  * Usage: node scripts/diff-pins.mjs <old-manifest.json> <new-manifest.json>
  * Exits 0 on success; non-zero if an incoming pinned file cannot be fetched.
  */

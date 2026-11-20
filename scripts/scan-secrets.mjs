@@ -2,7 +2,7 @@
 /**
  * Zero-dependency secret scanner (pre-commit hook + CI backstop under GitHub secret scanning).
  *
- * Modes: --staged (default, added lines only) | --tree (all tracked files).
+ * Modes: --staged (default, added lines only) | --tree (all tracked text files; NUL/binary skipped for content layers).
  * Layers:
  *   A. Block staging/tracking .env and .dev.vars.
  *   B. Exact-match live values from local .env/.dev.vars (excluding PUBLIC_KEYS).
@@ -31,7 +31,7 @@ const KNOWN_PUBLIC = new Set([
   "yXtzs-p7TOyu9BQddSwV9g",              // Algolia-hosted MCP URL path token (documented non-secret)
 ]);
 
-// Excluded from format/keyword heuristics (layers C/D); layers A/B still apply.
+// Excluded from format/keyword heuristics (layers C/D); layer A applies to all tracked paths, layer B to text files.
 const IGNORE_GLOBS = [
   /^eval\/corpus\//,
   // Public per-case SHA-256 maps include ids ending in "auth"/"token".
