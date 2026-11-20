@@ -1,8 +1,8 @@
 # Architecture — how `search` and `execute` work
 
-Raven exposes two MCP tools over a generated Stellar service catalog. `search` ranks catalog entries on the host. `execute` runs model-written JavaScript in a networkless Dynamic Worker. Host adapters own service traffic, credentials, argument validation, and response normalization.
+Raven exposes two MCP tools over a generated Stellar catalog: `search` ranks entries on the host; `execute` runs model-written JavaScript in a networkless Dynamic Worker. Host adapters own traffic, credentials, argument validation, and response normalization.
 
-Read [PLAN.md](PLAN.md) for scope and [README.md](README.md) for connection details. Use [Run locally](README.md#run-locally) for development setup. Use [the operator guide](docs/operations.md) for release and retention procedures. The source modules and generated manifest define the implemented behavior.
+See [PLAN.md](PLAN.md) for scope, [README.md](README.md) for connection and [local setup](README.md#run-locally), and [docs/operations.md](docs/operations.md) for deploys and retention. Source modules and the generated manifest are authoritative.
 
 | Concern | Source |
 | --- | --- |
@@ -12,7 +12,7 @@ Read [PLAN.md](PLAN.md) for scope and [README.md](README.md) for connection deta
 | Sandbox execution and host providers | [src/executor/run.ts](src/executor/run.ts), [providers.ts](src/executor/providers.ts) |
 | Service calls and envelopes | [src/adapters/](src/adapters/index.ts) |
 | Skill reads and first-party runners | [src/skills/](src/skills/README.md) |
-| Stellar Docs mappings, scoping, and credential guardrails | [docs/stellar-docs.md](docs/stellar-docs.md) |
+| Stellar Docs mappings, scoping, and credentials | [docs/stellar-docs.md](docs/stellar-docs.md) |
 | Operational usage collection | [usage/README.md](usage/README.md) |
 | Service snapshots | `inventory/`, `scripts/refresh-inventory.mjs` |
 | Skill pins | `ecosystem-skills/MANIFEST.json`, `ecosystem-skills/update.sh` |
@@ -22,442 +22,227 @@ Read [PLAN.md](PLAN.md) for scope and [README.md](README.md) for connection deta
 
 ### Request routes and authorization
 
-`src/server.ts` handles the Worker request.
-The canonical host is `raven.stellar.org`. `raven.stellar.buzz` and `agents.stellar.buzz` are alias hosts.
-[src/hosts.ts](src/hosts.ts) redirects alias browser pages to the canonical host with a `308`.
-The `/mcp` namespace, `/.well-known/` discovery, and exact `/register`, `/authorize`, `/callback`,
-and `/token` routes stay on each alias. Discovery advertises that origin's issuer, endpoints,
-and protected resource; consent cookies and the WorkOS callback stay on the same origin.
-New connections should use `https://raven.stellar.org/mcp`.
+`src/server.ts` handles every Worker request. `raven.stellar.org` is canonical; `raven.stellar.buzz` and `agents.stellar.buzz` are alias hosts ([src/hosts.ts](src/hosts.ts)). Alias browser pages `308` to the canonical host; `/mcp`, `/.well-known/`, and exact `/register`, `/authorize`, `/callback`, and `/token` routes stay on each alias so issuer, resource, consent cookies, and WorkOS callbacks stay same-origin.
 
-Each of the three origins has its own OAuth provider, built at module scope, whose one canonical
-resource is `<origin>/mcp`. The resource binds that origin's tokens and grants, and another origin
-refuses bound tokens and grants. A grant with no resource binds to the origin that first refreshes
-it. An access token with no audience stays usable on all three origins until it expires, at most
-one hour. The [OAuth per-origin design record](.agents/rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md)
-holds the design. `selectOAuthOrigin` in [src/hosts.ts](src/hosts.ts) picks the provider
-from the request URL's origin alone, never from `Host` or a forwarding header. Origin selection
-runs after the alias redirect and the API-key and local-dev MCP bypasses. A request that reaches it
-from any other origin, such as a production hostname over `http:` or on another port, gets `404`
-before the playground, any provider, or any WorkOS login work. So an unsupported origin can neither
-dispatch an OAuth provider nor start its own WorkOS flow. Local dev serves `http:` on `localhost`,
-`127.0.0.1`, and `[::1]` with any port, through a provider built per request. The provider
-caches its helpers on `env.OAUTH_PROVIDER`, bound to itself, so every dispatch passes a copy of
-`env` with that field cleared; the shared `env` is never mutated. Only `/.well-known/oauth-protected-resource/mcp`
-is served; the bare-origin document gives `404`.
+Each production origin has a module-scoped OAuth provider whose single resource is `<origin>/mcp`, binding its tokens and grants (an unbound grant binds on first refresh; an unbound access token stays valid on all three origins until it expires, ≤1 hour; see the [OAuth per-origin design record](.agents/rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md)). `selectOAuthOrigin` ([src/hosts.ts](src/hosts.ts)) inspects `request.url` origin only—never `Host` or forwarding headers—after alias redirects and API-key/dev MCP bypasses. Any unsupported origin (e.g. a production hostname over `http:` or non-default port) gets `404` before the Playground, any provider, or WorkOS runs. Loopback dev (`http:` on `localhost`, `127.0.0.1`, `[::1]`, any port) builds a provider per request. Every dispatch passes a copied `env` with `OAUTH_PROVIDER` cleared so shared `env` is never mutated. Only `/.well-known/oauth-protected-resource/mcp` is served; the bare-origin path returns `404`.
 
-For `/mcp`, it checks authorization in this order:
+`/mcp` checks authorization in order:
 
-1. `authenticateApiKey` accepts a named bearer credential, `Authorization: Bearer <name>:<token>`.
-   It validates the name and token format, then compares the token digest with its `OAUTH_KV` record.
-   Invalid or unavailable records fall through to OAuth.
-2. `allowDevUnauthenticated` requires `DEV_ALLOW_UNAUTHENTICATED` to equal `"true"` and the hostname to be loopback.
-   The hostname check prevents this variable from authorizing a public hostname.
-3. `@cloudflare/workers-oauth-provider` validates the OAuth request and supplies the authorized grant properties.
+1. `authenticateApiKey`: `Authorization: Bearer <name>:<token>` compared by digest against `OAUTH_KV`; invalid or unavailable records fall through to OAuth.
+2. `allowDevUnauthenticated`: requires `DEV_ALLOW_UNAUTHENTICATED === "true"` and a loopback host.
+3. `@cloudflare/workers-oauth-provider`: validates OAuth tokens and supplies grant properties.
 
-Raven acts as the OAuth authorization server. The provider owns opaque tokens in `OAUTH_KV`, client registration, S256-PKCE, and Client ID Metadata Documents. WorkOS AuthKit authenticates the person through `/authorize` and `/callback`. Raven keeps the peppered subject and OAuth client ID in encrypted grant properties. It discards the WorkOS access token after the code exchange.
+Raven is the OAuth authorization server (opaque tokens in `OAUTH_KV`, DCR, S256-PKCE, CIMD). WorkOS AuthKit authenticates users via `/authorize` and `/callback` ([src/auth/workos.ts](src/auth/workos.ts)). Encrypted grant properties store only the peppered subject and OAuth client ID; WorkOS access tokens are discarded after exchange. Metadata aliases map supported discovery paths to the provider's metadata endpoint.
 
-The provider validates client identities, redirect matches, and URI forms. Raven narrows the callbacks it uses to an allowlist in [src/auth/redirects.ts](src/auth/redirects.ts): `https:`, `http:` on loopback hosts, and the native schemes `claude:`, `cursor:`, and `warp:`. The provider's `allowPrivateUseRedirectUris` is on so those three schemes work, and the allowlist keeps every other scheme out, including OS protocol handlers such as `smb:` and `ms-settings:`.
-- Registration refuses remote `http:` and any registration with no allowlisted URI. It tolerates other listed URIs, because a client may list a native callback beside a compliant one.
-- Authorization checks the URI in use on both `/authorize` legs, in the provider-error redirect, and for the parked request in `/callback` after the state and browser-binding checks and before the WorkOS exchange. This covers Client ID Metadata Document and older registered clients.
-- A refused callback produces a local `400` without `Location` and without a WorkOS hop. `auth_reject` records `redirect_refused:<scheme>` with a bounded scheme token, never the URI. A new native client is added by naming its scheme after it shows up there.
+Callback URIs are narrowed by an allowlist in [src/auth/redirects.ts](src/auth/redirects.ts): `https:`, loopback `http:`, and native schemes `claude:`, `cursor:`, `warp:` (`allowPrivateUseRedirectUris` is enabled so those three work while blocking arbitrary OS handlers like `smb:` or `ms-settings:`):
 
-The allowlist limits callback transports. It does not authenticate the app that owns a scheme: registration is open, so any client may name an allowed scheme, and native-app ownership stays unverified. The consent page records the user's approval of a client it labels unverified, and the browser-bound WorkOS state ties the login round trip to that browser. The provider's `onError` hook logs `oauth_error` with the status, code, and the provider's internal `category` and `reason`, never its description. Metadata aliases map supported discovery paths to the provider's metadata endpoint.
-
-The script-free consent page labels the client name as unverified. It shows the complete validated return address as plain text. Approval requires the form's CSRF token and Terms acknowledgement before WorkOS login starts. Cancel requires CSRF validation and returns `303 access_denied` to the validated address. Cancel preserves the OAuth state and issuer, clears the consent cookie, and creates no grant or login state. [src/auth/workos.ts](src/auth/workos.ts) owns this flow.
+- **Registration** rejects malformed or remote `http:` URIs and any client with zero allowlisted URIs (other listed URIs are tolerated alongside an allowlisted one).
+- **Authorization** enforces the allowlist on both `/authorize` legs, error redirects, and the parked request in `/callback` (after state and browser-binding checks, before WorkOS exchange), covering CIMD and older registrations.
+- **Refusal** returns a local `400` with no `Location` and no WorkOS hop, logging `auth_reject` with `redirect_refused:<scheme>` (bounded scheme token, never the URI). Native-app scheme ownership stays unverified under open registration; the script-free consent page labels the client name unverified, displays the full validated return URI, requires CSRF + Terms consent, and ties login to the browser via bound WorkOS state. Cancel validates CSRF, clears the consent cookie, creates no grant, and returns `303 access_denied` preserving state and issuer. The provider's `onError` hook logs `oauth_error` with status, code, and internal `category`/`reason` (never description).
 
 ### Public site and Playground
 
-The OAuth default handler serves public site routes through [src/site.ts](src/site.ts). These include `/`, `/docs`, `/terms`, `robots.txt`, `sitemap.xml`, and `/og.png`. Generated fonts and the Open Graph image form part of the Worker bundle. Static brand and listing images in `public/` are served as Wrangler static assets before the Worker runs, and `public/_headers` sets their cache, nosniff, and CSP headers. Every other path reaches the Worker.
+The OAuth default handler serves `/`, `/docs`, `/terms`, `/robots.txt`, `/sitemap.xml`, `/og.png` ([src/site.ts](src/site.ts)), plus `/health` and `/health/skills`. Generated fonts and `/og.png` are bundled; static brand/listing images in `public/` are served as Wrangler static assets with `public/_headers` before the Worker runs.
 
-`src/server.ts` handles `/playground` before the OAuth default handler. Unauthenticated visitors see a static example and a WorkOS login link. Authenticated visitors use `/playground/chat` through a signed session cookie. The chat handler uses the same catalog search and execute runner through [src/demo/tools.ts](src/demo/tools.ts). Its outer wrapper enforces the Playground limits in section 7.
-
-The browser keeps history in page memory and sends it with each turn. The server keeps the newest messages within the history caps. Displayed tool trace frames do not enter replay history. `prepareStep` reserves the final model step for synthesis without tools. Host-observed operation outcomes control bounded recovery guidance. A later search cannot erase grounded execute evidence.
+`src/server.ts` intercepts `/playground` before the OAuth handler. Unauthenticated visitors see a static example and WorkOS login; signed-in users call `/playground/chat` via a signed session cookie using the same `search`/`execute` runner ([src/demo/tools.ts](src/demo/tools.ts)) under section 7 limits. The browser sends page-memory history each turn; the server clamps to history caps and keeps tool trace frames out of replay. `prepareStep` reserves the final step for tool-free synthesis, host-observed outcomes drive bounded recovery, and later searches cannot erase grounded execute evidence.
 
 ### MCP tool handling
 
-Each authorized request creates a fresh, stateless `McpServer`. `createMcpHandler` serves streamable HTTP and supports both discovery and initialization lifecycles. Raven uses no Durable Object or server-side MCP session storage. Cloudflare routing handles allowed hostnames. The handler checks browser Origins against the configured hostnames and loopback hosts. Requests without an Origin header remain valid for ordinary MCP clients.
+Each authorized `/mcp` request creates a stateless `McpServer` served via `createMcpHandler` (streamable HTTP, no Durable Objects or server-side sessions). Browser `Origin` headers are checked against configured and loopback hosts; requests without `Origin` remain valid.
 
-[src/mcp/tools.ts](src/mcp/tools.ts) owns tool schemas, descriptions, and `SERVER_INSTRUCTIONS`. Tests hold the whole instructions string and each description to 2,033 characters, the smallest measured client cut, so every measured client receives them whole. Clients that show only the start of a text get a whole thought there: the first line of the instructions is one line of at most 200 characters ending in a full stop, and each description opens with a first line of at most 117 characters ending in a full stop. [mcp-tool-metadata.ts](test/helpers/mcp-tool-metadata.ts) owns the per-client figures and their sources. `BASE_SERVER_INSTRUCTIONS` is one complete contract and is the whole served instructions string. The `search` opening names every operation family and is generated from the catalog manifest (`SEARCH_OPENING`, [build-family-text.mjs](scripts/build-family-text.mjs)); the build fails when a new family pushes it past 117 characters. The descriptions state what a script must know before it runs. The `execute` description states three scripting rules up front, because measured runs failed without them: operation ids are called inside the script and are not top-level tools; the only globals are the four services (`lumenloop`, `scout`, `stellarDocs`, `stellarOrg`), `codemode`, and standard JavaScript; and artifact reads resolve to the same envelope as service calls. Any other mechanical mistake (an unknown id, a wrong-level read, TypeScript syntax) is taught by the host error that follows it ([script-hints.ts](src/executor/script-hints.ts)). One upstream documentation URL per source family rides last on the `search` description only. The generated `FAMILY_LINE` names each family's scope inside the `search` description and carries no operation chains.
+[src/mcp/tools.ts](src/mcp/tools.ts) owns tool schemas, descriptions, and `SERVER_INSTRUCTIONS`:
 
-The MCP and sandbox search adapters share `prepareCatalogSearch` from [search-resolution.ts](src/catalog/search-resolution.ts). It validates the service filter, validates recovery IDs, then resolves the page and requested recovery candidates. Each adapter retains its own input checks, response shape, prose, and telemetry.
-The MCP response supplies matching text and `structuredContent`, and the tool advertises no `outputSchema`:
+- **Client-cut caps** ([mcp-tool-metadata.ts](test/helpers/mcp-tool-metadata.ts)): whole instructions and each tool description stay ≤2,033 chars (smallest measured client cut); instructions open with a ≤200-char sentence, descriptions with a ≤117-char sentence.
+- **Generated text**: `SEARCH_OPENING` and `FAMILY_LINE` (no operation chains) are emitted from the manifest by [build-family-text.mjs](scripts/build-family-text.mjs); builds fail if `SEARCH_OPENING` exceeds 117 chars. `BASE_SERVER_INSTRUCTIONS` is the entire served instructions string.
+- **Scripting rules and links**: `execute` states three up-front rules (call operation IDs inside the script, not as top-level tools; only globals are `lumenloop`, `scout`, `stellarDocs`, `stellarOrg`, `codemode`, and standard JS; artifact reads use the same envelope). Other mechanical mistakes are taught by host errors ([script-hints.ts](src/executor/script-hints.ts)). Upstream docs URLs for Lumenloop, Scout, and Stellar Docs ride last on `search` only.
+
+Both MCP and sandbox search share `prepareCatalogSearch` ([search-resolution.ts](src/catalog/search-resolution.ts)). The MCP `search` tool returns matching text and `structuredContent` (no advertised `outputSchema`):
 
 ```text
 { hits, total, truncated, recovery, widerCandidates,
   confidence, recoveryMetadata, nextSteps }
 ```
 
-The public page renders each entry as a compact card: a description of at most 220 characters, an input-only signature with short field prose, and, for operations, the payload field names (`outputKeys`, `outputItemKeys`). A runnable skill's card has the input-only signature and no payload field names. `codemode.describe(id)` returns the full description and types. Clipping a description to 220 characters drops a caveat stated later in it. An operation whose result would be misread without that caveat carries a one-line `cardCaveat` ([`scripts/catalog-data/card-caveats.mjs`](scripts/catalog-data/card-caveats.mjs)); the card ends with that line, the description is clipped to the room left, and search scoring never reads it. The sandbox `codemode.search` page keeps full entries, because data inside the sandbox costs no context. On a successful page, `nextSteps` is at most 400 characters and says only what to do with this page. A page that shows a build playbook and carries no wider-candidate advice adds one sentence: make one bounded prior-art pass before the architecture. An error response for an unknown `service` or `recoverFrom` id echoes the caller's value and has no cap.
-
-An unknown service produces zero MCP hits and names the valid services in `nextSteps`. The sandbox adapter returns an error envelope for the same invalid filter. Neither adapter treats a spelling variant as a service alias. `getCatalog()` validates the bundled manifest once per isolate and throws on invalid catalog data.
+Public cards render each hit with a ≤220-char description, input-only signature, and (for operations) payload field names (`outputKeys`, `outputItemKeys`); `codemode.describe(id)` returns full prose and types. Operations whose key caveat would be clipped carry a one-line `cardCaveat` ([card-caveats.mjs](scripts/catalog-data/card-caveats.mjs)) appended inside the 220-char budget (never scored). Sandbox `codemode.search` keeps full entries. Successful `nextSteps` stay ≤400 chars (a build-playbook page without wider-candidate advice adds one prior-art sentence); error `nextSteps` echo invalid `service`/`recoverFrom` values without a cap. Unknown services yield zero MCP hits naming valid services (sandbox returns an error envelope); no spelling aliases exist. `getCatalog()` validates the manifest once per isolate.
 
 ## 2. The scoring pipeline
 
-[The catalog reference](src/catalog/README.md) defines the scoring, admission, selection, ordering, count, and recovery rules.
-This section gives only the stages. [ADR-0009](research/decisions/0009-discovery-stays-lexical.md) records why discovery stays lexical.
+[src/catalog/README.md](src/catalog/README.md) defines the full rules; [ADR-0009](research/decisions/0009-discovery-stays-lexical.md) records why discovery stays lexical. Stages:
 
-1. The vendored scorer supplies lexical matching and a token-coverage gate.
-   [scoring.ts](src/catalog/scoring.ts) adds stopword rescue, query aliases, weighted keywords, and kind weighting.
-2. Routing metadata adds operation vocabulary and rejects contradictory intent.
-   A whole skill enters search only with independent admission evidence.
-   Section entries carry `searchable: false` and remain available through exact-ID navigation.
-3. `searchCatalogPage` selects a page of gated candidates with service diversity.
-   Ungated candidates can fill a short page or make a bounded replacement in a full page.
-4. The selector fixes membership, then orders the hits.
-   Every hit carries `tier: "gated" | "backfill"`.
-   Returned hit order defines the ranking; scores alone do not describe every ordering rule.
+1. Vendored lexical scorer + token-coverage gate; [scoring.ts](src/catalog/scoring.ts) adds stopword rescue, query aliases, weighted keywords, and kind weighting.
+2. Routing metadata adds operation vocabulary and rejects contradictory intent. Whole skills enter search only with independent admission evidence; sections carry `searchable: false` (exact-ID navigation only).
+3. `searchCatalogPage` selects a service-diverse page of gated candidates; ungated backfill can fill short pages or make bounded replacements.
+4. Membership fixes before ordering; every hit carries `tier: "gated" | "backfill"`. Hit order is authoritative, not raw score.
 
-`total` and `truncated` describe catalog navigation, not completeness of upstream evidence.
-`widerCandidates` and `recovery` supply advice that stays separate from the ranked hits.
-[ADR-0007](research/decisions/0007-structural-recovery-guidance.md) records the structural, advisory, bounded recovery decision.
-A recovery edge with relation `detail` marks a different fact: the source returns parts of records and the target returns one whole record its rows address (a Docs search hit and `stellarDocs.get_doc_page`). Search advice skips it. After a successful Docs search that returned rows and no page read in the same `execute`, the evidence checkpoint adds one generated sentence that says the hits are sections and names the page read. The Playground does not count that sentence as its one recovery-advice cycle.
-A public card carries no output type. In catalog entries and the sandbox `codemode.search` page, an oversized rendered output type becomes a compact stub that names the exact `codemode.describe` call.
-The manifest and detail helpers retain the complete schemas.
+`total` and `truncated` reflect catalog navigation, not upstream completeness. `widerCandidates` and `recovery` are advisory and separate from hits ([ADR-0007](research/decisions/0007-structural-recovery-guidance.md)). `detail` edges (e.g., Docs search → `stellarDocs.get_doc_page`) are skipped in search advice and emitted instead by the evidence checkpoint when a Docs search returns rows without a page read in the same `execute` (not counted against Playground's one recovery-advice cycle). Oversized output types in catalog/sandbox entries collapse to a `codemode.describe` stub; the manifest keeps full schemas.
 
 ## 3. An `execute` call, end to end
 
-The MCP tool accepts `{ code }` with a non-empty string.
-`src/server.ts` injects the Worker-only runner into tool registration.
-The Playground constructs the same runner from its Worker tool wrapper.
-Plain Node modules can import the tool registration without loading `cloudflare:workers`.
+`execute` takes non-empty `{ code }`. `src/server.ts` and the Playground inject the Worker-only runner so plain-Node modules can import tool registration without `cloudflare:workers`. [createExecuteRunner](src/executor/run.ts) runs normalized async code via `@cloudflare/codemode`'s `DynamicWorkerExecutor` in a fresh `LOADER` isolate with `globalOutbound: null` and a wall-clock timeout (`cpuMs` and `subRequests` are not exposed by the executor interface).
 
-[createExecuteRunner](src/executor/run.ts) uses `DynamicWorkerExecutor` from `@cloudflare/codemode`.
-The executor normalizes code into its async function form.
-Each execute call loads a fresh Dynamic Worker through `LOADER`.
-`globalOutbound: null` blocks network access from model-written code.
-The executor enforces its wall-clock timeout.
-Its interface does not expose Worker `cpuMs` or `subRequests` limits.
-
-[buildSandbox](src/executor/providers.ts) creates one function per manifest operation in its service namespace.
-The operation's terminal ID segment defines the function name.
-An unknown function name fails through the provider proxy.
-Every service call follows this host-side path:
+[buildSandbox](src/executor/providers.ts) binds one function per manifest operation under its service namespace (function name = terminal ID segment; unknown names fail via proxy). Excluded operations do not exist. Every service call follows:
 
 ```text
-manifest entry → argument guard → adapter → response normalization → secret redaction
+manifest entry → argument guard (splitting documented comma arrays first) → adapter → normalization → secret redaction
 ```
 
-The host splits documented comma forms in array parameters before validation.
-The guard still rejects unknown array values.
-
-The model supplies arguments, but the manifest supplies the endpoint, credential mapping, and schema.
-Service payloads can contain source URLs; request credentials remain host-side.
-Build-excluded operations have no entry or callable function.
-Providers keep per-execute ledgers and flags.
-Module-level caches reuse catalog views and resolved spec objects.
-
-The runner wraps sandbox execution in a `codemode.execute` trace span.
-Each adapter call emits an `op` event with identity, outcome, timing, `attempts` (upstream requests, counting the Docs `/index` retry, the site probe, and stellar.org redirect hops), and `finalStatus` (the HTTP status, else `timeout`, `network`, or `none`).
-A failed execution returns `isError: true` and bounded error text.
-The MCP execute response uses text `content`, without `structuredContent` or an `outputSchema`.
-This provides one model-facing copy of the bounded output.
+Model code supplies arguments; the manifest owns endpoint, credential mapping, and schema. Providers keep per-execute ledgers; module caches reuse catalog views and resolved specs. Each run wraps in a `codemode.execute` span and emits an `op` event per call with identity, outcome, timing, `attempts` (counting Docs `/index` retries, site probes, and stellar.org redirects), and `finalStatus` (HTTP status, `timeout`, `network`, or `none`). Failures return `isError: true` and bounded text; MCP `execute` emits text `content` only (no `structuredContent` or `outputSchema`).
 
 ### Result, log, and error boundaries
 
-The host redacts the final result before applying `truncateForModel`.
-The configured token budget determines a character cut at four characters per token.
-Reserved source-manifest markers receive escaping even when the result fits.
-A footer appears after truncation, an ok service call, or an error call.
-`--- SOURCE BASIS ---` marks a truncated result.
-`--- SOURCE METADATA ---` marks every untruncated footer, including error call reasons.
-Soft-empty calls have no failure reason and do not trigger a footer.
-The footer has its own bounded character budget after the result cut.
-It includes shape and loss facts, operation outcomes, source metadata, sanitized URLs, and artifact availability.
-A clean ok-only run has no truncation, no failed call, and no captured source metadata.
-Its compact footer keeps only the marker, `calls:`, `observedAt:`, and `guidance:` lines.
-Each ok call with a `caveat` carries a `[caveat: no-rows]` or `[caveat: unverified-match]` marker. A call whose result has an exact row adds `exact: <key>` to the same bracket.
-The call totals keep the caveat count after the budget drops per-call entries.
-An `observedAt:` line gives the latest host observation time across ok calls.
-Each failed call includes a reason of at most 64 characters.
-Reasons use fixed labels and declared parameter names, with no upstream text or argument values.
-The footer remains bounded to 1600 characters.
+The host redacts the result, escapes reserved footer markers, and cuts at `4 * maxTokens` chars (`truncateForModel`). A bounded footer (≤1,600 chars, separate budget) appends after truncation, any ok service call, or any error call (soft-empty alone does not trigger one):
 
-Unavailable artifacts receive narrower rerun advice instead of a callable artifact-read instruction.
+- `--- SOURCE BASIS ---` marks truncated results; `--- SOURCE METADATA ---` marks untruncated footers.
+- Clean ok-only runs (untruncated, no errors, no captured source metadata) use a compact footer: marker, `calls:`, `observedAt:`, and `guidance:`.
+- Full footers include shape/loss facts, call outcomes (`[caveat: no-rows]`, `[caveat: unverified-match]`, `exact: <key>`), latest `observedAt:`, source metadata, sanitized URLs, and artifact state (unavailable artifacts get narrower-rerun advice). Totals retain caveat counts even when per-call entries are dropped for budget.
+- Failed calls carry ≤64-char fixed-label reasons (declared parameter names only; no upstream text or argument values).
 
-Logs and thrown errors have separate output budgets.
-`shapeLogs` redacts each console line before clipping it.
-The MCP boundary then applies the log token cap to the combined block.
-Logs and thrown errors never receive stored result artifacts.
-`execute_logs_shaped` reports structural log loss without payload previews.
+Logs and thrown errors use separate token budgets and never write artifacts. `shapeLogs` redacts each console line before clipping it, then the MCP boundary applies the log token cap; structural log loss emits `execute_logs_shaped` without payload previews.
 
 ### Artifact/source-basis lane
 
-Only truncated results can receive artifacts.
-The host writes the full redacted result through [src/artifacts/store.ts](src/artifacts/store.ts).
-The R2 object body is the redacted result string.
-Its key contains an owner hash and a random artifact ID.
-Custom metadata stores MIME type, sizing, digest, expiry, request/Ray IDs, catalog time, and a bounded operation ledger.
+Only truncated results write artifacts via [src/artifacts/store.ts](src/artifacts/store.ts). The R2 body is the redacted result string under `art/<ownerHash>/<id>`; custom metadata holds MIME type, sizing, digest, expiry, `requestId`/`rayId` (audit references), catalog time, and a bounded op ledger.
 
-`src/server.ts` reads OAuth grant properties from `ctx.props`.
-`authSubjectFromProps` supplies the subject to `resolveArtifactOwner`.
-The runner receives the owner in each execute call context.
-API-key and Playground requests have no artifact owner.
-The loopback-dev branch uses `dev-local` after the hostname and environment checks pass.
-A full untruncated source-basis footer reports an absent artifact with reason `not-truncated`.
-
-`codemode.artifact.info(id)` returns metadata through the host provider.
-`codemode.artifact.read(id)` returns stored data inside the sandbox for further projection.
-Both use service-call envelopes and enforce ownership and expiry.
-Invalid IDs, missing objects, expired objects, wrong owners, and ownerless calls return errors.
-Artifact metadata intentionally includes `requestId` and `rayId` for compact audit references.
-The final result boundary still applies when a script returns artifact data.
+`src/server.ts` derives the owner from OAuth `ctx.props` (`authSubjectFromProps` → `resolveArtifactOwner`), or `dev-local` on loopback dev; API-key and Playground calls are ownerless. Full untruncated footers report `absent (not-truncated)`. `codemode.artifact.info(id)` and `codemode.artifact.read(id)` use service envelopes, enforce ownership and expiry, and still pass final script output through the result boundary.
 
 ## 4. The envelope contract
 
-Service operations, skill reads, and skill runners return this contract:
+Service operations, skill reads, and skill runners return:
 
 ```text
 { ok: true, data }
 { ok: false, error: { service, kind, message, status?, code?, hint? } }
 ```
 
-[src/adapters/types.ts](src/adapters/types.ts) defines `kind` as `"error" | "soft-empty"`.
-A soft-empty result means the service returned no usable evidence.
-An empty successful payload remains successful data with no positive rows.
-Neither form proves an open-world absence.
+`kind` is `"error" | "soft-empty"` ([src/adapters/types.ts](src/adapters/types.ts)). Neither `soft-empty` nor an empty `ok: true` payload proves open-world absence.
 
-The operation dispatcher in [src/executor/providers.ts](src/executor/providers.ts) adds evidence signals to each ok service-operation result:
+The dispatcher ([src/executor/providers.ts](src/executor/providers.ts)) enriches ok service calls to `{ ok: true, data, asOf, asOfBasis, caveat?, exactRows? }` (never added to errors, skill reads/runs, or artifact reads):
 
-```text
-{ ok: true, data, asOf, asOfBasis, caveat? }
-```
+- **`asOf` / `asOfBasis`**: first parseable date at allowlisted `dataAsOf` then `asOf` (payload root before `meta`; never `generatedAt`), else host arrival time with `asOfBasis: "observed"`.
+- **`caveat`**: `"no-rows"` when `hasServiceData` finds no rows or scalar detail (still valid data at closed-world scope); `"unverified-match"` when rows come from a `semantic`, `research`, or `av` lane or `matchMode`/`match_mode` is `"semantic"`/`"corrected"`. Shares no words with `soft-empty` and never judges relevance. Run-level `candidateEvidence` counts `"unverified-match"` calls.
+- **`exactRows`**: optional `[{ index, key }]` on `semantic`/`research`/`av` hits when three host checks agree (ignoring upstream `exactKeys` and not checking URL host): `q`/`query` contains an all-upper or all-lower identifier `<letters>[- ]?<1–6 digits>` not joined by `-`/`.` to adjacent digits ([identifier-token.ts](src/policy/identifier-token.ts)); row `source` matches `<letters>` case-insensitively; and the last URL path segment (sans extension) matches `<letters>-<number>` ignoring leading zeros. Leaves `caveat` and `data` unchanged; [exact-evidence.ts](src/policy/exact-evidence.ts) appends one generated exception sentence per exact row to the candidate-evidence block.
+- **Corroboration guard**: generated into [corroboration.ts](src/policy/corroboration.ts) from `CORROBORATING_FAMILIES` (`stellarDocs`, `skills` in `scripts/catalog-data/source-families.mjs`). States that audit, incident, governance, and standards-authorship claims are fact only when an exempt family or returned primary record states them; otherwise attribute by source and date. Ends the candidate-evidence block (before exact-row exceptions), or stands alone whenever a run returned rows from a non-corroborating family (`uncorroboratedEvidence`) and neither the candidate block nor `PRIOR-ART` rendered ([`candidateEvidenceSection`](src/policy/evidence-checkpoint.ts), shared by MCP and Playground).
 
-`asOf` is the upstream data date when an allowlisted data-date path holds a parseable date string.
-The precedence is `dataAsOf`, then `asOf`, each at the payload root before `meta`.
-`generatedAt` stamps response generation, so it never becomes `asOf`.
-`asOfBasis` names that path.
-Otherwise `asOf` is the host clock when the response arrived, and `asOfBasis` is `"observed"`.
-`caveat` is `"no-rows"` when `hasServiceData` finds no rows and no scalar detail.
-It is `"unverified-match"` when the payload has rows and the catalog retrieval lane is `semantic`, `research`, or `av`.
-It is also `"unverified-match"` when the captured `matchMode` or `match_mode` is `"semantic"` or `"corrected"`.
-The caveat values share no word with the `soft-empty` error kind.
-A `"no-rows"` result is successful data, so a closed-world exact empty still applies at its source scope.
-The signal never judges row relevance, so adjacent or off-target rows stay unmarked.
-Failed envelopes, skill reads, skill runs, and artifact reads carry none of these fields.
-The run-level `candidateEvidence` count, which triggers the candidate-evidence block, counts `"unverified-match"` calls.
-An ok result from a `semantic`, `research`, or `av` operation can also carry `exactRows: [{ index, key }]`. The host marks a row exact when three things agree, and judges no relevance: the query (`q` or `query`) holds a token of all-upper or all-lower letters (title case, as in `Sep-24`, a month, is not an identifier), an optional hyphen or space, and one to six digits; the token is not followed by a dash or dot and a digit, and not preceded by a digit and a dash or dot (`CVE-2024-1234` and `SEP-43.1` are longer identifiers, not prefix matches, and `2024-SEP-10` is a date; the rule is `src/policy/identifier-token.ts`); the row's `source` equals those letters, ignoring case; and the last URL path segment of the row, without its extension, is those letters, a hyphen, and the same number (zero padding ignored). The host trusts the upstream `source` label; it does not check the URL host. A row that only cites the identifier names another slug and is not marked. `exactRows` is present only when non-empty, and `caveat` and `data` do not change; the other rows stay candidates. When a call carries it, the candidate-evidence block appends one generated exception per exact row that names the call, the row's slug and URL, and says to state only what the returned text shows ([exact-evidence.ts](src/policy/exact-evidence.ts)). The upstream `exactKeys` field is not read: a row that only cites a key carries it too.
+**Scout partial reads**: HTTP 200 with boolean `meta.partial === true` or a `meta.warnings` entry starting with case-sensitive `backend read failed` (followed by whitespace, `:`, or end of string) maps to `ok: false`, `kind: "error"`, `status: 200`, even when rows are present. Message uses the first matching warning, else `meta.failedReads`, else a generic partial notice; arrays survive in `error.details.warnings`/`failedReads` with one-retry guidance. Takes priority over `meta.error` (otherwise `soft-empty`); other warnings remain in `data`.
 
-The corroboration guard is one sentence, generated into [corroboration.ts](src/policy/corroboration.ts) from the families in `scripts/catalog-data/source-families.mjs` (`CORROBORATING_FAMILIES`: Stellar Docs and a skill today). It says that an audit, incident, governance, or standards-authorship claim is fact only when one of those families or a primary record a result returned states it, and that anything else, a party's statement about itself included, is that source's claim to attribute by name and date. It ends the candidate-evidence block, before any exact-row exception. When that block does not render, the sentence stands as its own line after the result whenever the run returned rows from a call outside those families (`uncorroboratedEvidence` in the operation summary, from the call ledger). It is not added when the PRIOR-ART block renders, which carries its own audit clause. No operation or topic is named, so a family added to the list is exempt from the line and named in the sentence with no other edit. [`candidateEvidenceSection`](src/policy/evidence-checkpoint.ts) is the one function both the MCP tool and the Playground call.
-
-Scout can return HTTP 200 for a page that lost a backend read.
-It states the loss in `meta.partial: true` and lists the reads in `meta.failedReads`.
-It can also add a failed-read element to the `meta.warnings` string array.
-The case-sensitive warning matcher requires the prefix `backend read failed`, followed by whitespace, a colon, or end of string.
-Either signal maps the response to `ok: false`, `kind: "error"`, and `status: 200`, even with rows.
-The message is the first failed-read warning.
-Without that warning, the message names each `failedReads` entry, or says that Scout marked the page partial.
-The adapter preserves the arrays under `error.details.warnings` and `error.details.failedReads`.
-It advises one retry, then an inconclusive result.
-Other warnings remain in successful data, including unread-parameter warnings.
-A non-boolean `partial` is not a failure signal.
-Either failure signal takes priority over Scout's `meta.error`, which otherwise stays soft-empty.
-
-The provider prelude installs non-enumerable accessors to catch wrong-level reads.
+The prelude installs non-enumerable accessors to catch wrong-level reads (provider RPC cannot serialize a `Proxy`):
 
 | Access | Successful envelope | Failed envelope |
 | --- | --- | --- |
-| Payload key on the envelope, such as `r.projects` | Throws and names `r.data.projects`. | No payload-key trap. |
-| `r.data` | Returns data. | Returns `undefined` and emits one warning. |
-| Assignment to a guarded property | Writes through as a plain property. | Warns where applicable, then writes through. |
-| `r.error` | Returns ordinary `undefined`. | Returns the error. |
+| Payload key on envelope (e.g. `r.projects`) | Throws naming `r.data.projects` | No payload-key trap |
+| `r.data` | Returns data | Returns `undefined` and emits one warning |
+| Assignment to guarded property | Writes through as plain property | Warns where applicable, then writes through |
+| `r.error` | `undefined` | Returns error |
 
-Enumerable keys, spreads, JSON, and returned envelopes keep their ordinary shapes.
-The guard uses accessors because provider RPC cannot serialize a Proxy envelope.
-Discovery helpers use their documented shapes. Skill reads use the same envelope guard as service calls.
+Enumerable keys, spreads, JSON, and returned envelopes stay ordinary. Skill reads share this guard.
 
 ## 5. Discovery inside the sandbox
 
-[providers.ts](src/executor/providers.ts) supplies the `codemode` namespace.
-The flat provider functions support nested helper spelling through the prelude.
+[providers.ts](src/executor/providers.ts) exposes `codemode` (flat host functions wrapped as nested helpers in the prelude):
 
 | Helper | Contract |
 | --- | --- |
-| `codemode.spec()` | Returns the unified spec with resolved references. The host caches resolution per spec object. |
-| `codemode.search(queryOrOpts)` | Returns hits, counts, tiers, confidence, and bounded recovery advice. Invalid filters or IDs return errors. |
-| `codemode.catalog({ kind?, service?, compact? })` | Returns manifest entries without host transport or provenance. `compact: true` omits schemas. |
-| `codemode.describe(id)` | Resolves an exact ID and returns full schemas, signatures, section navigation, and usage instructions. |
-| `codemode.skill.read(name, { sections? })` | Returns pinned playbook content or selected sections under `data`, with exact source URLs. |
-| `codemode.skill.run(name, input)` | Calls a registered first-party runner and returns a service-call envelope. |
-| `codemode.artifact.info(id)` / `codemode.artifact.read(id)` | Return owner-bound metadata or data through service-call envelopes. |
+| `codemode.spec()` | Unified spec with cached resolved refs |
+| `codemode.search(queryOrOpts)` | Ranked hits, counts, tiers, confidence, recovery advice; invalid filters/IDs return errors |
+| `codemode.catalog({ kind?, service?, compact? })` | Manifest entries without transport/provenance (`compact: true` omits schemas) |
+| `codemode.describe(id)` | Exact-ID full schemas, signatures, sections, and usage notes |
+| `codemode.skill.read(name, { sections? })` | Pinned playbook or sections under `data` with exact source URLs |
+| `codemode.skill.run(name, input)` | Registered first-party runner returning a service envelope |
+| `codemode.artifact.info(id)` / `codemode.artifact.read(id)` | Owner-bound metadata or data returning service envelopes |
 
-The super spec uses `/{service}/{operation}` paths and exact sandbox operation IDs.
-It includes skill read and run operations with manifest-derived indexes.
-Oversized success-response schemas retain top-level fields and exact detail-helper pointers.
-Inputs and smaller response schemas remain complete.
-A script can inspect the spec without returning the whole document to the model.
-[ADR-0001](research/decisions/0001-search-tool-shape.md) records the two-tool discovery decision.
+The super spec uses `/{service}/{operation}` paths, manifest-derived skill/runner indexes, and detail-helper stubs for oversized output schemas so scripts can inspect it without dumping it to the model ([ADR-0001](research/decisions/0001-search-tool-shape.md)).
 
 ## 6. Skill splitting — pins → sections → reads
 
-[The skill reference](src/skills/README.md) defines the read, integrity, deadline, runner, and availability-check mechanisms.
-[ecosystem-skills/README.md](ecosystem-skills/README.md) defines the pin set and its update procedure.
-
-`ecosystem-skills/MANIFEST.json` pins upstream commits and file digests.
-Raven forwards skill bodies; it does not keep a durable owned mirror or bundle bodies into the Worker.
-Transport caches do not become the source of record.
-The generated catalog defines the exposed skills and section addresses.
-Sections remain readable by exact ID but do not enter default search.
+See [src/skills/README.md](src/skills/README.md) for read/integrity/runner contracts and [ecosystem-skills/README.md](ecosystem-skills/README.md) for pin updates. `ecosystem-skills/MANIFEST.json` pins upstream commits and digests; Raven forwards bodies rather than mirroring or bundling them, and transport caches are never the source of record. Sections stay out of default search and resolve by exact ID.
 
 ### Availability posture
 
-A skill read depends on the upstream file at its pinned commit.
-Raven accepts this availability risk because the risk is observable.
-`skill_read` error events show failed reads from real traffic.
-The daily pin check (`check-mirrors.mjs --fetch`) and the hourly Worker canary test retrieval without their caches.
-`GET /health/skills` publishes the canary verdict.
-A failed check requires diagnosis; it does not prove that upstream deleted a file.
-Never mirror the content to correct an availability failure.
+Skill reads depend on upstream files at their pinned commits—an accepted, observable risk monitored via `skill_read` error events, the daily cache-bypassing pin check (`check-mirrors.mjs --fetch`), and the hourly Worker canary published at `GET /health/skills`. Diagnose failures rather than mirroring content.
 
 ### Runners
 
-Skill runners execute reviewed first-party code on the host, outside the sandbox.
-`RUNNERS` defines the exact runnable IDs, schemas, and declared operations.
-A runner receives only its declared operation functions and its input.
+Skill runners execute reviewed first-party code on the host outside the sandbox. `RUNNERS` defines exact runnable IDs, schemas, and declared ops; a runner receives only its declared op functions and validated input.
 
 ## 7. Operating limits and caps
 
-The code constants define these limits.
-Refresh this matrix when those constants change.
-[Run locally](README.md#run-locally) defines development setup.
-[The operator guide](docs/operations.md) owns the retention table, account-data deletion, and release procedures.
-AI Gateway account limits require separate live verification; this table describes application limits.
+Code constants are authoritative; update this matrix when they change. Retention, deletion, and release rules live in [docs/operations.md](docs/operations.md). AI Gateway account caps are separate dashboard config.
 
 ### Shared by the Playground and MCP
 
 | Area | Limit or behavior | Source |
 | --- | --- | --- |
-| Execute sandbox | Fresh isolate, `globalOutbound: null`, 60s timeout. | [run.ts](src/executor/run.ts) |
-| Service arguments | Validate against the manifest schema before dispatch. | [guard.ts](src/policy/guard.ts), [validate.ts](src/policy/validate.ts) |
-| Result body cut | Default 6,000 tokens, four characters per token. Footer budget is separate. | [truncate.ts](src/policy/truncate.ts), [source-basis.ts](src/policy/source-basis.ts) |
-| Budget override | `EXECUTE_MODEL_BOUNDARY_MAX_TOKENS`: 1,000–32,000 tokens. Invalid values use the default. | [truncate.ts](src/policy/truncate.ts) |
-| Logs | First 100 lines; redact before clipping each line to 2,000 characters. Apply the combined token cap afterward. | [shape-logs.ts](src/executor/shape-logs.ts) |
-| Error text | Same configured token cap as result bodies. | [tools.ts](src/mcp/tools.ts) |
-| Operation call | 24s wall-clock budget per call (`OPERATION_BUDGET_MS`), not per attempt. Lumenloop and Scout make one request under one signal that also bounds the body read. Stellar Docs and stellar.org `get_page` clip every attempt, redirect, and probe to one deadline. A retry takes the remaining budget. The bound is per call: three sequential hung calls still exceed the 60s `execute` limit, and one hung call uses 24s of a skill runner's 30s. | [types.ts](src/adapters/types.ts) |
-| Skill file load | 20s per file, with 8s fetch attempts and one retry. | [source.ts](src/skills/source.ts), [store.ts](src/skills/store.ts) |
-| Skill runner | 30s host deadline. In-flight operations can continue after timeout. | [run.ts](src/skills/run.ts) |
+| Execute sandbox | Fresh isolate, `globalOutbound: null`, 60s timeout | [run.ts](src/executor/run.ts) |
+| Service arguments | Validated against manifest schema before dispatch | [guard.ts](src/policy/guard.ts), [validate.ts](src/policy/validate.ts) |
+| Result body cut | Default 6,000 tokens (4 chars/token); separate footer budget | [truncate.ts](src/policy/truncate.ts), [source-basis.ts](src/policy/source-basis.ts) |
+| Budget override | `EXECUTE_MODEL_BOUNDARY_MAX_TOKENS`: 1,000–32,000 (invalid → default) | [truncate.ts](src/policy/truncate.ts) |
+| Logs | First 100 lines; redact before clipping each to 2,000 chars, then combined token cap | [shape-logs.ts](src/executor/shape-logs.ts) |
+| Error text | Same token cap as result bodies | [tools.ts](src/mcp/tools.ts) |
+| Operation call | 24s wall-clock per call (`OPERATION_BUDGET_MS`), shared across all attempts, retries, redirects, and probes (three sequential hung calls still exceed 60s `execute`; one uses 24s of a 30s runner) | [types.ts](src/adapters/types.ts) |
+| Skill file load | 20s per file; 8s fetch attempts, 1 retry | [source.ts](src/skills/source.ts), [store.ts](src/skills/store.ts) |
+| Skill runner | 30s host deadline (in-flight ops continue detached) | [run.ts](src/skills/run.ts) |
 
 ### Playground-only `/playground/chat`
 
-The server validates method, origin, authorization, request size, and message shape before consuming the hourly allowance.
-A valid turn consumes that allowance even when later model or tool execution fails.
-The signed cookie contains the peppered WorkOS subject; loopback dev uses `dev-loopback`.
+Method, origin, auth, body size, and message shape are validated before consuming hourly allowance; a valid turn consumes allowance even if execution later fails. Signed cookies hold the peppered WorkOS subject (`dev-loopback` on loopback dev).
 
 | Area | Limit or behavior | Source |
 | --- | --- | --- |
-| Hourly allowance | 30 chats per subject per fixed UTC hour; best-effort KV updates. | [budget.ts](src/demo/budget.ts) |
-| Rate response | `429`, `Retry-After: 3600`. Concurrent requests can exceed the best-effort allowance. | [chat.ts](src/demo/chat.ts) |
-| Request body | 384 KiB limit before JSON parsing. | [chat.ts](src/demo/chat.ts) |
-| Replay history | Newest 20 messages, at most 24,000 content characters when possible. Keep the final message. | [budget.ts](src/demo/budget.ts) |
-| User message | 8,000 characters. The composer blocks excess text; the server returns `400 message_too_long`. | [budget.ts](src/demo/budget.ts), [page.ts](src/demo/page.ts) |
-| Whole turn | 120s abort signal for model streaming and tool calls. | [chat.ts](src/demo/chat.ts) |
-| Model steps | 7; the final step has no active tools. | [steps.ts](src/demo/steps.ts) |
-| Model output | 4,096 output tokens. | [budget.ts](src/demo/budget.ts) |
-| Search calls | 3 per turn. | [budget.ts](src/demo/budget.ts) |
-| Search page | Default 5 hits; maximum 6. | [tools.ts](src/demo/tools.ts) |
-| Hit text | Description: 220 characters. Signature: 400 characters, preserving the callable line. | [tools.ts](src/demo/tools.ts) |
-| Execute calls | 3 per turn. | [budget.ts](src/demo/budget.ts) |
-| Execute code | 8,000 characters. Reject known-invalid `Promise.all({ ... })` before execution. | [tools.ts](src/demo/tools.ts) |
-| Recovery | At most one hint-driven cycle per turn. Independent structural failure recovery remains active. | [steps.ts](src/demo/steps.ts) |
-| Artifacts | No artifact owner or readable result artifacts. | [tools.ts](src/demo/tools.ts) |
+| Hourly allowance | 30 chats/subject/UTC hour (best-effort KV; concurrent requests may slightly exceed) | [budget.ts](src/demo/budget.ts) |
+| Rate response | `429`, `Retry-After: 3600` | [chat.ts](src/demo/chat.ts) |
+| Request body | 384 KiB before JSON parse | [chat.ts](src/demo/chat.ts) |
+| Replay history | Newest 20 messages, ≤24,000 chars when possible (always keeps final message) | [budget.ts](src/demo/budget.ts) |
+| User message | 8,000 chars (composer blocks; server returns `400 message_too_long`) | [budget.ts](src/demo/budget.ts), [page.ts](src/demo/page.ts) |
+| Whole turn | 120s abort signal | [chat.ts](src/demo/chat.ts) |
+| Model steps | 7 (final step has no active tools) | [steps.ts](src/demo/steps.ts) |
+| Model output | 4,096 output tokens | [budget.ts](src/demo/budget.ts) |
+| Search calls / page | 3/turn; default 5 hits, max 6 | [budget.ts](src/demo/budget.ts), [tools.ts](src/demo/tools.ts) |
+| Hit text | 220-char description; 400-char signature preserving callable line | [tools.ts](src/demo/tools.ts) |
+| Execute calls / code | 3/turn; 8,000 chars; rejects `Promise.all({ ... })` before running | [budget.ts](src/demo/budget.ts), [tools.ts](src/demo/tools.ts) |
+| Recovery | ≤1 hint-driven cycle/turn (structural failure recovery stays active) | [steps.ts](src/demo/steps.ts) |
+| Artifacts | None (ownerless) | [tools.ts](src/demo/tools.ts) |
 
 ### MCP-only `/mcp`
 
 | Area | Limit or behavior | Source |
 | --- | --- | --- |
-| Search page | Default 7 (`SEARCH_DEFAULT_LIMIT`); maximum 50. The [catalog reference](src/catalog/README.md#search-interfaces) holds the defaults for both search interfaces. | [tools.ts](src/mcp/tools.ts), [search.ts](src/catalog/search.ts) |
-| Execute code | Non-empty string; no application length ceiling. | [tools.ts](src/mcp/tools.ts) |
-| Tool calls | No application per-session count cap. | [server.ts](src/server.ts) |
-| Refresh grant | Fixed authorization window; token rotation does not extend it. See the [retention table](docs/operations.md). | [gate.ts](src/auth/gate.ts) |
-| Identity revalidation | WorkOS authenticates during browser authorization; later WorkOS changes do not synchronously revoke a Raven grant. | [workos.ts](src/auth/workos.ts) |
-| Artifact availability | OAuth subjects and loopback `dev-local`; no API-key or Playground owner. | [server.ts](src/server.ts) |
-| Artifact body | Maximum 2 MiB. Larger results receive advice without an artifact write. | [store.ts](src/artifacts/store.ts) |
-| Artifact metadata | Maximum 8,192 bytes; ledger includes first 12 calls and totals; operation names have 180-character caps. | [store.ts](src/artifacts/store.ts) |
-| Artifact helper calls | Per execute: 8 info calls and 4 reads. | [providers.ts](src/executor/providers.ts) |
+| Search page | Default 7 (`SEARCH_DEFAULT_LIMIT`), max 50 ([catalog defaults](src/catalog/README.md#search-interfaces)) | [tools.ts](src/mcp/tools.ts), [search.ts](src/catalog/search.ts) |
+| Execute code / tool calls | Non-empty string; no application length or per-session call cap | [tools.ts](src/mcp/tools.ts), [server.ts](src/server.ts) |
+| Refresh grant | Fixed window; rotation does not extend it ([retention](docs/operations.md#data-retention)) | [gate.ts](src/auth/gate.ts) |
+| Identity revalidation | WorkOS runs at browser auth; later WorkOS changes do not synchronously revoke grants | [workos.ts](src/auth/workos.ts) |
+| Artifact owners / limits | OAuth subjects and loopback `dev-local`; ≤2 MiB body; ≤8,192 B metadata (first 12 calls, 180-char op names); per execute: 8 `info`, 4 `read` | [server.ts](src/server.ts), [store.ts](src/artifacts/store.ts), [providers.ts](src/executor/providers.ts) |
 
 ### Usage collection
 
-The separate `stellar-raven-usage` Tail Worker extracts tool-response metadata after each producer invocation.
-It writes records to a private D1 database.
-[The operator retention table](docs/operations.md) defines the record lifetime.
-The producer and model sandbox receive no D1 binding.
-The collector excludes queries, answers, code, headers, protocol traffic, and raw account identifiers.
-API-key records remain separate from user counts.
-
-[usage/README.md](usage/README.md) defines reporting and coverage limits.
-[The operator guide](docs/operations.md) defines account-data deletion procedures.
+The separate `stellar-raven-usage` Tail Worker writes tool-response metadata to private D1 (no D1 binding on the producer or sandbox), excluding queries, answers, code, headers, protocol traffic, and raw account IDs, with API-key rows separated from user counts. See [usage/README.md](usage/README.md) and [docs/operations.md](docs/operations.md#data-retention).
 
 ## 8. Build & refresh chain — keeping the catalog honest
 
-Generated artifacts come from scripts, never from manual edits.
-The manifest defines the exposed surface under [ADR-0003](research/decisions/0003-build-time-exposure-filtering.md).
+Generated files come from scripts, never hand edits. The manifest defines the exposed surface ([ADR-0003](research/decisions/0003-build-time-exposure-filtering.md)).
 
 | Inputs | Builder | Output |
 | --- | --- | --- |
-| Service snapshots, authored docs and stellar.org specs, title snapshot, skill pins and files, runner registry | `scripts/build-catalog.mjs` | `catalog/manifest.json` |
-| Manifest, the authored family line, corroborating families | `scripts/build-family-text.mjs` | `src/mcp/family-text.ts` (`FAMILY_LINE`), `src/policy/corroboration.ts` |
+| Service snapshots, authored docs/stellar.org specs, title snapshot, skill pins/files, runner registry | `scripts/build-catalog.mjs` | `catalog/manifest.json` |
+| Manifest, authored family line, corroborating families | `scripts/build-family-text.mjs` | `src/mcp/family-text.ts` (`FAMILY_LINE`, `SEARCH_OPENING`), `src/policy/corroboration.ts` |
 | Manifest, service mappings, runner registry | `scripts/build-super-spec.mjs` | `specs/super-spec.json` |
 
-The catalog builder fetches exposed pinned skill files and verifies both digests.
-Its gitignored file cache supports repeated builds.
-`inventory/stellar-docs-titles.json` supplies routing vocabulary and contributes its timestamp to catalog generation time.
-The builder scopes those titles by each docs operation's `mintlify.include` prefixes.
-Stellar Docs operations come from the authored spec, not from a fetched descriptor.
-[docs/stellar-docs.md](docs/stellar-docs.md) defines the docs transport, scoping, and soft-empty contract.
-stellar.org operations come from `specs/stellar-org.json`, and [src/adapters/stellar-org.ts](src/adapters/stellar-org.ts)
-fixes the origin, guards the page path, follows same-origin redirects only, and caps the page size.
-[The 2026-11-14 measurement](research/services/stellar-org-site.md) records what the site returned.
-Sorted entries, stable keys, and input-derived timestamps make catalog generation deterministic.
+`build-catalog.mjs` fetches pinned skill files (via a gitignored cache), verifies both digests, scopes `inventory/stellar-docs-titles.json` by each docs op's `mintlify.include`, and produces deterministic output (sorted keys, input-derived timestamps). Docs ops come from `specs/stellar-docs.json` ([docs/stellar-docs.md](docs/stellar-docs.md)); stellar.org ops come from `specs/stellar-org.json` ([stellar-org.ts](src/adapters/stellar-org.ts) pins origin, guards paths, follows same-origin redirects only, caps size; measurements in [research/services/stellar-org-site.md](research/services/stellar-org-site.md)).
 
-`src/policy/scout-exposure.ts` owns excluded Scout operations.
-`scripts/exposure.mjs` owns the other exposure lists and re-exports Scout exclusions.
-Builders reject stale exclusions, unresolved retirement names, orphaned notes, missing pinned skill files, and missing build-authority IDs.
-They also reject references to non-exposed operations in authored model-facing text.
-Runnable schemas and declared operation sets must match the emitted manifest.
-Catalog, spec, and family-text checks reject stale generated outputs.
+`src/policy/scout-exposure.ts` owns Scout exclusions; `scripts/exposure.mjs` owns all other exclusion lists. Builders fail on stale exclusions, unresolved retirements, orphaned notes, missing pinned files or build-authority IDs, non-exposed refs in model-facing text, runnable-schema mismatches, or stale generated outputs. Pin updates require body-diff review ([ecosystem-skills/README.md](ecosystem-skills/README.md)).
 
-The skill update process displays changed bodies and requires selection-specific review evidence.
-A new file requires full review.
-Changing a file selection inside the same commit still requires review.
-[ecosystem-skills/README.md](ecosystem-skills/README.md) owns the operator sequence.
-
-[ci.yml](.github/workflows/ci.yml) defines the exact gate order.
-Its gates cover types, bundle builds, unit tests, assembled-worker smoke tests, eval contracts, routing, and artifact synchronization.
-The smoke lane blocks external traffic and serves pinned skill files from a local map.
-The artifact gate rebuilds catalog, spec, instructions, images, skill index, and eval artifacts, then rejects differences.
-Build-time pinned-file retrieval can require network access.
-
-[refresh.yml](.github/workflows/refresh.yml) checks live inventories, skill pins, pinned-file availability, and the Worker canary.
-It reports drift through an issue and fails the workflow.
-Operation-ID sets define surface drift; a version string alone does not.
-Docs title drift comes from the refreshed title inventory.
-Drift and check errors remain different failure classes.
+[ci.yml](.github/workflows/ci.yml) runs typecheck, bundle builds, unit tests, offline smoke tests (pinned skills served locally), eval contracts, routing gates, and artifact byte-sync (rebuilding catalog, family text and corroboration guard, super spec, globes, skill index, and eval artifacts). [refresh.yml](.github/workflows/refresh.yml) checks live inventories (by op-ID set, not version string), docs titles/anchors, skill pins/availability, and the Worker canary daily ([docs/operations.md](docs/operations.md#scheduled-workflows)).
 
 ## 9. Observability
 
-[src/observability.ts](src/observability.ts) owns operational events and the no-payload logging rule.
-`mcp_request` records access mode, status, timing, request ID, and a normalized Ray ID.
-OAuth summaries use `subjectHash` and secret-keyed `clientHash`; grants without client attribution report a null client hash.
-API-key summaries use the validated key name and null OAuth identity fields.
-Rejected bearer requests omit identity fields.
-Network, geography, and TLS values do not become application identity fields.
+[src/observability.ts](src/observability.ts) enforces no-payload logging across events and spans (no queries, code, payloads, answers, secrets, or provider-error messages; [ADR-0004](research/decisions/0004-correlation-id-continuity.md) removed `correlationId`—Ray IDs join logs and spans):
 
-Search events record query size, limits, counts, tiers, recovery IDs, response size, and timing.
-Execute events record outcomes, sizing, truncation, artifact use, and bounded source-basis facts.
-They also carry `sources` (per service: calls, attempts, outcomes, and final-status counts in the fixed buckets `2xx`, `3xx`, `4xx`, `429`, `5xx`, `timeout`, `network`, `none`; exact statuses stay on the `op` event) and `errorName`, which is null on success and otherwise one of `SyntaxError`, `TypeError`, `ReferenceError`, `timeout`, or `other`.
-`@cloudflare/codemode` returns only `err.message`, so the class comes from the runtime's own message forms and the outcome path ([script-hints.ts](src/executor/script-hints.ts)); a model-thrown `Error` with such text is misclassed.
-The `codemode.execute` span sets `sandbox.errorName` on failure. `errorName` never carries message text and never reaches the model.
-`sourceBasis.calls.first` rows also carry `attempts` and `finalStatus`; both are bounded and telemetry-only.
-Operation and runner events record IDs, outcomes, and timing.
-Skill-read events distinguish memo, colo cache, and upstream retrieval.
-Events and spans exclude query text, execute code, payloads, answers, secrets, and provider-error messages. [ADR-0004](research/decisions/0004-correlation-id-continuity.md) removed the `correlationId` input and output from the tools; Ray IDs join logs and spans.
-The [observability skill](.agents/skills/cloudflare-observability-review/SKILL.md) owns investigation procedures.
+- `mcp_request`: access mode, status, timing, request ID, normalized Ray ID; OAuth uses `subjectHash` and secret-keyed `clientHash` (null if unattributed); API-key logs validated key name and null OAuth fields; rejected bearers omit identity. Network/geo/TLS never become identity.
+- Search events: query size, limits, counts, tiers, recovery IDs, response size, timing.
+- Execute events: outcomes, sizing, truncation, artifact use, bounded `sourceBasis` (`calls.first` carries telemetry-only `attempts` and `finalStatus`), per-service `sources` (calls, attempts, outcomes, status buckets `2xx`, `3xx`, `4xx`, `429`, `5xx`, `timeout`, `network`, `none`; exact statuses stay on `op`), and `errorName` (`null` on success, else `SyntaxError`, `TypeError`, `ReferenceError`, `timeout`, or `other`, also set as `sandbox.errorName` on `codemode.execute`; classified from `@cloudflare/codemode`'s `err.message` via [script-hints.ts](src/executor/script-hints.ts), so model-thrown matching text can misclassify).
+- Op, runner, and `skill_read` events: IDs, outcomes, timing (`skill_read` distinguishes `memo`, `cache`, `upstream`).
+
+Procedures live in [cloudflare-observability-review](.agents/skills/cloudflare-observability-review/SKILL.md).
 
 ## 10. Evals
 
-[eval/EVALS.md](eval/EVALS.md) defines the instruments, reporting rules, and denominator contracts.
-Routing evaluates catalog discovery through its committed gates.
-The QA battery evaluates search, execution, and answer grounding together.
-Discovery, plan, Playground, and live-data instruments provide separate diagnostic evidence.
-Their results do not share one combined denominator.
-[eval/gates.json](eval/gates.json) defines routing thresholds.
+[eval/EVALS.md](eval/EVALS.md) owns instruments, reporting rules, and denominators; [eval/gates.json](eval/gates.json) defines routing thresholds. Routing gates catalog discovery; the QA battery tests search, execution, and grounding together; discovery, plan, Playground, and live-data instruments give separate diagnostics without sharing a combined denominator.

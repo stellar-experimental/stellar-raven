@@ -1,50 +1,45 @@
 # Operating Raven
 
-For the operator of a Raven deployment. [The usage guide](../usage/README.md) covers the usage
-archive, and [the architecture](../ARCHITECTURE.md) covers the design.
+Operator reference for a Raven deployment. See [usage/README.md](../usage/README.md) for the usage
+archive and [ARCHITECTURE.md](../ARCHITECTURE.md) for system design.
 
 ## Deploy
 
-The Worker is `stellar-raven-codemode`; its routes and bindings are in
-[`wrangler.jsonc`](../wrangler.jsonc). The production host is `https://raven.stellar.org`.
+The Worker is `stellar-raven-codemode` ([`wrangler.jsonc`](../wrangler.jsonc)); production host is
+`https://raven.stellar.org`.
 
-Run `npm run deploy`, never `wrangler deploy` directly. The package script adds two checks:
+Always run `npm run deploy`, never `wrangler deploy` directly:
 
-- `predeploy` (`scripts/deploy-preflight.mjs`) refuses a dirty working tree and a `HEAD` that is
-  not `origin/main`. `DEPLOY_ALLOW_UNCLEAN=1` skips the whole preflight and deploys the working
-  tree as it is. Use it only for a deliberate off-main deploy.
-- `postdeploy` (`scripts/check-usage-deployment.mjs`) checks that the usage tail consumer is
-  attached and that the collector's daily cleanup schedule exists. It skips with a notice when no
-  Cloudflare credential is available.
+- `predeploy` (`scripts/deploy-preflight.mjs`) refuses a dirty tree or `HEAD != origin/main`. Set
+  `DEPLOY_ALLOW_UNCLEAN=1` only for a deliberate off-main deploy.
+- `postdeploy` (`scripts/check-usage-deployment.mjs`) verifies the usage tail consumer and daily
+  cleanup schedule (skips with a notice if no Cloudflare credential is available).
 
-Wrangler must use the Cloudflare account that owns the Worker. It stores each profile, and the
-directory each profile is bound to, in its global config directory, not in the repository, so bind
-the profile once per clone:
+Bind the Cloudflare account profile once per clone (Wrangler stores bindings globally, not in the
+repo):
 
 ```sh
-wrangler auth list                 # profiles and their bound directories
-wrangler auth activate <name> .    # bind one profile to this checkout
+wrangler auth list
+wrangler auth activate <name> .
 ```
 
-A wrong-account or expired credential shows `Authentication error [code: 10000]`, then
-`Max auth failures reached [code: 9109]`. Neither names the account, so check the active profile
-first.
+A wrong-account or expired token prints `Authentication error [code: 10000]` then
+`Max auth failures reached [code: 9109]` without naming the account—check the active profile first.
 
-Before a release, run the checks in [`CONTRIBUTING.md`](../CONTRIBUTING.md). After a deploy:
+Run the [`CONTRIBUTING.md`](../CONTRIBUTING.md) checks before releasing. After deploy:
 
-1. Record the Version ID that `npm run deploy` prints.
-2. Wait about one minute. A new route can return 404 while it propagates.
-3. Check that the landing page returns `200`, `GET /health` returns `200`, and an unauthenticated
-   `POST /mcp` returns `401` with a `WWW-Authenticate: Bearer` header that names
-   `resource_metadata`.
-4. Check that `GET /health/skills` returns `200` after the next hourly canary run.
+1. Record the printed Version ID.
+2. Wait ~1 minute for new routes to propagate.
+3. Verify `/` returns `200`, `GET /health` returns `200`, and unauthenticated `POST /mcp` returns
+   `401` with `WWW-Authenticate: Bearer` naming `resource_metadata`.
+4. Verify `GET /health/skills` returns `200` after the next hourly canary run.
 
-A catalog deploy uses the same checks through the `live-drift-resolution` skill.
+Catalog deploys follow the same checks via `.agents/skills/live-drift-resolution/SKILL.md`.
 
 ## Named API keys
 
-A named API key is a non-expiring, full-access credential. Raven stores only its SHA-256 digest
-in the production `OAUTH_KV` namespace (`src/auth/api-keys.ts`).
+Non-expiring, full-access bearer credentials. Raven stores only SHA-256 digests in production
+`OAUTH_KV` (`src/auth/api-keys.ts`).
 
 ```sh
 npm run mcp-key -- create admin
@@ -53,100 +48,86 @@ npm run mcp-key -- revoke admin
 ```
 
 - Names match `[a-z][a-z0-9-]{0,31}`.
-- `create` and `rotate` print the credential once, after the remote write. `--out` writes it to
-  a new file with mode `0600` instead.
-- Clients send `Authorization: Bearer <name>:<token>`.
-- A KV change can take 60 seconds or more to reach every location
-  ([How KV works](https://developers.cloudflare.com/kv/concepts/how-kv-works/)). Revocation is
-  not an immediate emergency control.
+- `create` and `rotate` print the credential once after writing to KV (`--out` writes a new `0600`
+  file instead). Clients send `Authorization: Bearer <name>:<token>`.
+- KV propagation takes 60s+ ([How KV works](https://developers.cloudflare.com/kv/concepts/how-kv-works/)),
+  so revocation is not instantaneous.
 
 ## Health checks
 
 | Route | Meaning |
 |---|---|
-| `GET /health` | The Worker answers. |
-| `GET /health/skills` | The last verdict of the hourly skill-retrieval canary (`src/skills/canary.ts`, on the cron trigger in `wrangler.jsonc`). It returns 503 when the canary failed or never ran. |
+| `GET /health` | Worker heartbeat |
+| `GET /health/skills` | Last hourly skill-retrieval canary verdict (`src/skills/canary.ts`); returns `503` if failed or never run |
 
 ## Scheduled workflows
 
-No workflow opens a pull request, and the repository uses no Dependabot pull requests. Automated
-findings go to GitHub issues.
+No workflow opens PRs and Dependabot PRs are disabled; findings go to GitHub issues.
 
-| Workflow | Schedule | Report |
+| Workflow | Schedule | Issue / behavior |
 |---|---|---|
-| `refresh.yml` | Daily | One open issue per drift kind labeled `drift` (keyed by drift class and source) for upstream drift in the service snapshots, skill pins, skill directories, pin availability, Worker canary, and stale QA gospel; updates an open issue only when its report changes and closes it when its key clears. A script fault goes to an issue labeled `refresh-failure`. [`inventory/README.md`](../inventory/README.md) lists its secrets and variables. |
-| `dependency-audit.yml` | Daily, and on each change to `package.json` or `package-lock.json` on `main` | One open issue labeled `dependency-audit` for `npm audit` findings. The workflow replaces the body when findings change and closes the issue when the audit is clean. It needs no secret. |
-| `golden-sentinels.yml` | Daily, and on each change to `eval/qa/source-sentinels.*` on `main` | One open issue labeled `golden-sentinels` for primary-source drift on a golden case. It needs no secret. The drift only queues a re-verification; it is never evidence by itself. |
-| `usage-health.yml` | Hourly | The run fails on a usage collection gap and opens no issue ([`usage/README.md`](../usage/README.md)). |
+| `refresh.yml` | Daily | One `drift` issue per `<class>:<source>` drift kind (service snapshots, skill pins, directories, pin availability, Worker canary, stale QA gospel), updated only on report change and closed when cleared. Script faults open a `refresh-failure` issue. Secrets/vars in [`inventory/README.md`](../inventory/README.md). |
+| `dependency-audit.yml` | Daily, and `main` edits to `package*.json` | One `dependency-audit` issue for `npm audit` findings, updated on change and closed when clean. No secret required. |
+| `golden-sentinels.yml` | Daily, and `main` edits to `eval/qa/source-sentinels.*` | One `golden-sentinels` issue for primary-source drift on golden cases (queues re-verification; never evidence itself). No secret required. |
+| `usage-health.yml` | Hourly | Fails on a usage collection gap; opens no issue ([`usage/README.md`](../usage/README.md)). |
 
-The repository variable `REFRESH_ISSUE_ASSIGNEE` names the maintainer who gets the drift,
-refresh-failure, dependency-audit, and golden-sentinels issues. Without it, the repository owner gets them.
+`REFRESH_ISSUE_ASSIGNEE` sets the assignee for `drift`, `refresh-failure`, `dependency-audit`, and
+`golden-sentinels` issues (defaults to `kalepail` on `stellar-experimental/stellar-raven`, and
+`github.repository_owner` on forks).
 
 ## Observability
 
-`src/observability.ts` writes structured JSON events to Workers Logs. Traces are on. Each sandbox
-run has a custom `codemode.execute` span, because Cloudflare does not instrument the Worker
-Loader isolate. Query both in the Cloudflare dashboard (Workers & Pages, then Observability) or
-through the telemetry query API. The `cloudflare-observability-review` skill gives the procedure.
+`src/observability.ts` writes structured JSON events to Workers Logs; traces are enabled, with a
+custom `codemode.execute` span because Cloudflare does not trace Worker Loader isolates. Query in
+the Cloudflare dashboard (Workers & Pages → Observability) or via the telemetry API
+(`.agents/skills/cloudflare-observability-review/SKILL.md`).
 
-The logs hold operational metadata only: counts, status, timing, exposed operation IDs, and
-pseudonymous subject and client joins. They hold no queries, execute code, tool results, answers,
-provider error messages, or content-derived hashes. The architecture lists the
-[limits and caps](../ARCHITECTURE.md#7-operating-limits-and-caps) and the
-[event fields](../ARCHITECTURE.md#9-observability).
-
-Playground model requests turn off AI Gateway payload collection per request
-(`src/demo/model-config.ts`). AI Gateway still keeps request metadata under its own row-count
-policy.
+Logs carry operational metadata only (counts, status, timing, exposed op IDs, pseudonymous hashes)—no
+queries, code, results, answers, provider error text, or content hashes. See
+[limits](../ARCHITECTURE.md#7-operating-limits-and-caps) and
+[event fields](../ARCHITECTURE.md#9-observability). Playground calls disable AI Gateway payload
+logging per request (`src/demo/model-config.ts`); AI Gateway keeps request metadata under its own
+row-count policy.
 
 ## Data retention
 
-`src/auth/retention.ts` holds every retention duration that Raven sets, and
-`test/retention.test.ts` checks the call sites against it.
+`src/auth/retention.ts` owns Raven's retention durations; `test/retention.test.ts` guards call sites.
 
 | Data | Store | Retention |
 |---|---|---|
 | OAuth access token | `OAUTH_KV` | 1 hour |
 | OAuth refresh grant | `OAUTH_KV` | 90 days, fixed from sign-in |
-| Registered OAuth client | `OAUTH_KV` | 365 days; a registration renews for another 365 days when a token request arrives in its second half, so one in use does not expire |
-| Client assertion replay marker (`client-assertion-jti:<hash>`) | `OAUTH_KV` | The assertion's lifetime plus 60 seconds; written only for Client ID Metadata Document clients that authenticate with `private_key_jwt` |
+| Registered OAuth client | `OAUTH_KV` | 365 days; renews for 365 days on token requests in its second half |
+| Client assertion replay marker (`client-assertion-jti:<hash>`) | `OAUTH_KV` | Assertion lifetime + 60s (CIMD clients using `private_key_jwt` only) |
 | Parked login state (`login:<state>`) | `OAUTH_KV` | 10 minutes |
 | Playground session cookie | browser | 2 hours |
 | Playground throttle (`demo-throttle:<subject>:<hour>`) | `OAUTH_KV` | 2 hours |
-| Oversized execute artifact (`art/<ownerHash>/<id>`) | R2 `stellar-raven-artifacts` | 7 days (store check and bucket lifecycle) |
-| Usage response row | D1 `stellar-raven-usage` | 13 UTC calendar months, including the current month |
-| Workers Logs, traces, request metadata | Cloudflare | Cloudflare's schedule, at most 7 days |
-| AI Gateway request metadata | Cloudflare AI Gateway | The gateway's row-count policy |
+| Oversized execute artifact (`art/<ownerHash>/<id>`) | R2 `stellar-raven-artifacts` | 7 days (store check + bucket lifecycle) |
+| Usage response row | D1 `stellar-raven-usage` | 13 UTC calendar months (including current month) |
+| Workers Logs, traces, request metadata | Cloudflare | Cloudflare schedule, max 7 days |
+| AI Gateway request metadata | Cloudflare AI Gateway | Gateway row-count policy |
 
-Named API keys do not expire. The user-facing privacy statement is the `/terms` page
-(`src/site.ts`).
+Named API keys do not expire. User-facing privacy disclosures live at `/terms` (`src/site.ts`).
 
 ## Account-data deletion
 
-Raven has no admin endpoint and no self-service deletion page. Handle a verified request in the
-production consoles:
+Raven has no admin or self-service deletion endpoint. Process verified requests in production
+consoles:
 
-1. In WorkOS, find the user by the contact email and record the WorkOS user ID. With the
-   production `MCP_SERVER_SECRET`, compute
-   `subject = SHA-256(workosUserId + ":" + MCP_SERVER_SECRET)`, the same value as
-   [`deriveSubject`](../src/auth/workos.ts). Never put the ID, the subject, or the secret in
-   logs or tickets.
-2. In the production `OAUTH_KV` namespace, list and delete every key under `grant:<subject>:`,
-   `token:<subject>:`, and `demo-throttle:<subject>:` (KV dashboard, or Wrangler's remote list
-   and delete commands). Check that each prefix is empty. This revokes Raven OAuth grants and
-   tokens. The signed Playground cookie cannot be revoked; it expires after 2 hours.
-3. Compute `ownerHash = SHA-256(subject).slice(0, 16)`. In the R2 bucket
-   `stellar-raven-artifacts`, delete every object under `art/<ownerHash>/`. Check that the prefix
-   is empty.
-4. In the D1 database `stellar-raven-usage`, delete the `usage_responses` rows whose
-   `subject_hash` equals `ownerHash`, with a bound query through the Cloudflare API or the
-   console. Check that no matching row remains. D1 Time Travel keeps recovery copies for its
-   recovery window, so repeat the deletion after any restore.
-5. If the request includes the identity account, delete the user in the WorkOS production
-   environment after steps 1 to 4. Otherwise keep the WorkOS account.
+1. Find the WorkOS user ID by email. With production `MCP_SERVER_SECRET`, compute
+   `subject = SHA-256(workosUserId + ":" + MCP_SERVER_SECRET)` (matching
+   [`deriveSubject`](../src/auth/workos.ts)). Never log or ticket the ID, subject, or secret.
+2. In production `OAUTH_KV`, delete all keys under `grant:<subject>:`, `token:<subject>:`, and
+   `demo-throttle:<subject>:` and confirm each prefix is empty. (Signed Playground cookies expire
+   within 2 hours and cannot be revoked.)
+3. Compute `ownerHash = SHA-256(subject).slice(0, 16)`. In R2 `stellar-raven-artifacts`, delete all
+   objects under `art/<ownerHash>/` and confirm the prefix is empty.
+4. In D1 `stellar-raven-usage`, delete `usage_responses` rows where `subject_hash = ownerHash` using
+   a bound query and confirm zero rows remain. Repeat after any D1 Time Travel restore.
+5. Delete the WorkOS production user only if the request includes the identity account.
 
-Records that this procedure does not remove expire on their own (see the table above). The
-repository tools cannot remove individual Workers Logs entries or Cloudflare request metadata.
+All other records expire on schedule above; repo tools cannot delete individual Cloudflare log
+entries or request metadata.
 
 References: [WorkOS user API](https://workos.com/docs/reference/authkit/user),
 [KV commands](https://developers.cloudflare.com/kv/reference/kv-commands/),

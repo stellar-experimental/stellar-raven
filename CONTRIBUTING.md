@@ -1,29 +1,28 @@
 # Contributing to Stellar Raven
 
-Issues and pull requests are welcome. [README.md](./README.md) describes the project.
+Issues and pull requests are welcome. See [README.md](./README.md) for an overview.
 
 ## Where to send what
 
 | You found | Send it to |
 |---|---|
-| A bug or a gap in Raven | A GitHub issue or a pull request |
-| Wrong or missing data in Lumenloop, Stellar Light/Scout, Stellar Docs, stellar.org, or an upstream skill | A GitHub issue. Raven records it as a finding in [`improvements/`](./improvements/README.md) and files it with the service owner. |
+| A bug or gap in Raven | A GitHub issue or pull request |
+| Wrong or missing data in Lumenloop, Stellar Light/Scout, Stellar Docs, stellar.org, or an upstream skill | A GitHub issue (recorded under [`improvements/`](./improvements/README.md) and filed with the service owner) |
 | An upstream fix for a recorded finding | The **Upstream improvement ready for verification** issue form |
-| A security problem | [SECURITY.md](./SECURITY.md). Do not open a public issue. |
-| A question | The `#raven` channel in the [Stellar Developers Discord](https://discord.gg/stellardev) |
+| A security problem | [SECURITY.md](./SECURITY.md) — never open a public issue |
+| A question | `#raven` in the [Stellar Developers Discord](https://discord.gg/stellardev) |
 
 ## Set up
 
-Follow steps 1 to 3 of [Run locally](./README.md#run-locally) in the README.
+Follow steps 1–3 of [Run locally](./README.md#run-locally).
 
-- `npm ci` also installs the pre-commit hook (`scripts/git-hooks/pre-commit`), which blocks a
-  commit that contains a secret.
-- Placeholder values in `.dev.vars` are enough for typecheck and tests. Without `.dev.vars`, the
-  generated `Env` type has no secret members and typecheck fails.
+- `npm ci` installs the pre-commit secret-scanning hook (`scripts/git-hooks/pre-commit`).
+- Placeholder `.dev.vars` values suffice for typecheck and tests; without `.dev.vars`, `Env` lacks
+  secret members and typecheck fails.
 
 ## Checks
 
-A pull request must pass CI. Run the baseline before you push:
+Run the baseline bare (pipes hide exit status) before pushing:
 
 ```sh
 npm run typecheck
@@ -32,29 +31,24 @@ npm run build
 npm run secrets:scan -- --tree
 ```
 
-Run each command bare; a pipe hides its exit status. CI also runs the gates below. Run the
-matching one when you change its area:
+Run the matching CI gate for any area you touch:
 
 | Area | Command |
 |---|---|
 | `src/executor/` or `src/demo/` | `npm run test:smoke` |
-| `eval/` | `npm run eval:selftest`, `npm run eval:qa:lint -- --stale --enforce-floors`, `npm run eval:qa:register -- --check`; for a change to the live cases, also `node eval/qa/lint-corpus.mjs --live-contract eval/qa/corpus/live/live-cases.json --since "$(git merge-base HEAD origin/main)"` |
+| `eval/` | `npm run eval:selftest`, `npm run eval:qa:lint -- --stale --enforce-floors`, `npm run eval:qa:register -- --check`; for live-case changes, also `node eval/qa/lint-corpus.mjs --live-contract eval/qa/corpus/live/live-cases.json --since "$(git merge-base HEAD origin/main)"` |
 | Catalog, routing, or skills | `npm run eval:routing -- --gate` |
 | `ecosystem-skills/` pins | `node scripts/check-pin-review.mjs --base origin/main` |
 | `improvements/` | `npm run improvements:lint` |
 | `usage/` | `npm run build:usage`, `npm run test:usage-report`, `npm run build:usage-report` |
-| Any generated file | Rerun its generator. [`scripts/README.md`](./scripts/README.md) lists them. CI fails when a generated file is out of sync. |
+| Any generated file | Rerun its generator ([`scripts/README.md`](./scripts/README.md)); CI rejects out-of-sync outputs |
 
-[`test/README.md`](./test/README.md) maps the test suites, and
-[`eval/EVALS.md`](./eval/EVALS.md) describes the evaluation gates.
-
-A pull request that hands back an upstream fix for a recorded finding can use the
-[upstream-improvement handoff template](./.github/PULL_REQUEST_TEMPLATE/upstream-improvement-handoff.md).
-Add `?template=upstream-improvement-handoff.md` to the new pull request URL to apply it.
+See [`test/README.md`](./test/README.md) for test suites and [`eval/EVALS.md`](./eval/EVALS.md) for
+eval gates. For an upstream-fix handoff PR, append `?template=upstream-improvement-handoff.md` to
+the new PR URL ([template](./.github/PULL_REQUEST_TEMPLATE/upstream-improvement-handoff.md)).
 
 ## Rules
 
-The "Hard rules" in [`AGENTS.md`](./AGENTS.md#hard-rules) bind every change, whoever writes it:
-generated files come from their scripts, secrets stay on the host, partner-tier details and
-production counts are never committed, and the design is forward-only. Coding agents read
-[`AGENTS.md`](./AGENTS.md) first.
+Every change must follow [AGENTS.md "Hard rules"](./AGENTS.md#hard-rules): rebuild generated files
+via their scripts, keep secrets host-side, never commit partner-tier details or production counts,
+and keep the design forward-only. Coding agents read [`AGENTS.md`](./AGENTS.md) first.
