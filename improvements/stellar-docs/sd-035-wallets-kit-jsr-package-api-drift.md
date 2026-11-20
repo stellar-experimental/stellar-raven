@@ -28,21 +28,13 @@ recurrences:
 ## Finding
 
 One current Docs tutorial surface still teaches the Wallets Kit v1 API. The
-English Example Application tutorial installs `@creit.tech/stellar-wallets-kit`
-and includes that scope in its Vite SSR configuration, while its example code
-uses the v1 constructor form.
+English Example Application tutorial pins `@creit.tech/stellar-wallets-kit@^1`
+(stopgap from PR #2659, since npm publishes v2 under the same scope) and teaches
+the v1 `new StellarWalletsKit(...)` constructor instead of static
+`StellarWalletsKit.init(...)` with `defaultModules()`.
 
-An earlier version of this record called that npm scope "legacy" and v1-only.
-The docs maintainer corrected that on #2609 and is right: npm still publishes
-v2 under the dotted scope (dist-tag `latest` is 2.5.0, published 2026-06-29).
-That is precisely why the unpinned install broke — it resolved to v2 against
-v1-era tutorial code. PR #2659 landed a stopgap pinning the install to `@^1`.
-
-The durable gap remains: the tutorial teaches the v1 constructor API rather
-than static `StellarWalletsKit.init(...)` with `defaultModules()`, and the fix
-has to move this tutorial and `stellar/basic-payment-app` together. The former
-Spanish `dapp-frontend` translation is no longer present on `main` and is not
-an active residual.
+The durable fix requires migrating this tutorial and `stellar/basic-payment-app`
+to v2 together.
 
 ## Evidence
 

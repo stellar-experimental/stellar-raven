@@ -21,6 +21,8 @@ evidence:
   - "Affected golden case: eval/qa/corpus/battery/protocol-core/q-pc-quorum-freeze-cap77.json, key fact 4. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
   - upstream issue filed 2026-11-14: https://github.com/Stellar-Light/stellarlight/issues/1970
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://stellarlight.xyz/api/research?q=SLP-0006%20freeze%20YieldBlox%20exploit%20accounts&limit=25 HTTP 200 still excludes limits/slp-0006."
   - date: 2026-11-14
     evidence: "2026-11-14 QA test of the rebuilt battery (claude-sonnet-5-5 answering, results stamp 2026-11-14T06-06-31-variantA): two unrelated cases missed the Limits Proposals. q-pc-slp-0004-0006-status: no Stellar Docs page, meeting note, Scout or Lumenloop hit mentioned SLPs, so the agent could not confirm the proposal type exists. q-pc-quorum-freeze-cap77: the agent found no source tying the YieldBlox freeze to CAP-0077 or SLP-0006. Evidence/owner state: .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Upstream gaps by leaf'."
   - date: 2026-11-17

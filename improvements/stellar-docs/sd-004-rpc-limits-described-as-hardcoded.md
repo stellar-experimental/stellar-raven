@@ -38,32 +38,9 @@ two different things across adjacent doc pages.
 
 ## Evidence
 
-Docs (2026-07-03): "The limit for getTransactions can range from 1 to 200 - an
-upper limit that is hardcoded in Stellar-RPC for performance reasons."
-Source (same day): `options.go` — `Name: "max-transactions-limit" ...
-DefaultValue: uint(200)`, `Name: "default-transactions-limit" ...
-DefaultValue: uint(50)`; handlers are constructed from
-`cfg.MaxTransactionsLimit` / `cfg.DefaultTransactionsLimit`. Same pattern for
-events (10000/100) and ledgers (200/50).
-
-## Consequence
-
-Consumers (and this repo's eval golden, before correction) can repeat
-"hardcoded" as a source-level implementation fact even though the options
-exist. The owner response adds an important operational distinction: these are
-the supported stock caps in practice, operators are not expected to change
-them, and documenting the tuning knobs as user guidance could be harmful. A
-grounded answer therefore needs to separate implementation configurability
-from supported provider/operator behavior instead of treating either as the
-whole truth.
+Docs: "The limit for getTransactions can range from 1 to 200 - an upper limit that is hardcoded in Stellar-RPC for performance reasons."
+Source (`options.go`): `max-transactions-limit` default 200 / `default-transactions-limit` default 50; same pattern for events (10000/100) and ledgers (200/50).
 
 ## Recommendation
 
-No further request to advertise or recommend tuning the caps: the Docs owner
-explicitly declined that direction. If the wording is revisited, prefer
-"supported/effective upper limits" or "stock upper limits" over a claim about
-compile-time implementation, while keeping the configuration switches in the
-operator/source reference rather than application guidance. Consumer-side,
-grade the stock limits as the operational contract, retain source
-configurability as dated implementation context, and never recommend raising
-the caps without provider-specific support.
+Do not re-request advertising or recommending cap tuning: the Docs owner explicitly declined that direction on #2567 because operators should not raise stock caps and caps may tighten. If wording is revisited, prefer "supported/effective upper limits" or "stock upper limits" over "hardcoded". Consumer-side, treat the stock limits as the operational contract and keep source configurability as implementation context only.

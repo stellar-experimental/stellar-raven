@@ -20,6 +20,8 @@ evidence:
   - "Golden consumer: eval/qa/corpus/battery/compliance-rwa-payments/q-agent-identity-erc8004-stellar.json cites https://github.com/trionlabs/stellar-8004 for the x402/MPP integration claim."
   - upstream issue filed 2026-11-06: https://github.com/trionlabs/stellar-8004/issues/71
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://raw.githubusercontent.com/trionlabs/stellar-8004/main/README.md HTTP 200 still contains Managed Payment Protocol."
   - date: 2026-11-09
     evidence: "README line 17 still expands MPP as Managed Payment Protocol. Current registration UI line 85 says Machine Payments Protocol and mpp-client imports mppx."
   - date: 2026-11-06
@@ -46,7 +48,3 @@ The current UI and client provide the controls. A fresh all-state issue/PR check
 ## Recommendation
 
 Change "Managed Payment Protocol" to "Machine Payments Protocol" in `README.md` line 17.
-
-## Current verification — 2026-11-06
-
-The current README still says `Managed Payment Protocol`. The current registration UI (`webapp/apps/web/src/lib/components/register/StepAdvanced.svelte`, line 85) says `Machine Payments Protocol`; `webapp/apps/web/src/lib/mpp-client.ts` imports `mppx`. The historical migration path cited above is now removed; use the current UI and client as the controls. The public owner repository has issues enabled and is not archived. All current issues and PRs were checked; no duplicate MPP naming report was found.

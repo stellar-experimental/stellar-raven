@@ -26,11 +26,11 @@ announcement, and any earlier integration preparation indistinguishable.
 
 ## Evidence
 
-P4 N2's primary/blind review on 2026-07-11 validated the May 18 Circle release
-note and the May 19 SDF/Circle public announcement. The candidate notes a
-contradicted May 8 lead and older corpus treatment of an earlier technical
-milestone. This is proposed pending a stored Lumenloop response that assigns a
-wrong or unqualified date.
+Circle release notes record Stellar mainnet support on 2026-05-18 and SDF announced
+"Circle CCTP is Live on Stellar" on 2026-05-19. Live `get_document({collection: "articles", id: 6461})`
+returns May 19 publication prose with no typed milestone fields (confirmed 2026-11-09 and 2026-11-20).
+No retained Lumenloop response shows an incorrect May 8 date; the filed issue (#38)
+stands as an optional structured-metadata request.
 
 ## Recommendation
 
@@ -38,10 +38,3 @@ Store event type and source provenance separately: `technicalAvailableAt`,
 `publicAnnouncedAt`, `deploymentAt` when known, plus source URL and as-of date.
 Answer summaries should name the milestone rather than overwrite it with a
 single undifferentiated launch date.
-
-## Current verification — 2026-11-06
-
-CCTP live prose and publication timestamp, no typed technical/deployment/announcement milestones. No specific wrong May8 date reproduced; original file itself says proposed pending such a response.
-
-Keep uncertainty; metadata request reproduces but alleged wrong-date claim is unproven. Do not retire or assert corrected.
-Next check: Capture an actual wrong/unqualified milestone answer in source content or owner event schema decision.

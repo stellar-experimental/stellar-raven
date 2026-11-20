@@ -41,10 +41,3 @@ where the announcement supports those fields. Preserve the existing Testnet,
 preview, and audit qualifications in generated prose; leave unknown fields
 unknown. Treat schema enrichment separately from any future concrete summary
 that incorrectly promotes preview status into Mainnet production capability.
-
-## Current verification — 2026-11-06
-
-Short summary explicitly Testnet live now; long summary says developer preview and audits underway before mainnet. Missing structured maturity fields remain, but original alleged boundary-dropping is not reproduced.
-
-Keep uncertainty; correct existing prose is not proof a previously captured defect was fixed. Avoid treating optional typed fields as demonstrated false content.
-Next check: Inspect owner change or a concrete summary that drops preview/network boundary.

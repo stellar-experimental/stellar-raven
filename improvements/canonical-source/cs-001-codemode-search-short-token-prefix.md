@@ -44,7 +44,7 @@ Reproduction at `main` commit `16b6856070f6c711486011b8b9dd926c2eaae52b`, with t
 | `Return the city forecast.` / `Refund duplicate invoice.` | all four queries | no results |
 | `Return a city's forecast.` / `Refund a re-billed invoice.` | `city forecast`, `refund invoice` | 153, 481 |
 
-The rule is unchanged in 0.4.2, 0.5.1, 0.5.2, and current `main`. No test file exists for
+The rule is unchanged from 0.4.2 through 0.5.6 and current `main`. No test file exists for
 `connectors/search.ts` at `main`.
 
 ### Reproduce

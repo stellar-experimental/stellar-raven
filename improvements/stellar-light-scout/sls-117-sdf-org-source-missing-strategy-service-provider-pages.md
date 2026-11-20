@@ -22,6 +22,8 @@ evidence:
   - "Affected golden cases: eval/qa/corpus/battery/history-org-tokenomics/q-sdf-2026-strategy-priorities.json, eval/qa/corpus/battery/scf-grants-builders/q-scf-service-provider-directories.json, and eval/qa/corpus/battery/retail-consumer/q-raph-missing-exchange-memo.json. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
   - upstream issue filed 2026-11-14: https://github.com/Stellar-Light/stellarlight/issues/1969
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://stellarlight.xyz/api/research?q=SDF%202026%20strategy%20priorities&source=sdf-org&limit=25 HTTP 200 still excludes stellar.org/foundation/strategy."
   - date: 2026-11-17
     evidence: "Still reproduces. `npm run improvements:probes -- --service stellar-docs --service stellar-light-scout` on 2026-11-17 (00:18Z): GET https://stellarlight.xyz/api/research?q=SDF%202026%20strategy%20priorities&source=sdf-org&limit=25 answers 200 and still excludes \"stellar.org/foundation/strategy\". https://github.com/Stellar-Light/stellarlight/issues/1969 is open with 0 comments."
 ---

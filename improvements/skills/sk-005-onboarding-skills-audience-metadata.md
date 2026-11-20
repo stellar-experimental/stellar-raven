@@ -11,6 +11,8 @@ evidence:
   - upstream source rechecked 2026-07-09 at lumenloop/lumenloop-skills main (skills tree d92c56b): stellar-project-dossier frontmatter still has name/description/user-invocable only, with no audience or transport marker
   - upstream issue filed 2026-07-09: https://github.com/lumenloop/lumenloop-skills/issues/2
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET lumenloop/lumenloop-skills main stellar-project-dossier/SKILL.md HTTP 200 still has user-invocable: true and excludes audience: and transport:."
   - date: 2026-11-09
     evidence: "2026-11-09T20:30:57Z fresh raw main dossier HTTP 200: frontmatter still name,description,user-invocable only, with no audience or transport field. The seven playbooks plus lumenloop-mcp-connect likewise have neither marker. Main a87ca957; issue 2 remains open with no comments."
   - date: 2026-11-06

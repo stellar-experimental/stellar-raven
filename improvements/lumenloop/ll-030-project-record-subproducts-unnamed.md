@@ -13,6 +13,8 @@ evidence:
   - live re-execution 2026-09-04T07:00:31.027Z through production Raven used the host-side LumenLoop credential without exposing it; all three original calls returned ok and reproduced the record-content gap
   - upstream issue filed 2026-09-09: https://github.com/lumenloop/lumenloop-backend/issues/44
 recurrences:
+  - date: 2026-11-20
+    evidence: "POST /v1/tools/get_project {slug: 'wisdomtree'} still omits CRDT and CRDYX; issue #44 remains open."
   - date: 2026-11-09
     evidence: "2026-11-09 sweep at 2026-11-09T20:31:03.210730+00:00: still-repro. WisdomTree record still counts 13 digital funds and Gold token but names no CRDT/CRDYX; mainnet.tokens empty and current YAML agrees. CRDT directory fallback is semantic neighbors. Exact original semantic query limit15 returns24 rows without either ticker. Fresh issuer TOML names CRDT anchored to CRDYX, so product existence is independently controlled. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
@@ -42,29 +44,9 @@ not. That is a record-content gap, not a recall gap, so it takes its own id.
 
 ## Evidence
 
-Fresh public checks on 2026-10-09 confirm the unnamed-funds description.
-The [WisdomTree project page](https://lumenloop.com/projects/wisdomtree) still counts `13 digital funds` without naming them in that description.
-The [source record](https://github.com/lumenloop/stellar-ecosystem-db/blob/7dbb50cc54cfd2ed7c1c1d6bf1e25ac6a0bd406e/projects/wisdomtree.yaml) also has empty `mainnet.tokens`.
-The [issuer TOML](https://stellar.wisdomtree.com/.well-known/stellar.toml) names `CRDT`, anchored to the `CRDYX` fund.
-This check covers the description and source tokens, not every linked article or page section.
-The authenticated API was unavailable without a key.
-
-Results stamp `eval/qa/results/2026-08-28T19-27-08-variantA.json`, row
-`q-defi-wisdomtree-crdt`.
-
-Live re-execution on 2026-08-28:
-
-- `lumenloop.get_project({slug:"wisdomtree"})` returned a 624-character record
-  for WisdomTree Prime. It says "13 digital funds and a Gold token". The
-  payload contains no `CRDT` or `CRDYX` substring.
-- `lumenloop.search_directory({query:"CRDT"})` degraded to
-  `match_mode: "semantic"` and returned five unrelated rows: DTCC, Stellar
-  Router SDK, Decentrio, OrbitCDP, and DeFarm. "CRDT" is also a
-  computer-science term.
-- `lumenloop.search_content_semantic` over CRDT/CRDYX returned about thirty
-  rows. None names either ticker. The closest row says "WisdomTree brings
-  diversified tokenized portfolios to Stellar with 15 SEC-registered funds",
-  with no per-fund ticker.
+- `get_project({slug: "wisdomtree"})` returns a WisdomTree Prime record stating "13 digital funds and a Gold token" with empty `mainnet.tokens` and no `CRDT` or `CRDYX` ticker (confirmed 2026-11-09 and 2026-11-20); the [source YAML](https://github.com/lumenloop/stellar-ecosystem-db/blob/7dbb50cc54cfd2ed7c1c1d6bf1e25ac6a0bd406e/projects/wisdomtree.yaml) agrees.
+- `search_directory({query: "CRDT"})` degrades to semantic neighbors (DTCC, Stellar Router SDK, Decentrio, OrbitCDP, DeFarm), and `search_content_semantic` over CRDT/CRDYX returns rows with no per-fund ticker.
+- Positive control: the [issuer TOML](https://stellar.wisdomtree.com/.well-known/stellar.toml) names `CRDT` anchored to the `CRDYX` fund.
 
 ## Recommendation
 

@@ -111,7 +111,3 @@ Source lines at tag `agents@0.32.0`, unchanged on `main` at `1f3bd921`:
    Add captured-request tests for `thinking: { type: "adaptive" }` and effort `low` and `xhigh`.
 2. Until then, warn when `providerOptions.anthropic` is present on a string catalog model and the request drops it.
    Document which provider options each wire format forwards.
-
-## Current upstream disposition — 2026-11-06
-
-The request-body defect remains reproducible in agents 0.33.0. Automated triage confirmed issue 2809; this is not human maintainer acceptance. The separate resume-option request in issue 2790 was declined and closed `not_planned`. Do not treat that request as pending or re-file it; the main provider-options defect and issue 2631 remain open.

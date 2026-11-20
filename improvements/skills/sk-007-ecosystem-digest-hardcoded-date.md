@@ -10,6 +10,8 @@ evidence:
   - upstream source rechecked 2026-07-09 at lumenloop/lumenloop-skills skills commit d92c56b: the worked example still says "Today is 2026-06-08" and repeats the frozen date through every recency query
   - upstream issue filed 2026-07-09: https://github.com/lumenloop/lumenloop-skills/issues/3
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET lumenloop/lumenloop-skills main stellar-ecosystem-digest/SKILL.md HTTP 200 still contains Today is 2026-06-08."
   - date: 2026-11-09
     evidence: "2026-11-09T20:30:57Z fresh raw main stellar-ecosystem-digest HTTP 200: line 186 still says Today is 2026-06-08; repeated date_end bounds and output-template date remain frozen. Earlier query examples and the worked example were checked together. Main a87ca957; issue 3 remains open with no comments."
   - date: 2026-11-06
@@ -45,7 +47,7 @@ the staleness is invisible to a model pattern-matching the example.
 
 ## Evidence
 
-In the mirror (byte-identical to upstream), `stellar-ecosystem-digest/SKILL.md`:
+In upstream `lumenloop/lumenloop-skills`, `skills/stellar-ecosystem-digest/SKILL.md`:
 
 - **Line 186:** `Today is 2026-06-08, so the window is \`2026-05-09 → 2026-06-08\`.`
   — the worked example ("What's new in Stellar RWA in the last 30 days?", §Worked

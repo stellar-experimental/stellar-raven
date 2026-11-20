@@ -42,10 +42,3 @@ revision/superseded-by links and prefer the latest official schedule for current
 queries. Label historical schedules with their dates and revision context.
 Do not recreate an unavailable old row solely to fill this metadata or treat
 optional revision fields as proof that current venue prose is false.
-
-## Current verification — 2026-11-06
-
-1457 now unavailable. Yas Marina empty; Abu Dhabi unrelated1212. Current1819 correctly Lisbon Convento do Beato Oct28-29. No stale Meridian venue row reproduced, and original file never retained one.
-
-Keep explicit inconclusive original scope; do not equate missing old id with deployed supersession fix.
-Next check: Owner identifies removed stale record or concrete retained supersession mechanism; otherwise review evidentiary basis.
