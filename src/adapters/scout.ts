@@ -1,35 +1,9 @@
 /**
- * Stellar Light / Scout adapter — keyless HTTP per the entry's transport
- * (ARCHITECTURE.md: manifest-owned transport and exposure).
- *
- * Call shape: path templates (`/api/hackathons/{slug}`) are filled from args;
- * remaining args become the query string for GET or the JSON body for POST.
- *
- * Row-nesting: every collection endpoint nests rows under a resource-named
- * key (`projects[]`, `repos[]`, …; only `/api/research` uses `results[]`) and
- * carries a `meta{}`. We pass the body through as `data` UNCHANGED — the
- * catalog descriptions document each rows key; inventing a uniform `rows[]`
- * would misrepresent single-item and analytics endpoints (measured truth in
- * the research doc, not a generic shape).
- *
- * Error mapping (per-service normalizer, ARCHITECTURE.md):
- *  - 400 `{error, hint?, valid*}`      → kind "error" + hint + valid lists.
- *  - 404 unknown slug                  → kind "soft-empty" ("discover the
- *    slug from the list endpoint first" — a miss, not a failure).
- *  - 503 `{unavailable:true}` (AI ops) → kind "error" with the documented
- *    fallback hint (GET /api/partners filters), NOT retryable.
- *  - 200 + `meta.error:"no_query"`     → kind "soft-empty" (0 rows + advisory).
- *  - 200 + `meta.partial: true`, or an element of the `meta.warnings` string
- *    array matching the case-sensitive prefix "backend read failed" followed
- *    by whitespace, a colon, or end of string → kind "error", even with rows;
- *    retry once, then report an inconclusive read. Preserve the warnings and
- *    `meta.failedReads` in details.
- *  - Other warnings remain visible in unchanged successful data.
- *
- * Timeout: one request under one `OPERATION_BUDGET_MS` signal that also bounds the body read.
- * An abort is detected from the signal (`signal.aborted`), never from the thrown error, and
- * returns a timeout envelope with no status. There is no retry; a future retry must take the
- * remaining budget, never a fresh one.
+ * Stellar Light / Scout adapter: keyless HTTP per manifest transport (ARCHITECTURE.md).
+ * Collection responses pass through unchanged because resource keys vary by endpoint and
+ * single-item/analytics endpoints have no uniform rows array.
+ * 404 and `meta.error` map to `soft-empty`; `meta.partial` or a `"backend read failed"`
+ * warning maps to `error` even when partial rows are present.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import {
@@ -135,14 +109,11 @@ export async function callScout(
     const res = await fetchImpl(url, init);
     const contentType = res.headers.get("content-type") ?? "";
 
-    // leaderboard?format=csv and friends: non-JSON is passed through as
-    // { text, contentType } — the content type rides in the payload.
+    // Non-JSON responses (e.g. format=csv) pass through as { text, contentType }.
     if (!contentType.includes("json")) {
       const text = await res.text();
       if (!res.ok) {
-        // 404 is a miss, not a failure — same soft-empty contract as the JSON
-        // 404 branch below (adapter header: "404 unknown slug → soft-empty");
-        // discover the slug from the list endpoint first.
+        // 404 is an unknown-slug miss (soft-empty), not a failure.
         return errResult({
           service: SERVICE,
           kind: res.status === 404 ? "soft-empty" : "error",
@@ -159,15 +130,12 @@ export async function callScout(
     if (!res.ok) {
       const message = typeof body.error === "string" ? body.error : `HTTP ${res.status} from ${path}`;
       const hint = typeof body.hint === "string" ? body.hint : undefined;
-      // valid-value lists (validSources, validCategories, …) make
-      // retry-with-corrected-enum safe — pass them along as details.
+      // Forward valid-value lists (validSources, validCategories, …) for enum-correction retries.
       const validLists: Record<string, unknown> = {};
       for (const [k, v] of Object.entries(body)) {
         if (k.startsWith("valid")) validLists[k] = v;
       }
       if (res.status === 404) {
-        // Unknown detail slug — a miss, not a failure: discover the slug
-        // from the list endpoint first (service contract).
         return errResult({
           service: SERVICE,
           kind: "soft-empty",
@@ -196,12 +164,7 @@ export async function callScout(
     }
 
     const meta = body.meta as Record<string, unknown> | undefined;
-    // Scout states read loss in `meta.partial` + `meta.failedReads` (spec
-    // 1.9.62+: "count real loss on this field, not on the 200 status"). The
-    // `backend read failed` warning stays a second signal for responses that
-    // carry only the warning. A failed read is inconclusive even when some
-    // rows survived. Check it before meta.error so a backend failure cannot be
-    // classified as a miss.
+    // Check partial/failed-read signals before meta.error so a backend failure is never classified as a miss.
     const warnings = meta?.warnings;
     const failedReads = meta?.failedReads;
     const failedReadWarning = Array.isArray(warnings)
@@ -224,8 +187,7 @@ export async function callScout(
       });
     }
 
-    // projects/search with no usable query: 200, zero rows, meta.error +
-    // advisory — soft-empty by the service's own signal.
+    // 200 with meta.error (e.g. no usable query) is soft-empty by upstream contract.
     if (meta && typeof meta.error === "string" && meta.error.length > 0) {
       const advisory = body.advisory as { summary?: unknown } | undefined;
       return errResult({

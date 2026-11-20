@@ -1,24 +1,8 @@
 /**
- * Lumenloop adapter — generic invocation of manifest operations
- * (ARCHITECTURE.md: host-side `POST /v1/tools/{name}` + Bearer).
- *
- * Envelope mapping (the doc's "normalize per-tool, never assume data.results"):
- *  - HTTP 2xx + success:true + meta.format "json" | "blocks" → { ok, data }
- *    (data shape is per-tool by design — bare arrays, {count,projects}, …).
- *    The one authored exception is search_content_semantic, whose type-keyed
- *    rows are normalized into the catalog-documented {items,counts,meta}
- *    contract so callers cannot erase stronger evidence by guessing a key.
- *  - meta.format "text" → data is { text } and is soft-empty/guidance by
- *    contract ("not evidence") → kind "soft-empty" with the text as message.
- *  - success:false → kind "error" with upstream code/details/hint preserved.
- *
- * Timeout: one request under one `OPERATION_BUDGET_MS` signal that also bounds the body read.
- * An abort is detected from the signal (`signal.aborted`), never from the thrown error, and
- * returns a timeout envelope with no status. There is no retry; a future retry must take the
- * remaining budget, never a fresh one.
- *
- * Secrets: LUMENLOOP_API_KEY is read here, host-side, and never echoed —
- * policy/redact.ts additionally scrubs any accidental key echo from results.
+ * Lumenloop adapter: host-side `POST /v1/tools/{name}` with Bearer auth (ARCHITECTURE.md).
+ * `meta.format === "text"` maps to `soft-empty` (advisory, not evidence); `"json"` and `"blocks"`
+ * pass through normalized per tool (`lumenloop-shape.ts`). Timeout aborts are detected from
+ * `signal.aborted`, never from the thrown error.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import {
@@ -118,9 +102,7 @@ export async function callLumenloop(
 
     const format = body.meta?.format ?? "json";
 
-    // meta.format "text" = soft-empty/guidance under success:true — by the
-    // service contract this is NOT evidence (unknown slug, "pass query or
-    // slug" messages). Surface it as a soft-empty so the model never cites it.
+    // Upstream `meta.format: "text"` is guidance under success:true, not evidence.
     if (format === "text") {
       const data = body.data as { text?: unknown } | null;
       const text = typeof data?.text === "string" ? data.text : JSON.stringify(body.data);
@@ -134,10 +116,7 @@ export async function callLumenloop(
       });
     }
 
-    // "json" (per-tool shape) and "blocks" ({content:[{type,text},…]}) are
-    // both evidence. Upstream meta.format is
-    // consumed HERE (the text→soft-empty branch above) and not forwarded:
-    // the envelope is exactly { ok: true, data }.
+    // Consume upstream meta.format here; both "json" and "blocks" are evidence.
     return okResult(normalizeLumenloopOutput(entry.id, body.data));
   } catch (e) {
     return signal.aborted ? timeoutResult() : caughtResult(SERVICE, e);

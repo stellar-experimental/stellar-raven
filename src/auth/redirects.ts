@@ -1,18 +1,8 @@
 /**
- * The callback transports Raven admits for an OAuth redirect URI, applied at
- * authorization on top of the provider's own checks (see "Request routes and
- * authorization" in ARCHITECTURE.md).
- *
- * Allowed: `https:`; `http:` on a loopback host; and the native-app schemes
- * named below, matched by exact scheme. Everything else is refused, so a
- * registered client cannot make Raven hand a code, or an error redirect, to an
- * arbitrary OS protocol handler (`smb:`, `ms-settings:`, ...). A new native
- * client is added by name, after its scheme shows up in `auth_reject` logs.
- *
- * This restricts callback transports. It does not authenticate the app that
- * owns a scheme: native-app ownership stays unverified. The consent page
- * records the user's approval of a client it labels unverified, and the
- * browser-bound WorkOS state ties the login round trip to that browser.
+ * OAuth callback transport allowlist enforced at `/authorize` (ARCHITECTURE.md).
+ * Admits `https:`, loopback `http:`, and named native schemes below so a client
+ * cannot redirect codes or errors to arbitrary OS protocol handlers. Native-app
+ * scheme ownership stays unverified; consent and browser-bound state cover the user.
  */
 export const NATIVE_REDIRECT_SCHEMES: ReadonlySet<string> = new Set(["claude:", "cursor:", "warp:"]);
 

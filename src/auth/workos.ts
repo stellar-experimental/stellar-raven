@@ -1,35 +1,9 @@
 /**
- * WorkOS AuthKit handler — the OAuthProvider `defaultHandler`
- * (ARCHITECTURE.md).
- *
- * This server IS its own OAuth 2.1 authorization server:
- * @cloudflare/workers-oauth-provider implements /token, /register, PKCE, and
- * opaque-token storage in OAUTH_KV. WorkOS is only the upstream IdP that
- * authenticates the human — MCP clients never talk to WorkOS. No WorkOS SDK:
- * the whole hop is a redirect to /user_management/authorize plus one POST to
- * /user_management/authenticate.
- *
- * Identity hygiene: the WorkOS access token is
- * dropped right after the code exchange — never stored, never in props. The
- * only human identity that moves forward is `subject`, a peppered hash of
- * the WorkOS user id (colon-free hex; the provider's opaque tokens use `:`
- * as a separator, so the userId must not contain one). The OAuth client id
- * also rides in encrypted props for privacy-safe per-client observability.
- *
- * Confused-deputy defences (we are an OAuth proxy — server to the MCP
- * client, client to WorkOS):
- *  1. Consent page — GET /authorize NAMES the requesting client and its
- *     scopes; only the explicit POST approval parks state and redirects to
- *     WorkOS, so cached WorkOS consent can't be ridden silently.
- *  2. Double-submit CSRF cookie on the consent form itself.
- *  3. Browser-binding cookie for the WorkOS round trip — /callback requires
- *     the cookie to match the value parked in KV alongside the state.
- *
- * `redirect_uri` is always `${origin}/callback` (origin-derived, no env
- * switch) so one code path serves local wrangler dev and production.
- *
- * Pure module: no cloudflare:workers import (type-only provider imports) —
- * unit-testable under plain Node (test/auth.test.ts).
+ * WorkOS AuthKit defaultHandler for OAuthProvider (ARCHITECTURE.md).
+ * WorkOS authenticates the human; its token is dropped immediately after code exchange,
+ * leaving only the colon-free peppered `subject` hash (required by OAuthProvider token format).
+ * Confused-deputy defenses: explicit POST consent, double-submit CSRF cookie, and browser-bound
+ * WorkOS state. Pure module (no `cloudflare:workers` import).
  */
 import { AuthorizationError } from "@cloudflare/workers-oauth-provider";
 import type { AuthRequest, OAuthHelpers } from "@cloudflare/workers-oauth-provider";
@@ -65,43 +39,23 @@ const WORKOS_AUTHORIZE_URL = "https://api.workos.com/user_management/authorize";
 const WORKOS_AUTHENTICATE_URL = "https://api.workos.com/user_management/authenticate";
 
 /**
- * Parked /authorize requests expire from OAUTH_KV after 10 minutes, and the
- * browser-binding cookie rides the same clock. Deliberately NOT raised
- * alongside the consent window below: a parked state carries a login-DoS
- * surface the consent cookie does not. `login:${state}` is read and deleted
- * non-atomically over eventually-consistent KV, and /callback consumes the
- * entry BEFORE it validates the binding cookie — so anyone holding a leaked
- * state value can burn the victim's parked login with `?code=junk&state=...`.
- * They cannot complete a grant (the binding cookie stops that), but they can
- * destroy one, and a longer TTL only widens that window. WorkOS's own code
- * lifetime starts when a code is ISSUED, so it does not cap this leg.
+ * Parked /authorize state and binding-cookie TTL. Kept shorter than consent because
+ * `/callback` deletes `login:${state}` before checking the binding cookie, so a leaked
+ * state allows login-DoS for this window.
  */
 export const LOGIN_STATE_TTL_SECONDS = 10 * 60;
 
 /**
- * The consent page is a HUMAN dwell window, not an automated round trip: the
- * page asks the user to read two legal documents that it opens in new tabs.
- * The double-submit token has no server-side state tied to it and cannot
- * approve a stale registration — POST re-parses the query and the provider
- * re-validates client and redirect_uri on both the POST and at
- * completeAuthorization — so a longer window costs only a longer-lived
- * approval capability on a shared profile. Separate clock, separate reason.
+ * Consent-form CSRF cookie TTL. Longer than login state to give humans time to read
+ * linked legal docs; carries no server-side state and POST re-validates the request.
  */
 export const CONSENT_CSRF_TTL_SECONDS = 30 * 60;
 
-/** Consent-form double-submit CSRF cookie (GET sets, POST validates + clears). */
 const CONSENT_CSRF_COOKIE = "__Host-MCP_CONSENT_CSRF";
-/** Browser-binding cookie for the WorkOS round trip (POST sets, /callback validates + clears). */
 const STATE_BINDING_COOKIE = "__Host-MCP_STATE";
 const COOKIE_ATTRS = "HttpOnly; Secure; Path=/; SameSite=Lax";
 
-/**
- * Shape parked in KV under `login:${state}` — a validated discriminated
- * union. The callback must never treat unknown JSON as an MCP flow. Both
- * branches carry the browser-binding
- * cookie secret; the demo branch redirects only to fixed same-origin paths
- * (enforced by parseDemoParkedState in src/demo/auth.ts).
- */
+/** Validated KV union under `login:${state}`; callback rejects unknown shapes. */
 type ParkedLogin =
   | { type: "mcp"; oauthReq: AuthRequest; binding: string }
   | { type: "demo"; binding: string; returnTo: string };
@@ -299,15 +253,9 @@ async function completeCallback(
   const subject = await deriveSubject(workosUserId, env.MCP_SERVER_SECRET);
 
   if (parked.type === "demo") {
-    // Browser session, not an OAuth grant: signed cookie + a same-origin
-    // interstitial instead of a 302. The whole navigation chain here was
-    // initiated cross-site (WorkOS → /callback), and browsers withhold
-    // SameSite=Strict cookies on every request in a cross-site-initiated
-    // redirect chain — a direct 302 to /playground would land on the locked page.
-    // The meta-refresh below starts a FRESH navigation initiated by this
-    // same-origin document, so the Strict cookie is sent. returnTo is
-    // allowlisted to fixed paths at parse time (parseDemoParkedState), so
-    // it is safe to interpolate. No completeAuthorization.
+    // Use a same-origin meta-refresh interstitial instead of a 302: browsers withhold
+    // SameSite=Strict cookies across a cross-site-initiated redirect chain (WorkOS -> /callback).
+    // `returnTo` is allowlisted in parseDemoParkedState.
     const headers = new Headers({
       "content-type": "text/html; charset=utf-8",
       "cache-control": "no-store",
@@ -334,12 +282,7 @@ async function completeCallback(
   });
 }
 
-/**
- * Strict parse of the parked login-state union. Unknown/malformed shapes →
- * null (callback answers 400); a raw pre-union value (no `type`) is malformed
- * too — forward-only, no compat parsing. The demo branch delegates to
- * parseDemoParkedState so the returnTo allowlist lives in one place.
- */
+/** Strict parse of `login:${state}`; delegates demo returnTo allowlisting to parseDemoParkedState. */
 function parseParkedLogin(raw: string): ParkedLogin | null {
   let parsed: unknown;
   try {
@@ -363,11 +306,7 @@ function parseParkedLogin(raw: string): ParkedLogin | null {
   return null;
 }
 
-/**
- * Minimal same-origin hop for the /callback demo branch (see comment at the
- * call site). Deliberately unstyled — the CSP above is `default-src 'none'`;
- * meta-refresh and the fallback link are navigations, not resource loads.
- */
+/** Unstyled on purpose: CSP is `default-src 'none'`; meta-refresh and link are navigations. */
 function demoSignedInInterstitial(returnTo: string): string {
   return (
     "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">" +
@@ -393,12 +332,7 @@ function workosAuthorizeUrl(
   return authorize.toString();
 }
 
-/**
- * GET /playground/login (routed in src/server.ts) — parks the demo branch of the
- * login union under the SAME `login:${state}` key scheme and TTL as the MCP
- * flow, sets the same browser-binding cookie, and redirects to WorkOS
- * AuthKit with the shared `${origin}/callback` redirect_uri.
- */
+/** GET /playground/login: parks a demo login state and redirects to WorkOS AuthKit. */
 export async function demoLoginRedirect(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const state = crypto.randomUUID();
@@ -454,24 +388,10 @@ type ResolvedAuthRequest =
   | { ok: false; response: Response };
 
 /**
- * Both /authorize legs resolve the request through here, so this owns two
- * things: enforcing our PKCE posture, and turning a failure into the RIGHT
- * kind of refusal.
- *
- * The provider (>=0.10.1) already gets the hard part right. `parseAuthRequest`
- * throws a bare `AuthorizationError` for a missing/unknown `client_id` or an
- * unregistered `redirect_uri` — the cases where redirecting would BE the
- * vulnerability — and only after validating the redirect URI does it attach
- * `redirectUri`/`state`/`issuer` to subsequent errors. A populated
- * `redirectUri` is the documented signal that redirecting is safe
- * ("Present only after client and redirect validation").
- *
- * Our own rule is stricter than upstream on purpose: 0.10.1 requires PKCE of
- * PUBLIC clients, and rejects a method without a challenge, but still lets a
- * CONFIDENTIAL client skip PKCE entirely. MCP (2025-11-25) requires S256 of
- * clients, so we require it of all of them. Raising it as an
- * `AuthorizationError` built from the ALREADY-VALIDATED `parsed` fields — never
- * from raw query values — gets it the same spec-correct delivery.
+ * Validate `/authorize` and enforce S256 PKCE for all clients (including confidential
+ * ones, which the provider otherwise allows without PKCE). Throwing with already-validated
+ * `parsed` fields preserves safe redirect error delivery; unvalidated client/redirect errors
+ * stay local 400s.
  */
 async function resolveAuthRequest(
   provider: OAuthHelpers,
@@ -497,19 +417,9 @@ async function resolveAuthRequest(
 }
 
 /**
- * 303, never 302: a 302 only *permits* the user agent to rewrite the method, so
- * on the POST leg it can replay the consent form body — csrf_token included —
- * to the client's redirect URI. 303 names a retrieval request (RFC 9110
- * §15.4.4). 307 would be strictly wrong for the same reason.
- *
- * `iss` goes on error responses too: the provider advertises RFC 9207 support,
- * and §2 requires the parameter on error responses for servers that do, so
- * omitting it makes conforming clients reject the response.
- *
- * The log records `error.code`, not `error.description` — descriptions
- * interpolate request-supplied values upstream, and a log field is the wrong
- * place for attacker-chosen text. The description still goes to the client,
- * percent-encoded by URLSearchParams, which is what it is for.
+ * Uses 303 (never 302/307) so POST failures cannot replay the consent form body (including
+ * `csrf_token`) to the client redirect URI. Includes `iss` per RFC 9207 §2. Logs `error.code`
+ * only, never `error.description` (which can interpolate request values).
  */
 function authorizationErrorResponse(
   error: unknown,
@@ -570,17 +480,8 @@ function clearCookie(name: string): string {
 }
 
 /**
- * Recoverable consent failure: log the real reason, then send the browser back
- * to its own form action so the GET handler above mints a fresh token and
- * cookie and re-renders the consent page.
- *
- * 303 (not 302) so the redirect is unambiguously a GET. `url.search` is safe to
- * echo: parseAuthRequest already validated it on this request, and nothing has
- * been granted or parked yet. The GET replaces the prior CSRF cookie.
- *
- * Known ceiling: a browser that refuses the cookie loops consent→consent rather
- * than dead-ending. It could never have completed the flow either way, and a
- * live page beats a 400.
+ * Recoverable consent failure: 303 back to GET `/authorize` to re-render with a fresh
+ * CSRF token. `url.search` is safe to echo because `parseAuthRequest` already validated it.
  */
 function retryConsent(reason: string, url: URL): Response {
   logEvent("auth_reject", { status: 303, reason });

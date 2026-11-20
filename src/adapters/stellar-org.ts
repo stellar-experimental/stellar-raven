@@ -1,24 +1,7 @@
 /**
- * stellar.org adapter — the Stellar Development Foundation website
- * (research/services/stellar-org-site.md describes the contract).
- *
- * Two keyless requests against one fixed origin:
- *  - search: GET /api/search?q=<query>&locale=en, the site's own search. It
- *    returns at most 10 rows of kind "page", "audit", "tutorial" or "partner".
- *    Rows under /blog, /press and /events are dropped here (Scout and
- *    Lumenloop return those posts for the same questions), as are external
- *    rows other than audits, whose report link is the record.
- *  - page: GET <path>, server-rendered HTML. The adapter keeps the `<main>`
- *    text with headings and list items, follows same-origin redirects only,
- *    and caps the bytes it reads and the time one read takes.
- *
- * Output fields are bounded: titles and names at MAX_TITLE_CHARS, tags at
- * MAX_TAGS of MAX_TAG_CHARS, descriptions at MAX_DESCRIPTION_CHARS, and the
- * header text an error echoes at MAX_ECHO_CHARS. A cut title, name, tag or
- * header excerpt ends with `…`; a cut description does not.
- *
- * The catalog entry's `transport.endpoint` selects the request. The origin is
- * a constant here, never read from the manifest.
+ * stellar.org adapter against one fixed origin (never read from the manifest).
+ * `search` queries `/api/search` (dropping `/blog`, `/press`, `/events` and non-audit externals);
+ * `page` extracts `<main>` text from server-rendered HTML, following bounded same-origin redirects.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import { errResult, okResult, caughtResult, OPERATION_BUDGET_MS, type AdapterResult, type FetchLike } from "./types.ts";
@@ -36,12 +19,12 @@ const MAX_TAG_CHARS = 200;
 /** The part of an upstream header an error message shows. */
 const MAX_ECHO_CHARS = 200;
 const MAX_ERROR_BODY_CHARS = 512;
-/** Rendered pages measured 410-500 KB (2026-11-14); a larger body is refused, not truncated. */
+/** Oversized pages are refused rather than truncated. */
 export const MAX_PAGE_BYTES = 2_000_000;
 export const MAX_CONTENT_CHARS = 40_000;
 const MAX_REDIRECTS = 3;
 const MAX_SEARCH_LIMIT = 10;
-/** Path prefixes another source owns: Scout and Lumenloop return these posts for the same questions (2026-11-14). */
+/** Path prefixes owned by Scout and Lumenloop. */
 export const EXCLUDED_PREFIXES = ["/blog", "/press", "/events"] as const;
 /** No `%`: fetch would decode `%2e` segments and the server `%61`, so encoded forms could reach /api. */
 const PATH_RE = /^\/[A-Za-z0-9._~\-/]*$/;

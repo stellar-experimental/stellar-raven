@@ -1,25 +1,8 @@
 /**
- * Structured event logging for Workers Logs (observability.enabled in
- * wrangler.jsonc). One JSON line per event via console.log; the platform
- * groups lines by invocation, so every event of one /mcp request — auth mode,
- * tool call, each sandbox op — reads as a single correlated trace in the
- * dashboard (Workers → Logs) or `wrangler tail`.
- *
- * Discipline:
- *  - `evt` names the event; keep the rest FLAT and SMALL (counts, statuses,
- *    operation/catalog ids, and durations — never user/model content or
- *    content-derived hashes).
- *  - Never log secret values, queries, execute code, results, answers, or
- *    provider error messages. Adapter results are already secret-redacted
- *    before they reach the model-facing boundary, but redaction is not
- *    permission to log them.
- *
- * Second channel: trace spans (observability.traces in wrangler.jsonc).
- * Handler + host-side fetches are auto-instrumented; the sandbox boundary has
- * a custom span in src/executor/run.ts (Worker Loader isn't auto-traced).
- * Use logEvent for operational facts and spans for timing attribution.
- * Both follow the no-payload rule. ARCHITECTURE.md defines telemetry fields;
- * usage/README.md defines the separate Tail Worker collection contract.
+ * Structured Workers Logs events (`console.log` JSON lines) grouped per invocation.
+ * Keep fields flat and small (counts, statuses, catalog ids, durations). Never log
+ * secrets, queries, code, results, answers, content-derived hashes, or provider error text.
+ * See ARCHITECTURE.md for telemetry fields and usage/README.md for Tail Worker collection.
  */
 
 export function logEvent(evt: string, fields: Record<string, unknown>): void {
@@ -81,17 +64,9 @@ export async function logArtifactRead(fields: {
 }
 
 /**
- * One `codemode.skill.read` call. Skill reads can use memoized, cached, or
- * upstream content, so each read records its shape and retrieval source.
- *
- * Two questions this is the instrument for, both recorded in
- * ideas/skill-discovery-without-bundling.md: whether agents use section reads at
- * all and what the live-fetch latency profile is. `from` makes the
- * latency interpretable — a memo hit and an upstream fetch differ by orders of
- * magnitude and a mean over both is meaningless.
- *
- * No skill body, section text, or caller identity is logged: the id is a public
- * catalog id and the rest is shape and timing.
+ * Log one `codemode.skill.read` call: shape, retrieval provenance, and timing only
+ * (no skill body, section text, or caller identity). `from` separates memo, cache,
+ * and upstream latencies, which differ by orders of magnitude.
  */
 export function logSkillRead(fields: {
   /** Exact catalog id requested, or null when the caller passed a non-id. */

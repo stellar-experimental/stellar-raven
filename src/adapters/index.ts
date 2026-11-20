@@ -1,8 +1,4 @@
-/**
- * Adapter dispatch — one clean client per service (ARCHITECTURE.md adapter dispatch).
- * Selection is by the entry's `service` field, which the catalog schema
- * constrains to the known set; anything else is an error-as-data.
- */
+/** Dispatch a catalog entry to its host-side service adapter (ARCHITECTURE.md). */
 import type { CatalogEntry } from "../catalog/types.ts";
 import { callLumenloop } from "./lumenloop.ts";
 import { callScout } from "./scout.ts";

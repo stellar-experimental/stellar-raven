@@ -1,27 +1,7 @@
 /**
- * Public presentation surface for stellar-raven-codemode.
- *
- * Server-rendered pages, one visual system:
- *   - landingPage()  → GET /            (public marketing page)
- *   - consentPage()  → GET /authorize   (OAuth consent, rendered by workos.ts)
- *   - termsPage()    → GET /terms       (Raven terms, script-free prose)
- *   - docsPage()     → GET /docs        (public how-it-works, script-free prose)
- *
- * Design — "dithered signal": a dark-green field (#151f14) with a single hot
- * orange (#ff5500), a Bayer-dithered orange globe rising out of the bottom-left
- * corner (a faithful port of Paper's Dithering `sphere` shader, hand-written in
- * inline WebGL2 so the page stays self-contained). The globe carries the retro /
- * digital signal; the type is the IBM Plex superfamily — Plex Serif (display),
- * Plex Sans (body), Plex Mono (utility), one shared skeleton — set on the right
- * so the copy never fights the animation. The pitch is benefit-first ("all of
- * Stellar context, one connection"): hero + stat strip + four-pillar bento + one-vs-many
- * contrast; the `search`/`execute` mechanics live in a mono footnote for the
- * technical crowd. The CTA is per-client install (the connect panel).
- *
- * Fully self-contained + CSP-safe: fonts are embedded base64 (font-src data:),
- * the raven marks are inline SVG data URIs (img-src data:), all motion is the
- * one WebGL canvas. The landing page allows inline script (the shader + tab/copy
- * helpers); the consent page stays script-free and hardened.
+ * Server-rendered public pages: `/` (landing), `/authorize` (OAuth consent), `/terms`, and `/docs`.
+ * Self-contained for strict CSP (`font-src data:`, `img-src data:`). Only `/` runs inline JS;
+ * consent, terms, and docs stay script-free.
  */
 import {
   PLEX_SERIF_600_WOFF2,
@@ -1212,13 +1192,8 @@ export type DocCatalogCounts = { operations: number; skills: number; sections: n
 let docCatalogCounts: DocCatalogCounts | undefined;
 
 /**
- * Current counts derive from the validated manifest, computed on first use and
- * cached for the isolate's lifetime.
- *
- * Lazy on purpose: every auth-handler route imports this module, but only the
- * landing and docs pages render a count. Deriving at module scope charged each
- * isolate init a full getCatalog() validation of the ~700 KB manifest, so
- * /authorize, /callback, and /health paid for prose they never emit.
+ * Computed lazily and cached per isolate so routes that import this module without
+ * rendering counts (`/authorize`, `/callback`, `/health`) skip catalog validation.
  */
 export function getDocCatalogCounts(): DocCatalogCounts {
   docCatalogCounts ??= getCatalog().entries.reduce(
@@ -1490,14 +1465,8 @@ export const DOCS_HEADERS: Record<string, string> = {
   "referrer-policy": "no-referrer"
 };
 
-// ---------------------------------------------------------------------------
-// Response headers — landing allows inline script (shader + tabs); consent is
-// script-free. Both self-contained: font-src data:, img-src data:, no network.
-// Consent intentionally omits form-action, matching the prior Raven handlers:
-// Chromium can block OAuth consent POST/redirect chains when it is present.
-// The explicit approval click, double-submit CSRF token, and bound single-use
-// state cookie are the protections for that POST.
-// ---------------------------------------------------------------------------
+// Consent omits `form-action`: Chromium can block OAuth consent POST/redirect chains when set.
+// Explicit approval, double-submit CSRF, and browser-bound state protect the POST.
 
 export const LANDING_HEADERS: Record<string, string> = {
   "content-type": "text/html; charset=utf-8",
