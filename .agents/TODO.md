@@ -1121,7 +1121,7 @@ delete it here.
 1. **Which source, if any, to test for facts no reached source holds.** Round item 1.3 classed every
    residual source gap ([CLASSIFICATION.md](rounds/2026-11-16-next-phase/items/1.3/CLASSIFICATION.md),
    [LEAVES.md](rounds/2026-11-16-next-phase/items/1.3/LEAVES.md)). NBU waits upstream (`ll-039`);
-   Pi Network (`sd-113`) does not earn a source and is not forwarded (owner, 2026-11-17). The
+   Pi Network does not earn a source and is not forwarded (owner, 2026-11-17). The
    remaining candidate is an other-chain source for XRP Ledger (`ecosystem.chain-comparisons`,
    xrpl.org). Pass bar: more correct answers and no more wrong ones. No query/answer logging means
    no measured demand (not absence); item 3.1 decides nothing here. Safe default: test none.
