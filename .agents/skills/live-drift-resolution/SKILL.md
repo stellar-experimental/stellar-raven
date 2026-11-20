@@ -12,13 +12,10 @@ mechanical regeneration plus one judgment:
 > Is this a clean bump to absorb, or does it change the exposed surface or routing behavior, which
 > needs a policy or baseline decision in the same change?
 
-Both errors cost: absorbing a bump that added a callable operation ships an unvetted surface, and
-re-baselining a gate for a bump that did not touch routing hides a regression. Size the work to the
-class: pure provenance drift, the common daily case, needs steps 1, 2, 4, 6, 7, and 8, all free
-and local, with no reviewer lanes. There, step 6 is a bounded local search that ends in recorded
-"no edit needed" evidence or a routed edit. For a pass across
-evals, goldens, and improvements as well, `truth-maintenance` coordinates and this skill is the
-drift lane.
+Size the work to the class: pure provenance drift (the common daily case) needs steps 1, 2, 4, 6,
+7, and 8, with no paid evals or reviewer lanes (step 6 ends in recorded "no edit needed" evidence
+or a routed edit). For a pass across evals, goldens, and improvements as well,
+`truth-maintenance` coordinates and this skill is the drift lane.
 
 ## 1. Regenerate
 
@@ -29,7 +26,7 @@ issue text or the upstream changelog. Run in order:
 npm run docs:anchors:build            # sitemap + headings -> src/adapters/stellar-docs-anchors.json
 node scripts/refresh-inventory.mjs    # live upstream -> inventory/*.json
 node scripts/build-catalog.mjs        # inventory -> catalog/manifest.json, with exposure guards
-npm run family-text:build               # catalog + family line -> src/mcp/family-text.ts
+npm run family-text:build             # catalog + family line -> src/mcp/family-text.ts, src/policy/corroboration.ts
 npm run spec:build                    # catalog -> specs/super-spec.json
 node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
 ```
@@ -45,10 +42,10 @@ node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
   `stellarOrg.get_page`.
 - **Skill pins.** When `ecosystem-skills/` pins move, follow
   [`ecosystem-skills/README.md`](../../../ecosystem-skills/README.md#re-pin): re-pin, read the body
-  diffs, record the attestation in `PIN-REVIEW.md`, and run `check-mirrors.mjs --fetch`. Then
-  rebuild the catalog, family-text, spec, and op classes in the order above. Skill bodies are fetched and verified
-  at read time from the pinned commit, so a re-pin changes what the model reads. Read the body diff
-  before you commit it.
+  diffs before committing (bodies are fetched from the pinned commit and hash-verified at read time,
+  so a re-pin changes what the model reads), record the attestation in `PIN-REVIEW.md`, and run
+  `node scripts/check-mirrors.mjs --fetch`. Then rebuild the catalog, family-text, spec, and op
+  classes in the order above.
 - **Skill directories only.** When `node scripts/check-skills-drift.mjs` reports drift only on
   `stellarlight-catalog` and/or `stellar-community-catalog` (every pinned GitHub source is `ok`),
   run `node scripts/refresh-skill-directories.mjs` instead of `update.sh`. It updates only the
@@ -142,8 +139,8 @@ evidence.
   `npm run eval:qa:lint -- --stale --enforce-floors`; for improvements, `npm run improvements:index`,
   `npm run improvements:lint`, `npm run improvements:lint -- --live`, and
   `npm run improvements:probes`.
-- After a skill re-pin, `check-mirrors.mjs --fetch` passes and `catalog/manifest.json` carries the
-  new `transport.url` and `sha` for every changed skill file.
+- After a skill re-pin, `node scripts/check-mirrors.mjs --fetch` passes and `catalog/manifest.json`
+  carries the new `transport.url` and `sha` for every exposed changed Markdown skill file.
 - `npm run secrets:scan -- --tree` and `git diff --check` are clean. A regenerated artifact must
   never carry an upstream key.
 - **Independent review** is required for surface, routing-text, runner, or skill-pin drift, and not
@@ -159,9 +156,9 @@ The catalog, spec, and skill pins compile into the Worker, and CI does not deplo
 serves the old surface until someone deploys.
 
 1. `npm run build` confirms that the bundle builds.
-2. After the independent review, run `npm run deploy` without asking under the owner delegation in
-   [`AGENTS.md`](../../../AGENTS.md#owner-delegations-lead-session-only), and record it in the
-   ledger.
+2. After any required independent review, run `npm run deploy` without asking under the owner
+   delegation in [`AGENTS.md`](../../../AGENTS.md#owner-delegations-lead-session-only), and record
+   it in the ledger.
 3. Run the post-deploy checks in [`docs/operations.md`](../../../docs/operations.md#deploy).
 4. Close the issue with the commit, the deploy Version ID, and the guard and live-check evidence
    (`gh issue close <n> --comment ...`). Any keyed drift issue still open after its fix merges

@@ -5,9 +5,6 @@ description: "Change the golden Q→A corpus without codifying lies: classify th
 
 # Golden truth
 
-A wrong agent answer costs one verdict. A wrong golden corrupts every later round, and a golden
-"corrected" from thin evidence is worse, because it carries the authority of a review. So:
-
 > Never change gospel from a single source class, never pin a disputed fact, and never change truth
 > because a score would improve.
 
@@ -128,7 +125,7 @@ the fact from live sources without reading the proposer's notes. Reviewer and au
 ## 6. Test and close
 
 ```sh
-npm run eval:qa:compile                  # commit regenerated cases.json and sample.json with the edit
+npm run eval:qa:compile                  # commit regenerated cases.json, sample.json, tool-cases.json, and lifecycle-registry.json
 npm run eval:qa:lint -- --since <ref>    # add --stale when reverifyBy dates changed
 npm run eval:qa:register
 ```

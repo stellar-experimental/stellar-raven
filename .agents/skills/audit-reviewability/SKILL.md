@@ -26,8 +26,7 @@ Resolve the narrowest complete scope from the request:
 2. Otherwise, use the supplied files or directories.
 3. Otherwise, audit the repository when the request names the codebase.
 
-State the selected mode, scope, fixed point, and expected time before you start. A repository
-audit is the largest scope: choose it only when the request names the codebase. Ask only when
+State the selected mode, scope, fixed point, and expected time before you start. Ask only when
 different choices would materially change the result.
 
 ## Establish the baseline
@@ -39,9 +38,6 @@ different choices would materially change the result.
 4. Identify the repository's validation commands and current test baseline.
 5. Re-read a file immediately before editing it. Assume another human or agent can change it
    between turns.
-
-Complete this step when the audit has an explicit truth source, compatibility posture, dirty-tree
-boundary, and verification plan.
 
 ## Build the candidate inventory
 
@@ -58,10 +54,8 @@ tests, documentation, formatting, generated output, and unrelated edits. For a r
 use repository search and history to identify clusters before reading each candidate in context.
 
 Use mechanical signals only to find candidates. Phrase matches, comment length, line ratios, and
-large diffs never prove a finding. Do not build an AI-style detector.
-
-Complete this step when every in-scope file is either inspected or covered by an explicit,
-evidence-based exclusion.
+large diffs never prove a finding. Do not build an AI-style detector. Account for every in-scope
+file by inspection or an explicit, evidence-based exclusion.
 
 ## Classify each candidate
 
@@ -126,10 +120,9 @@ migrations, or new documentation solely to explain removed or rejected work.
 4. Confirm that useful existing comments and unrelated human edits remain intact.
 5. Run the narrowest relevant tests, then the repository's required validation commands.
 6. Compare behavior before and after each simplification. Add or improve tests when evidence is weak.
-7. Treat lower line counts as an observation, not a success condition.
-
-The repair is complete when every finding is fixed or explicitly deferred, behavior remains correct,
-and the final diff is smaller to understand than the problem it solves.
+7. Treat lower line counts as an observation, not a success condition. Finish repair only when every
+   finding is fixed or explicitly deferred and the final diff is easier to understand than the
+   problem it solves.
 
 ## Report the outcome
 

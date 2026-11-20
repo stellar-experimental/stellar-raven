@@ -42,8 +42,9 @@ todos moved to `.agents/TODO.md`, retained evidence, and the final checklist).
 ## 2. The stale-gospel queue
 
 This skill owns golden freshness as a standing due-date queue. Every `scheduled` case has a
-`truth.reverifyBy` date, and `npm run eval:qa:lint -- --stale --enforce-floors` fails on a
-past-due case in PR CI and the daily refresh.
+`truth.reverifyBy` date; the stale-gospel check
+(`npm run eval:qa:lint -- --stale --enforce-floors` in PR CI; `--stale` in the daily refresh) fails
+on past-due cases.
 
 - **When the gate fires**, send each past-due case through `golden-truth`: re-verify it (update
   `truth.verified`, `truth.asOf`, and `reverifyBy`), or record a dated extension with a root cause.

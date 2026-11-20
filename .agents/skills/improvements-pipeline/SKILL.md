@@ -156,7 +156,12 @@ Use this loop on a drift refresh, or when asked whether earlier findings were re
 7. **Drain `fixed-upstream`.** A reviewer other than the author re-derives each deletion candidate:
    reads the finding and the upstream ref, confirms the fix is deployed and not merely merged,
    re-executes the trigger, scans adjacent behavior for residuals, and reconciles every
-   `rg -n "<finding-id>" .` reference (goldens, register, research, intake). Then:
+   `rg --hidden -g '!.git' -n "<finding-id>" .` reference (intake, docs, research, `.agents/TODO.md`).
+   Because `.ignore` skips `eval/qa/corpus/` and `eval/qa/consistency-register.json`, also run
+   `npm run eval:qa:lint -- --stale --enforce-floors` (whose `cap-finding` lane flags any golden
+   partial cap naming an inactive ID without revealing case text) and hand off golden or register
+   checks to a lane under the `eval/qa/README.md` maintenance exception whenever `cap-finding`, the
+   finding's own evidence, or a case edit links the finding to the corpus. Then:
 
    ```sh
    npm run improvements:resolve -- --file improvements/<collection>/<finding>.md \
@@ -180,7 +185,6 @@ Use this loop on a drift refresh, or when asked whether earlier findings were re
 
 In an eval round, file or update findings before the round closes. On a drift refresh, run the
 probes, refresh statuses from live evidence, and run the live lint.
-
 
 Optional frontmatter: `probe.type: http-text`, `probe.url`, and `probe.expect.status`, `contains`,
 or `excludes`. `npm run improvements:probes` re-checks findings that are neither fixed nor declined.
