@@ -1,20 +1,16 @@
 # Discovery evaluation
 
-This instrument measures whether search results expose an expected source family and a usable operation or skill.
-The one-shot instrument makes one MCP search with the case question.
-The agent instrument allows at most three searches. The replay instrument uses stored queries from evaluation agents.
-The runners call the MCP server through HTTP. They do not import the search implementation.
-A discovery case or a mined query that matches a QA headline question is confirmation-only; the one-shot and replay runners tag it and print no per-row outcome for it; the agent runner and the classifier do not tag (see the [routing guide](../README.md#confirmation-only-rows)).
+Measures whether MCP `search` over HTTP exposes an expected source family and usable operation or skill: one-shot (1 search), agent (≤3 searches, paid), and replay (stored agent queries). Rows matching a QA headline question are confirmation-only; one-shot and replay tag and hide per-row outcomes while agent and classifier do not ([routing guide](../README.md#confirmation-only-rows)).
 
 ## Commands
 
-Reuse the running server and substitute its bound URL.
+Reuse the running server and substitute its bound URL (`--url` accepts base URL or `/mcp`; defaults: `run-discovery.mjs` `8788`, agent/replay `8787`; remote one-shot/replay use `RAVEN_MCP_BEARER_TOKEN` `name:token` without printing it):
 
 ```sh
 node eval/discovery/run-discovery.mjs --url http://localhost:8788
 node eval/discovery/run-replay.mjs --url http://localhost:8787
 
-# Paid agent collection requires a `--max-budget-usd` cap and pinned server, executable, and environment identities.
+# Paid agent collection: requires local `npm run dev:eval` on a clean tree, budget cap, and identity pins.
 node eval/discovery/run-agent-discovery.mjs \
   --url http://localhost:8787 \
   --server-revision <commit> \
@@ -24,53 +20,20 @@ node eval/discovery/run-agent-discovery.mjs \
   --max-budget-usd <usd>
 ```
 
-The one-shot runner defaults to `http://localhost:8788`.
-The agent and replay runners default to `http://localhost:8787`.
-Each `--url` accepts a base URL or a URL ending in `/mcp`.
-Remote one-shot and replay runs use `RAVEN_MCP_BEARER_TOKEN` with the full `name:token` credential.
-The runner sends that credential as a bearer token and does not print it.
+Paid agent rules (prepare server via [`run-evals`](../../.agents/skills/run-evals/SKILL.md)):
 
-Paid agent collection requires a local server from `npm run dev:eval`, with a clean tree and a matching compiled revision.
-Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to prepare that server.
-The runner disables user, project, and local settings and slash commands.
-It retains the explicit strict MCP configuration and permission bypass.
-Each row must report the `raven` MCP server as `connected`.
-A failed connection stops collection and suppresses aggregates.
-
-Every agent-runner flag requires one spaced value. The parser rejects unknown flags, equals forms, and stray arguments.
-The required flags bind the server revision, surface hash, executable hash, environment hash, and total budget.
-Each agent receives only the remaining budget. Invalid, missing, or excessive cost reports fail the run.
-Artifacts record each budget grant, cost report, and remaining amount under `eval/discovery/results/`.
-
-The agent defaults to the Claude Code alias `sonnet` (the newest Sonnet; the artifact records the resolved ID) at medium effort and can use only `mcp__raven__search`.
-The runner grades at most the first three searches and records the observed call count.
-Zero searches or more than three searches invalidate final-selection credit.
-Use `--cases`, `--ids`, `--repeat`, `--model`, and `--effort` for explicit comparisons.
-Supply `--ids a,b,c` once. Duplicate `--ids` flags fail before a paid call.
+- Disables user/project/local settings and slash commands; requires strict MCP config with `raven` connected on every row (failure stops collection and suppresses aggregates).
+- Every flag takes one spaced value; unknown flags, `=`, stray args, or duplicate `--ids` fail before spend. Each agent gets only remaining budget; missing/excess cost fails the run. Artifacts go to `eval/discovery/results/`.
+- Defaults to Claude alias `sonnet` (resolved ID recorded) at medium effort with `mcp__raven__search` only; grades at most the first 3 searches (0 or >3 searches lose selection credit). Optional flags: `--cases`, `--ids a,b,c`, `--repeat`, `--model`, `--effort`.
 
 ## Inputs and grading
 
-[cases.json](cases.json) defines the 43 cases, seed pools, expected families, and accepted operation IDs.
-[mined-lumenloop-queries.json](mined-lumenloop-queries.json) contains 91 query occurrences across eight Lumenloop cases.
-`mine-agent-queries.mjs` reads queries from evaluation agents over committed questions. Raw user traffic is forbidden.
+[cases.json](cases.json) holds 43 cases; [mined-lumenloop-queries.json](mined-lumenloop-queries.json) holds 91 query occurrences across 8 Lumenloop cases (`mine-agent-queries.mjs` reads eval agent transcripts only—never user traffic).
 
-For each one-shot case, the runner calls `search` with the question and `limit: 8`.
+One-shot calls `search` with `limit: 8`: `familyHit@3` matches `expectedFamilies` in ranks 1–3; `usableOp@5` matches `acceptableOps` in ranks 1–5. Summaries group by seed pool. `classify-misses.mjs` compares one-shot vs agent artifacts (never combining hits across repeats):
 
-- `familyHit@3`: a rank 1–3 hit has a service in `expectedFamilies`.
-- `usableOp@5`: a rank 1–5 hit has an ID in `acceptableOps`.
-- Stored hits include rank, ID, service, kind, tier, score, and supported additional score fields.
+- `downstream`: one-shot found both family and usable op (or post-discovery cause in review: `execute`, upstream quality, missing/stale fields, synthesis).
+- `agent-behavior`: one-shot missed either measure, but a single agent run found both.
+- `retrieval`: no single agent run found both.
 
-The summary groups counts by seed pool.
-`classify-misses.mjs` compares a one-shot artifact with an agent artifact:
-
-- `downstream`: the one-shot search found both the expected family and a usable operation. A review also uses it for a miss whose cause comes after discovery, such as `execute` usage, upstream data or content quality, missing fields, stale source data, or synthesis.
-- `agent-behavior`: the one-shot search missed either measure, but one agent run found both.
-- `retrieval`: no individual agent run found both.
-
-The classifier never combines hits across repeated agent runs to claim recovery.
-The discovery measures do not establish final-answer correctness. Use [QA](../qa/README.md) for that measure.
-
-## Changes to discovery
-
-[ADR-0009](../../research/decisions/0009-discovery-stays-lexical.md) records the lexical discovery decision and its measured reopening conditions.
-Use fresh, identified artifacts for comparisons. Historical scores do not establish current performance.
+Discovery does not measure final-answer correctness—use [QA](../qa/README.md). [ADR-0009](../../research/decisions/0009-discovery-stays-lexical.md) owns the lexical discovery decision and reopening bars.

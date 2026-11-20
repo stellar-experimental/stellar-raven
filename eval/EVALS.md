@@ -1,17 +1,8 @@
 # Evaluation map
 
-The QA evaluation measures whether an agent gives a correct, current answer through `search` and `execute`.
-It is the headline measure. Other instruments test routing, discovery, tool use, or specific behavior.
+The QA evaluation is the headline measure: whether an agent gives a correct, current answer through `search` and `execute`. Other instruments measure routing, discovery, tool use, or targeted behaviors.
 
-Choose instruments to resolve the stated decision at proportionate cost and risk. Reuse compatible
-stored results and accepted checks before collecting more. A bounded product comparison is distinct
-from an all-model superiority study: predeclare its sample, acceptance and stopping rules, and keep
-historical incomplete cohorts separate. The [run-evals skill](../.agents/skills/run-evals/SKILL.md)
-owns this scoping and review workflow; required CI and release gates remain unchanged.
-
-Scope each paid run with the [run-evals skill](../.agents/skills/run-evals/SKILL.md): it owns the decision, the smallest run, the stop
-rule and the cost estimate. [Model-call billing](#model-call-billing) lists the API-billed exceptions.
-The client set is in [the roster](../.agents/model-roster.md#models-for-evals-and-tests).
+Scope every paid run with the [run-evals skill](../.agents/skills/run-evals/SKILL.md) (decision, smallest run, stop rule, cost estimate). Reuse compatible stored results before collecting more; predeclare sample, acceptance, and stopping rules for bounded comparisons and keep incomplete historical cohorts separate. [Model-call billing](#model-call-billing) lists the API-billed exceptions; [the roster](../.agents/model-roster.md#models-for-evals-and-tests) owns the client set.
 
 ## Instruments
 
@@ -65,105 +56,51 @@ Dated audit records live under [research/audits/](../research/audits/).
 
 ## Model-call billing
 
-Evals, judging, testing and building run on subscription CLIs as `hc` children: Claude Code, Codex,
-Grok, and OpenCode only after the probe below. There is no AI Gateway judge. AI Gateway or a provider
-API is allowed only for an exception in this section. An API-billed path outside the list first
-becomes a listed exception, with its reason in this section and, if code names the endpoint, its
-entry in the allowlist in `test/model-call-billing.test.mjs`, in a reviewed pull request; then it runs
-under a dollar cap. AI Gateway judging stays out without exception (owner, 2026-11-18). No run needs
-anyone's approval: the checks below are automatic and a subscription run needs none of any kind
-(`AGENTS.md`, "Spend and evidence").
+Evals, judging, testing, and building run on subscription CLIs as `hc` children (Claude Code, Codex, Grok, and OpenCode after the probe below). AI Gateway judging stays out without exception. Any other API-billed path requires a reviewed PR adding its reason here and (if code names the endpoint) an entry in `test/model-call-billing.test.mjs`, then runs under a dollar cap. No per-run approval is needed (`AGENTS.md`, "Spend and evidence").
 
-**Pre-run billing checks.** Make each check before a paid lane. None makes a model call. Every CLI's
-launch environment also has no provider API key set.
+**Pre-run billing checks** (no model call; unset all provider API keys in the launch env):
 
 | CLI | Check |
 |---|---|
-| Claude Code | `claude auth status --json` shows `authMethod` `claude.ai`, `apiProvider` exactly `firstParty` and a `subscriptionType`, and the environment sets no model-endpoint override (`ANTHROPIC_BASE_URL` and its Bedrock, Vertex, Foundry, AWS, Google Cloud and Mantle variants, or a `CLAUDE_CODE_USE_*` provider switch). `assertClaudeSubscription` (`eval/lib/harness-guards.mjs`) enforces both once per paid entry point before its first model call: `run-qa.mjs`, `re-judge.mjs`, the judge self-test and its candidates, the discovery runner and the judge half of `npm run eval:playground`. It probes the way the child runs: the child's environment and working directory, and the root flags that change which settings load (`--setting-sources`, `--disable-slash-commands`, `--safe-mode`, `--strict-mcp-config`). `auth status` accepts them only before the subcommand. An API key, an auth token, a cloud provider or a Console login each refuse the run. Judges and answering agents launch with `--setting-sources ""` and load no settings file, and the probe uses the same flags, so a settings file cannot change the endpoint, the provider or the login they see. |
-| Codex | `codex login status` prints "Logged in using ChatGPT", and `OPENAI_API_KEY` is unset. |
-| Grok | `grok usage` cannot show the plan in this version, so no command checks the login offline. Establish the SuperGrok login interactively before launch, and keep `XAI_API_KEY` unset. |
-| OpenCode | The probe below. |
+| Claude Code | `claude auth status --json` shows `authMethod: "claude.ai"`, `apiProvider: "firstParty"`, and a `subscriptionType`, with no model-endpoint override (`ANTHROPIC_BASE_URL`, cloud variants, or `CLAUDE_CODE_USE_*`). `assertClaudeSubscription` (`eval/lib/harness-guards.mjs`) enforces this before the first model call in every paid Claude harness using the child's env, cwd, and `--setting-sources ""` flags. |
+| Codex | `codex login status` prints "Logged in using ChatGPT"; `OPENAI_API_KEY` unset. |
+| Grok | Establish SuperGrok login interactively (no offline CLI check); `XAI_API_KEY` unset. |
+| OpenCode | Run the probe below. |
 
-**OpenCode probe.** OpenCode also holds API-key providers (Cloudflare AI Gateway, Workers AI,
-OpenRouter), so restrict it to one subscription provider before any call. Pass `--standalone` on every
-command: without it the CLI uses a shared background service that runs on the default config.
+**OpenCode probe** (always pass `--standalone` so OpenCode does not use a shared daemon on the default config; never use Anthropic through OpenCode—it is API-key only):
 
-1. Set a private `XDG_CONFIG_HOME` only. Its `opencode.json` sets `enabled_providers` to the one
-   provider: `openai` for ChatGPT or `xai` for SuperGrok. Keep the real data dir: the login lives in
-   `opencode.db` there, and private data dirs remove it. Set `OPENCODE_DISABLE_PROJECT_CONFIG=1` and
-   `OPENCODE_DISABLE_CLAUDE_CODE=1`.
-2. `opencode auth list --standalone --format json`: that provider's `connections[].method` is `oauth`,
-   never `key`. Read only the `method` fields; `type` is `credential` for every entry and proves
-   nothing.
-3. `opencode models --standalone` lists only that provider and lists the exact model.
-4. No provider API key is set in the environment.
+1. Set a private `XDG_CONFIG_HOME` whose `opencode.json` sets `enabled_providers` to `openai` (ChatGPT) or `xai` (SuperGrok), keeping the real data dir (`opencode.db`). Set `OPENCODE_DISABLE_PROJECT_CONFIG=1` and `OPENCODE_DISABLE_CLAUDE_CODE=1`.
+2. `opencode auth list --standalone --format json`: verify `connections[].method` is `oauth` (not `key`; ignore `type: "credential"`).
+3. `opencode models --standalone` lists only that provider and the exact model; no provider API key is set.
 
-Anthropic through OpenCode is API-key only: never.
-
-**Exceptions.** E1 (`scripts/run-playground-semantic-eval.mjs`, `npm run eval:playground`) and E2
-(`scripts/run-demo-model-gauntlet.mjs`) answer through the local `/playground/chat` route, which calls
-the model through AI Gateway. E1's judge half is Claude Code on the subscription. Each question goes
-to the cheapest path that measures it accurately. A subscription CLI differs from the Playground in its
-system prompt, tool presentation, tool-result clips, effort, temperature, loop limits and transport,
-so it decides a question only when none of those differences is what the question measures.
+**Exceptions.** E1 (`scripts/run-playground-semantic-eval.mjs`, `npm run eval:playground`) and E2 (`scripts/run-demo-model-gauntlet.mjs`) answer through local `/playground/chat` (AI Gateway); E1 judges via subscription Claude Code. Route each question to the cheapest accurate path:
 
 | Question | Path | Reason |
 |---|---|---|
-| Does a model route through the Playground's Gateway transport (slug, provider quirks, tool `strict` on xAI)? | E2 with `--models` | Gateway routing and the AI SDK transport are not reachable from a CLI |
-| Which model ID does the Gateway log for a configured model? | A matching saved receipt or log first ([`research/gauntlets/2026-11-03-sweep-probe-summary.md`](../research/gauntlets/2026-11-03-sweep-probe-summary.md) has exact IDs). Live: E2 with `--models` and a `--max-budget-usd` cap, then compare the observed IDs with the configured ID | E2 reports observed IDs only through the accounting header, and the launch plan prints the configured ID, which is independent of what the Gateway logged |
-| Does the route's cost accounting settle for a model? | Offline tests. Live settlement only inside a product run that is happening anyway | `--max-budget-usd` is a cap and a measurement, not a separate cost test |
-| Does each shipped model, run alone, complete the stream and tool loop after a model-path change? | E2 default: the shipped primary and fallback | The Playground route itself. It verifies isolated per-model requests on the configured test Gateway (`stellar-raven-demo`) with slug-only overrides |
-| Should a candidate replace the Playground primary or fallback? | E2 on the candidate, then E1 paired | The decision is about the prompt, loop, caps, effort, temperature and model together |
-| Did a Playground-specific change (`DEMO_PREAMBLE`, the caps, the tool loop) move answer quality or plan? | E1 on both arms. A plan-only question uses stored matched traces where possible, else E1 with `--no-judge` plus `npm run eval:plan`; run the judge only when the decision needs answer grades | `DEMO_PREAMBLE`, the caps and the loop exist only in the Playground |
-| Does a model that only the Gateway or Workers AI reaches (such as Kimi) fit the Playground? | E2 and E1, as above | No subscription CLI exists |
-| Which model family answers Raven questions best, or how does it use `search` and `execute`? | Subscription: the QA runner, and Codex and Grok `hc` lanes | The MCP client and model decide it, not the Playground |
-| Did a tool description, MCP instruction, catalog or executor change help or hurt answers? | Subscription QA first. Add an E1 sample only when the changed shared text is about the constraint the Playground caps or overrides (call counts, step order, the search-evidence rule), or matched stored transcripts show the change moves top-level MCP `search` and `execute` calls per answer across a Playground cap. Count those calls directly: the plan report's `searchQueries` also counts searches nested inside `execute` | The MCP surface decides it; the Playground shares that text but adds its own caps |
-| Does the fallback hand-off, the harness contract or a deployed Playground read healthy? | Free: offline tests, `--dry-run`, `--preflight`, and the Gateway log read in `cloudflare-observability-review` | No model call is needed |
+| Does a model route through the Playground's Gateway transport (slug, provider quirks, tool `strict` on xAI)? | E2 with `--models` | Gateway routing and AI SDK transport are unreachable from a CLI |
+| Which model ID does the Gateway log for a configured model? | Saved receipt/log first ([`2026-11-03-sweep-probe-summary.md`](../research/gauntlets/2026-11-03-sweep-probe-summary.md)); else E2 with `--models` and `--max-budget-usd` | Observed IDs come only from the accounting header, not the launch plan |
+| Does the route's cost accounting settle for a model? | Offline tests; live check only inside a real product run | `--max-budget-usd` is a cap, not a standalone cost test |
+| Does each shipped model complete the stream and tool loop alone after a model-path change? | E2 default (shipped primary + fallback) | Verifies isolated per-model requests on test Gateway `stellar-raven-demo` with slug-only overrides |
+| Should a candidate replace the Playground primary or fallback? | E2 on candidate, then paired E1 | Tests prompt, loop, caps, effort, temperature, and model together |
+| Did a Playground-specific change (`DEMO_PREAMBLE`, caps, loop) move quality or plan? | Paired E1 (or stored traces / E1 `--no-judge` + `eval:plan` for plan-only) | Exists only in Playground |
+| Does a Gateway/Workers-AI-only model (e.g., Kimi) fit the Playground? | E2 then E1 | No subscription CLI exists |
+| Which model family answers best, or how does it use `search` and `execute`? | Subscription QA runner and Codex/Grok `hc` lanes | MCP client and model decide it, not Playground |
+| Did a tool description, MCP instruction, catalog, or executor change help or hurt answers? | Subscription QA first; add E1 only if changed text affects Playground-overridden constraints or moves top-level MCP `search`/`execute` call counts across a Playground cap | MCP surface decides it; Playground shares text with its own caps |
+| Does fallback hand-off, harness contract, or deployed Playground look healthy? | Free: offline tests, `--dry-run`, `--preflight`, Gateway log read (`cloudflare-observability-review`) | No model call needed |
 
-Sizing. Each tier runs under the default cap below; record the run and its cost. A cap above a default
-is the lead's call: the ledger row records the cap, the reason and the reported cost. Both lanes require
-exactly one `--max-budget-usd` on every model-backed launch; there is no built-in default, so these are
-documented defaults. Without the flag E2 prints its launch plan and refuses before any Wrangler work,
-and E1 refuses before any request. A cap stops the next call once the reported spend reaches it; one
-in-flight call can overshoot it (`eval/playground/README.md`, "Dollar accounting"), so size caps with
-that headroom.
+**Sizing.** Both E1 and E2 require exactly one `--max-budget-usd` (no built-in default; missing flag refuses before spend). Caps stop the next call once reported spend reaches the limit—one in-flight call can overshoot ([`eval/playground/README.md`](playground/README.md#dollar-accounting)). Raising a default cap is the lead's call; record cap, reason, and cost in the ledger.
 
-| Run | Cap (`--max-budget-usd`) | Basis |
+| Run | Default `--max-budget-usd` | Basis |
 |---|---|---|
-| E2 shipped-tuple gauntlet | USD 1 | 16 turns, USD 0.40 to 0.45 measured. The capped path is stricter than production: SDK retries are off, each call gets one Gateway attempt, and a turn with no reported cost stops the matrix |
-| E2 on one candidate model | USD 1 | Terra, 8 turns, USD 0.355 |
-| E1 run | USD 0.20 per selected case, rounded up to a whole dollar, minimum USD 2 (5 cases: 2; 30 cases: 6) | About USD 0.11 per case measured (30 cases: answers 1.383 plus judge 2.016) |
-| One candidate, all in | Two invocations: gauntlet 1, E1 on 30 cases 6; expected total USD 3.75; the ledger row records the sum | [2026-11-10 worked example](../research/audits/2026-11-10-playground-gpt61-terra-recheck.md) |
-| QA runner, re-judge, discovery (subscription) | Required `--max-budget-usd`, sized from stored runs (`run-evals` section 5) | An existing cost guard |
-| Judge self-test (subscription) | Its fixed 7 calls at USD 0.50 | An existing cost guard |
+| E2 shipped-tuple gauntlet | 1 | 16 turns (primary + fallback alone, 8 prompts each), ~USD 0.40–0.45 measured; SDK retries off, 1 Gateway attempt/call, missing cost stops matrix |
+| E2 one candidate model | 1 | 8 turns, ~USD 0.36 measured |
+| E1 run | `ceil(0.20 * cases)`, min 2 (5→2, 30→6) | ~USD 0.11/case measured (30 cases: ~1.38 answer + ~2.02 judge) |
+| One candidate, all in | E2 (1) + E1 30 cases (6) | ~USD 3.75 expected ([worked example](../research/audits/2026-11-10-playground-gpt61-terra-recheck.md)) |
+| QA runner, re-judge, discovery (subscription) | Required, sized from stored runs (`run-evals` §5) | Existing cost guard |
+| Judge self-test (subscription) | Fixed 7 calls × USD 0.50 | Existing cost guard |
 
-1. **Shipped-tuple gauntlet.** Primary and fallback, each alone, 8 prompts each: 16 turns, about USD 0.40
-   to 0.45, run with `--max-budget-usd 1`. Run it for a model-path change only (`src/demo/model-config.ts`,
-   the request building in `src/demo/chat.ts`, an `ai`, `@ai-sdk/*`, `workers-ai-provider` or `agents`
-   bump, a catalog ID bump). `npm run test:smoke` gates other `src/demo` changes. The default verifies
-   isolated per-model requests on the configured test Gateway (`stellar-raven-demo`) with slug-only
-   overrides. For a tuple change, run the offline request-equivalence tests (`test/demo-chat.test.ts`,
-   "preserves each measured request in the shipped mixed tuple") and pin `--openai-api-mode` and
-   `--reasoning-effort` wherever the shipped tuple's mode or effort differs from the per-model default.
-   E2 cannot verify a change of the Gateway ID or a Gateway setting, because it forces its own test
-   Gateway; check those with the post-deploy Gateway log read in `cloudflare-observability-review`.
-2. **E1 sample.** 5 cases by default, at most 30 (the `chatsPerHour` cap, not a target). Pair on the
-   same case IDs. Reuse a stored run when its identities match; a prompt or loop change needs both
-   arms on one tree.
-3. **Model selection.** One candidate: the gauntlet plus one paired E1 run on the shipped model's case
-   IDs. Several candidates: the gauntlet on each, then a paired screen and a disjoint confirmation for
-   the one that advances. No full matrix, and no eval-client matrix through the Gateway.
+1. **Shipped-tuple gauntlet (E2 default):** run only for model-path changes (`src/demo/model-config.ts`, request building in `src/demo/chat.ts`, `ai`/`@ai-sdk/*`/`workers-ai-provider`/`agents` or catalog ID bumps); `npm run test:smoke` gates other `src/demo` changes. For tuple changes, also run `test/demo-chat.test.ts` ("preserves each measured request in the shipped mixed tuple") and pin `--openai-api-mode` / `--reasoning-effort` when they differ from defaults. Check Gateway ID/setting changes post-deploy via `cloudflare-observability-review` (E2 forces its test Gateway).
+2. **E1 sample:** 5 cases default, max 30 (`chatsPerHour` cap). Pair on identical IDs; reuse stored runs only when identities match; run both arms on one tree for prompt/loop changes.
+3. **Model selection:** one candidate = E2 + paired E1 on shipped IDs; several candidates = E2 each, then paired screen + disjoint confirmation for the winner. Never run a full matrix. Haiku stays out of every eval except as Playground fallback ([roster](../.agents/model-roster.md#models-for-evals-and-tests)). See [`eval/playground/README.md`](playground/README.md) for lane contracts.
 
-Haiku is out of every test and eval except as the Playground fallback
-([roster](../.agents/model-roster.md#models-for-evals-and-tests)). [`eval/playground/`](playground/README.md)
-holds the contract for both lanes.
-
-**Not exceptions.** The product's runtime is not an eval or a build step: `src/demo/chat.ts` calls AI
-Gateway and Workers AI for the public Playground, and `src/demo/eval-cost.ts` reads Gateway logs for
-the eval cost frame. The `cloudflare-observability-review` skill reads Gateway logs and Workers
-telemetry through the Cloudflare API and makes no model call. CI, `test/smoke` (a mocked `AI`
-binding), `test/live` and `usage/` make none.
-
-`test/model-call-billing.test.mjs` fails when a code file, skill document or GitHub Actions workflow
-outside the exceptions names a provider endpoint, an AI Gateway token, an `AI.run(` or `AI.gateway(`
-call, the Playground chat route or an AI SDK import.
+**Not exceptions:** runtime Playground (`src/demo/chat.ts`, `src/demo/eval-cost.ts`) and read-only Gateway log reads (`cloudflare-observability-review`) are not model-calling evals. CI, `test/smoke`, `test/live`, and `usage/` make no model calls. `test/model-call-billing.test.mjs` enforces the allowlist across code files, skills, and workflows.

@@ -1,47 +1,18 @@
 # Agentic routing evaluation
 
-This paid diagnostic checks whether an agent selects the expected service after searching the catalog.
-Use the [QA guide](../qa/README.md) to measure final-answer correctness.
-Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to size and cap paid collection.
+Paid diagnostic measuring whether an agent selects the expected service after searching the catalog (for final-answer correctness, use [QA](../qa/README.md); size/cap runs with [run-evals](../../.agents/skills/run-evals/SKILL.md)).
 
 ## Method
 
-[sample.json](sample.json) fixes 30 cases: 12 Stellar Docs, 10 Scout, and eight Lumenloop cases.
-Its ids and questions are legacy routing rows. `routing-qa-overlap.json` lists the ones that match a QA headline question (set `agentic`; see the [routing guide](../README.md#confirmation-only-rows)). This workflow does not tag or hide them, so report them as counts only.
-[workflow-agentic-routing.js](workflow-agentic-routing.js) runs each case at low and medium effort, producing 60 rows.
-It uses the Workflow model alias `sonnet`.
-Record the resolved model before comparing runs; an alias does not establish model identity.
+[sample.json](sample.json) fixes 30 legacy routing cases (12 Stellar Docs, 10 Scout, 8 Lumenloop). Rows matching a QA headline question are listed in `routing-qa-overlap.json` (set `agentic`; see [confirmation-only rows](../README.md#confirmation-only-rows)); this workflow does not tag them, so report them as counts only. [workflow-agentic-routing.js](workflow-agentic-routing.js) runs each case at low and medium effort (60 rows) using the `sonnet` alias—record the resolved model ID.
 
-Each agent receives the question and a recipe for calling the local MCP `search` tool.
-It can make at most three searches and returns these fields:
-
-```text
-queriesUsed, primaryToolId, primaryService, alternateToolIds, reasoning
-```
-
-The harness also records each search query, limit, ordered hit IDs, tiers, scores, total, and truncation state.
-`zeroGated` describes pages without a gated-tier hit.
-`widerCandidateIds` records advisory IDs outside the ranked hits.
-`primaryInHits` records whether a ranked page contained the selected primary ID.
-
-The primary grade requires the selected service to match `expected_service`.
-The any-hit grade accepts that service in the primary or alternate selections.
-This contract uses the exact expected service. It does not apply the routing evaluator's `expected_any` tolerance.
+Each agent gets up to 3 local MCP `search` calls and returns `queriesUsed`, `primaryToolId`, `primaryService`, `alternateToolIds`, and `reasoning`. The harness records per-call search pages (`zeroGated`, `widerCandidateIds`, `primaryInHits`). Primary grade matches exact `expected_service` (no `expected_any` tolerance); any-hit accepts it in primary or alternates.
 
 ## Re-run
 
-The collector requires the **Claude Code Workflow tool**.
-That host supplies `args`, `phase`, `parallel`, `agent`, and `log`.
-The repository does not provide a standalone Node launcher for the workflow.
-
-1. Reuse the running development server and read its bound URL from the existing output.
-2. Start the capture proxy with that upstream URL and a separate local port.
-3. Invoke the Claude Code Workflow tool with `workflow-agentic-routing.js` and the proxy port.
-4. Save the returned `{summary, rows}` under `eval/agentic/results/`.
-5. Reconcile the stored transcript with the captured exchanges before interpreting the search behavior.
+Requires the **Claude Code Workflow tool** (no standalone Node launcher). Reuse the running dev server, start the capture proxy on a separate port, invoke `workflow-agentic-routing.js` with `{"port": 8789, "cases": [...]}` (copy `id`, `question`, `expected_service` from `sample.json`), save `{summary, rows}` under `eval/agentic/results/`, and reconcile before interpreting transcripts:
 
 ```sh
-# Substitute the actual server URL, proxy port, and a new output stamp.
 node eval/agentic/capture-proxy.mjs \
   --upstream http://localhost:8788 \
   --port 8789 \
@@ -52,19 +23,9 @@ node eval/agentic/reconcile-capture.mjs \
   --results <results.json>
 ```
 
-Pass the Workflow tool `{"port": 8789, "cases": [...]}`.
-Copy each case's `id`, `question`, and `expected_service` from `sample.json`.
-Use the proxy port so the capture includes every agent exchange.
-Keep the fixed sample and grading contract for comparable runs.
-
 ## Capture reconciliation
 
-A nonzero exit with `summary.tainted` rejects the transcript-derived analysis.
-Inspect `summary.anomalies` and `unmatchedMarkers` for missing, invented, or unassigned exchanges.
-The service grades remain separate from transcript reconciliation.
-
-A normalization pass can replace incorrect page content when every query/limit multiset still matches the captured exchanges.
-Keep the original report and create a separate normalized artifact:
+A non-zero exit with `summary.tainted` rejects transcript analysis (inspect `summary.anomalies` and `unmatchedMarkers`; service grades stay separate). If query/limit multisets match captured exchanges but reported pages differ, write a separate normalized copy (never overwrite inputs) and re-run ordinary reconciliation on it:
 
 ```sh
 node eval/agentic/reconcile-capture.mjs \
@@ -75,13 +36,8 @@ node eval/agentic/reconcile-capture.mjs \
   --workflow <workflow-id>
 ```
 
-The normalizer pins the raw reconciliation and preserves agent-reported pages in `rawAgentSearchCalls`.
-It copies captured pages into `searchCalls` and derives `primaryInHits` from those pages.
-It requires unique row markers and matching query/limit multisets across all evidence.
-It rejects capture anomalies, unmatched markers, missing reports, and paths that overwrite inputs.
-Run ordinary reconciliation again on the normalized copy before using it.
+The normalizer pins the raw reconciliation, preserves `rawAgentSearchCalls`, replaces `searchCalls` from capture, derives `primaryInHits`, and rejects capture anomalies or unmatched markers.
 
 ## Evidence
 
-[Cited agentic records](../qa/reviewed/2026-09-30-agentic-guide-records.md) retain evidence used by current artifacts.
-[Earlier agentic history](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/agentic/README.md) remains available at the audit base.
+[Cited agentic records](../qa/reviewed/2026-09-30-agentic-guide-records.md).

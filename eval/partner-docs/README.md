@@ -1,71 +1,30 @@
 # Partner-doc retrieval diagnostic
 
-This instrument compares required facts in Raven results with facts in allowlisted public partner documentation.
-It measures source coverage. It does not measure final-answer quality or authorize a runtime adapter.
+Compares literal required facts in Raven results against allowlisted public partner docs (source coverage only—not answer quality or adapter approval).
 
 ## Run
 
-Reuse the existing local Raven server and substitute its bound URL:
+Reuse the running local Raven server and substitute its bound URL (omitting `--raven-url` scores candidate docs only and marks the gate `inconclusive`):
 
 ```sh
 npm run eval:partner-docs -- --raven-url http://localhost:8787/mcp
 ```
 
-The [case file](cases.json) defines questions, baseline sources, candidate URLs, and literal fact groups.
-The [schema](cases.schema.json) defines the allowed source IDs and case fields.
-Each baseline composes its declared sources in one `execute` call.
-Supported sources include Stellar Docs operations, `scout.searchResearch`, and two pinned OpenZeppelin skills.
-The candidate arm combines its declared documents. Both arms use the same fact matcher.
-A run without `--raven-url` measures only the candidate documents and reports an inconclusive retrieval gate.
+[cases.json](cases.json) (validated by [cases.schema.json](cases.schema.json)) defines questions, baseline sources (Stellar Docs ops, `scout.searchResearch`, two pinned OpenZeppelin skills composed in one `execute` call), candidate URLs, and literal fact groups.
 
 ## Fetch boundaries
 
-The harness makes read-only GETs to candidate URLs from the validated case file.
-Code restricts Alchemy URLs to `https://www.alchemy.com/docs/**/*.md` or admitted `llms.txt` files.
-OpenZeppelin URLs must address MDX below the `OpenZeppelin/docs` Stellar or Relayer content roots.
-The fetch helper validates redirect targets, content types, UTF-8 decoding, and a 256 KiB document limit.
-It never connects to partner MCP servers or invokes APIs described by the documents.
-
-Measured OpenZeppelin URLs use pinned commits.
-Each result records the resolved commit and body SHA-256.
-A missing or failed baseline makes the retrieval gate `inconclusive`; it does not reduce the comparison denominator.
+Read-only GETs to allowlisted candidate URLs only: Alchemy `https://www.alchemy.com/docs/**/*.md` or admitted `llms.txt`; OpenZeppelin pinned-commit MDX under `OpenZeppelin/docs` Stellar/Relayer roots (recording resolved commit and body SHA-256). Validates redirects, content types, UTF-8, and a 256 KiB cap; never connects to partner MCPs or APIs. Missing/failed baselines make the gate `inconclusive` without shrinking the denominator.
 
 ## Case cohorts and scoring
 
-`page-derived` questions come from reading the candidate page.
-`paraphrase`, `negative`, and `conflict` questions represent independently identified information needs.
-Each independent case requires provenance that lets a reviewer check that claim.
-The gate counts independent cases; it does not verify their independence.
-
-All cohorts use literal fact groups drawn from candidate pages.
-A high candidate score therefore does not establish generalization or answer quality.
-Repeated fact groups count toward `totalFacts`; `distinctFactGroups` identifies their shared evidence.
-Neither count measures statistically independent observations.
-
-The `alchemy-stellar-balances` case includes the phrases `data envelope` and `results under a data envelope`.
-The [dated authoring review](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/partner-docs/README.md#the-one-miss-is-a-case-authoring-defect-not-a-source-gap)
-found that wording on a sibling page, rather than the selected balances page.
-Treat a miss on that group as an authoring limitation, not proof of a source gap.
-
-An absence claim must identify the checked sources and method.
-A text search over rendered HTML alone does not establish source absence.
-A conflict case tests whether both claims are retrievable; only an answering evaluation tests whether an agent keeps them separate.
+- `page-derived` questions come from the candidate page; `paraphrase`, `negative`, and `conflict` require provenance of an independent need (counted, not verified by the gate).
+- Because all cohorts match literal phrases from candidate pages, high candidate recall does not prove generalization or answer quality (`distinctFactGroups` separates shared evidence from `totalFacts`).
+- In `alchemy-stellar-balances`, `data envelope` / `results under a data envelope` came from a sibling page ([dated review](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/partner-docs/README.md#the-one-miss-is-a-case-authoring-defect-not-a-source-gap))—treat a miss as an authoring limit, not a source gap.
+- Absence claims require naming checked sources and method; conflict cases test retrievability only.
 
 ## Gate and interpretation
 
-The retrieval gate requires all of these conditions:
+Retrieval gate requires all of: every baseline scored with zero baseline errors, candidate recall ≥ baseline + 20 pp, ≥ 3 cases improved with 0 regressions, zero candidate fetch errors, and ≥ 4 independent cases.
 
-- Every baseline case produces a score without a baseline error.
-- Candidate recall exceeds baseline recall by at least 20 percentage points.
-- At least three cases improve, and no case regresses.
-- Candidate fetches produce no errors.
-- At least four cases carry an independent case type.
-
-Use a fresh paired run after source or case changes.
-Compare the declared source sets and result hashes before interpreting a difference.
-Single-run latency and prompt-signal counts do not prove reliability or security.
-
-The harness always reports `headlineQaGate: not-run` and `shipDecision: do-not-ship-runtime-adapter`.
-The [source-admission design](../../research/partner-doc-source-onboarding.md) defines the remaining QA, resilience, drift, and security gates.
-The [dated measurements](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/partner-docs/README.md)
-preserve earlier comparisons and their limitations.
+The harness always emits `headlineQaGate: not-run` and `shipDecision: do-not-ship-runtime-adapter`; [partner-doc-source-onboarding.md](../../research/partner-doc-source-onboarding.md) defines the remaining QA, resilience, drift, and security gates.

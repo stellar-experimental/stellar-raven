@@ -19,18 +19,7 @@ npm run eval:compile
 node eval/run-routing.mjs --dump-ranked eval/results/ranked.json
 ```
 
-The runner writes `eval/results/routing-<timestamp>.json` and prints the gate result.
-`--gate` returns a nonzero exit status for a failed evidence check, threshold, or denominator.
-Without `--gate`, the runner reports threshold failures without enforcing their exit status.
-
-The ranked dump includes legacy, extended, skills, and protocol-history cases.
-It excludes holdout cases. Compare dumps only across identical case memberships.
-Compare two dumps with `cmp`, and count a difference on a confirmation-only row without printing it.
-An empty diff establishes result-ID order for those cases; it does not establish answer quality.
-
-The runner imports `src/catalog/search.ts` through Node's native type support.
-If that import fails, it uses the repository's TypeScript package and writes temporary output under `eval/.build/`.
-Use the Node version in [.nvmrc](../.nvmrc).
+Writes `eval/results/routing-<timestamp>.json` and prints gate results (`--gate` exits non-zero on evidence, threshold, or denominator failures). `--dump-ranked` exports ordered result IDs for legacy, extended, skills, and protocol-history cases (never holdout); compare dumps with `cmp` across identical memberships, counting differences on confirmation-only rows without printing them. Imports `src/catalog/search.ts` via Node 24 native TS (`.nvmrc`), falling back to `eval/.build/` if needed.
 
 ## Cases and measures
 
@@ -43,97 +32,30 @@ Use the Node version in [.nvmrc](../.nvmrc).
 | Accept-either | Compiled labels and `build-question-overlay.json` | Any declared acceptable service | Diagnostic |
 | Protocol-history v1 | `protocol-history-cases.json` | Target operation ranking and control captures | Diagnostic |
 
-The compiler reads the retained inputs described in [corpus/PROVENANCE.md](corpus/PROVENANCE.md).
-It preserves source labels and records skipped questions with their reasons.
-The compiler maps `stellar_light` to `scout` and `stellar_docs` to `stellarDocs`.
-It excludes questions for unsupported general-web services and cases with no expected service.
-
-Each strict service measure uses the original question and `limit: 5`.
-A top-1 hit matches `expected_service` at rank 1.
-Top-3 and top-5 require a matching service within their respective limits.
-Keep each case set's denominator separate.
-
-The accept-either view combines source `acceptable_cards` with the reviewed overlay.
-It does not change the strict service score.
-The extended cases remain separate from the legacy aggregate.
+The compiler reads inputs in [corpus/PROVENANCE.md](corpus/PROVENANCE.md), maps `stellar_light` → `scout` and `stellar_docs` → `stellarDocs`, excludes unsupported general-web/unlabeled cases, and records skipped reasons. Strict service measures run the original question at `limit: 5`, keeping each set's denominator separate; accept-either combines source acceptable cards with the reviewed overlay without changing strict scores.
 
 ### Confirmation-only rows
 
-A routing or discovery row whose question matches a QA headline question is confirmation-only.
-A match is a token Jaccard of at least 0.8 against any question in `qa/cases.json`.
-[routing-qa-overlap.json](routing-qa-overlap.json) lists those rows per question set, by routing row id.
-It holds no QA id and no score, and `npm test` fails when it no longer matches the committed inputs.
-Regenerate it after a routing recompile or a golden question edit:
+Any routing or discovery row whose question has token Jaccard ≥ 0.8 against a question in `qa/cases.json` is confirmation-only and listed by routing row ID (no QA ID or score) in [routing-qa-overlap.json](routing-qa-overlap.json). `npm test` checks sync; regenerate with `npm run eval:routing:overlap` after routing recompiles or golden question edits.
 
-```sh
-npm run eval:routing:overlap
-```
-
-No lane tunes on a listed row or reads its per-row output; a lane uses it as aggregate counts only.
-The runners (`run-routing.mjs`, `run-protocol-history.mjs`, `discovery/run-discovery.mjs`, `discovery/run-replay.mjs`)
-tag a listed result row `confirmationOnly: true`, print `confirmation-only` in place of its rank, top hit, or hit/miss,
-and still count it in every aggregate.
-The tagged rows keep their grades in the result file, so a pass rule can count them.
-The agentic workflow and the agent discovery runner do not tag rows; report their listed rows as counts only.
-The ranked dump is unchanged; a dump difference on a listed row is counted, never displayed.
-A new routing or discovery question set is added to the generator (`routing-qa-overlap.mjs`) and passes its set name to
-`lib/confirmation-only.mjs`.
+No lane tunes on a listed row or reads its per-row output (aggregates only). `run-routing.mjs`, `run-protocol-history.mjs`, `discovery/run-discovery.mjs`, and `discovery/run-replay.mjs` tag listed rows `confirmationOnly: true` and print `confirmation-only` instead of rank/hit/miss while counting them in aggregates (preserving grades in result files). The agentic workflow and agent discovery runner do not tag rows—report listed rows as counts only. Add any new question set to `routing-qa-overlap.mjs` and `lib/confirmation-only.mjs`.
 
 ### Row output
 
-`run-routing.mjs` and `run-protocol-history.mjs` print aggregates only: the lane tables, the holdout
-forbidden-capture count, and each protocol-history set verdict.
-Pass `--rows` to add the holdout and protocol-history per-row tables.
-The results file under `eval/results/` carries every row either way, and the gate and exit codes do
-not depend on the flag.
-A reader that has no need for a held-out row runs without `--rows`; CI does.
-
-The runners' error text names a file and a position, never a case id, question or card: the holdout
-card check, the protocol-history contract checks and the confirmation-only list check report a case
-or list position, and a JSON read error reports the file (`lib/read-json.mjs`). One id can still
-print: a warning or error about the hand-reviewed overlay (`build-question-overlay.json`) names a
-legacy routing case. The result file, `--rows` output and a `--dump-ranked` file hold ids.
+`run-routing.mjs` and `run-protocol-history.mjs` print aggregates only by default (CI runs without `--rows`). Pass `--rows` to print holdout and protocol-history per-row tables; result files carry every row regardless. Error text names files and positions rather than case IDs, questions, or cards (except warnings on `build-question-overlay.json`, which name a legacy routing case).
 
 ### Card-name normalizer
 
-`card@5` checks operation labels through [lib/grade.mjs](lib/grade.mjs).
-It normalizes letter case and converts hyphens, periods, and spaces to underscores.
-A card matches when one of these conditions holds:
-
-1. The complete normalized names match.
-2. The mapped services and remaining operation names match.
-3. The services match, and one operation name contains the other with a minimum shorter length of four characters.
-4. The services match, and a `<noun>_detail` card matches a `get_<noun>` or `get<noun>` operation by name.
-
-Cross-service matches require an explicit acceptable-service label; the normalizer does not create them.
-A `<service>_mcp` card names a service, so `card@5` excludes it.
-Cases with only service cards have no operation score.
-The legacy set includes 27 Stellar Docs cases with operation labels.
+`card@5` ([lib/grade.mjs](lib/grade.mjs)) normalizes case and converts `-`, `.`, and spaces to `_`. A match holds on: (1) exact normalized name, (2) matching mapped service and operation name, (3) matching service with substring containment (shorter ≥ 4 chars), or (4) matching service where `<noun>_detail` matches `get_<noun>`/`get<noun>`. Cross-service matches require explicit acceptable-service labels; `<service>_mcp` cards are excluded from `card@5` (legacy has 27 Stellar Docs cases with operation labels).
 
 ### Gate evidence
 
-The legacy gate uses a band around its accepted top-1/3/5 totals.
-The skills gate uses a top-1 floor.
-The holdout gate uses top-1/3/5 floors and a forbidden-capture ceiling.
-Read their exact values from [gates.json](gates.json).
-
-The gate file also pins each required input's SHA-256 and accepted case count.
-A missing skills or holdout file fails the evidence check.
-The accept-either overlay and protocol-history diagnostic are optional inputs.
-Their absence does not remove the compiled extended cases.
-
-Update gate hashes, totals, thresholds, and the decision record together after an approved baseline change.
-Do not tune the implementation against individual failed holdout cases.
-Freeze new blind labels before their author reads scorer details or result traces.
+[gates.json](gates.json) owns legacy bands, skills top-1 floor, holdout floors/forbidden ceiling, and required input SHA-256s/counts (missing skills or holdout files fail; overlay and protocol-history v1 are optional). Update hashes, totals, thresholds, and the decision record together on approved baseline changes. Never tune on individual failed holdout cases; freeze blind labels before reading scorer traces.
 
 ### Protocol-history diagnostics
 
-The routing command includes the frozen v1 diagnostic when its file exists.
-The standalone `npm run eval:protocol-history` command reads the two v2 contracts.
-It checks their source epoch before scoring. A mismatch produces `source-expired` without scored sets.
-A diagnostic failure does not alter the three routing gate decisions.
+The routing run includes frozen v1 if present; `npm run eval:protocol-history` runs the two v2 contracts and reports `source-expired` on epoch mismatch. Diagnostic failures do not change the three routing gates.
 
 ## Evidence
 
-[Cited routing records](qa/reviewed/2026-09-30-routing-guide-records.md) retain evidence used by current artifacts.
-[Earlier routing history](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/eval/README.md) remains available at the audit base.
+[Cited routing records](qa/reviewed/2026-09-30-routing-guide-records.md) retain evidence referenced by current artifacts.
