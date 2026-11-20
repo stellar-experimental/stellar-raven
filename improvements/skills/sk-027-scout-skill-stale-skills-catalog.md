@@ -30,7 +30,7 @@ recurrences:
 ## Finding
 
 The Scout skill describes `/api/skills` as a catalog of seven SDF skills.
-On 2026-09-30 the live catalog had 43 entries from four sources and eight SDF skills; on 2026-10-02 it has 62 entries from five sources (19 community-built entries from skills.stellar.org) and still eight SDF skills.
+On 2026-11-20 the live catalog had 84 entries from five sources (sdf 8, stellarlight 15, lumenloop 8, external 12, community 41).
 The skill names `soroban` as an SDF skill.
 The live API returns HTTP 404 for `/api/skills/soroban`.
 The listed slug is `smart-contracts`.

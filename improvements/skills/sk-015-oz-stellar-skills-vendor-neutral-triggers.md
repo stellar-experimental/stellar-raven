@@ -15,6 +15,8 @@ evidence:
   - Solo todo 1438 items 2 and 3, solo://proj/49/scratchpad/independent-holdout--798
   - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/14
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET OpenZeppelin/openzeppelin-skills main setup-stellar-contracts/SKILL.md HTTP 200 still contains (1) install Stellar CLI and Rust toolchain for Soroban."
   - date: 2026-11-09
     evidence: "2026-11-09T20:30:57Z fresh OpenZeppelin/openzeppelin-skills main 584262af setup and upgrade skills HTTP 200: description items still claim generic Stellar CLI/Rust installation, new Soroban project creation, and native WASM replacement without an OpenZeppelin qualification on those clauses. Both bodies remain OpenZeppelin playbooks. Issue 14 is open with no comments."
   - date: 2026-11-06

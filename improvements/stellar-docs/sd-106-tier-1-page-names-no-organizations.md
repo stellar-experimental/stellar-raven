@@ -22,6 +22,8 @@ evidence:
   - "Affected golden case: eval/qa/corpus/battery/protocol-core/q-net-tier1-roster-current.json. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3144
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://developers.stellar.org/docs/validators/tier-1-orgs.md HTTP 200 still excludes Blockdaemon and Franklin Templeton; PR https://github.com/stellar/stellar-docs/pull/3148 remains open."
   - date: 2026-11-14
     evidence: "2026-11-14 QA test of the rebuilt battery (claude-sonnet-5-5 answering, results stamp 2026-11-14T06-06-31-variantA): q-net-tier1-roster-current. The Docs Tier 1 page gave requirements and Obsrvr Radar but none of the ten organizations, and the agent said it could not retrieve the roster. Evidence/owner state: .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Upstream gaps by leaf'."
   - date: 2026-11-17

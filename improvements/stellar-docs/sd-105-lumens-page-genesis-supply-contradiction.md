@@ -20,6 +20,8 @@ evidence:
   - "Affected golden case: eval/qa/corpus/battery/history-org-tokenomics/q-token-xlm-supply-total-circulating.json. Its golden states 100 billion at genesis plus about 5.44 billion from inflation. The proposed grading caution is in gaps/GAPS.md under Case cautions."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3143
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://developers.stellar.org/docs/learn/fundamentals/lumens.md HTTP 200 still contains 'will ever exist was created when the Stellar network went live'; PR https://github.com/stellar/stellar-docs/pull/3147 remains open."
   - date: 2026-11-17
     evidence: "Still reproduces. `npm run improvements:probes -- --service stellar-docs --service stellar-light-scout` on 2026-11-17 (00:18Z): GET https://developers.stellar.org/docs/learn/fundamentals/lumens.md answers 200 and still contains \"will ever exist was created when the Stellar network went live\". https://github.com/stellar/stellar-docs/issues/3143 is open. Its triage-bot fix PR https://github.com/stellar/stellar-docs/pull/3147 is open and not merged. The thread asks Raven no question."
 ---

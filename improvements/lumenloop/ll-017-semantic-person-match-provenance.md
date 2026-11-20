@@ -49,6 +49,11 @@ That is deployed safety progress. Tyler includes exact-name records 1487/625
 alongside neighbors, while A/V remains topic-oriented. Neither aggregate warning
 nor similarity establishes an individual row's identity relation or matched span.
 
+## Evidence
+
+- `POST /v1/tools/search_content_semantic` for `"Tyler van der Hoeven"` and the negative control `"Strupey"` both return `_weak_match: true` (top similarity `0.229` vs `0.259` on 2026-11-20) and 30 rows with no per-row exact-match flag, entity link, or matched text span; the negative control scores higher than the real name.
+- `find_av_passages` for `"Tyler van der Hoeven"` returns topic neighbors without exact-person attribution.
+
 ## Recommendation
 
 Preserve the deployed weak-match warning and returned similarity/date signals.
@@ -57,51 +62,3 @@ constraints or flags. Mark topic-only matches explicitly so a caller cannot
 mistake them for attributed content. A compact cross-collection count and
 exact-token projection can help callers inspect the candidate set before top-k
 limits; it must not manufacture identity relations from semantic similarity.
-
-## Recurrence — 2026-07-13
-
-Production rays `a1a519aa3907e144` through `a1a51b394acdc572` showed both sides of
-the provenance gap. Narrow directory/project/docs calls for Justin Rice returned
-empty or adjacent `ok` data; the later `search_content_semantic` call recovered
-exact-name, dated 2020–2021 Stellar event records. A negative-control localhost
-probe for `Strupey` also returned large semantic result sets, but compact
-exact-token projections found no row containing the requested term in LumenLoop,
-Scout research/projects/builders, or Stellar Docs.
-
-The gateway now labels semantic rows as candidates and exposes bounded recovery
-operations separately from ranked search hits, but it still cannot manufacture
-the missing upstream match provenance. This finding remains the upstream owner
-for exact lexical/entity flags, matched spans, similarity, and source/date fields.
-
-The targeted QA run `eval/qa/results/2026-07-13T18-59-22-variantA.json`
-confirmed the residual risk. The Strupey open-world case correctly rejected
-semantic neighbors and asked for clarification, but the Tyler case found real
-exact-name material and then made an unsupported claim that no further articles,
-research, or SEP/CAP credits existed. The gateway added a host-observed
-candidate-evidence reminder keyed only to broad operation IDs; upstream exact
-match/provenance fields would make this constraint data-native instead of prose-
-dependent.
-
-The bounded post-fix probe
-`eval/qa/results/2026-07-13T19-09-10-variantA.json` improved that Tyler answer to
-a source-cited exact-name roster and removed the universal negative. It still
-omitted an observation date for mutable role and directory-count claims, so the
-gateway reminder now distinguishes source publication dates from the as-of date
-needed for current facts. This remains a prose mitigation; structured upstream
-match provenance is still the durable fix.
-
-The 2026-07-14 adapter-normalization round separated two failure modes. Flattening
-all semantic collections into one similarity-ranked `items` list eliminated the
-gateway's collection-guessing loss: the exact reported playground wording passed
-three independent GPT-5.4 reasoning-none runs, and Grok 4.5 passed through the same
-tool contract. That host-owned shape does not and should not label identity matches.
-In the scored follow-up, GPT-5.4 invented a Q2-2021 quarterly-review attribution and
-Sonnet inferred a 2025 Roadmap byline from adjacent cross-links. Structured matched
-spans and entity links remain necessary even after the transport shape is consumable.
-
-## Current verification — 2026-11-06
-
-AV remains topic neighbors without exact-person provenance. Semantic Tyler mixes exact1487/625 with neighbors. Both Tyler and Strupey now carry _weak_match=true, _top_similarity and explicit generic-filler warning; no per-row exact relation/span.
-
-Record partial safety progress; retain per-result identity provenance request.
-Next check: After entity-provenance change, rerun exact Tyler and negative Strupey across AV/content; verify row-level match flags.

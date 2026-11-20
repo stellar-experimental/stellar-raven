@@ -9,14 +9,14 @@ Total findings: 95
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | sk-004 | Two lumenloop-skills playbooks teach that find_av_passages yields verbatim, quotable transcript passages: stellar-project-dossier labels…   | reported-upstream | 2026-07-03 | 4           |
-| sk-005 | The Lumenloop skill corpus lacks machine-readable audience and transport metadata                                                           | reported-upstream | 2026-07-03 | 5           |
-| sk-007 | The ecosystem-digest skill hard-codes a stale 2026-06-08 recency window                                                                     | reported-upstream | 2026-07-03 | 5           |
-| sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…    | reported-upstream | 2026-08-11 | 3           |
-| sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                          | reported-upstream | 2026-08-11 | 3           |
+| sk-005 | The Lumenloop skill corpus lacks machine-readable audience and transport metadata                                                           | reported-upstream | 2026-07-03 | 6           |
+| sk-007 | The ecosystem-digest skill hard-codes a stale 2026-06-08 recency window                                                                     | reported-upstream | 2026-07-03 | 6           |
+| sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…    | reported-upstream | 2026-08-11 | 4           |
+| sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                          | reported-upstream | 2026-08-11 | 4           |
 | sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | reported-upstream | 2026-08-19 | 2           |
-| sk-022 | The upgrade-stellar-contracts skill teaches #[derive(Upgradeable)], #[derive(UpgradeableMigratable)], UpgradeableInternal, and…             | reported-upstream | 2026-09-04 | 3           |
+| sk-022 | The upgrade-stellar-contracts skill teaches #[derive(Upgradeable)], #[derive(UpgradeableMigratable)], UpgradeableInternal, and…             | reported-upstream | 2026-09-04 | 4           |
 | sk-025 | The beta API skill forbids Authorization: Bearer for requests to https://beta.api.trustlesswork.com. The current Core API documentation…    | reported-upstream | 2026-09-16 | 3           |
-| sk-027 | The Scout skill describes /api/skills as a catalog of seven SDF skills. On 2026-09-30 the live catalog had 43 entries from four sources…    | reported-upstream | 2026-09-30 | 3           |
+| sk-027 | The Scout skill describes /api/skills as a catalog of seven SDF skills. On 2026-11-20 the live catalog had 84 entries from five sources…    | reported-upstream | 2026-09-30 | 3           |
 | sk-028 | The Scout skill gives the size of the Builders directory as a fixed count. SKILL.md says the directory is "currently in the dozens, not…    | reported-upstream | 2026-09-30 | 2           |
 | sk-029 | The Core API emits error type URLs of the form …/api-rest/errors/<code-in-kebab-case>. The docs site redirects that ungrouped path to the…  | reported-upstream | 2026-10-27 | 2           |
 | sk-030 | Six Lumenloop skill files still name the wallet Freighter and omit its current name, Varial. SDF announced the rename on 2026-10-29. The…   | reported-upstream | 2026-11-02 | 2           |
@@ -29,8 +29,8 @@ Total findings: 95
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- | ---------- | ----------- |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…    | declined-upstream | 2026-07-10 | 1           |
 | sls-116 | Scout SCF award records miss awards that official SCF project pages publish for rounds before 45. For example, three official pages mark…  | reported-upstream | 2026-11-12 | 2           |
-| sls-117 | The sdf-org source of the Scout research corpus holds nine SDF pages. It does not hold four pages that answer common questions about SDF   | reported-upstream | 2026-11-14 | 1           |
-| sls-118 | The Scout research corpus indexes CAPs and SEPs from stellar/stellar-protocol. It does not index the Stellar Limits Proposals (SLPs) in…   | reported-upstream | 2026-11-14 | 2           |
+| sls-117 | The sdf-org source of the Scout research corpus holds nine SDF pages. It does not hold four pages that answer common questions about SDF   | reported-upstream | 2026-11-14 | 2           |
+| sls-118 | The Scout research corpus indexes CAPs and SEPs from stellar/stellar-protocol. It does not index the Stellar Limits Proposals (SLPs) in…   | reported-upstream | 2026-11-14 | 3           |
 | sls-119 | GET /api/stablecoins gives Circle's EURC on Stellar an issuerOfRecord of "Circle Internet Financial, LLC". Circle's own EURC terms name a… | reported-upstream | 2026-11-14 | 1           |
 | sls-120 | GET /api/stablecoins returns the BRLT row of Settle Network with all five issuer-of-record fields null. The fields are issuerOfRecord,…    | reported-upstream | 2026-11-17 | 0           |
 | sls-121 | Scout serves five Wallet rows with status: "Live" while the availabilityCheck on the same row says the operator is gone or the product is… | reported-upstream | 2026-11-17 | 0           |
@@ -42,10 +42,10 @@ Total findings: 95
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | sd-004 | The RPC method reference pages describe pagination limits as "hardcoded in Stellar-RPC for performance reasons" (getTransactions and…       | declined-upstream | 2026-07-03 | 3           |
-| sd-005 | The docs' agentic-payments coverage documents x402 and MPP mechanics in depth but contains zero positioning against the wider…              | reported-upstream | 2026-07-06 | 7           |
+| sd-005 | The docs' agentic-payments coverage credits x402 to Coinbase Developer Platform instead of the x402 Foundation under the Linux Foundation,… | reported-upstream | 2026-07-06 | 7           |
 | sd-009 | The docs omit SEP-6's canonical interactive-component deprecation status                                                                    | declined-upstream | 2026-07-09 | 6           |
 | sd-014 | Official documentation exposes bucketListHash, txSetHash, txSetResultHash, LedgerCloseMeta, SCP envelopes, and archive retrieval in…        | reported-upstream | 2026-07-10 | 4           |
-| sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial installs…                  | reported-upstream | 2026-07-11 | 3           |
+| sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial pins…                      | reported-upstream | 2026-07-11 | 3           |
 | sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | reported-upstream | 2026-09-01 | 4           |
 | sd-050 | The JavaScript SDK section calls the package stellar-sdk. The official SDK repository installs @stellar/stellar-sdk                         | reported-upstream | 2026-09-04 | 2           |
 | sd-059 | The Mintlify Discovery search API (POST /discovery/v1/search/<domain>) ranks Horizon result-code pages low for the codes those pages…       | reported-upstream | 2026-11-02 | 2           |
@@ -56,12 +56,12 @@ Total findings: 95
 | sd-081 | The contract-restoration example on two docs pages once failed to parse and could not build a valid restoration transaction.…               | reported-upstream | 2026-11-02 | 3           |
 | sd-096 | Three invented source paths redirect to pages that do not exist. The original old-page premise was incorrect; the maintainer confirmed…     | declined-upstream | 2026-11-03 | 1           |
 | sd-102 | RPC backfill checks existing local ledger history for internal sequence gaps before fetching older history. A gap returns db verify: gap…   | declined-upstream | 2026-11-09 | 0           |
-| sd-105 | The Lumens page contradicts itself about how lumens were created                                                                            | reported-upstream | 2026-11-14 | 1           |
-| sd-106 | The Tier 1 Organizations page explains the role, the cost, and the path to join. It does not say which organizations are Tier 1 today       | reported-upstream | 2026-11-14 | 2           |
-| sd-107 | Stellar Docs do not state what happens when a contract is built for a newer protocol than the network runs                                  | reported-upstream | 2026-11-14 | 1           |
+| sd-105 | The Lumens page contradicts itself about how lumens were created                                                                            | reported-upstream | 2026-11-14 | 2           |
+| sd-106 | The Tier 1 Organizations page explains the role, the cost, and the path to join. It does not say which organizations are Tier 1 today       | reported-upstream | 2026-11-14 | 3           |
+| sd-107 | Stellar Docs do not state what happens when a contract is built for a newer protocol than the network runs                                  | reported-upstream | 2026-11-14 | 2           |
 | sd-108 | Stellar Docs explain how an application asks a wallet to sign. They do not explain what a person or a wallet must review before approval    | reported-upstream | 2026-11-14 | 1           |
-| sd-109 | The passkeys prerequisites page says that Friendbot cannot fund a contract address. That is not true. The Testnet and Futurenet Friendbots… | reported-upstream | 2026-11-14 | 1           |
-| sd-110 | The Lab Contract Explorer page gives a wrong list of Stellar CLI binding languages. It says the CLI generates bindings in "TypeScript,…     | reported-upstream | 2026-11-14 | 1           |
+| sd-109 | The passkeys prerequisites page says that Friendbot cannot fund a contract address. That is not true. The Testnet and Futurenet Friendbots… | reported-upstream | 2026-11-14 | 2           |
+| sd-110 | The Lab Contract Explorer page gives a wrong list of Stellar CLI binding languages. It says the CLI generates bindings in "TypeScript,…     | reported-upstream | 2026-11-14 | 2           |
 | sd-111 | The stellar.org audit register at https://stellar.org/audit-bank/projects gives 4 of its 77 records the title "Unnamed record". Each title… | reported-upstream | 2026-11-17 | 0           |
 | sd-112 | Docs search does not return the SEP-7 page, /docs/build/apps/wallet/sep7, for the query web+stellar:pay payment request QR code. The page…  | reported-upstream | 2026-11-17 | 0           |
 | sd-113 | This is a net-new content request. No page on stellar.org or developers.stellar.org says that Pi Network is a different network from…       | verified          | 2026-11-17 | 0           |
@@ -73,11 +73,11 @@ Total findings: 95
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | ll-001 | Weekly-roundup canonical slugs mismatch their content dates. The research doc for "week of May 29, 2026" lives at slug…                     | reported-upstream | 2026-07-03 | 3           |
 | ll-002 | The Messari "State of Stellar Q1 2026" AV/research item carries only ~702 chars of extracted content. A load-bearing source is…             | reported-upstream | 2026-07-03 | 3           |
-| ll-003 | Region vocabulary is free-text rather than a controlled list. The live-lane eval case q-live-ll-regions-vocab currently passes on…          | reported-upstream | 2026-07-03 | 6           |
+| ll-003 | Region vocabulary is free-text rather than a controlled list. The live-lane eval case q-live-ll-regions-vocab currently passes on…          | reported-upstream | 2026-07-03 | 7           |
 | ll-004 | Authenticated discovery and account metadata disagree on the tool count in the 2026-11-06 check: the same key returns 18 tool names while…  | reported-upstream | 2026-07-03 | 3           |
 | ll-005 | find_content_by_entity advertises entity_type: "person" in its input schema enum, but the external lane returns success: true with…         | reported-upstream | 2026-07-03 | 8           |
 | ll-006 | The 2026-07-03 replay of search_content_semantic ranked old recurring SDF publications above the relevant Q1 2026 report. For the query…    | reported-upstream | 2026-07-03 | 2           |
-| ll-007 | Event summary prose can contradict the structured start_at field. The Bhopal and Jabalpur "Build On Stellar" workshop rows say "July 27"…   | reported-upstream | 2026-07-03 | 6           |
+| ll-007 | Event summary prose can contradict the structured start_at field. The Bhopal and Jabalpur "Build On Stellar" workshop rows say "July 27"…   | reported-upstream | 2026-07-03 | 7           |
 | ll-008 | Directory records carry misleading region/coverage values, two live instances:                                                              | reported-upstream | 2026-07-03 | 4           |
 | ll-009 | Lumenloop's editorial content misattributes two headline statistics to "Messari's State of Stellar Q1 2026 report":                         | reported-upstream | 2026-07-03 | 3           |
 | ll-010 | Lumenloop weekly-roundup research items state headline Stellar RWA totals with no data source and no measurement scope. The Jun 19, 2026…   | reported-upstream | 2026-07-06 | 3           |
@@ -121,10 +121,10 @@ Total findings: 95
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | cs-001 | searchConnectors in @cloudflare/codemode returns connector methods that share no real word with the query. scoreField accepts a prefix…     | reported-upstream | 2026-09-17 | 2           |
-| cs-004 | Circle's CCTP Stellar contracts reference lists the TokenMessengerMinter receive handlers as handle_receive_finalized_message and…          | reported-upstream | 2026-11-02 | 2           |
-| cs-005 | The Stellar to Arc quickstart passes 1000 to deposit_for_burn and labels it a Fast Transfer finality threshold. Circle's supported-chains…  | reported-upstream | 2026-11-02 | 2           |
-| cs-006 | The SEP-1 stellar.toml that Paxos publishes for its Stellar assets describes the issuer as "Paxos Trust Company LLC". Paxos converted that… | verified          | 2026-11-02 | 2           |
-| cs-007 | The trionlabs/stellar-8004 README expands MPP as "Managed Payment Protocol". The repository's own registration UI and mppx client use…      | reported-upstream | 2026-11-02 | 2           |
+| cs-004 | Circle's CCTP Stellar contracts reference lists the TokenMessengerMinter receive handlers as handle_receive_finalized_message and…          | reported-upstream | 2026-11-02 | 3           |
+| cs-005 | The Stellar to Arc quickstart passes 1000 to deposit_for_burn and labels it a Fast Transfer finality threshold. Circle's supported-chains…  | reported-upstream | 2026-11-02 | 3           |
+| cs-006 | The SEP-1 stellar.toml that Paxos publishes for its Stellar assets describes the issuer as "Paxos Trust Company LLC". Paxos converted that… | verified          | 2026-11-02 | 3           |
+| cs-007 | The trionlabs/stellar-8004 README expands MPP as "Managed Payment Protocol". The repository's own registration UI and mppx client use…      | reported-upstream | 2026-11-02 | 3           |
 | cs-008 | CAP-0046-06 (Stellar Asset Contract, Status Final) says a SAC deployment uses a ContractExecutable of type CONTRACT_EXECUTABLE_TOKEN. The…  | declined-upstream | 2026-11-02 | 1           |
 | cs-010 | createAI from agents/models/ai-sdk drops Anthropic provider options for string catalog models. A call to ai("anthropic/claude-fable-5")…    | reported-upstream | 2026-11-03 | 2           |
 | cs-012 | DynamicWorkerExecutor in @cloudflare/codemode reports no error when sandbox code throws a value that is not an Error. The generated module… | reported-upstream | 2026-11-17 | 1           |

@@ -22,6 +22,8 @@ probe:
     contains:
       - "#[derive(UpgradeableMigratable)]"
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET OpenZeppelin/openzeppelin-skills main upgrade-stellar-contracts/SKILL.md HTTP 200 still contains #[derive(UpgradeableMigratable)]."
   - date: 2026-11-09
     evidence: "2026-11-09T20:30:57Z fresh OpenZeppelin/openzeppelin-skills main 584262af upgrade skill HTTP 200 still recommends both derives and both Internal traits in description, usage, access-control, metadata, and checklist prose. Current upgradeable docs still teach direct trait implementation and explain Why There Is No Migratable Trait; fresh stellar-contracts main c98fb341 macro source has no upgrade derives. Issue 16 and related description issue 14 are open with no comments."
   - date: 2026-11-06
@@ -45,23 +47,9 @@ The skill therefore teaches retired APIs as current.
 
 ## Evidence
 
-Fresh public checks on 2026-10-09 reproduce the retired guidance.
-The [current skill source](https://github.com/OpenZeppelin/openzeppelin-skills/blob/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/upgrade-stellar-contracts/SKILL.md) has the same recorded SHA-256.
-The seven repeated derive claims remain.
-The [current documentation](https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable) still teaches direct `Upgradeable` implementation.
-The [v0.7.2 macro source](https://github.com/OpenZeppelin/stellar-contracts/blob/v0.7.2/packages/macros/src/lib.rs) defines no upgrade derive macros.
-The observed skill revision remains unchanged; this is no new introduction-date claim.
-
-On 2026-09-04, the skill at commit 6f215af recommended both derive macros as "the recommended way".
-The derive claim appears in seven places: the description item (2), the module component table,
-"Upgrade only", "Upgrade and migrate", "Access Control", "Version tracking", and the last testing checklist item.
-
-The current package documentation defines an `Upgradeable` trait and `UpgradeableClient`.
-It instructs implementors to use `#[contractimpl]` with the trait and to call `upgradeable::upgrade()`.
-It describes eager, lazy, and atomic migration patterns instead of `UpgradeableMigratable`.
-
-The removal commit is dated 2026-02-26. The skill file last changed on 2026-03-04.
-The candidate answer read the pinned skill and repeated the obsolete API names.
+- [Skill source](https://github.com/OpenZeppelin/openzeppelin-skills/blob/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/upgrade-stellar-contracts/SKILL.md) repeats the retired derive claim in seven places: description item (2), the module component table, "Upgrade only", "Upgrade and migrate", "Access Control", "Version tracking", and the last testing checklist item.
+- [Current upgradeable docs](https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable) define `Upgradeable` and `UpgradeableClient`, teach direct `#[contractimpl]` implementation with `upgradeable::upgrade()`, explain why there is no `Migratable` trait, and describe eager, lazy, and atomic migration patterns.
+- [v0.7.2 macro source](https://github.com/OpenZeppelin/stellar-contracts/blob/v0.7.2/packages/macros/src/lib.rs) defines no upgrade derive macros (removed 2026-02-26 in PR 585; the skill last changed 2026-03-04). A minimal `cargo check` against `stellar-contract-utils` 0.7.2 fails with unresolved `UpgradeableMigratable` and no `Upgradeable` derive macro.
 
 ## Recommendation
 

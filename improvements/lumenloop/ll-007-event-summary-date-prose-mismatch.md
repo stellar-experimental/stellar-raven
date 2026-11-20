@@ -11,6 +11,8 @@ evidence:
   - live re-verified 2026-07-09: authenticated event semantic search returned ids 1597/1598 with start_at 2026-06-27T05:30/06:30Z while both summaries still say July 27
   - filed 2026-07-13: https://github.com/lumenloop/lumenloop-backend/issues/20
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: POST https://api.lumenloop.com/v1/tools/search_content_semantic HTTP 200 still returns events 1597 and 1598 with 2026-06-27 start_at and July 27 summary prose."
   - date: 2026-11-09
     evidence: "2026-11-09 sweep at 2026-11-09T20:30:47.129266+00:00: still-repro. Events 1597/1598 still have June 27 structured start_at with July 27 summary prose. Exact original date-bounded query reproduces both. Adjacent 1444 has Jaipur title/location but Goa summary and slug. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
@@ -57,11 +59,8 @@ extends the defect from date prose alone to event identity/location.
 
 ## Evidence
 
-Live probes 2026-07-03 and 2026-07-09 (production, free ops):
-`search_content_semantic({query:"Stellar Build Station India builder
-sprint", types:["events"], date_start:"2026-06-01"})` returns both rows
-with `start_at: 2026-06-27` and "July 27" in the summary prose. Round
-record: Solo scratchpad 521 (deep review report, q-scf-regional-india).
+Live probes (production, free ops):
+`search_content_semantic({query:"Stellar Build Station India builder sprint", types:["events"], date_start:"2026-06-01"})` returns both rows with `start_at: 2026-06-27` and "July 27" in the summary prose. Event `1444` returns title "Stellar Builders Camp - Jaipur Edition" with slug `stellar-builders-camp-goa-edition` and Goa summary prose.
 
 ## Recommendation
 

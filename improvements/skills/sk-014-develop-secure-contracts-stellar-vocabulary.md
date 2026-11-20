@@ -14,6 +14,8 @@ evidence:
   - Solo todo 1438 item 1, solo://proj/49/scratchpad/independent-holdout--798
   - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/13
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET OpenZeppelin/openzeppelin-skills main develop-secure-contracts/SKILL.md HTTP 200 still contains security primitives (Pausable, ReentrancyGuard)."
   - date: 2026-11-09
     evidence: "2026-11-09T20:30:57Z fresh OpenZeppelin/openzeppelin-skills main 584262af develop-secure-contracts HTTP 200: description still lists ERC20/ERC721/ERC1155, Ownable/AccessControl/AccessManager, Pausable/ReentrancyGuard and no explicit audit/security-review exclusion. Its generic library-first wording does not add Stellar component triggers; the body still names stellar-fungible. Setup companion still names Stellar crates. Issue 13 is open with no comments."
   - date: 2026-11-06

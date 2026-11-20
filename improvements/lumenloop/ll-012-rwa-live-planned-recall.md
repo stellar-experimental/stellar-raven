@@ -37,18 +37,8 @@ specific live Stellar-issued product.
 
 ## Evidence
 
-Fresh public checks on 2026-10-09 confirm the previously recorded exact-product gap.
-[CRDT](https://lumenloop.com/projects?q=CRDT) and [CRDYX](https://lumenloop.com/projects?q=CRDYX) each return `0 projects`.
-[WisdomTree](https://lumenloop.com/projects?q=WisdomTree) returns one issuer record.
-The [issuer TOML](https://stellar.wisdomtree.com/.well-known/stellar.toml) names `CRDT`, anchored to the `CRDYX` fund.
-These reads test public directory discovery, not authenticated `search_directory` semantics.
-The authenticated API returned HTTP `401` without a key.
-This recurrence makes no new claim about broad RWA prevalence or live/planned state mixing.
-
-The audit ran broad and exact-name directory probes on 2026-07-10. Exact-name
-queries located the named entities, and operator/issuer primary records plus
-independent current corroboration established product state. DTCC's primary
-record says its Stellar connection is targeted for H1 2027.
+- Live `search_directory({query: "real-world assets", limit: 10})` returns `agama`, `archax`, `borderdollar`, `centrifuge`, `dtcc`, and five other rows while omitting Benji/Franklin Templeton, WisdomTree, Figure, Spiko, and Etherfuse, all of which exact-name calls recover (confirmed 2026-11-09 and 2026-11-20). DTCC's primary record targets H1 2027.
+- Exact-product lookup: `CRDT` and `CRDYX` return no exact directory or article match while `https://stellar.wisdomtree.com/.well-known/stellar.toml` names `CRDT` (anchored to `CRDYX`).
 
 This is a search/state-model finding, not proof that the omitted records are
 absent from Lumenloop.

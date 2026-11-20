@@ -42,37 +42,10 @@ deprecated part.
 
 ## Evidence
 
-The live `stellar/stellar-protocol` source begins SEP-0006 with:
-`Status: Active (Interactive components are deprecated in favor of SEP-24)`. Its introduction also
-states that SEP-6 is programmatic and SEP-24 exists for anchor-hosted interactive use.
-
-The live Anchors fundamentals page links both specifications and accurately describes the
-programmatic-versus-hosted split, but a text check finds no `deprecated` language in that section.
-The durable reviewed row in
-`eval/qa/reviewed/2026-07-09-improvements-evidence.md` (source stamp
-`2026-07-09T19-53-07`) records that the agent exhaustively searched the exposed docs corpus, found
-the split but not the status note, and answered that no explicit deprecation language exists. The
-judge correctly scored this wrong. The answer still recommended SEP-24, demonstrating that the
-missing fact is specifically deprecation status rather than the basic flow distinction.
-
-Live 2026-07-10 (todo 903 closeout): the same QA case recurred across both architecture arms —
-search+execute denied the status and graded wrong; the direct-operation answer recommended SEP-24
-but still omitted the canonical deprecation fact and graded partial. A fresh live
-`stellarDocs.search_docs({query: "SEP-6 interactive deprecated SEP-24"})` response contained no
-`deprecated` text. This strengthens the existing content-parity finding; it does not establish a
-separate architecture-specific defect.
+- `stellar/stellar-protocol` `ecosystem/sep-0006.md` begins with `Status: Active (Interactive components are deprecated in favor of SEP-24)`.
+- The live Anchors fundamentals page links both SEPs and explains the programmatic-vs-hosted split, with zero `deprecated` language.
+- Mintlify search (`stellarDocs.search_docs` for `SEP-6 interactive components deprecated SEP-24`, 2026-11-02) and a `stellar/stellar-docs` tree grep find no deprecation sentence.
 
 ## Recommendation
 
-The Docs owner reasonably does not want a historical warning added to current
-beginner guidance for a mechanism the site never teaches. Do not keep pushing
-that prose change. The unresolved need is answering-time source coverage:
-prefer making canonical SEP status metadata retrievable, or adding a concise
-provenance-bearing status note to the upstream `stellar-dev-skill` standards
-reference that already routes agents to SEP-6/SEP-24. If neither surface should
-carry it, treat the QA row as a corpus/source-coverage diagnostic rather than
-ordinary agent-quality evidence until a general official-source mechanism can
-reach `stellar-protocol`. That placement decision was recorded in Solo todo 989
-and scratchpad 625 (historical; Solo is retired). If Docs declines or closes,
-create a successor skills/source finding rather than stretching this Docs
-finding.
+Accept the Docs owner's decline on #2575 (adding a six-year-old deprecation notice for undocumented interactive flows would be noise). Do not re-file against `stellar/stellar-docs`. Keep canonical SEP status coverage in `stellar-protocol` retrieval or a concise note in the upstream `stellar-dev-skill` standards reference.

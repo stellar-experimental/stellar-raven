@@ -43,13 +43,9 @@ $2.8B…" — the figure is June, not Q1).
 
 ## Evidence
 
-All URLs fetched 2026-07-03 with quotes recorded in Solo scratchpad 521.
-Consumer impact is demonstrated, not hypothetical: two of this repo's eval
-goldens inherited the misattribution from the roundup (a third inherited a
-downstream scope-confusion theory trying to reconcile the resulting
-"conflict"), producing a cross-question contradiction caught by the
-2026-07-03 consistency sweep. Any agent answering RWA-adoption questions
-from the Lumenloop corpus reproduces the false attribution.
+- `https://lumenloop.com/api/md/research/stellar-weekly-roundup-week-29-2026` still places `$2.8B` and `1,700` monthly active developers beside a "Messari's State of Stellar Q1 2026 report" link pointing to the YouTube interview `t0agtgLajhg` (confirmed 2026-11-09 and 2026-11-20).
+- `https://lumenloop.com/media/state-stellar-q1-2026-beyond` and AV 2207 still present `$2.8B` under Q1 2026 wording.
+- Consumer impact: two eval goldens originally inherited the misattribution from the roundup; any agent answering RWA questions from Lumenloop alone reproduces it.
 
 ## Recommendation
 

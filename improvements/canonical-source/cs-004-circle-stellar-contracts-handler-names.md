@@ -21,6 +21,8 @@ evidence:
   - "Golden consumer: eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json answer and keyFacts tell the answerer to use the deployed handle_recv_* names amid the docs contradiction."
   - upstream issue filed 2026-11-02: https://github.com/circlefin/stellar-cctp/issues/36
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://developers.circle.com/cctp/references/stellar-contracts.md HTTP 200 still contains handle_receive_finalized_message."
   - date: 2026-11-09
     evidence: "Circle reference still lists both handle_receive_* handlers (lines 84–85); current interface source and a fresh deployed mainnet contract interface expose both handle_recv_* names instead."
   - date: 2026-11-06

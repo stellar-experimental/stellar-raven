@@ -23,6 +23,8 @@ evidence:
   - "Affected golden case: eval/qa/corpus/battery/soroban/q-soroban-cli-bindings.json (key fact 3). 2026-11-17: the case's golden.notes now cap an attributed quote of the Lab page at partial while this finding stands, and truth.verified.rootCause names this file (round item 1.3). Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3151
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://developers.stellar.org/docs/tools/lab/smart-contracts/contract-explorer.md HTTP 200 still contains 'TypeScript, JSON, Rust, Python, and Java'; PR https://github.com/stellar/stellar-docs/pull/3153 remains open."
   - date: 2026-11-17
     evidence: "Still reproduces. `npm run improvements:probes -- --service stellar-docs --service stellar-light-scout` on 2026-11-17 (00:18Z): GET https://developers.stellar.org/docs/tools/lab/smart-contracts/contract-explorer.md answers 200 and still contains \"TypeScript, JSON, Rust, Python, and Java\". https://github.com/stellar/stellar-docs/issues/3151 is open. Its triage-bot fix PR https://github.com/stellar/stellar-docs/pull/3153 is open and not merged. The later comments on the thread are unrelated account requests. The thread asks Raven no question."
 ---

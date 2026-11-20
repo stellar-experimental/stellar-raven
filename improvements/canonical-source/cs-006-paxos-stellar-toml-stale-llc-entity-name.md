@@ -19,6 +19,8 @@ evidence:
   - "Owner: Paxos serves this stellar.toml from token-metadata.paxos.com. No public repository holds it: the paxosglobal GitHub repositories found on 2026-11-02 (paxos-token-contracts, stellar-paxos-token-contracts, stellar-render) do not contain the file. The file lists ORG_OFFICIAL_EMAIL=\"support@paxos.com\"."
   - "Golden consumers: eval/qa/corpus/battery/defi-ecosystem/q-eco-pyusd-stellar-freshness.json and q-eco-stablecoins-on-stellar.json cite this stellar.toml as 'stale wording' next to the N.A. entity name."
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://token-metadata.paxos.com/.well-known/stellar.toml HTTP 200 still contains Paxos Trust Company LLC is."
   - date: 2026-11-09
     evidence: "Published stellar.toml ORG_DESCRIPTION still names Paxos Trust Company LLC. Newsroom redirects to the current /blog/ URL and confirms the December 12, 2025 national-trust conversion. ORG_NAME remains the generic Paxos Trust Company."
   - date: 2026-11-06

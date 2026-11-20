@@ -42,29 +42,9 @@ not. That is a record-content gap, not a recall gap, so it takes its own id.
 
 ## Evidence
 
-Fresh public checks on 2026-10-09 confirm the unnamed-funds description.
-The [WisdomTree project page](https://lumenloop.com/projects/wisdomtree) still counts `13 digital funds` without naming them in that description.
-The [source record](https://github.com/lumenloop/stellar-ecosystem-db/blob/7dbb50cc54cfd2ed7c1c1d6bf1e25ac6a0bd406e/projects/wisdomtree.yaml) also has empty `mainnet.tokens`.
-The [issuer TOML](https://stellar.wisdomtree.com/.well-known/stellar.toml) names `CRDT`, anchored to the `CRDYX` fund.
-This check covers the description and source tokens, not every linked article or page section.
-The authenticated API was unavailable without a key.
-
-Results stamp `eval/qa/results/2026-08-28T19-27-08-variantA.json`, row
-`q-defi-wisdomtree-crdt`.
-
-Live re-execution on 2026-08-28:
-
-- `lumenloop.get_project({slug:"wisdomtree"})` returned a 624-character record
-  for WisdomTree Prime. It says "13 digital funds and a Gold token". The
-  payload contains no `CRDT` or `CRDYX` substring.
-- `lumenloop.search_directory({query:"CRDT"})` degraded to
-  `match_mode: "semantic"` and returned five unrelated rows: DTCC, Stellar
-  Router SDK, Decentrio, OrbitCDP, and DeFarm. "CRDT" is also a
-  computer-science term.
-- `lumenloop.search_content_semantic` over CRDT/CRDYX returned about thirty
-  rows. None names either ticker. The closest row says "WisdomTree brings
-  diversified tokenized portfolios to Stellar with 15 SEC-registered funds",
-  with no per-fund ticker.
+- `get_project({slug: "wisdomtree"})` returns a WisdomTree Prime record stating "13 digital funds and a Gold token" with empty `mainnet.tokens` and no `CRDT` or `CRDYX` ticker (confirmed 2026-11-09 and 2026-11-20); the [source YAML](https://github.com/lumenloop/stellar-ecosystem-db/blob/7dbb50cc54cfd2ed7c1c1d6bf1e25ac6a0bd406e/projects/wisdomtree.yaml) agrees.
+- `search_directory({query: "CRDT"})` degrades to semantic neighbors (DTCC, Stellar Router SDK, Decentrio, OrbitCDP, DeFarm), and `search_content_semantic` over CRDT/CRDYX returns rows with no per-fund ticker.
+- Positive control: the [issuer TOML](https://stellar.wisdomtree.com/.well-known/stellar.toml) names `CRDT` anchored to the `CRDYX` fund.
 
 ## Recommendation
 

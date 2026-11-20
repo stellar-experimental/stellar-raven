@@ -46,10 +46,3 @@ activation evidence. Distinguish `scheduledAt`, `voteResult`, and `activatedAt`
 where supported, and direct current-status queries to the later state without
 deleting or rewriting the historical guide. Correct research 141's wrong date
 under ll-015; merely linking an incorrect post-vote record is insufficient.
-
-## Current verification — 2026-11-06
-
-Exact Zipper title search only8084, still pre-vote guidance with no typed activation/supersession. Broad search now finds post-vote research including141 (wrong July9 activation, ll-015). Available corpus no longer contains only schedule information.
-
-Record partial coverage progress; retain missing explicit supersession and incorrect activation evidence under ll-015.
-Next check: After owner change inspect exact guide relation to correct July8 activation source; do not demand deletion of historical guide.

@@ -39,10 +39,8 @@ recency/ordering contract, especially for bounded chronological requests.
 
 ## Evidence
 
-Live replay 2026-07-03 (production, free ops): exact agent query →
-`hasQ1Report: false` in top 10, stale quarterlies present as above;
-targeted query → article 5945 rank 1 (similarity 0.64/0.51 depending on
-phrasing). Round record: Solo scratchpad 521 (batch-1 review report).
+- 2026-07-03 live replay: broad query omitted article 5945 from top 10 and returned Q2 2021 / Q4 2020 / Q2 2024 reviews; focused query ranked 5945 first.
+- 2026-11-06 through 2026-11-20 live checks: broad query returns recent RWA articles, raw similarities remain non-monotonic (`0.580`, `0.556`, `0.677`), and date-bounded queries still return semantic rather than chronological order with undated rows mixed in.
 
 ## Recommendation
 
@@ -52,14 +50,6 @@ Test recurring-series queries against current and older editions; investigate
 ranking changes only where the intended relevance/recency contract fails.
 Do not infer an implementation fix such as re-sorting from raw similarity alone.
 
-The GT-23 recurrence adds a stricter contract need: bounded results should
-expose or guarantee the selected publication/event date field, support explicit
-date-desc ordering, and exclude or separately bucket undated rows. Semantic
-rank must never be represented as publication chronology.
-
-## Current verification — 2026-11-06
-
-Old Q2 2021/Q4 2020 top-ten failure no longer appears: current top-ten articles are RWA-focused recent editions. 5945 absent broad, first in focused control. Similarity ordering still non-monotonic (.580,.556,.677). Bounded July query remains semantic rather than chronological.
-
-Record partial progress; do not assert no freshness weighting from output alone. Retain ordering/recency-contract uncertainty.
-Next check: Inspect owner ranking contract/change; compare current recurring-series editions and returned final-score/order semantics.
+For date-bounded queries, expose or guarantee the selected publication/event
+date field, support explicit date-desc ordering, and exclude or separately bucket
+undated rows. Semantic rank must never be represented as publication chronology.

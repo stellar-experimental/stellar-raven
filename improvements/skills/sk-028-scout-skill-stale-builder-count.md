@@ -25,7 +25,7 @@ recurrences:
 The Scout skill gives the size of the Builders directory as a fixed count.
 `SKILL.md` says the directory is "currently in the dozens, not hundreds".
 `references/api-reference.md` says it has about 110 profiles.
-The live API reported 226 builder profiles on 2026-09-30 and 233 on 2026-10-02.
+The live API reported 226 builder profiles on 2026-09-30 and 417 on 2026-11-20.
 An agent that follows the skill can understate the directory to a user.
 It can also judge a small result set against the wrong baseline.
 

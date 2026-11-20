@@ -23,6 +23,8 @@ evidence:
   - "Golden consumer: eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json answer discloses the conflict, and its keyFacts say to use Standard 2000 until the Stellar-source 1000/Fast versus N/A dispute resolves."
   - upstream issue filed 2026-11-02: https://github.com/circlefin/stellar-cctp/issues/37
 recurrences:
+  - date: 2026-11-20
+    evidence: "npm run improvements:probes: GET https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc.md HTTP 200 still contains // Fast Transfer finality threshold."
   - date: 2026-11-09
     evidence: "Both Stellar→Arc burn examples still label threshold 1000 Fast Transfer. Supported-chains says Stellar Fast=N/A; finality lists Stellar only under Standard. Original source-domain-27 Iris attestation still requested 1000 and executed 2000; fee API still lists both thresholds."
   - date: 2026-11-06
