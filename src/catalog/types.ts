@@ -37,8 +37,9 @@ const jsonSchemaShape = z.record(z.string(), z.unknown());
 
 /**
  * Host transport mapping (`http`, `mintlify`, or commit-pinned `file` Markdown).
- * `"file"` is the only catalog field that makes the host fetch a URL, so host, path shape,
- * and both digests (`sha` provenance + `sha256` integrity) are enforced here rather than trusted.
+ * For `"file"` transports, this schema constrains URL destination and digest formats
+ * (`sha` provenance + `sha256` integrity); `src/skills/source.ts` verifies fetched bytes
+ * against both digests. (`global_fetch_strictly_public` only blocks private-network routing.)
  */
 const SKILL_FILE_URL_RE =
   /^https:\/\/raw\.githubusercontent\.com\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/[0-9a-f]{40}\/\S+\.md$/;

@@ -1,7 +1,7 @@
 /**
- * Hand-rolled validator for the bounded JSON Schema dialect emitted into `catalog/manifest.json`
- * (zod v4 converts zod -> JSON Schema, not the reverse). Runs host-side before any network call
- * (ARCHITECTURE.md); unknown keywords are ignored.
+ * Small hand-rolled validator for the bounded JSON Schema dialect emitted into
+ * `catalog/manifest.json`, producing concise model-actionable error paths host-side
+ * before any network call (ARCHITECTURE.md). Unknown keywords are ignored.
  */
 
 export type ValidationIssue = { path: string; message: string };

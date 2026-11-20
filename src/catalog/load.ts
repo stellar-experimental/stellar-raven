@@ -1,4 +1,4 @@
-/** Lazily validate and cache the bundled `catalog/manifest.json` per isolate (Node- and Worker-safe). */
+/** Lazily validate and cache the bundled `catalog/manifest.json` per isolate (no `cloudflare:workers` import; loads in Worker and Vitest bundlers). */
 import manifestJson from "../../catalog/manifest.json";
 import { loadManifest, type Catalog } from "./search.ts";
 

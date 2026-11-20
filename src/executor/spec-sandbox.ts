@@ -1,9 +1,10 @@
 /**
- * Spec sandbox for code-shaped `search` over `specs/super-spec.json`, mirroring
- * `@cloudflare/codemode` `openApiMcpServer` (`createOpenApiSandboxCode`) with `includeRequest: false`.
- * Service calls live on per-service globals (`lumenloop.*`, `scout.*`, `stellarDocs.*`, `stellarOrg.*`).
- * `resolveSpecRefs` mirrors `__resolveRefs` host-side for `execute`'s `codemode.spec()` RPC.
- * Pure module (no `cloudflare:workers` import).
+ * Spec sandbox for experimental code-shaped `search` over `specs/super-spec.json`, mirroring
+ * `@cloudflare/codemode` `openApiMcpServer` (`createOpenApiSandboxCode`) with `includeRequest: false`
+ * and no service providers (`run.ts` passes `[]`). Production `execute` exposes per-service globals
+ * (`lumenloop.*`, `scout.*`, `stellarDocs.*`, `stellarOrg.*`) and serves `codemode.spec()` over host
+ * RPC (`resolveSpecRefs`) because injecting `const codemode` in-source would shadow the `codemode`
+ * provider global (`skill.read`, `artifact.*`, etc.). Pure module (no `cloudflare:workers` import).
  */
 import { normalizeCode } from "../catalog/vendor/normalize.ts";
 

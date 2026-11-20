@@ -1,7 +1,7 @@
 /**
  * Exact-ID reads over pinned ecosystem skills (`codemode.skill.read`; src/skills/README.md).
  * Fetches verified, scrubbed Markdown via `source.ts`, addresses `##` sections or `file:<relpath>`
- * companions, and fails closed if parsed headings drift from cataloged section entries.
+ * companions, refuses uncataloged headings on section reads, and fails whole reads on heading/catalog drift.
  */
 import type { Catalog, CatalogEntry } from "../catalog/types.ts";
 import { lastIdSegment } from "../catalog/id.ts";

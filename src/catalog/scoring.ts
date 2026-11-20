@@ -355,7 +355,9 @@ function acronymRescueScore(
 
 /**
  * Score the full query first (vendor semantics unchanged when the coverage gate passes),
- * falling back to stopword-filtered, alias-canonicalized, and source-witnessed acronym forms.
+ * falling back to stopword-filtered scoring on `null`. Alias-bearing queries score both
+ * original and canonical forms and take the maximum; if gated scoring still returns `null`,
+ * source-witnessed acronym forms can rescue the entry.
  */
 export function scoreEntryWeighted(
   entry: WeightedScorableEntry,

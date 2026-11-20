@@ -1,9 +1,9 @@
 /**
  * Sandbox surface globals for `execute` (ARCHITECTURE.md). Pure module (no `cloudflare:workers`).
  * Each service namespace exposes one async fn per manifest operation (`guard -> callService -> redact`,
- * returning `{ ok }` envelopes and never throwing). `codemode` exposes mid-script discovery (`spec`,
- * `search`, `catalog`, `describe`) plus nested `skill.*` and `artifact.*` helpers wired through
- * sandbox-side preludes because nested objects cannot cross Proxy dispatch.
+ * returning `{ ok }` envelopes for validation and handled adapter outcomes). `codemode` exposes
+ * mid-script discovery (`spec`, `search`, `catalog`, `describe`) plus nested `skill.*` and `artifact.*`
+ * helpers wired through sandbox-side preludes because nested objects cannot cross Proxy dispatch.
  */
 import {
   CATALOG_KINDS,

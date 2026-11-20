@@ -147,7 +147,7 @@ export async function skillHealthResponse(kv: KVNamespace): Promise<Response> {
   };
   return Response.json(body, {
     status: record.ok ? 200 : 503,
-    // Short edge cache bounds KV reads on an unauthenticated route without hurting freshness.
+    // Cache usable verdicts for 60s to reduce KV reads on this unauthenticated route without hurting freshness.
     headers: { "cache-control": "public, max-age=60" }
   });
 }

@@ -94,10 +94,10 @@ export const executeInputSchema = {
     )
 };
 
-// Model-facing strings stay within Claude Code's 4,096-char cap (test/mcp-instructions.test.ts),
-// open with complete sentences inside 117 chars for previewing clients, and name only exposed
-// operations/skills (ADR-0003). Mistake recovery lives on host errors (src/executor), not here.
-// Shared with the Playground.
+// Model-facing strings stay within the binding client cuts (test/mcp-instructions.test.ts,
+// test/helpers/mcp-tool-metadata.ts: 2,033 chars overall; 117-char first line on descriptions;
+// 200-char first line on server instructions) and name only exposed operations/skills (ADR-0003).
+// Mistake recovery lives on host errors (src/executor), not here. Shared with the Playground.
 export const UPSTREAM_DOC_LINKS = `Upstream docs: Lumenloop https://api.lumenloop.com/v1/docs; Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs.`;
 
 export const SEARCH_DESCRIPTION = `${SEARCH_OPENING}

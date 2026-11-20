@@ -210,8 +210,8 @@ export function catalogServices(catalog: Catalog): readonly string[] {
 
 /**
  * Cross-entry manifest invariants enforced at load: unique ids, unique legal JS identifiers
- * per service for sandbox function names, runnable skills carry both schemas, and every
- * recovery/detail edge targets an exposed operation with valid join keys.
+ * per service for sandbox function names, runnable skills carry both schemas, every recovery
+ * edge targets a distinct exposed operation, and every `detail` edge has valid join keys.
  */
 const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
   const seenIds = new Set<string>();
@@ -597,8 +597,9 @@ function withShortFieldDocs(schema: JsonSchema): JsonSchema {
 /**
  * Render TypeScript input/output types and the envelope-typed callable line for an
  * operation or runnable skill. `compactOversizedOutput` stubs output blocks over
- * `COMPACT_OUTPUT_THRESHOLD` (search hits); `inputOnly` emits short-doc input types only
- * (public cards); default renders full types (`codemode.describe`).
+ * `COMPACT_OUTPUT_THRESHOLD` (search hits); `inputOnly` omits the output type declaration
+ * while keeping short-doc input types and the two-arm callable line (public cards);
+ * default renders full types (`codemode.describe`).
  */
 export function renderSignature(
   entry: CatalogEntry,
@@ -1146,7 +1147,7 @@ function prioritizeDatedSemanticForFreshness(
  * tier interleaving and freshness ordering, so hit order — not raw score — is authoritative.
  */
 export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): SearchPage {
-  // Guard with Number.isFinite: sandbox code can pass NaN/Infinity, which would otherwise bypass Math.min/max bounds.
+  // Use Number.isFinite so NaN cannot bypass Math.min/max (non-finite limits fall back to DEFAULT_SEARCH_LIMIT).
   const requested = opts.limit;
   const limit = Math.max(
     1,

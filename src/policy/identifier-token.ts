@@ -3,7 +3,8 @@
  * letters, optional hyphen or space, and 1–6 digits (e.g. `SEP-45`, `CAP-0046`, `sep24`).
  * Rejects title-case words (`Sep-24`) to avoid months/sentence-initial words, and rejects
  * tokens joined to adjacent digits by `-` or `.` (`CVE-2024-1234`, `SEP-43.1`, `10-SEP-2024`).
- * Space before a token stays allowed for queries like `Protocol 19 CAP-40`.
+ * Space before a token stays allowed for queries like `Protocol 19 CAP-40`; accepted tradeoff:
+ * space-separated dates (`10 SEP 24`, `SEP 10, 2024`) still match if a row's source/slug aligns.
  */
 
 export type IdentifierToken = {

@@ -1,6 +1,6 @@
 /**
  * Build-time keyword extraction for operation and skill-section catalog entries.
- * Mirrors the vendored `tokenize` and `STOPWORDS`, excludes already-scored tokens,
+ * Uses the vendored `tokenize` and `scoring.ts` `STOPWORDS`, excludes already-scored tokens,
  * and orders deterministically by frequency descending then first occurrence.
  */
 import { tokenize } from "./vendor/search-scoring.ts";

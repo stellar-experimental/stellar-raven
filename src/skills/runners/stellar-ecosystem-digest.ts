@@ -2,7 +2,8 @@
  * Runnable core for `skills.lumenloop.stellar-ecosystem-digest` (src/skills/README.md).
  * Theme mode fans out semantic search + upcoming events; entity mode queries entity mentions only
  * (filtering to digest content types). Soft-empty primary results return `softEmpty: true, items: []`;
- * unexpected upstream shapes abort with an error envelope. `runSkill` attaches `calls`.
+ * unexpected primary payload shapes abort with an error envelope (upcoming events degrade to `null`).
+ * `runSkill` attaches `calls`.
  */
 import type { AdapterResult, SkillRunner } from "./types.ts";
 
