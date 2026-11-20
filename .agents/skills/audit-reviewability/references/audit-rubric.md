@@ -2,20 +2,6 @@
 
 Use this rubric to classify candidates. A signal starts an inspection. Evidence creates a finding.
 
-## Contents
-
-1. Core invariants
-2. Context leak and accretive editing
-3. Comments and docblocks
-4. Documentation and references
-5. Code design and compatibility
-6. Change scope and review load
-7. Tests and verification
-8. Human work and agent instructions
-9. Candidate searches
-10. Finding decision table
-11. Why these rules exist
-
 ## Core invariants
 
 - **Provenance-blind:** Evaluate the artifact. Writing style does not prove authorship or quality.
@@ -36,192 +22,108 @@ but they cannot decide truth or value.
 
 ## Context leak and accretive editing
 
-Context leak moves a task conversation into a permanent artifact. Accretive editing retains obsolete
-information and appends a correction instead of replacing it.
+Context leak puts task conversation into permanent artifacts. Accretive editing appends a
+correction to obsolete prose instead of replacing it.
 
-### Candidate signals
-
-- A comment explains a rejected design, removed code, or a correction requested during the session.
-- A source file refers to a plan phase, task number, acceptance step, review exchange, or prompt.
-- Prose compares the implementation with an alternative that never shipped.
-- A new sentence says the system now does one thing and no longer does another.
-- A comment explains why absent code is absent without recording a durable constraint.
-
-### Validation
-
-Ask whether a new maintainer needs the discarded alternative to operate or change the current system.
-Check version history, requirements, ADRs, and public migration promises. A rejected idea alone is not
-a durable constraint.
-
-### Repair
-
-- Replace obsolete text with accurate present-state text.
-- Delete session history that adds no current constraint.
-- Put user-visible removal history in the changelog or migration guide.
-- Put durable architectural trade-offs in an ADR.
-- Express a real prohibition as a positive invariant when possible.
-
-Keep a negative decision only when the tempting alternative remains likely and the reason remains
-important. State the invariant and reason without retelling the conversation.
+- **Signals:** Comments about rejected designs, removed code, session corrections, plan phases,
+  task numbers, prompts, unshipped alternatives, "now does X instead of Y", or absent code without
+  a durable constraint.
+- **Validate:** Check version history, requirements, ADRs, and migration promises to see whether a
+  new maintainer needs the discarded alternative. A rejected idea alone is not a durable constraint.
+- **Repair:** Replace obsolete prose with present-state text; delete session history; put
+  user-visible removals in changelogs or migration guides and durable trade-offs in ADRs; express
+  prohibitions as positive invariants. Keep a negative decision only when the tempting alternative
+  remains likely and the reason still matters, without retelling the conversation.
 
 ## Comments and docblocks
 
-### Valuable comment content
+**Keep or add** when a comment supplies a unique, verified fact:
 
-Preserve or add a comment when it supplies unique, verified information about:
+- public API contract, side effect, failure mode, or caller obligation;
+- business, protocol, security, data-loss, concurrency, or performance invariant;
+- non-obvious domain reason, external-system limitation, or unavoidable surprising behavior;
+- temporary condition with an owned issue and removal trigger.
 
-- a public API contract, side effect, failure mode, or caller obligation;
-- a business or protocol invariant;
-- a security, data-loss, concurrency, or performance constraint;
-- a non-obvious domain reason or external-system limitation;
-- surprising behavior that simpler code cannot remove;
-- a temporary condition with an owned issue and a removal trigger.
+**Debt signals:** Restates syntax, names, types, branches, or signatures; narrates lines; speculates
+as fact; describes the diff, conversation, or old implementation; repeats a claim in one file;
+exceeds the code because of avoidable complexity; adds disproportionate commentary to newly touched
+code; or is stale, unverifiable, or contradicted by code or tests.
 
-### Reviewability debt
-
-- The comment restates syntax, names, types, branches, or the function signature.
-- The docblock repeats a class name or narrates each line.
-- The comment contains speculation presented as fact.
-- The comment describes the diff, author conversation, or old implementation.
-- Multiple comments repeat the same claim within one file.
-- The explanation is longer than the code because the code uses avoidable complexity.
-- Newly touched code has disproportionate commentary that creates false salience.
-- The comment is stale, unverifiable, or contradicted by code or tests.
-
-### Repair order
-
-1. Rename or simplify the code.
-2. Encode constraints in types, schemas, assertions, or tests.
-3. Keep the smallest comment that still carries the unique reason or contract.
-4. Delete the comment when no unique fact remains.
-
-Never remove all comments mechanically. A blanket deletion can erase niche knowledge and public
-contracts. Never preserve a comment only because another model might read it later.
+**Repair order:** (1) rename or simplify code; (2) encode constraints in types, schemas,
+assertions, or tests; (3) keep the smallest comment carrying the unique reason or contract;
+(4) delete when no unique fact remains. Never remove all comments mechanically, and never preserve
+a comment only because another model might read it later.
 
 ## Documentation and references
 
-### Findings
-
-- A document describes a past edit instead of the current system.
-- A local plan or scratch document is treated as a durable source.
-- Several documents own the same fact and can drift independently.
-- A source comment references an absent, ignored, private, generated, or temporary file.
-- A section-number or line-number reference moved and now targets unrelated text.
-- A broad architectural essay changes for every local implementation edit.
-- A generated document was edited by hand.
-- An agent instruction file repeats discoverable commands or stale repository facts.
-
-### Repairs
-
-- Keep open work in the project's designated queue (`.agents/TODO.md` in this repository) and temporary agent context in a scratch surface.
-- Keep public behavior in API documentation and durable design decisions in ADRs.
-- Move low-level facts close to the code that owns them.
-- Replace duplicate prose with a link to the canonical owner.
-- Prefer stable headings, symbols, or repository-supported permalinks over fragile line references.
-- Regenerate generated documents through their owning command.
-- Write instructions as positive, current targets rather than a history of prior failures.
-
-Validate every link and named file. A precise broken reference causes more harm than a broad valid
-reference.
+- **Findings:** Describes past edits instead of current state; treats a local plan or scratch doc
+  as durable; duplicates a fact across docs; references an absent, ignored, private, generated, or
+  temporary file; uses a drifted section or line number; changes a broad essay for every local
+  edit; hand-edits a generated doc; or repeats discoverable commands or stale facts in agent
+  instructions.
+- **Repairs:** Keep open work in the project queue (`.agents/TODO.md` in this repository),
+  temporary context in a scratch surface, public behavior in API docs, durable decisions in ADRs,
+  and low-level facts near their owning code. Replace duplicate prose with a link to the canonical
+  owner, prefer stable headings or symbols over line numbers, regenerate generated docs via their
+  owning command, and write instructions as positive current targets. Validate every link and named
+  file.
 
 ## Code design and compatibility
 
-### Findings
-
-- A simpler local design provides the same verified behavior.
-- New abstractions, configuration, or indirection serve no current caller.
-- Similar logic is duplicated instead of using an established implementation.
-- A one-off script contains migration or compatibility machinery without a supported old state.
-- A v2 path is layered over a v1 path when the repository requires a forward-only change.
-- Deprecated paths, feature flags, shims, or fallback branches lack an owner and removal trigger.
-- A correction adds code that explains or accommodates a design that never shipped.
-
-### Evidence required before removal
-
-Check the repository policy, released public contracts, persisted data, deployed clients, supported
-versions, and migration commitments. Absence of evidence in the current file is insufficient.
-
-### Repairs
-
-- Reuse the established implementation when its contract matches.
-- Collapse speculative abstraction into the current use case.
-- Remove unsupported compatibility and migration paths.
-- Keep required compatibility with a precise owner, supported range, and removal condition.
-- Record an unavoidably surprising constraint once, near the code that enforces it.
+- **Findings:** Simpler local design gives the same verified behavior; unused abstractions or
+  indirection; duplicated logic; migration or compatibility machinery in a one-off script without a
+  supported old state; v2 layered over v1 under a forward-only policy; deprecated paths, flags,
+  shims, or fallbacks without an owner and removal trigger; or code accommodating an unshipped
+  design.
+- **Evidence before removal:** Check repository policy, released public contracts, persisted data,
+  deployed clients, supported versions, and migration commitments. Absence of references in one
+  file is insufficient.
+- **Repairs:** Reuse established implementations; collapse speculative abstraction; remove
+  unsupported compatibility and migration paths; keep required compatibility with owner, supported
+  range, and removal condition; record unavoidable constraints once near the enforcing code.
 
 ## Change scope and review load
 
-### Findings
+- **Findings:** Unrelated behavior, refactoring, formatting, documentation, or dependency work
+  mixed in one change; broad rewrites for a small requirement; review fixes that invalidate prior
+  review; generated output without an owning source change; descriptions harder to validate than
+  the change; or an unclear behavioral delta and verification trail.
+- **Repairs:** Revert unrelated edits; split independent work when permitted; keep tests with the
+  behavior they verify; regenerate derived files from the smallest source change; summarize
+  purpose, behavior, risk, and verification plainly; require a new review after a broad rewrite.
 
-- One change mixes unrelated behavior, refactoring, formatting, documentation, or dependency work.
-- A small requirement rewrites broad areas without a demonstrated need.
-- A review correction produces a new large diff that invalidates prior review.
-- Generated output dominates a change without an owning source change.
-- A description or review reply requires more effort to validate than the change itself.
-- A reviewer cannot identify the behavioral delta and evidence from the supplied materials.
-
-Size is contextual. Count changed lines and files, but judge conceptual scope. A focused 500-line
-generated artifact can be easier than a scattered 100-line behavioral change.
-
-### Repairs
-
-- Revert unrelated edits from the requested change.
-- Split independent work into separately reviewable changes when the workflow permits.
-- Keep related tests with the behavior they verify.
-- Regenerate derived files from the smallest source change.
-- Summarize purpose, behavior, risk, and verification in human words.
-- Require a new review after a broad rewrite instead of treating it as a small response.
+Judge conceptual scope alongside line counts: a focused 500-line generated artifact can be easier
+than a scattered 100-line behavioral change.
 
 ## Tests and verification
 
-### Findings
+- **Findings:** Asserts source text added by the same change; mirrors implementation logic as its
+  oracle; checks framework wiring without an observable contract; repeats examples without covering
+  boundaries or failure modes; bloats snapshots with incidental detail; claims "smoke" or
+  "comprehensive" without supporting assertions; or hides intended behavior.
+- **Repairs:** Test observable contracts through public boundaries when practical; add regression
+  tests that fail on the original defect; use property-based testing only with an independent
+  oracle or valid invariant; remove redundant cases after proving retained coverage; keep
+  implementation-level tests when the detail is a supported contract.
 
-- A test asserts that a source file contains the text added by the same change.
-- A test mirrors the implementation and uses the mirror as its oracle.
-- A test checks framework wiring without an observable contract.
-- Many examples repeat one behavior without covering boundaries or failure modes.
-- A snapshot or fixture grows because it records incidental implementation detail.
-- A test label claims "smoke" or "comprehensive" without assertions that support the claim.
-- Reviewers cannot understand the generated test's intended behavior.
-
-### Repairs
-
-- Test observable contracts through public boundaries when practical.
-- Add a regression test that fails on the original defect.
-- Use property-based testing only with an independent oracle or valid invariant.
-- Remove redundant cases after proving retained coverage.
-- Keep implementation-level tests when the implementation detail is itself a supported contract.
-
-Test volume does not replace readable code. Readability does not replace behavioral verification.
-Require both in proportion to risk.
+Require both readable code and behavioral verification in proportion to risk.
 
 ## Human work and agent instructions
 
-### Human preservation checks
-
-- Compare the current file with the version read before editing.
-- Inspect user changes, debug statements, and comments outside the requested hunk.
-- Preserve formatting and nearby code unless the repair requires it.
-- Use history when authorship or intent affects preservation, not to assign blame.
-
-### Instruction findings
-
-- A blanket comment ban causes useful comments to disappear.
-- A negative instruction keeps the unwanted concept active in future context.
-- The agent assumes files remain unchanged between turns.
-- The project omits important scope, audience, deployment, or compatibility facts.
-- Several instruction files conflict or copy stale commands.
-
-### Instruction repairs
-
-Use positive targets:
-
-- "Document current purpose, contracts, invariants, and non-obvious reasons."
-- "Preserve existing comments unless the changed code makes them false or redundant."
-- "Re-read each file immediately before editing it."
-- "Make the smallest change that satisfies the current requirement."
-- "Use the repository's declared compatibility posture."
-- "Place temporary task context in the designated scratch surface."
+- **Preservation checks:** Compare the current file with the version read before editing; inspect
+  user changes, debug statements, and comments outside the requested hunk; preserve nearby
+  formatting and code unless the repair requires it; use history for preservation intent, not
+  blame.
+- **Instruction findings:** Blanket comment bans; negative instructions that keep unwanted concepts
+  active; assuming files stay unchanged between turns; omitting scope, audience, deployment, or
+  compatibility facts; conflicting or stale instruction files.
+- **Positive instruction targets:**
+  - "Document current purpose, contracts, invariants, and non-obvious reasons."
+  - "Preserve existing comments unless the changed code makes them false or redundant."
+  - "Re-read each file immediately before editing it."
+  - "Make the smallest change that satisfies the current requirement."
+  - "Use the repository's declared compatibility posture."
+  - "Place temporary task context in the designated scratch surface."
 
 ## Candidate searches
 
@@ -233,10 +135,10 @@ git status --short
 git diff --stat <fixed-point>...
 git diff --numstat <fixed-point>...
 git diff --check <fixed-point>...
-rg -n -i 'phase[[:space:]]+[0-9]+|item[[:space:]]+[0-9]+|as (requested|discussed)|previous implementation|we (changed|removed|decided)'
-rg -n -i 'backward.?compat|legacy|deprecated|migration|fallback|v[0-9]+'
-rg -n -i '[A-Za-z0-9_./-]+\.(md|txt|docx?)'
-rg -n -i 'TODO|FIXME|HACK|temporary|remove (after|when)'
+rg --hidden -g '!.git' -n -i 'phase[[:space:]]+[0-9]+|item[[:space:]]+[0-9]+|as (requested|discussed)|previous implementation|we (changed|removed|decided)'
+rg --hidden -g '!.git' -n -i 'backward.?compat|legacy|deprecated|migration|fallback|v[0-9]+'
+rg --hidden -g '!.git' -n -i '[A-Za-z0-9_./-]+\.(md|txt|docx?)'
+rg --hidden -g '!.git' -n -i 'TODO|FIXME|HACK|temporary|remove (after|when)'
 ```
 
 Search hits are candidates. Read the full symbol, caller, document section, and relevant policy
@@ -261,34 +163,10 @@ Account for every candidate. Record uncertain cases as risks rather than silentl
 
 ## Why these rules exist
 
-The rules come from practitioner reports about generated documentation in pull requests and from
-code-review research. The reports are testimony, not controlled studies. The studies cover
-particular organizations and samples. Neither justifies a universal line limit or comment ratio.
-
-Principles derived from that evidence:
-
-1. Reviewer attention is the scarce resource. Comment count is only one consumer of it.
-2. Permanent artifacts are poor scratch memory. Rejected alternatives left in them act as negative
-   context for later readers and model passes.
-3. Generation moves the bottleneck to verification. Small, self-contained changes protect review
-   quality better than faster summaries of large changes.
-4. Uneven commentary creates false salience. Heavily documented recent code draws more weight than
-   it deserves.
-5. Readability and tests are complementary controls.
-6. Artifact quality is provenance-independent.
-
-Tensions to keep, not resolve to an extreme:
-
-- More context can help a model. Keep it only when it is verified, durable, canonical, and
-  reviewable by humans.
-- Deleting all comments reduces noise, but it can erase contracts, niche knowledge, and human work.
-  Classify each comment.
-- Tests and live checks reduce reliance on source reading. They cannot prove every requirement or
-  replace accountable human understanding.
-- Hard limits protect review throughput. They are intake gates, not semantic judgments.
-- Style markers correlate with generated text, and they also produce false accusations against
-  human writers. Audit concrete harm.
-- Some historical facts matter. Put them in changelogs or ADRs, not in current-state comments.
+These rules synthesize practitioner reports and code-review studies. Neither justifies a universal
+line limit or comment ratio; both show that reviewer attention is the bottleneck, obsolete prose
+acts as negative context, uneven commentary creates false salience, and style markers produce false
+accusations unless backed by concrete harm.
 
 References:
 

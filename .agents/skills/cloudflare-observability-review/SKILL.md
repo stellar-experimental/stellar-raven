@@ -106,40 +106,35 @@ Wait 30 to 90 seconds for ingestion before you query.
 
 Each of these fails silently: the query succeeds and the number looks plausible.
 
-- **Filter `$metadata.type` before you count requests.** App log rows inherit their invocation's
-  status, so an unfiltered group counts log volume and can more than double the request total.
-- **Filter by `evt`, not `source.evt`**, unless the keys endpoint shows the `source.*` variant.
-  The keyspace flattens app JSON fields.
-- **A new field value is not filterable at once.** The filter index can lag the first emission by
-  about 20 minutes. When a filter returns zero for something you have reason to expect, query by
-  service only and filter client-side, or join by `$metadata.requestId`.
-- **The `keys` endpoint does not prove a family carries a key.** It ignores event filters and caps
-  its list, which flattened array fields fill. A listed key can be absent from the rows you filter,
-  and a real key can be missing from the list. Before a long run, search the keys by name and
-  confirm each key with one small group-by over a recent hour.
-- **A wide `view: "events"` query returns a small, unrepresentative slice**, not every match under
-  `limit`. Slice any window wider than about 6 hours and sum. Never conclude "this never happens"
-  from one multi-day query.
-- **ABR sampling is not uniform across window sizes.** `abr_level` is 1 for windows up to about 12
-  hours and 10 above. Use equal, narrow windows for a ratio and report the level.
-- **`truncated` on `search` and `demo-search` is catalog pagination** (`total > hits.length`), not
-  byte truncation. Byte truncation is `demo-execute.resultTruncated` and the
-  `--- SOURCE BASIS ---` block.
+- **Filter `$metadata.type` before counting requests.** App log rows inherit their invocation's
+  status, so unfiltered counts inflate totals with log volume.
+- **Filter by `evt`, not `source.evt`**, unless the keys endpoint shows `source.*`.
+- **New field values lag filter indexing (~20 min).** If a filter returns zero unexpectedly, query
+  by service and filter client-side, or join by `$metadata.requestId`.
+- **The `keys` endpoint ignores event filters and caps its list** (which flattened arrays fill).
+  Confirm keys with one small 1-hour group-by before a long run.
+- **Wide `view: "events"` queries return a small, unrepresentative slice.** Slice windows wider
+  than ~6 hours and sum; never conclude "never happens" from one multi-day query.
+- **ABR sampling shifts with window size** (`abr_level` is 1 up to ~12 hours, 10 above). Use equal,
+  narrow windows for ratios and report the level.
+- **`truncated` on `search`/`demo-search` is catalog pagination** (`total > hits.length`). Byte
+  truncation is `demo-execute.resultTruncated` and the `--- SOURCE BASIS ---` block.
 - **`recoveryAdviceDelivered` is a host delivery latch**, not model compliance.
-- **`evidenceState` on a `demo-step` is per step.** The final answering step makes no tool calls,
-  so `"none"` there is structural.
-- **`sources` and `errorName` on `execute` and `demo-execute`.** A `timeout` bucket in `sources` is
-  a call that hit the 24-second per-call budget, not a missing result. A script that throws a
-  non-Error is recorded as `ok: true`. The fields, buckets, and `errorName` classes are in
-  [`ARCHITECTURE.md`](../../../ARCHITECTURE.md#9-observability); the exact status and `attempts`
-  are on each `op` event.
-- **`sourceBasis`** exists when a result is truncated or an operation provides allowed source
-  metadata. `calls.first` rows also carry `attempts` and `finalStatus`. `canonicalUrlCount` comes
-  from the full result before truncation, so a zero count cannot show that truncation removed a URL.
-- **AI Gateway can replay completions.** The demo gateway caches completions (its TTL is
-  dashboard-side config, 300 seconds when last read), and a replay is invisible from the Worker. `demoModelSettings` sends `cf-aig-skip-cache: true`, so demo repeats
-  are independent; any other measured surface that talks to a gateway needs that header. Compare
-  repeat latency and output length before you trust a p50.
+- **`evidenceState` on `demo-step` is per step**; `"none"` on the final answering step is
+  structural.
+- **`sources` and `errorName` on `execute`/`demo-execute`:** a `timeout` bucket means a call hit
+  the 24-second per-call budget, not a missing result. A script throwing a non-Error logs
+  `ok: true`. Bucket and `errorName` definitions live in
+  [`ARCHITECTURE.md`](../../../ARCHITECTURE.md#9-observability); exact status and `attempts` are on
+  each `op` event.
+- **`sourceBasis`** exists when a result is truncated or any operation call has a non-`soft-empty`
+  outcome (`ok` or `error`). `calls.first` rows also carry `attempts` and `finalStatus`.
+  `canonicalUrlCount` comes from the full result before truncation, so zero cannot prove truncation
+  dropped a URL.
+- **AI Gateway can replay completions.** The demo gateway caches completions (dashboard-side TTL),
+  invisible from the Worker. `demoModelSettings` sends `cf-aig-skip-cache: true`, so demo repeats
+  stay independent; any other measured gateway surface needs that header. Compare repeat latency
+  and output length before trusting a p50.
 
 ## Skill reads
 
@@ -185,9 +180,9 @@ and mark inference from counts and IDs as best-effort.
 
 ## Field map
 
-- **MCP request summary**: `accessMode`, `apiKeyName` (named API keys only), `subjectHash`,
-  `clientHash`, `requestId`, `rayId`, `method`, `status`. Rejected events omit the identity keys. Cloudflare redacts the older `auth`
-  field, so group by `accessMode`.
+- **MCP request summary**: `accessMode` (group by this; Cloudflare redacts fields named `auth`),
+  `apiKeyName` (named API keys only), `subjectHash`, `clientHash`, `requestId`, `rayId`, `method`,
+  `status`. Rejected events omit identity keys.
 - **Auth-flow rejections**: `evt = "auth_reject"` with `status` and `reason`; `src/auth/workos.ts`
   owns the emitters and reason strings. A callback the allowlist refuses logs
   `redirect_refused:<scheme>` with a bounded scheme token. These events omit identity fields.

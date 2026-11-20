@@ -5,15 +5,13 @@ description: Plan and run scoped evaluations, check routing gates, compare answe
 
 # Run evals
 
-Every instrument asks one question at some layer: does an agent driving this MCP end to end give a
-correct, current, non-fabricated answer? The instruments and their contracts live in
-[`eval/EVALS.md`](../../../eval/EVALS.md) (map), [`eval/README.md`](../../../eval/README.md)
-(routing), and [`eval/qa/README.md`](../../../eval/qa/README.md) (QA flags, identity pins, judge
-contract). This skill decides what to run, how much, and what to do with the result.
+The instruments and their contracts live in [`eval/EVALS.md`](../../../eval/EVALS.md) (map),
+[`eval/README.md`](../../../eval/README.md) (routing), and
+[`eval/qa/README.md`](../../../eval/qa/README.md) (QA flags, identity pins, judge contract). This
+skill decides what to run, how much, and what to do with the result.
 
 ## 1. Decide before you spend
 
-The size of the work is what to keep small: how long it takes, what it costs, and where it runs.
 Routing, plan, lint, and self-test checks are free: run them whenever their inputs changed. Before
 any paid call or long agent task, write four lines in the round ledger or pull request:
 
@@ -43,11 +41,9 @@ Then hold to it:
   [`research/audits/2026-07-11-eval-round-orchestration.md`](../../../research/audits/2026-07-11-eval-round-orchestration.md)
   records what such reviews catch.
 
-**Cost counts.** Record cost per answer beside correctness for every arm. Prefer the more correct
-path only when the alternative is far less correct: new wrong answers, fabrication, or a failed
-safety or trap behavior. A path that is much cheaper and only slightly less correct can be the
-better product, because two calls for the price of one leave room for clarification and refinement.
-State both numbers and make the call; scores are evidence, not the decision.
+**Cost counts.** Report cost per answer beside correctness for every arm. Prefer the more correct
+path only when the alternative is far less correct (new wrong answers, fabrication, or failed
+safety/trap behavior); a much cheaper, slightly less correct path can be the better product.
 
 ## 2. Clients, models, and billing
 
@@ -59,15 +55,12 @@ resolved ID, and that ID is the measurement's identity.
 - One client is enough when the decision does not depend on the client. Add clients only for a
   client-dependent decision.
 - **Subscriptions first, on `hc`.** Development tests and evals use the local `wrangler dev` server
-  (`npm run dev:eval`) and the subscription CLIs driven through `hc`. The billing rule, the pre-run
-  checks, the OpenCode probe and the only two API-billed exceptions (the Playground lanes E1 and E2)
-  are in [`eval/EVALS.md`](../../../eval/EVALS.md#model-call-billing). Those lanes serve questions about
-  the Playground product itself (its transport, prompt, loop, caps, fallback, or a model only the Gateway
-  reaches). Which model answers Raven questions best, and how the MCP tool surface performs, go to the
-  subscription paths below; a shared MCP text change gets a Playground sample only under the conditional
-  rule in the EVALS.md question table. Every API-billed run carries a dollar cap and is recorded with
-  its cost; an unlisted path first joins the list in a reviewed pull request. Judges run on the Claude Code CLI; there is no AI Gateway judge, and a non-Claude second judge
-  follows the TODO item "Build a subscription second judge on OpenCode when a decision needs one".
+  (`npm run dev:eval`) and subscription CLIs driven through `hc`. The billing rule, pre-run checks,
+  OpenCode probe, and the only two API-billed exceptions (Playground lanes E1 and E2, for
+  Playground-specific questions or the conditional shared-text rule) live in
+  [`eval/EVALS.md`](../../../eval/EVALS.md#model-call-billing). Every API-billed run carries a
+  dollar cap and logged cost; an unlisted path first joins that list in a reviewed pull request.
+  Judges run on the Claude Code CLI; there is no AI Gateway judge.
 - The QA runner and the discovery agent arm spawn headless `claude -p` themselves. Start the runner
   as an `hc` child (`hc run --bg --name <lane> ...`) and `hc wait` for it. `--model` selects the
   Claude client.
@@ -78,14 +71,12 @@ resolved ID, and that ID is the measurement's identity.
   rely on the registration. Report the result as a client diagnostic with its own denominator;
   never merge it with QA-runner results.
 
-Three roles stay separate. The **orchestrating agent** runs this skill and never answers cases
-itself. The **answering agent** and the **judge** are spawned by the runner. Their defaults
-(`AGENT_MODEL` in `eval/qa/run-qa.mjs`, `JUDGE_MODEL` in `eval/qa/judge.mjs`) are family aliases,
-so each takes its family's newest model. The artifact records both the requested alias and the
-resolved ID. A change of resolved answering or judge model starts a new baseline, and a run on a
-different resolved model is a different measurement. A resumed or re-judged file keeps the judge
-it recorded. Report the resolved answering model, resolved judge model, rubric, pack, case count,
-and results stamp with every QA number.
+Keep three roles separate: the **orchestrating agent** runs this skill and never answers cases; the
+runner spawns the **answering agent** (`AGENT_MODEL` in `eval/qa/run-qa.mjs`) and **judge**
+(`JUDGE_MODEL` in `eval/qa/judge.mjs`). Defaults are family aliases; a changed resolved model starts
+a new baseline, while resumed or re-judged files keep their recorded judge. Report resolved
+answering model, resolved judge model, rubric, pack, case count, and results stamp with every QA
+number.
 
 ## 3. Pick the instrument
 
@@ -101,7 +92,7 @@ and results stamp with every QA number.
 | Search behavior of agents | Agentic lane (paid, Claude Code Workflow tool, live server) |
 | Tool-plan question on a stored run | `npm run eval:plan -- <results>` (free, offline) |
 | Stale-gospel gate fired | `truth-maintenance` owns the queue; each case goes through `golden-truth` |
-| Playground transport, model path, prompt or loop | `eval/playground/README.md` (paid, API-billed through the Gateway: exceptions E1 and E2 in [Model-call billing](../../../eval/EVALS.md#model-call-billing)). A question about which model answers best or about the MCP tool surface goes to the QA runner or a Codex or Grok lane first; add a Playground sample only under the conditional rule in the EVALS.md question table |
+| Playground transport, model path, prompt or loop | `eval/playground/README.md` (API-billed E1/E2; path rules in [Model-call billing](../../../eval/EVALS.md#model-call-billing)) |
 
 Open `.agents/rounds/<YYYY-MM-DD>-<slug>.md` for a round with paid instruments or several lanes;
 a single free check needs no ledger. Use `truth-maintenance` only for an explicitly broad round.
@@ -157,7 +148,7 @@ the alias first), not an alias.
    # QA sample (variant A = the shipped search tool); add the pin flags from eval/qa/README.md
    node eval/qa/run-qa.mjs --variant A --sample 30 --port "$PORT" --max-budget-usd "$MAX_BUDGET_USD" ...
    # smallest run: --ids a,b,c   collect only: --no-judge   other client: --model <id>
-   # live lane: --cases eval/qa/corpus/live/live-cases.json instead of --variant/--sample
+   # live lane: replace --sample 30 with --cases eval/qa/corpus/live/live-cases.json
    npm run eval:plan -- eval/qa/results/<stamp>-variantA.json   # free regrade of the stored run
    ```
 
@@ -212,30 +203,24 @@ Classify each reviewed failure and surprising pass. Disclose unreviewed rows; th
 | Upstream semantics or spec gap | The service's self-description misleads any consumer | `improvements/` finding |
 | Corpus-coverage diagnostic | The truth lives with another canonical owner and no tested surface undertakes to host it | Keep truth in the golden; record a coverage result, not a Docs issue |
 
-- **Bar for acting.** The same failure in two unrelated cases, a contract mismatch, a reproducible
-  infrastructure bug, or trace evidence that the model was asked the wrong thing. A single-case
-  finding goes on a named monitor-only list in the round ledger.
-- **No overfitting.** Fix a general mechanism or leave the case red with a note. No
-  query-to-service maps and no per-question vocabulary. Case IDs, question phrases, and golden
-  fragments stay in the round ledger, out of descriptions, keywords, scorer constants, and prompts.
-  The same bar binds docs scoping changes
-  ([`docs/stellar-docs.md`](../../../docs/stellar-docs.md#maintenance)). When the first failed
-  boundary is an upstream gap, file or update the finding before you propose local wording.
-- **A reported regression is an outcome, not a cause.** Before you special-case a dropped keyword
-  or rank, check whether a threshold (for example the document-frequency cut) is doing its job.
-- **Before a wording fix**, read what the model was already told at the failure moment, nearest
-  first: guard and `codemode.*` error strings (`src/executor/providers.ts`), truncation footers
-  (`src/policy/truncate.ts`), adapter hints (`src/adapters/`), `search` `nextSteps`, tool
-  descriptions and `SERVER_INSTRUCTIONS` (`src/mcp/tools.ts`), then catalog descriptions (generated;
-  change `scripts/`). If the prose already teaches the behavior, prefer a mechanism (a fail-loud
-  guard, an error that carries the fix) over more words. If it is absent or wrong, change the one
-  surface nearest the failure. Measure before and after on the same instrument and revert a prose
-  edit with no measured shift. A catalog description change re-runs the routing gate.
-- **Findings.** Use `improvements-pipeline`. A judge's opinion never moves a finding past
-  `proposed`; `verified` needs your own live re-execution. Update an existing finding before filing
-  a near-duplicate.
-- **Goldens.** Every judge-facing change goes through `golden-truth` with live evidence and a root
-  cause. A desired score is never a reason.
+- **Bar for acting:** same failure in two unrelated cases, a contract mismatch, a reproducible
+  infra bug, or trace evidence the model was asked the wrong thing. Put single-case findings on a
+  named monitor-only list in the round ledger.
+- **No overfitting:** fix a general mechanism or leave the case red with a note. Keep case IDs,
+  question phrases, and golden fragments out of descriptions, keywords, scorer constants, prompts,
+  and docs scoping ([`docs/stellar-docs.md`](../../../docs/stellar-docs.md#maintenance)). File
+  upstream gaps before proposing local wording.
+- **Check thresholds before special-casing** a dropped keyword or rank (e.g., document-frequency
+  cut).
+- **Wording ladder:** read what the model saw at failure, nearest first — guard/`codemode.*` errors
+  (`src/executor/providers.ts`), truncation footers (`src/policy/truncate.ts`), adapter hints
+  (`src/adapters/`), `search` `nextSteps`, tool descriptions/`SERVER_INSTRUCTIONS`
+  (`src/mcp/tools.ts`), then catalog descriptions (generated via `scripts/`). Prefer a mechanism
+  (fail-loud guard, fix-carrying error) over more prose; edit only the nearest surface, measure
+  before/after on the same instrument, revert edits with no measured shift, and re-run the routing
+  gate after catalog description edits.
+- **Findings and goldens:** use `improvements-pipeline` (`verified` requires own live re-execution;
+  dedupe first) and `golden-truth` (live evidence + root cause; never a desired score).
 
 ## 8. Close
 
