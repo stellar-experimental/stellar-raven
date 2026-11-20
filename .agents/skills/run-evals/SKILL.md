@@ -206,19 +206,21 @@ Classify each reviewed failure and surprising pass. Disclose unreviewed rows; th
 - **Bar for acting:** same failure in two unrelated cases, a contract mismatch, a reproducible
   infra bug, or trace evidence the model was asked the wrong thing. Put single-case findings on a
   named monitor-only list in the round ledger.
-- **No overfitting:** fix a general mechanism or leave the case red with a note. Keep case IDs,
-  question phrases, and golden fragments out of descriptions, keywords, scorer constants, prompts,
-  and docs scoping ([`docs/stellar-docs.md`](../../../docs/stellar-docs.md#maintenance)). File
-  upstream gaps before proposing local wording.
+- **No overfitting:** fix a general mechanism or leave the case red with a note. No
+  query-to-service maps and no per-question vocabulary; keep case IDs, question phrases, and golden
+  fragments in the round ledger, out of descriptions, keywords, scorer constants, prompts, and docs
+  scoping ([`docs/stellar-docs.md`](../../../docs/stellar-docs.md#maintenance)). File upstream gaps
+  before proposing local wording.
 - **Check thresholds before special-casing** a dropped keyword or rank (e.g., document-frequency
   cut).
 - **Wording ladder:** read what the model saw at failure, nearest first — guard/`codemode.*` errors
   (`src/executor/providers.ts`), truncation footers (`src/policy/truncate.ts`), adapter hints
   (`src/adapters/`), `search` `nextSteps`, tool descriptions/`SERVER_INSTRUCTIONS`
-  (`src/mcp/tools.ts`), then catalog descriptions (generated via `scripts/`). Prefer a mechanism
-  (fail-loud guard, fix-carrying error) over more prose; edit only the nearest surface, measure
-  before/after on the same instrument, revert edits with no measured shift, and re-run the routing
-  gate after catalog description edits.
+  (`src/mcp/tools.ts`), then catalog descriptions (generated via `scripts/`). If existing prose
+  already teaches the behavior, prefer a mechanism (fail-loud guard, fix-carrying error) over more
+  words; if it is absent or wrong, edit only the nearest surface, measure before/after on the same
+  instrument, revert edits with no measured shift, and re-run the routing gate after catalog
+  description edits.
 - **Findings and goldens:** use `improvements-pipeline` (`verified` requires own live re-execution;
   dedupe first) and `golden-truth` (live evidence + root cause; never a desired score).
 

@@ -112,7 +112,7 @@ Each of these fails silently: the query succeeds and the number looks plausible.
 - **New field values lag filter indexing (~20 min).** If a filter returns zero unexpectedly, query
   by service and filter client-side, or join by `$metadata.requestId`.
 - **The `keys` endpoint ignores event filters and caps its list** (which flattened arrays fill).
-  Confirm keys with one small 1-hour group-by before a long run.
+  Before a long run, search the keys by name and confirm each key with a 1-hour group-by.
 - **Wide `view: "events"` queries return a small, unrepresentative slice.** Slice windows wider
   than ~6 hours and sum; never conclude "never happens" from one multi-day query.
 - **ABR sampling shifts with window size** (`abr_level` is 1 up to ~12 hours, 10 above). Use equal,
@@ -123,14 +123,14 @@ Each of these fails silently: the query succeeds and the number looks plausible.
 - **`evidenceState` on `demo-step` is per step**; `"none"` on the final answering step is
   structural.
 - **`sources` and `errorName` on `execute`/`demo-execute`:** a `timeout` bucket means a call hit
-  the 24-second per-call budget, not a missing result. A script throwing a non-Error logs
-  `ok: true`. Bucket and `errorName` definitions live in
+  the 24-second per-call budget, not a missing result. A script throwing a value with no `.message`
+  (such as a string or number) logs `ok: true`. Bucket and `errorName` definitions live in
   [`ARCHITECTURE.md`](../../../ARCHITECTURE.md#9-observability); exact status and `attempts` are on
   each `op` event.
-- **`sourceBasis`** exists when a result is truncated or any operation call has a non-`soft-empty`
-  outcome (`ok` or `error`). `calls.first` rows also carry `attempts` and `finalStatus`.
-  `canonicalUrlCount` comes from the full result before truncation, so zero cannot prove truncation
-  dropped a URL.
+- **`sourceBasis`** is emitted only on a successful (`ok: true`) execute when the result is
+  truncated or any operation call has a non-`soft-empty` outcome (`ok` or `error`). `calls.first`
+  rows also carry `attempts` and `finalStatus`. `canonicalUrlCount` comes from the full result
+  before truncation, so zero cannot prove truncation dropped a URL.
 - **AI Gateway can replay completions.** The demo gateway caches completions (dashboard-side TTL),
   invisible from the Worker. `demoModelSettings` sends `cf-aig-skip-cache: true`, so demo repeats
   stay independent; any other measured gateway surface needs that header. Compare repeat latency

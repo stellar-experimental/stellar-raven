@@ -13,8 +13,8 @@ mechanical regeneration plus one judgment:
 > needs a policy or baseline decision in the same change?
 
 Size the work to the class: pure provenance drift (the common daily case) needs steps 1, 2, 4, 6,
-7, and 8, all free and local, with no reviewer lanes (step 6 ends in recorded "no edit needed"
-evidence or a routed edit). For a pass across evals, goldens, and improvements as well,
+7, and 8, with no paid evals or reviewer lanes (step 6 ends in recorded "no edit needed" evidence
+or a routed edit). For a pass across evals, goldens, and improvements as well,
 `truth-maintenance` coordinates and this skill is the drift lane.
 
 ## 1. Regenerate
@@ -42,9 +42,10 @@ node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
   `stellarOrg.get_page`.
 - **Skill pins.** When `ecosystem-skills/` pins move, follow
   [`ecosystem-skills/README.md`](../../../ecosystem-skills/README.md#re-pin): re-pin, read the body
-  diffs before committing (bodies are fetched and verified live at read time), record the
-  attestation in `PIN-REVIEW.md`, and run `node scripts/check-mirrors.mjs --fetch`. Then rebuild
-  the catalog, family-text, spec, and op classes in the order above.
+  diffs before committing (bodies are fetched from the pinned commit and hash-verified at read time,
+  so a re-pin changes what the model reads), record the attestation in `PIN-REVIEW.md`, and run
+  `node scripts/check-mirrors.mjs --fetch`. Then rebuild the catalog, family-text, spec, and op
+  classes in the order above.
 - **Skill directories only.** When `node scripts/check-skills-drift.mjs` reports drift only on
   `stellarlight-catalog` and/or `stellar-community-catalog` (every pinned GitHub source is `ok`),
   run `node scripts/refresh-skill-directories.mjs` instead of `update.sh`. It updates only the
@@ -139,7 +140,7 @@ evidence.
   `npm run improvements:lint`, `npm run improvements:lint -- --live`, and
   `npm run improvements:probes`.
 - After a skill re-pin, `node scripts/check-mirrors.mjs --fetch` passes and `catalog/manifest.json`
-  carries the new `transport.url` and `sha` for every changed skill file.
+  carries the new `transport.url` and `sha` for every exposed changed Markdown skill file.
 - `npm run secrets:scan -- --tree` and `git diff --check` are clean. A regenerated artifact must
   never carry an upstream key.
 - **Independent review** is required for surface, routing-text, runner, or skill-pin drift, and not

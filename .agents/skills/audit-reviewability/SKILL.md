@@ -54,7 +54,8 @@ tests, documentation, formatting, generated output, and unrelated edits. For a r
 use repository search and history to identify clusters before reading each candidate in context.
 
 Use mechanical signals only to find candidates. Phrase matches, comment length, line ratios, and
-large diffs never prove a finding. Do not build an AI-style detector.
+large diffs never prove a finding. Do not build an AI-style detector. Account for every in-scope
+file by inspection or an explicit, evidence-based exclusion.
 
 ## Classify each candidate
 
@@ -119,7 +120,9 @@ migrations, or new documentation solely to explain removed or rejected work.
 4. Confirm that useful existing comments and unrelated human edits remain intact.
 5. Run the narrowest relevant tests, then the repository's required validation commands.
 6. Compare behavior before and after each simplification. Add or improve tests when evidence is weak.
-7. Treat lower line counts as an observation, not a success condition.
+7. Treat lower line counts as an observation, not a success condition. Finish repair only when every
+   finding is fixed or explicitly deferred and the final diff is easier to understand than the
+   problem it solves.
 
 ## Report the outcome
 

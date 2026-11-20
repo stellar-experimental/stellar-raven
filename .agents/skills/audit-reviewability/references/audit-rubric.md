@@ -163,10 +163,10 @@ Account for every candidate. Record uncertain cases as risks rather than silentl
 
 ## Why these rules exist
 
-These rules synthesize practitioner reports and code-review studies. Neither justifies a universal
-line limit or comment ratio; both show that reviewer attention is the bottleneck, obsolete prose
-acts as negative context, uneven commentary creates false salience, and style markers produce false
-accusations unless backed by concrete harm.
+These rules draw on practitioner testimony and code-review studies of specific organizations.
+Neither justifies a universal line limit or comment ratio; together they motivate treating reviewer
+attention as the bottleneck, keeping obsolete prose out of permanent files, avoiding uneven
+commentary that creates false salience, and auditing concrete harm rather than style markers.
 
 References:
 
