@@ -1,14 +1,12 @@
 # TODO — own-repo work queue
 
 Own-repo work only: adapters, catalog, executor, scoring, eval instruments, goldens, gates, and
-documentation. An upstream service defect goes to `improvements/` (see
-[`improvements/README.md`](../improvements/README.md)).
+documentation. Upstream service defects go to [`improvements/`](../improvements/README.md).
 
-Add an item when you find work you are not doing now. Delete it when it is done; git history is
-the archive. An item states what is wrong, its current state, the next step or trigger, and what
-"done" means. Keep the history in the linked ledger, not here. The spend rules in
-[`AGENTS.md`](../AGENTS.md#spend-and-evidence) apply to every item: a run needs no
-approval, and each runs under a dollar cap and is recorded with its cost.
+Add an item when you find work you are not doing now; delete it when done (git history is the
+archive). State what is wrong, current state, next step or trigger, and "done when". Keep history in
+the linked ledger. Every item follows the spend rules in
+[`AGENTS.md`](../AGENTS.md#spend-and-evidence).
 
 ## Priorities
 
@@ -20,12 +18,10 @@ approval, and each runs under a dollar cap and is recorded with its cost.
    merge before 2026-11-25 00:00 UTC. Runs 2.2a, 2.2b and 2.2c follow on 2026-11-30, 2026-12-01 and
    2026-12-04. After them comes the register maintenance lane ("Close the register entries the
    dated runs leave open").
-2. One Workers Logs session on the Mac on 2026-11-25: the sign-in watch ("Watch sign-in rejects
-   after the oauth-provider 1.x deploy"), then the `execute` timeout read with its `recoveryHint`,
-   `skipped`, `errorName` and user-agent questions ("Decide the `execute` timeout from one more
-   Workers Logs read"), the `skill_read` shape distribution ("Read the `skill_read` shape
-   distribution"), and the read-only remote `kv key list` for `mcp-key` ("Confirm `npm run
-   mcp-key` on wrangler 4.164.0").
+2. One Workers Logs session on the Mac on 2026-11-25: "Watch sign-in rejects after the
+   oauth-provider 1.x deploy", "Decide the `execute` timeout from one more Workers Logs read" (with
+   its `recoveryHint`, `skipped`, `errorName` and user-agent questions), "Read the `skill_read`
+   shape distribution", and "Confirm `npm run mcp-key` on wrangler 4.164.0".
 3. Owner decisions (the list at the end).
 4. Free own-repo fixes that need no paid measurement: the smart-contracts malformed-input
    recurrence probe ("Probe the malformed-input gap in the pinned smart-contracts skill"), the
@@ -33,12 +29,15 @@ approval, and each runs under a dollar cap and is recorded with its cost.
    case-file move once every dated run and follow-up has merged and `systemctl --user list-timers`
    on agentpc shows no `raven-dated` or `raven-watchdog` unit.
 
-Everything not named here is a hold, a monitor or waits on its trigger. Do not start one without
+Everything not named here is a hold, a monitor, or waits on its trigger. Do not start one without
 its trigger.
 
 No third tuning loop (owner, 2026-11-16, decision 1). A QA headline run starts only when a named
-decision needs it (`run-evals` section 1); it needs no approval. The general routing repair stays held.
-It needs new mechanism evidence, not another lexical variant.
+decision needs it (`run-evals` section 1); it needs no approval. The general routing repair stays
+held until new mechanism evidence exists. The tool surface stays trimmed `search` + `execute`
+([ADR-0011](../research/decisions/0011-tool-surface-stays-code-mode-trimmed.md); live-data loss
+accepted in [decision 5](rounds/2026-11-16-next-phase/DECISIONS.md), reopened by a fix that keeps
+most of the token saving).
 
 ## Held-out status
 
@@ -72,211 +71,131 @@ State and rules:
   on them or reads their per-row output ([`eval/README.md`](../eval/README.md), "Confirmation-only
   rows").
 
-## First-principles round follow-ups
-
-Round `fp-2026-11-12`: [ledger](rounds/2026-11-12-fp.md),
-[record](../research/audits/2026-11-12-first-principles-round.md), and
-[ADR-0011](../research/decisions/0011-tool-surface-stays-code-mode-trimmed.md). The tool surface
-stays `search` + `execute`, trimmed for cost. The owner accepted the loss on live-data questions
-as the price of the trim ([decision 5](rounds/2026-11-16-next-phase/DECISIONS.md)). A fix that
-keeps most of the token saving reopens it; ADR-0011's reopening rules are unchanged.
-
-### Check what the judge saw before changing how it weighs cited text
-
-In the round's harness, the judge called a correctly quoted fact "fabricated" in about 2% of the
-new variants' answers and in none of arm A's (the `search` + `execute` baseline). That is a finding about the round's
-judge input, not about the committed QA judge. The committed judge does receive tool evidence:
-`eval/qa/judge.mjs` adds a compact source-basis block from pack `p9`, built from the answer's
-`execute` results, and `eval/qa/evidence-pack.mjs` leaves it out for a case tagged
-`freshness: stable`. Two different gaps can therefore produce the same verdict:
-
-- No evidence block at all: a stable case, or an answer whose sources did not come through
-  `execute` (the prototype `retrieve` and `read` tools; unverified).
-- An evidence block that omits the cited text: the p9 limits in "Close the remaining
-  claim-support gaps of judge pack p9" below.
-
-Held: the 2% dispute rate occurred only on the `fp-2026-11-12` prototype `retrieve`/`read` variants
-and in none of arm A (the measured `search` + `execute` baseline; arm B-fixed-2 shipped). No
-`retrieve`/`read` build is planned, and any pack or rubric change belongs to the held `p9` item.
-
-Trigger: before revising judge pack `p9` or its rubric ("Close the remaining claim-support gaps of
-judge pack p9"), before reviving a non-`execute` retrieval prototype, or if a cited-fact dispute
-appears on the committed QA judge. Then read the exact stored judge prompt of the disputed answers,
-and choose between a harness input fix, a pack change, and a rubric change (a pack or rubric change
-is a judging-semantics change under the `run-evals` skill).
-
-Done when: the disputed verdicts are traced to one of those causes. Any fix is measured: the
-disputes disappear, and no answer with a truly unsupported claim is graded up.
-
 ## Caps audit follow-ups
 
-Source: [caps audit](../research/audits/2026-11-14-caps-audit.md). The audit changed no cap that
-reaches the model. Round item 3.1 read production once and decided the caps; round item 3.2
-shipped the operation timeout ([#462](https://github.com/stellar-experimental/stellar-raven/pull/462)).
-The decisions and reasons are in [3.1 EXEC.md](rounds/2026-11-16-next-phase/items/3.1/EXEC.md),
-the round ledger row for 3.1, and [3.2 REPORT.md](rounds/2026-11-16-next-phase/items/3.2/REPORT.md);
-the figures stay in the owner's private evidence folder. Standing values: public `MAX_SEARCH_LIMIT`
-50, Lumenloop and Scout calls 24 seconds each as one wall-clock budget per operation call, and
-the artifact caps `ARTIFACT_INFO_CAP` 8 and `ARTIFACT_READ_CAP` 4. Tuning loop 2 kept seven search
-cards by default and removed the source map ([ledger](rounds/2026-11-15-tuning-loop-2.md)). Only
-the `execute` timeout is open. A paid test runs under a cap sized by the `run-evals` skill and is
-recorded with its cost.
+Source: [caps audit](../research/audits/2026-11-14-caps-audit.md) and round items
+[3.1](rounds/2026-11-16-next-phase/items/3.1/EXEC.md) /
+[3.2](rounds/2026-11-16-next-phase/items/3.2/REPORT.md). Standing limits live in
+[`ARCHITECTURE.md`](../ARCHITECTURE.md) §7; only the `execute` timeout is open.
 
 ### Decide the `execute` timeout from one more Workers Logs read
 
-`EXECUTE_TIMEOUT_MS` is 60 seconds, and its decision is open. The 3.1 production read found no
-failed `execute` past 59 seconds in its 6.5-day window. The rule also counts `POST /mcp`
-invocations that ended cancelled or disconnected after 59 seconds, and the platform queries
-returned no rows for that half. Codex's default `tool_timeout_sec` is 60, so a run near Raven's
-limit can lose its structured timeout result to the client. Keep 60 until the read below is done.
+`EXECUTE_TIMEOUT_MS` is 60 seconds, which matches Codex's default `tool_timeout_sec` (60s), so a
+run near the limit can lose its structured timeout result to the client. Round item 3.1 found no
+failed `execute` past 59s in 6.5 days, but platform queries returned no rows for cancelled or
+disconnected `POST /mcp` invocations past 59s. Keep 60s until the read below finishes.
 
-Next: one free Workers Logs read on the Mac, in the 2026-11-25 session (see "Priorities"). Workers
-Logs keep at most 7 days, so a later read loses days. The read answers every question the first
-one left:
+Next: one free Workers Logs read on the Mac on 2026-11-25 (priority 2; Workers Logs keep at most 7
+days) covering:
 
-- Which row type carries the data. Key discovery returned a capped list, and every query that
-  filtered `$metadata.type = "cf-worker-event"` with path `/mcp`, or grouped by the user-agent
-  header, returned no rows. First group one recent hour by `$metadata.type`, and check which row
-  type carries the path, user-agent, `$workers.wallTimeMs` and `$workers.outcome`.
-- The wall time of `POST /mcp` invocations over 59 seconds, with their outcome. This decides the
-  timeout.
-- The user-agent families. They attribute the client loops in "Triage the runtime and client gaps
-  from the HackMeridian telemetry".
-- The keys `recoveryHint`, and the artifact-write `skipped` and `errorName`: search the key list for
-  each by name first. They feed the same triage item and "Explain the soft-empty and skipped-write
-  anomalies from the production read".
+- Row type discovery: group one recent hour by `$metadata.type` to find which row type carries
+  path `/mcp`, user-agent, `$workers.wallTimeMs`, and `$workers.outcome` (earlier filters on
+  `$metadata.type = "cf-worker-event"` returned no rows).
+- Wall time and outcome of `POST /mcp` invocations over 59 seconds (decides the timeout).
+- User-agent families (attributes the client loops in "Triage the runtime and client gaps from the
+  HackMeridian telemetry").
+- Keys `recoveryHint`, `skipped`, and `errorName` by name (feed that triage item and "Explain the
+  soft-empty and skipped-write anomalies from the production read").
 
-Done when: the `execute` timeout has a recorded decision (keep 60 or change it) in the round
-ledger or a decision record. The figures stay in the owner's private evidence folder.
+Done when: the `execute` timeout decision (keep 60s or change) is recorded in the round ledger or
+an ADR; figures stay in the owner's private evidence folder.
 
 ### Re-verify each external client limit before changing model-facing text
 
-The test constants copy limits that belong to clients. Claude Code: 4,096 characters for server
-instructions and for tools loaded up front, 16,384 through tool search, a 25,000-token MCP output
-cap, and a spill to file above 50,000 characters; before v2.1.296 the cut was 2,048. Grok CLI: a
-20,000-byte MCP result clip. Measured on 2026-11-14 in
-`research/audits/2026-11-14-client-text-limits.md` (Claude Code 2.1.325, Codex 0.167.0, Grok 1.0.77,
-OpenCode v2.2.7): Claude Code's 4,096 and 16,384 held; Grok cuts instructions and tool descriptions at
-2,033 characters plus a marker; Codex shows one catalogue line of about 230 characters per server and
-appends the full instructions to each tool description in its JavaScript runtime; OpenCode puts the
-instructions whole in the system prompt and lists tools up front with 120 characters each. Codex and
-ChatGPT docs say to keep the first 512 characters of server instructions self-contained and state no
-cut. claude.ai web and Claude Desktop: community evidence (`anthropics/claude-ai-mcp#93`) that server
-instructions are dropped, so the tool descriptions are the whole contract there. The audit's
-"Re-verifying the external facts" table has the method for each.
+`test/helpers/mcp-tool-metadata.ts` and `test/mcp-instructions.test.ts` pin client text limits
+measured on 2026-11-14 in [`research/audits/2026-11-14-client-text-limits.md`](../research/audits/2026-11-14-client-text-limits.md)
+(Claude Code 4,096 up front / 16,384 tool search / 25k-token output / 50k spill; Grok 2,033 cut
+plus marker and 20k-byte result clip; Codex ~230-char catalogue line + full instructions appended;
+OpenCode 120-char listing; claude.ai/Desktop drops server instructions per `anthropics/claude-ai-mcp#93`).
+`test/mcp-instructions.test.ts` pins instructions and both tool descriptions under Grok's 2,033 cut
+(1,899, 1,960, and 1,964 chars today, with self-contained first lines).
 
-State on 2026-11-18: agentpc runs Claude Code 2.1.327, Codex 0.169.0 and Grok 1.0.88. Every
-measured version has moved, but the re-check waits on the trigger below.
+State on 2026-11-18: agentpc runs newer client versions (Claude Code 2.1.327, Codex 0.169.0, Grok
+1.0.88), but re-verification waits on the trigger below.
 
-Trigger: before a change to the server instructions or the tool descriptions, and when a client's
-release notes name an MCP text limit. A client version bump alone does not fire it. The cheapest
-check is the audit table's method for Grok's 2,033-character cut, because the pin in
-`test/mcp-instructions.test.ts` depends on it.
+Trigger: before changing server instructions or tool descriptions, or when a client's release notes
+name an MCP text limit (a version bump alone does not fire it). Check Grok's 2,033-char cut first
+via the audit's "Re-verifying the external facts" table.
 
-Done when: the table's rows match the current client versions. Grok's 2,033-character cut has its
-guard: `test/mcp-instructions.test.ts` pins the instructions and both tool descriptions under 2,033
-(1,899, 1,960 and 1,964 today, and the first line of each stands alone).
+Done when: the audit table matches current client versions and `test/mcp-instructions.test.ts`
+still holds.
 
 ## Tuning loop 2 follow-ups
 
-Record: [round ledger](rounds/2026-11-15-tuning-loop-2.md) and its P0, P1, P2 and R files. The loop
-kept the corroboration guard, the source-map removal, the delivery text, the `stellarOrg` source,
-seven cards and the title-case rule for exact rows. It did not ship the identifier pointer. Each
-item below is evidence for what it names, not an improvement claim.
+Record: [loop 2 ledger](rounds/2026-11-15-tuning-loop-2.md).
 
 ### Carry the guard to absence-of-standard statements
 
-The guard sentence is about a claim a source makes. P1's repeat passes still produced bare statements
-such as "no official standard or SEP" on a guard row with the guard in the result, inferred from the
-absence of a hit, and the readers disagreed on whether they were violations (their own calls on P0
-read 1, 2 and 1). P2 and R read 0 violations in 25 and 20 claim-word answers, so the rule cannot see
-the case. Do not reword the sentence on that evidence.
+The corroboration guard addresses claims a source makes, not bare absence statements (e.g., "no
+official standard or SEP") inferred from empty hits. In loop 2, P2 and R read 0 violations in 25
+and 20 claim-word answers, and readers disagreed on whether absence-inferred statements violated the
+rule. Do not reword on that evidence.
 
-Held: P2 and R read 0 violations in 25 and 20 claim-word answers, readers disagreed on whether
-absence-inferred statements violated the rule, and no third tuning loop is planned (owner,
-2026-11-16, decision 1). Trigger: the next corroboration-guard revision, or a future QA or
-production transcript review that surfaces repeated bare absence-of-standard claims with the guard
-in the result.
+Held: zero P2/R violations, reader disagreement, and no third tuning loop (owner decision 1).
+Trigger: the next corroboration-guard revision, or a QA/production transcript review surfacing
+repeated bare absence-of-standard claims with the guard present.
 
-Done when: a targeted read of the answers that state a standard, audit or incident is absent, on a
-panel with enough such rows to give a rate, has the readers agreeing on the class; then a reviewed
-general wording change is measured against the unchanged sentence.
+Done when: readers agree on the class on a panel with enough absence rows, and a general wording
+change is measured against the unchanged sentence.
 
 ### Watch required-service coverage on the 58-row panel
 
-`npm run eval:plan` covered 58 of 58 rows' required services in P0, 56 in P1 and 55 in P2. The
-misses were rows whose verdicts did not move (a Docs-required row where only Scout was touched,
-and the reverse), so no step was blamed. The planner does not name `stellarOrg` as a service.
+Monitor: `npm run eval:plan` covered 58/58 rows' required services in P0, 56 in P1, and 55 in P2
+(verdicts did not move; the planner does not list `stellarOrg`).
 
-Done when: the next panel run reports the count against 55 of 58, and a fall to 53 or fewer is
-traced in the transcripts before any change ships.
+Trigger: the next 58-row panel run. Done when: it reports coverage against 55/58, and any drop to
+53 or fewer is traced in transcripts before shipping.
 
 ### Test the `stellarOrg` result rule for the corroboration guard
 
-R8 decided that `stellarOrg` stays outside the corroborating families, so each of its results
-carries the guard line, and `eval/qa/claim-read-brief.md` reads a `get_page` result as class 2 for
-SDF's own programmes and class 3 for governance and incident claims. No claim statement in P2 or R
-rested on a `stellarOrg` result, so the rule and its over-hedging risk are untested.
+`stellarOrg` stays outside the corroborating families (each result carries the guard line;
+`eval/qa/claim-read-brief.md` treats `get_page` as class 2 for SDF programmes and class 3 for
+governance/incidents). Neither the rule nor its over-hedging risk is tested (0 claim statements in
+P2/R rested on `stellarOrg`).
 
-Held: no judged run with enough `stellarOrg`-backed claim answers is scheduled (P2 called
-`stellarOrg` on 3 of 58 rows with 0 claim statements resting on it, and no third tuning loop is
-planned). Trigger: the next judged QA run (such as the run in "Prove the stellar.org source") or
-corroboration review that produces at least 5 claim-word answers resting on `stellarOrg` results;
-do not run a dedicated collection for this check alone.
+Held: no judged run with enough `stellarOrg`-backed claim answers is scheduled (P2 called it on 3/58
+rows; no third tuning loop). Trigger: the next judged QA run (e.g., "Prove the stellar.org source")
+or corroboration review producing at least 5 claim-word answers resting on `stellarOrg`; do not run
+a dedicated collection for this alone.
 
-Done when: a run with at least 5 claim-word answers that rest on a `stellarOrg` result is read with
-the brief, and the readers' violation and over-hedge counts are recorded; the rule changes only on
-that read.
+Done when: readers score violation and over-hedge counts on at least 5 such answers; change the rule
+only on that read.
 
 ## Family decider follow-ups
 
-Source: [family decider record](../research/audits/2026-11-14-family-decider.md). The engine question
-is closed for the search page; nothing below reopens it. The record also bore on the seven-card default (kept in
-tuning loop 2): seven lexical cards against five was +3/−0 on 64 FAM development rows.
-
 ### Hold the sealed FAM confirmation rows
 
-82 FAM confirmation questions, written without goldens and labeled by two lanes, are sealed and
-unspent (SHA-256 `07587dc04e2c993a92736d18610e4fc8fa78e04e77541863df4cfa83c85244ec`, held by the
-orchestrator; the record lists the paths). They can be used once, and only by an answer-outcome
-test: its outcome is an answer, not a card on the page, it states the decision it changes, and its
-pass rule is fixed before the rows open. A routing-reach test does not earn them: the rows a
-decider can win are reached by general search operations the base instructions already name. No
-test is planned. The set stays sealed and unspent
-([decision](rounds/2026-11-16-next-phase/DECISIONS.md), "Follow-up answers (2026-11-17)"). A second
-copy of `~/backups/fd-2026-11-14/split/` is on the Mac, held by the orchestrator.
+82 FAM confirmation questions, written without goldens and labeled by two lanes, stay sealed and
+unspent ([record](../research/audits/2026-11-14-family-decider.md);
+[decision](rounds/2026-11-16-next-phase/DECISIONS.md), "Follow-up answers (2026-11-17)"). SHA-256:
+`07587dc04e2c993a92736d18610e4fc8fa78e04e77541863df4cfa83c85244ec` (held by the orchestrator; second
+copy of `~/backups/fd-2026-11-14/split/` on the Mac).
 
-Done when: such a test is written and the rows are spent on it once, or the owner retires the set;
-record which.
+Single-use rule: spend them once, only on an answer-outcome test (not routing reach) with a
+pre-registered pass rule and named decision. No test is planned.
+
+Done when: spent once on such a test, or retired by the owner; record which.
 
 ## Golden answers
 
 ### Prove the stellar.org source
 
-The source is in (`stellarOrg.search_site` and `stellarOrg.get_page`, merged in tuning loop 2) and
-it is **unproven**: P2 called it on 3 of 58 rows (3 of the 12 `sets.tuning` rows whose golden cites
-a served stellar.org page), all calls ok, one answer used a fact from it, and no verdict moved
-because of it; 5 of the 12 rows cannot reach a cited page from the question as written. The
-`search_site` result is large (up to about 21,700 characters) and was ignored on 2 of 3 rows. Its
-harm side is clean at what T = 5 on 58 rows can see, not below it. The deployed Worker reaches
-stellar.org through the adapter's own path (checked after the #447 deploy,
-[loop 2 ledger](rounds/2026-11-15-tuning-loop-2.md)). What remains:
+`stellarOrg.search_site` and `stellarOrg.get_page` shipped in tuning loop 2
+([ledger](rounds/2026-11-15-tuning-loop-2.md)) and are **unproven**: P2 called the source on 3 of 12
+tuning rows citing stellar.org (5/12 cannot reach a cited page from the question as written); 1
+answer used a fact from it and 0 verdicts moved. `search_site` returns up to ~21,700 chars and was
+ignored on 2/3 rows. Harm is clean only down to what T=5 on 58 rows can detect.
 
-- **Routing reach (closed as accepted, owner, 2026-11-17).** Standing numbers, from the round item
-  3.3 baseline on `main` before item 5.1 and not re-measured since: top five for 8 of 40
-  off-golden questions in question form; a `stellarOrg` card displaces a non-SDF card on 0, 1 and
-  3 of 25 questions at limits 5, 7 and 10, as backfill on short pages. Both general ranker
-  mechanisms failed the no-loss rule
-  ([record](rounds/2026-11-16-next-phase/items/3.3/MEASURE.md)). A `stellarOrg`-only rule is the
-  per-slice fitting the owner ruled out. Reopen only on a production transcript where a
-  `stellarOrg` card cost an answer, not on another probe count.
-- **Algolia `pages` index.** Orchestrator evidence, 2026-11-14, read in the Algolia dashboard: of
-  nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
-  top four for about five. Whether it holds audit records is unconfirmed. Decision (round plan):
-  add depth only on a production detail-lookup failure, and then with a search-only key.
+- **Routing reach (accepted, owner 2026-11-17):** top-5 on 8/40 off-golden questions; displaces
+  non-SDF cards on 0/1/3 of 25 at limits 5/7/10 ([3.3 MEASURE.md](rounds/2026-11-16-next-phase/items/3.3/MEASURE.md)).
+  General ranker tweaks failed no-loss; no `stellarOrg`-only rule. Reopen only on a production
+  transcript where a `stellarOrg` card cost an answer.
+- **Algolia `pages` index (held):** ranked ~5/9 missed body-text phrases in top 4 (2026-11-14
+  dashboard check; audit coverage unconfirmed). Add depth only on a production detail-lookup
+  failure, using a search-only key.
 
-Done when: a run on the 12 source rows shows the source supplying a judged fact (or the owner
-accepts it as a coverage fix without a scored gain).
+Done when: a run on the 12 source rows shows the source supplying a judged fact, or the owner
+accepts it as a coverage fix without a scored gain.
 
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
@@ -335,95 +254,74 @@ them as unaudited).
 
 ### Golden follow-ups from the sls-024 and sls-029 cap review
 
-From the [review](../research/audits/2026-11-12-truth-maintenance/review-caps-fable.md):
+From [review-caps-fable.md](../research/audits/2026-11-12-truth-maintenance/review-caps-fable.md):
+reword the "state-conditional sls-024 discriminator" label on `q-live-fluxity-status-provenance`
+(grading rule holds; editing notes changes the frozen `live-data-canonical-v3` digest).
 
-At the next deliberate live-contract revision, reword the "state-conditional sls-024
-discriminator" label of `q-live-fluxity-status-provenance`. The grading rule holds; a notes edit
-changes the frozen `live-data-canonical-v3` digest. (The audit's rewrite of the DeFi market-map
-case removed the "DIA/Lightecho/Orally too" note from judge-facing text; it survives only as
-judge-blind provenance.)
-
-Done when: the live contract's next reviewed revision carries the reworded label.
+Trigger: next deliberate live-contract revision. Done when: that revision carries the reworded
+label.
 
 ### Resolve held source ownership and bounty policy
 
-The [source triage](../research/audits/2026-11-03-qa-followup/additional-source-triage.md) and
-[bounty access record](../research/audits/2026-11-03-qa-followup/bounty-policy-access.json) hold
-three corrections:
+Three corrections from [source triage](../research/audits/2026-11-03-qa-followup/additional-source-triage.md)
+and [bounty access record](../research/audits/2026-11-03-qa-followup/bounty-policy-access.json)
+remain held (do not infer from search snippets):
 
-- RWA: identify the source owner, measurement period, denominator, and component set before
-  correcting a growth rate.
-- Phoenix: identify the source owner and dated submission IDs; reconcile the headline with the
-  same award-status filter.
-- Bounty: obtain the current controlling policy and its revision before settling scope,
-  severity, or reward claims.
+- **RWA:** source owner, measurement period, denominator, and component set.
+- **Phoenix:** source owner, dated submission IDs, and award-status filter reconciliation.
+- **Bounty:** readable current controlling HackerOne policy revision.
 
-Do not infer an owner, denominator, deployment, or policy from search snippets.
-
-Held: primary evidence was unavailable on 2026-11-03 (the RWA and Phoenix pages lacked published
-source ownership, denominator, or award-status filter details, and the anonymous HackerOne policy
-page returned an application error). Trigger: primary evidence becomes readable (published owner,
-denominator, or dated submission records for RWA or Phoenix, or a readable controlling HackerOne
-policy revision), or a future `golden-truth` or `improvements` review touches one of those three
-topics.
+Held: primary evidence was unpublished or returned an application error on 2026-11-03. Trigger:
+primary evidence becomes readable, or a `golden-truth` / `improvements` review touches one of the
+three topics.
 
 Done when: primary evidence supports a reviewed correction or an explicit continued hold.
 
 ### Review the codegen-adjacent goldens by case id
 
 The [2026-08-07 codegen partner report](../research/audits/2026-08-07-codegen-partner-report.md)
-found no battery case that tests its Soroban defect classes directly. Each case below is the
-nearest one to a class, or carries a stale pointer. A lane that may open case text decides each;
-this item names ids and fields only.
+found no battery case directly testing its Soroban defect classes. Cases below are nearest matches
+or carry a stale pointer (ids and fields only):
 
 | Case id | Field | Concern |
 |---|---|---|
-| `q-zk-nullifier-storage` | golden | Closest to the persistent-collection versus entry-cap gap; not a match |
+| `q-zk-nullifier-storage` | golden | Closest to persistent-collection vs. entry-cap gap; not a match |
 | `q-soroban-wasm-size-limit` | avoid clauses | Same gap; adjacent only |
-| `q-sor-decode-hosterror-codes` | golden | Closest to the event-assertion reset gap; also adjacent to the auth-error-surface gap |
-| `q-soroban-unit-testing` | notes | Points at a case id that is not in the owned battery |
-| `q-sor-testing-negative-auth-events` | none in the owned battery | The pointer target exists only in the retired prior art; author it or reroute the pointer |
-| `q-sor-evm-to-soroban-porting` | golden | The only case entering from EVM vocabulary; a retrieval-vocabulary candidate |
+| `q-sor-decode-hosterror-codes` | golden | Closest to event-assertion reset and auth-error-surface gaps |
+| `q-soroban-unit-testing` | notes | Points at a case id absent from the owned battery |
+| `q-sor-testing-negative-auth-events` | none in owned battery | Exists only in retired prior art; author or reroute pointer |
+| `q-sor-evm-to-soroban-porting` | golden | Only EVM-vocabulary entry; retrieval-vocabulary candidate |
 
-Four topics have no owning case: the entry-cap write failure for a growing persistent collection,
-the per-call reset of test-side event reads, auth failure error remapping, and `try_*` client
-method semantics.
+Four unowned topics: entry-cap write failure on growing persistent collections, per-call reset of
+test-side event reads, auth failure error remapping, and `try_*` client method semantics.
 
-Held: reviewing existing battery cases for coverage gaps or stale pointers is not a
-maintenance-exception trigger ([`eval/qa/README.md`](../eval/qa/README.md), "Held-out split"), so
-opening any held-out or reserve case among them moves it to tuning and amends the split, and
-authoring the four missing topics changes the battery. Trigger: the next deliberate corpus-coverage
-revision.
+Held: coverage gaps and stale pointers are not maintenance-exception triggers
+([`eval/qa/README.md`](../eval/qa/README.md), "Held-out split"), so opening held-out/reserve cases
+amends the split. Trigger: next deliberate corpus-coverage revision.
 
-Done when: each row is edited through `golden-truth`, confirmed unchanged, or has its pointer
-rerouted, and each topic is authored as a case or declined with a reason.
+Done when: each row is edited via `golden-truth`, confirmed unchanged, or rerouted, and each topic
+is authored or declined with a reason.
 
 ## Improvements follow-up
 
-Recheck only when the named change or new evidence arrives. An untouched issue needs no
-reminder. The [November 5 ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding
-tables cover every finding.
+Recheck only when the named trigger fires (full per-finding tables in the
+[2026-11-05 ledger](rounds/2026-11-05-truth-maintenance.md)).
 
-- **sls-116** (stellarlight#1952; inbound handoff #427 closed 2026-11-19, round item 8.12b): three items still reproduce on
-  2026-11-17 (Scout 1.9.150) and #1952 has no maintainer reply. Next check, only after a Scout
-  release that touches SCF data or a reply on #1952: (1) `GET
-  /api/projects/search?scfAwarded=true&limit=100` at offsets 0 to 700 should name
-  `soroban-contract-source-verification-service-bax` on a row (the official page
-  `https://communityfund.stellar.org/project/soroban-contract-source-verification-service-bax`
-  shows `lastAwardedRound` 44); (2) a public endpoint should serve the owner's 27-award baseline
-  (the 1.9.150 OpenAPI has no round-count operation); (3) `peer` should carry `scfSourceUrl` and
-  `scfAsOf` (both null, rounds `[22, 26]`). Retire only when all three are sourced or explicitly
-  out of scope. Comment upstream only on a change.
-- **Scout wallet findings (2026-11-17).** Round item 1.3 reproduced both reads and filed `sls-121`
-  (5 `Live` wallet rows whose later `availabilityCheck` says the operator is gone) and `sls-122`
-  (`q=wallet` returns `coca` twice, 196 rows for `total` 195). Check the upstream issues
-  only on a Scout release that touches wallet rows or project search.
-- **Docs pull requests.** The [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) and the
-  [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) name each unmerged pull
-  request, its blocker, and its live trigger, including draft2752 and the generated-skill
-  PR3069. Recheck the pages after deployment; green checks alone close nothing. The
-  author-owned protocol PR2059 awaits review; answer substantive review without a keepalive
-  rebase.
+- **sls-116** (stellarlight#1952; inbound handoff #427 closed 2026-11-19, item 8.12b): all three
+  items reproduced on 2026-11-17 (Scout 1.9.150) with no reply. Trigger: Scout release touching SCF
+  data or reply on #1952. Check: (1) `GET /api/projects/search?scfAwarded=true&limit=100` (offsets
+  0–700) names `soroban-contract-source-verification-service-bax` (official page shows
+  `lastAwardedRound` 44); (2) a public endpoint serves the 27-award baseline; (3) `peer` carries
+  non-null `scfSourceUrl` and `scfAsOf`. Retire only when all three are sourced or declared out of
+  scope; comment upstream only on a change.
+- **sls-121, sls-122** (Scout wallet findings, 2026-11-17): 5 `Live` wallet rows with gone
+  operators (`sls-121`); `q=wallet` repeats `coca` (196 rows for `total` 195, `sls-122`). Trigger:
+  Scout release touching wallet rows or project search.
+- **Docs pull requests:** unmerged PRs, blockers, and triggers (including draft2752, generated-skill
+  PR3069, and author-owned protocol PR2059) live in the
+  [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) and
+  [continuation table](rounds/2026-11-06-remaining-sweep/docs.md). Recheck pages after deployment
+  (green checks close nothing); answer substantive review on PR2059 without keepalive rebases.
 - **Software Versions (not filed).** Protocol 30 is live on Testnet, but
   https://developers.stellar.org/docs/networks/software-versions.md lists nothing above
   Protocol 29. Upstream normally adds a version around Mainnet activation. The dated run 2.2a
@@ -432,43 +330,37 @@ tables cover every finding.
   ([ledger](rounds/2026-11-10-truth-maintenance.md)) and
   [PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md) says how. The
   orchestrator's deadline overrides the earlier "on or after 2026-12-01".
-- **ll-022, ll-023, ll-024.** The original records kept no reproducible wrong milestone,
-  preview-boundary omission, or stale venue row, and current checks do not prove those errors.
-  Before a closure or a renewed claim, obtain the original and corrected record or an owner
-  explanation ([table](rounds/2026-11-05-truth-maintenance/other.md)).
-- **cs-006.** The Paxos metadata wording still reproduces, but no public repository owns the
-  served TOML. Keep intake unclear until a metadata repository is identified or the owner
-  authorizes contact through the published support channel.
-- **sk-031.** The orphan legacy skill is still live. After the owner applies the supplied
-  workflow cleanup patch, verify both skill URLs and preserve preview deployments.
-- **Coins.ph (not filed).** Scout's partner profile describes current PHP ramps but marks itself
-  `aging` with `isCurrent: false`. File it only if the profile drops that flag and keeps the
-  claim.
+- **ll-022, ll-023, ll-024:** original records lack reproducible errors; obtain original/corrected
+  records or an owner explanation before closure or renewal
+  ([table](rounds/2026-11-05-truth-maintenance/other.md)).
+- **cs-006:** Paxos `stellar.toml` wording still reproduces with no public owning repo. Hold until
+  an intake repo is found or the owner authorizes published support contact.
+- **sk-031:** orphan legacy skill still live. Trigger: owner applies the workflow cleanup patch;
+  verify both skill URLs and preserve preview deployments.
+- **Coins.ph (not filed):** Scout partner profile describes current PHP ramps while marked `aging` /
+  `isCurrent: false`. File only if it drops that flag while keeping the claim.
 
-Done when: each triggered check has a fresh live result and an independent retirement review, or
-a precise remaining defect in its active finding.
+Done when: each triggered check has a fresh live result and independent retirement review, or a
+precise remaining defect in its active finding.
 
 ### Monitor the Horizon protocol-ceiling note
 
-The Scout DeepWiki note for `stellar/stellar-horizon` is a dated fact that goes stale at each
-protocol bump. It failed twice (`sls-087`, `sls-115`) and passed on 2026-11-12
-([round](rounds/2026-11-12-truth-maintenance.md)) and 2026-11-16 (value 30 at `scannedRef`
-`01ba44a9`, [round item 0.2](rounds/2026-11-16-next-phase/items/0.2/EXEC.md)).
+The Scout DeepWiki note for `stellar/stellar-horizon` goes stale at protocol bumps (failed as
+`sls-087` and `sls-115`; passed 2026-11-16 at value 30, `scannedRef` `01ba44a9`,
+[item 0.2](rounds/2026-11-16-next-phase/items/0.2/EXEC.md)).
 
-During each improvements or drift round, run one free `scout.explainRepo` reading against the
-local Raven server for `stellar/stellar-horizon`: "Which Horizon ingestion constant pins the
-highest supported protocol version, and what is its value?" Record the value, `generatedAt`,
-`scannedRef`, and `answerSource` in the ledger. It passes only when the answer equals the source
-value at the response's own `scannedRef`. On a failure, file a new finding and cite both
-receipts.
+Trigger: each improvements or drift round. Run one free local `scout.explainRepo` query on
+`stellar/stellar-horizon`: "Which Horizon ingestion constant pins the highest supported protocol
+version, and what is its value?" Record value, `generatedAt`, `scannedRef`, and `answerSource` in
+the ledger. Passes only when the value matches source at `scannedRef`; on failure, file a finding
+citing both receipts.
 
-The repository-recovery program behind this monitor stays rejected
-([closeout](rounds/2026-08-31-rejected-experiments-closeout.md)). A passing reading authorizes
-nothing. A new plan must cite ADR-0008, keep the 10-of-12 positive and 0-of-8 premature-detour
-gate, and pass an independent plan review. It reopens on three
-qualifying positive operation-selection misses; the Docs-versus-repository conflict stays
-monitor-only until three dated successful re-executions of the Docs-first, inspect, then one
-later `scout.explainRepo` sequence. The earlier candidate is in closed PR #102 at `6baec0a4`.
+The backing repository-recovery program stays rejected
+([closeout](rounds/2026-08-31-rejected-experiments-closeout.md); earlier candidate in closed PR
+#102 at `6baec0a4`). Passing readings authorize nothing. Reopening requires three qualifying
+positive operation-selection misses (Docs-vs-repo conflicts stay monitor-only until three dated
+successful Docs-first → inspect → `scout.explainRepo` re-executions), a reviewed plan citing
+ADR-0008, and the 10/12 positive + 0/8 premature-detour gate.
 
 Done when: a reviewed v3 plan ships, or the owner retires the recovery program.
 
@@ -489,66 +381,56 @@ Done when: the probe shows the gap closed, or a finding records it.
 ## Routing
 
 Search stays lexical-only (owner, 2026-11-03;
-[results](rounds/2026-11-03-model-ranking/results.md)). A lexical repair must not depend on
-model evidence.
+[results](rounds/2026-11-03-model-ranking/results.md)). Repairs must not depend on model evidence.
 
 ### Preserve structured routing intent across extraction caps and gate tiers
 
-The scorer flattens phrases, truncates at the first tokens, lets generic schema words and
-substrings satisfy the coverage gate, and lets five weak gated rows beat strong ungated
-evidence. About thirty lexical designs in four rounds, and eight model-ranking variants, failed
-the acceptance checks, so the current scorer stays. Trigger: owner authorization for a general scoring repair. This item
-authorizes no baseline change and no operation-specific or question-specific exception.
+The scorer flattens phrases, truncates at early tokens, lets generic schema words and substrings
+satisfy the coverage gate, and lets five weak gated rows beat strong ungated evidence. About 30
+lexical designs across four rounds ([2026-10-08](rounds/2026-10-08-maintenance.md),
+[2026-10-09](rounds/2026-10-09-backlog/routing-design/),
+[2026-10-28](rounds/2026-10-28-routing-repair.md),
+[2026-11-02](rounds/2026-11-02-routing-repair.md)) and 8 model-ranking variants failed acceptance
+checks, so the current scorer stands.
+
+Held: no baseline change or operation/question-specific exception authorized. Trigger: owner
+authorization for a general scoring repair with new mechanism evidence.
 
 Held by this item:
 
-- `GET /api/rwa` stays excluded.
-  [Issue #167](https://github.com/stellar-experimental/stellar-raven/issues/167) closed on
-  2026-11-18 as "decided: excluded by measurement". Three pre-registered answer tests returned
-  exclude: round item 6.3, result 1 and result 2
-  ([RESULTS.md](rounds/2026-11-16-next-phase/items/6.3/RESULTS.md),
-  [RESULTS-2.md](rounds/2026-11-16-next-phase/items/6.3/RESULTS-2.md)), and the card-caveat variant
-  of round item 7.2 ([RESULTS.md](rounds/2026-11-16-next-phase/items/7.2/RESULTS.md)). Re-open only
-  on a Scout `/api/rwa` schema change, a general mixed-intent routing mechanism, or an owner
-  product need. Do not re-run the A/B on routine drift; a re-test needs an owner or orchestrator
-  decision. `GET /api/quality` stays excluded (response-schema keywords caused unrelated
-  captures). `reviewSubmission`, `analyzeHackathonSubmissions`, `getHackathonSubmission`, and
-  `locateSource` stay excluded.
-- Three mixed-intent controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove the
-  markers when the repair passes.
-- Routing-gate headroom (tracked here rather than on a standing drift issue; #223 is closed): in
-  `eval/gates.json`, three holdout limits sit at their bounds: `top1` at its floor (12),
-  `top3` at its floor (26, after round item 6.2 absorbed the live Docs titles), and
-  `forbiddenCaptures` at its ceiling (11, raised from 10 for the `scout.matchPartners` removal in
-  round item 5.1; `top5` is 30 against floor 29). Any change that costs one holdout top-1, costs
-  one holdout top-3, or adds one forbidden capture fails the gate.
-- A `SKILL_DESCRIPTION_OVERRIDES` entry for `skills.stellar-dev.dapp` holds that skill's search
-  text.
-
-What the attempts established:
-
-| Round | Result |
-|---|---|
-| [2026-10-08](rounds/2026-10-08-maintenance.md) | Ten policies fail. `tokenize` splits `dApp` into `d` + `app`; short tokens prefix- and substring-match unrelated queries. |
-| [2026-10-09 design and steps 1 and 2](rounds/2026-10-09-backlog/routing-design/) | Strict whole-word coverage starves the gated tier. Whole-content anchors raise holdout forbidden captures. Rank-only schema keywords lose the Groth16 holdout row. Check 11 is a selector gap in `src/catalog/search.ts`: quota replacement cannot fire when a service is above its quota. |
-| [2026-10-28](rounds/2026-10-28-routing-repair.md) | Five designs fail; none passes check 8. The best clean parent is C2 (schema keywords add rank only within whole-token boundaries) with the stem fold scoped to the schema-support test. `test/search.test.ts:1039` holds only through a spurious schema-only `scout.getRfps` admission. |
-| [2026-11-02](rounds/2026-11-02-routing-repair.md) | Nine designs fail. `morph` token boundaries plus the schema rule fix the short-token and schema-only classes, but broad retrieval and skills recall collapse. |
-
-Next attempt: restore that recall with legitimate evidence first, then remove the spurious
-kind. Change one mechanism at a time from the accepted baseline and measure all 544 rows on the
-current and a fresh source. The acceptance helper is
-`rounds/2026-10-09-followup/routing-step1/acceptance.mjs`; its inputs exist only in the owner's
-ignored archives under `eval/results/`, so a new attempt measures its own baseline.
-
-An optional no-loss lane for that attempt: the 64 FAM development rows. They are archived in the
-branch bundle (agentpc `~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`) at ref
-`refs/heads/exp/family-decider`, path
-`.agents/rounds/2026-11-14-family-decider/sets/fam.development.discovery.json`, and in
-`~/backups/fd-2026-11-14/split/`; both copies have SHA-256
-`0246ad022163f1d67247671b8ed640d7bb61f1aec6cad65a937ffa33b56cf89c`. A second copy of the folder is
-on the Mac (orchestrator, 2026-11-17, hashes checked). Moving the rows into `eval/discovery/` is
-owed by that attempt, not before: the loader now accepts `stellarOrg`, the move changes the
-routing set, and it needs its own gate run.
+- **Excluded Scout ops (`src/policy/scout-exposure.ts`):** `GET /api/rwa` (issue #167 closed
+  2026-11-18 after three pre-registered answer tests returned exclude:
+  [6.3 RESULTS](rounds/2026-11-16-next-phase/items/6.3/RESULTS.md),
+  [RESULTS-2](rounds/2026-11-16-next-phase/items/6.3/RESULTS-2.md),
+  [7.2 RESULTS](rounds/2026-11-16-next-phase/items/7.2/RESULTS.md); reopen only on `/api/rwa`
+  schema change, general mixed-intent routing, or owner product need — never on routine drift, and
+  any re-test needs an owner or orchestrator decision),
+  `GET /api/quality`, `reviewSubmission`, `analyzeHackathonSubmissions`, `getHackathonSubmission`,
+  and `locateSource`.
+- **Builder extraction of Scout enums and examples:** `scripts/build-catalog.mjs` turns input-schema
+  enum values into `keywords` (`anchor`, `dex`, `rpc`, `indexer`) and generic `exampleQuestions`
+  tokens into `routingKeywords` (`stellar`, `building`, `use`, `show`), admitting
+  `analyzeHackathonSubmissions`, `getHackathonSubmission`, and `searchHackathonBuilds` to
+  non-hackathon pages ([evidence](rounds/2026-10-28-routing-repair/verify/final.md), O3). Fix with
+  this repair (needs the 12 checks below plus the verify lane's 22 hackathon negative probes, with
+  no graded loss).
+- **Mixed-intent controls:** three `it.fails.each` cases in `test/drift-141-routing.test.ts`; remove
+  `.fails` when the repair passes.
+- **Zero holdout headroom (`eval/gates.json`; #223 closed):** `top1` is at floor 12, `top3` at
+  floor 26, and `forbiddenCaptures` at ceiling 11 (`top5` is 30 vs. floor 29). Any single-row loss
+  or extra capture fails the gate.
+- **`SKILL_DESCRIPTION_OVERRIDES`** holds `skills.stellar-dev.dapp`'s search text.
+- **Known test/selector traps from prior rounds:** `test/search.test.ts` (`rfp` case) relies on
+  schema-only `scout.getRfps` admission; check 11 is a selector gap in `src/catalog/search.ts`
+  (quota replacement cannot fire above quota). Restore legitimate recall before removing spurious
+  schema/substring admission; measure all 544 rows on current and fresh sources (helper:
+  `rounds/2026-10-09-followup/routing-step1/acceptance.mjs`, measuring its own baseline).
+- **Optional no-loss lane (64 FAM dev rows):** archived in agentpc bundle
+  `~/backups/raven-next-phase/raven-branches-2026-11-16.bundle` (`refs/heads/exp/family-decider`,
+  `.agents/rounds/2026-11-14-family-decider/sets/fam.development.discovery.json`) and
+  `~/backups/fd-2026-11-14/split/` (Mac copy held by orchestrator), SHA-256
+  `0246ad022163f1d67247671b8ed640d7bb61f1aec6cad65a937ffa33b56cf89c`. Move into `eval/discovery/`
+  only as part of that attempt.
 
 Acceptance checks:
 
@@ -560,223 +442,151 @@ Acceptance checks:
 6. Strong Docs evidence remains eligible after five weak gated Scout candidates.
 7. All eight regression rows meet their clean grades.
 8. A general RWA query reaches `scout.getRwaAssets`, while unrelated Friendbot, RPC, WASM,
-   simulation, and balance questions do not capture it. The proposed answer-level form ("the
-   target stays rank 1 and answers do not degrade") was tested in round items 6.3 and 7.2 and not adopted,
-   because the pre-registered rule returned exclude.
+   simulation, and balance questions do not capture it.
 9. The leaderboard and RFP improvements remain.
-10. The legacy, skills, and holdout routing gates pass. The extended diagnostic shows no
-    regression.
-11. A controlled-vocabulary operation reaches the top five for general directory-taxonomy
-    queries.
-12. On a fresh Scout snapshot (1.9.71 or later), the four real 1.9.71 regressions meet their
-    main grades, `reviewSubmission` does not rank on non-hackathon questions, and the absorb
-    needs only a manifest-fingerprint re-baseline.
+10. The legacy, skills, and holdout routing gates pass, with no extended-diagnostic regression.
+11. A controlled-vocabulary operation reaches the top five for general directory-taxonomy queries.
+12. On a fresh Scout snapshot (1.9.71+), the four real 1.9.71 regressions meet main grades,
+    `reviewSubmission` does not rank on non-hackathon questions, and absorb needs only a
+    manifest-fingerprint re-baseline.
 
-Done when: all twelve checks pass in a reviewed general scoring change.
-
-### Stop schema enum values and example tokens from admitting new Scout operations
-
-Own-repo extraction, not Scout text, admits `analyzeHackathonSubmissions`,
-`getHackathonSubmission`, and `searchHackathonBuilds` to non-hackathon pages. The builder turns
-input-schema enum values into entry `keywords` (`anchor`, `dex`, `rpc`, `indexer`) and extracts
-generic tokens from Scout `exampleQuestions` into `routingKeywords` (`stellar`, `building`,
-`use`, `show`). Treat it with the repair above; a narrow builder rule needs the same twelve
-checks ([evidence](rounds/2026-10-28-routing-repair/verify/final.md), O3).
-
-Done when: those operations no longer enter non-hackathon pages in the 544-row corpus and the
-verify lane's 22 hackathon negative probes, with no graded loss.
+Done when: all twelve checks pass in a reviewed general scoring/builder change, and
+`analyzeHackathonSubmissions`, `getHackathonSubmission`, and `searchHackathonBuilds` no longer enter
+non-hackathon pages in the 544-row corpus or the verify lane's 22 hackathon negative probes, with no
+graded loss.
 
 ### `search` does not surface the research lane for protocol-history questions
 
-`scout.searchResearch` holds every fact for `q-protocol-24-whisk-incident`, but `search` does
-not rank it in the top ten; `stellarDocs.*` wins. Three reviewed mechanisms failed and the
-three-attempt box is spent
-([last record](rounds/2026-09-02-protocol-history-free-evidence.md)). The owner set the v2
-contracts on 2026-09-03 ([decisions](rounds/2026-09-03-owner-decisions.md)): 19 required, nine
-forbidden, and four neutral cases.
+`scout.searchResearch` does not rank in top 10 for protocol-history or standards questions
+(`stellarDocs.*` wins). Three reviewed attempts failed
+([last record](rounds/2026-09-02-protocol-history-free-evidence.md)); the v2 contracts
+([decisions](rounds/2026-09-03-owner-decisions.md)) specify 19 required, 9 forbidden, and 4 neutral
+cases.
 
-`npm run eval:protocol-history` stops as `source-expired`, because both v2 contracts pin an old
-manifest epoch. That stop is correct. Do not repin the v2 epoch. Run the command as a free
-diagnostic after a change to `src/catalog/**`, `catalog/manifest.json`,
-`scripts/build-catalog.mjs`, or `src/catalog/vendor/search-scoring.ts`, and record its output.
+`npm run eval:protocol-history` stops as `source-expired` (v2 contracts pin an old manifest epoch);
+do not repin them. Run it as a free diagnostic after changes to `src/catalog/**`,
+`catalog/manifest.json`, `scripts/build-catalog.mjs`, or `src/catalog/vendor/search-scoring.ts` and
+record its output.
 
-A new attempt needs one of:
+Held: owner ruled on 2026-11-16 (decision 6(a)) that the 2026-11-14 baseline did not meet PH4 and
+PH3 does not open. Reopen rules:
 
-- **PH3, a new non-card evidence box.** The owner opens it for corpus-derived route vocabulary
-  or another named non-card source, with a new independently authored contract on an accepted
-  source epoch. The brief carries every pre-registration item from the attempt-three brief,
-  section 16, and passes independent review before any fetch.
-- **PH4, new live routing evidence.** Two cases show the same absent-lane pattern, from
-  different question families and entities, neither paraphrasing a frozen positive, each with a
-  dated transcript. PH4 opens a note here and a token-reachability audit; the owner then decides
-  on PH3.
+- **PH4 (new live routing evidence):** two dated transcripts from different question families and
+  entities showing the same absent-lane pattern, neither paraphrasing a frozen positive. Opens a
+  token-reachability audit; owner then decides on PH3.
+- **PH3 (new non-card evidence box):** owner-opened for corpus-derived route vocabulary or another
+  non-card source, with an independently authored contract on an accepted epoch and a
+  pre-registration brief carrying every item from the attempt-three brief §16 that passes
+  independent review before any fetch.
 
-The upstream card and the Scout inventory have both changed since the contracts froze (the PH1
-trigger). That allows the free diagnostic and authorizes no mechanism.
+The **identifier pointer** is part of this hold. Loop 2's host-pointer trial R did not ship (21%
+per-fire follow rate vs. >33% bar; 0 traced verdict moves; archived in
+`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`, `refs/heads/tune/loop-2-runs`,
+commits `a49ee918`, `940dc013`, replay `3d65d0ff`). Carry two fixes into any later attempt: select
+identifiers from the question rather than the first three seen, and do not fire on a `get_doc_page`
+path already being read. A later attempt also needs a different surface and a case where the exact
+row supplies judged facts beyond a preamble.
 
-The 2026-11-14 baseline ([BASELINE.md](rounds/2026-11-14-baseline-tuning/BASELINE.md)) is the PH4
-evidence offered: on nine standards questions from three families, seven never called
-`scout.searchResearch`, and `search` returned it on none of the eight that searched.
-
-**Held.** The owner ruled on 2026-11-16 that PH4 is not met and PH3 does not open (decision 6(a)).
-What reopens this item is PH4 evidence of the kind stated above, then an owner ruling on PH3.
-
-Row evidence (2026-11-17, round item 1.3): `q-sep-45-contract-auth` needs the SEP-45 status
-("Draft"). No Docs page states it (`/docs/platforms/anchor-platform/sep-guide/sep45` gives the
-SEP-10 relation only). The SEP file in `stellar/stellar-protocol` states `Status: Draft`, `Version:
-0.1.1`, `Updated: 2025-12-16`, and `scout.searchResearch` returns that preamble at rank 1 for
-"SEP-45 Stellar Web Authentication for Contract Accounts status". The fact is reached when the agent
-calls research; the golden still matches the SEP file. No finding: the SEP file owns the status.
-
-The identifier pointer is part of the same hold. Tuning arm 2 marks the document a research query
-names by identifier, but it can act only when the agent makes that query. Tuning loop 2 tried a
-host pointer in the `execute` result and **did not ship it**. R (17 identifier rows, two passes,
-Claude Sonnet 5.5): the sentence fired 42 times and agents followed it 9 times (21% per fire
-against a bar above 33%; the replay baseline without it is 4%), every follow returned an exact row
-(9 of 9), and no verdict moved by a traced cause. Delivery was exact and the model's behaviour was
-the limit. Two general defects to carry into any later attempt: the cap of three keeps the first
-three identifiers, not the ones the question names (on one row it dropped the two the question is
-about), and a token read from a `get_doc_page` path string fires for a page the agent is already
-reading. The implementation is archived in the branch bundle (agentpc
-`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`, ref `refs/heads/tune/loop-2-runs`:
-commits `a49ee918`, `940dc013`, replay tooling `3d65d0ff`); restore with
-`git fetch <bundle> <ref>:<ref>`.
-
-A later attempt needs a different surface (the sentence was already in the result the agent reads
-next) and a reason to expect the exact row to matter: in R it supplied a header (status, version,
-dates, authors) and no judged fact, so a higher follow rate alone would not have moved a verdict.
-This is a routing and instruction problem, not a result-marking one.
-
-Done when: a reviewed mechanism passes both contracts (19 of 19 required top-five hits, zero
-forbidden captures) and all routing gates. The bar a later pointer attempt must meet: a reviewed
-general mechanism (no list of standards, no per-case vocabulary) raises the per-fire follow rate
-above 33% on rows that name a SEP or CAP, and at least two different rows go up by a trace to the
-exact row it led to, with no grade, cost, or trap regression, on a read of at least 17 rows
-twice.
+Done when: a reviewed mechanism passes both contracts (19/19 required top-5, 0 forbidden) and all
+routing gates. For a pointer attempt: a general mechanism raises per-fire follow rate >33% on
+SEP/CAP rows and lifts ≥2 distinct rows by traced cause, with no grade, cost, or trap regression,
+over ≥17 rows run twice.
 
 ### Stop identity substitution on spelling-corrected matches
 
-On `q-edge-strupey-ambiguous-stellar-history`, one run called Stroopy.AI "almost certainly" the
-asked entity although the result carried `caveat: "unverified-match"` and no record linked the
-names; another ended with an unscoped absence claim
-([result](rounds/2026-10-10-weekend/answer-style/result-v2.md)). Scout's own `didYouMean` path
-already attaches the caveat and needs no change.
+On `q-edge-strupey-ambiguous-stellar-history`, one run treated Stroopy.AI as the asked entity
+despite Scout's `caveat: "unverified-match"`
+([result](rounds/2026-10-10-weekend/answer-style/result-v2.md)). Scout's `didYouMean` path needs no
+change.
 
-Held: single-row residual risk from the 2026-10-13 answer-style measurement (Scout's `didYouMean`
-path already attaches `caveat: "unverified-match"`, and a general adapter or result change is
-model-facing and requires paid abstention and absence verification; no third tuning loop is
-planned). Trigger: a second distinct ambiguous-entity case or production transcript shows a caller
+Held: single-row residual risk, model-facing fix requires paid verification, and no third tuning
+loop is planned. Trigger: a second distinct ambiguous-entity case or production transcript
 presenting an `unverified-match` result as the asked entity, or the next deliberate answer-style or
-adapter-envelope revision. Then design a general mechanism, in result data or adapter behavior and
-not a per-question rule, that keeps a corrected-name match from being presented as the asked
-entity.
+adapter-envelope revision.
 
-Done when: a reviewed measurement shows both runs of the row say the identity is unverified or
-ask for context, with no regression in the abstention or absence slices.
+Done when: a reviewed general mechanism (no per-question rule) makes both runs flag identity as
+unverified or ask for context, with no abstention/absence regression.
 
 ### Re-check the upstream codemode short-token repair
 
-`@cloudflare/codemode` routes falsely on short-token prefixes (`cs-001`,
-[Cloudflare #2296](https://github.com/cloudflare/agents/issues/2296)). It reproduces through
-0.5.6, and Raven has an ungated copy of the same rule. Reverse-prefix deletion
-and Porter stemming failed routing coverage; do not replace them with query exceptions or a
-tuned token-length threshold.
+Two upstream `@cloudflare/codemode` bugs reproduce through `0.5.6`:
 
-`cs-012` ([Cloudflare #2897](https://github.com/cloudflare/agents/issues/2897)) :
-through 0.5.6, a non-Error throw reaches Raven as `error: undefined` and is logged `ok: true`.
-Raven has no local workaround. A fix such as
-[#2898](https://github.com/cloudflare/agents/pull/2898) (open, unmerged) makes a non-Error throw
-`ok: false` with `String(err)`, which is model-facing when it ships, and reserves the provider names
-`String`, `Object`, `Proxy`, `JSON`, `Math`, `Uint8Array`, `ArrayBuffer`, `btoa` and `atob`; none
-collides with Raven's. When a release carries the fix, re-run the item 5.2 scratch test (source in
-[`items/5.2/EXEC.md`](rounds/2026-11-16-next-phase/items/5.2/EXEC.md), "Reproduction") and retire
-`cs-012` under the `improvements-pipeline` skill.
+- **`cs-001`** ([Cloudflare #2296](https://github.com/cloudflare/agents/issues/2296)): false routing
+  on short-token prefixes (Raven mirrors the rule; reverse-prefix deletion and Porter stemming
+  failed coverage — do not use query exceptions or a tuned length threshold).
+- **`cs-012`** ([Cloudflare #2897](https://github.com/cloudflare/agents/issues/2897)): non-Error
+  throws reach Raven as `error: undefined` (`ok: true`; no local workaround). Upstream
+  [#2898](https://github.com/cloudflare/agents/pull/2898) (open) turns them into `ok: false` with
+  `String(err)` (model-facing) and reserves `String`, `Object`, `Proxy`, `JSON`, `Math`,
+  `Uint8Array`, `ArrayBuffer`, `btoa`, `atob` (none collides with Raven).
 
-Done when: an upstream or general local repair passes the original triggers, the positive
-controls, and Raven's routing gates.
+Trigger: `@cloudflare/codemode` release past `0.5.6` carrying either fix. For `cs-012`, re-run the
+[item 5.2 scratch repro](rounds/2026-11-16-next-phase/items/5.2/EXEC.md) and retire `cs-012` via
+`improvements-pipeline`.
+
+Done when: upstream or general local fixes pass original triggers, positive controls, and routing
+gates, and both findings are retired.
 
 ### Revisit general directory admission after the rejected D3 experiment
 
-The D3 deletion failed its answer gate and did not ship. The directory field-placement
-exception remains a known design risk. Do not repeat D3 or add entity-specific exceptions
-([evidence](../research/audits/2026-09-17-routing-audit/m1-c1-passkeys-loss-review.md)).
+D3 failed its answer gate on 2026-09-17 and did not ship; the directory field-placement exception
+remains a known design risk ([evidence](../research/audits/2026-09-17-routing-audit/m1-c1-passkeys-loss-review.md)).
+Do not repeat D3 or add entity-specific exceptions.
 
-Held: D3 failed its answer gate on 2026-09-17 and the general routing repair stays held
-("Priorities"; "Preserve structured routing intent across extraction caps and gate tiers").
-Trigger: owner authorization for a general scoring repair with new mechanism evidence (same trigger
-as "Preserve structured routing intent across extraction caps and gate tiers"), or a routing defect
-traced directly to the directory field-placement exception.
+Held: same trigger as "Preserve structured routing intent across extraction caps and gate tiers",
+or a routing defect traced directly to the directory field-placement exception.
 
 Done when: a general mechanism passes frozen routing controls and independently reviewed answer
 checks.
 
 ### Re-evaluate Scout exposure after a routing-contract change
 
-Trigger: a new Scout inventory changes the `x-routing`, description, request schema, or response
-schema of `GET /api/quality` or `GET /api/verify`. A version-only change does not count.
-`scout.verifyClaim` causes no routing regression on its own, but it ships only after the general
-Scout routing regressions have an independent resolution
-([review](rounds/2026-09-03-truth-maintenance/final-routing-review-terra.md)).
+Trigger: a new Scout inventory changes `x-routing`, description, request schema, or response schema
+of `GET /api/quality` or `GET /api/verify` (version-only bumps do not count). `scout.verifyClaim`
+ships only after general Scout routing regressions resolve
+([review](rounds/2026-09-03-truth-maintenance/final-routing-review-terra.md)). Last fired
+2026-11-16 (Scout 1.9.150): `GET /api/quality` stayed excluded
+([SCOUT-EXPOSURE.md](rounds/2026-11-16-next-phase/items/0.2/SCOUT-EXPOSURE.md)).
 
-For a candidate: rebuild the catalog and generated surfaces, run the focused exposure tests and
-`npm run eval:routing -- --gate` without changing `eval/gates.json`, and record the manifest
-hash and all routing lane totals against the accepted surface.
+When triggered: rebuild catalog/surfaces, run exposure tests and `npm run eval:routing -- --gate`
+without changing `eval/gates.json`, and record manifest hash and lane totals.
 
-Last fired 2026-11-16 (Scout 1.9.150 changed the `GET /api/quality` response schema): quality stays
-excluded ([SCOUT-EXPOSURE.md](rounds/2026-11-16-next-phase/items/0.2/SCOUT-EXPOSURE.md)).
-
-Done when: a changed contract passes the existing gate and an independent review accepts the
-exposure. Otherwise both stay in `EXCLUDED_SCOUT_OPS`.
+Done when: a changed contract passes the gate and independent review; otherwise both stay in
+`EXCLUDED_SCOUT_OPS`.
 
 ### Re-expose `scout.matchPartners` when `sls-123` is fixed
 
-`scout.matchPartners` is removed from the exposed surface (2026-11-17, round item 5.1; the owner's
-authorization is quoted in `eval/gates.json` `evidence.notes`). No observed call has succeeded since
-2026-10-26: "AI not configured" on 2026-10-26, HTTP 502 on 2026-11-02 (the resolved `sls-097`), 503
-`unavailable` on 2026-11-17 through Raven and direct on Scout 1.9.150. The adapter's 503 hint stays
-and routes to `scout.getPartners`. The removal moved the frozen holdout lane's forbidden captures
-from 10 to 11, and the owner authorized the ceiling 11 for this removal only.
+`scout.matchPartners` was excluded on 2026-11-17 (round item 5.1; `eval/gates.json` `evidence.notes`
+quotes owner authorization for raising holdout `forbiddenCaptures` ceiling 10→11 for this removal
+only). The adapter's 503 hint stays and routes to `scout.getPartners`.
 
-Trigger: `sls-123`
-([stellarlight#1976](https://github.com/Stellar-Light/stellarlight/issues/1976)) is verified live:
-one POST of the command recorded in the finding returns 200 with `matches`. That POST is
-model-backed on the upstream's account, so one call per verification is enough.
+Trigger: `sls-123` ([stellarlight#1976](https://github.com/Stellar-Light/stellarlight/issues/1976))
+verified live (one POST from the finding returns 200 with `matches`; single call only — upstream
+model-backed).
 
-Re-exposure then:
+Re-exposure steps:
+1. Delete `["POST /api/partners/match", "matchPartners"],` from `EXCLUDED_SCOUT_OPERATIONS`.
+2. Reverse edits in [item 5.1 EXEC.md](rounds/2026-11-16-next-phase/items/5.1/EXEC.md).
+3. Run per-case routing comparison on both manifests.
+4. Restore holdout ceiling to 10 if comparison shows 10 captures; otherwise report the count.
 
-1. deletes the `["POST /api/partners/match", "matchPartners"],` line from
-   `EXCLUDED_SCOUT_OPERATIONS`;
-2. reverses the edits listed in round item 5.1
-   [EXEC.md](rounds/2026-11-16-next-phase/items/5.1/EXEC.md);
-3. re-runs the per-case routing comparison on both manifests;
-4. restores the holdout ceiling to 10, but only if the comparison shows 10 captures; otherwise it
-   reports the count.
-
-Done when: the operation is exposed again through those four steps, or the owner decides to keep it
-removed and this item is deleted.
+Done when: re-exposed via steps 1–4, or owner decides to keep it removed and deletes this item.
 
 ## Executor and tool surface
 
 ### Recheck `sd-059` after upstream action on Mintlify Discovery search
 
 `sd-059` ([stellar/stellar-docs#2995](https://github.com/stellar/stellar-docs/issues/2995)):
-Mintlify Discovery search rarely returns `<ResponseField>` text, so a result-code page often comes
-back as its title-and-description chunk only. The 2026-11-03 raw-candidate comparison ruled out
-Raven's adapter filter (expected leaf page absent from all 50 raw Discovery candidates for 7 of 7
-bare/verbatim probes; 153 of 190 result-code tokens in raw top 5, matching adapter top 5
-identically), while the site's public MCP search returned the expected page first for 7 of 7 and in
-top 5 for 190 of 190. Fusing or replacing Discovery with the site MCP backend was tested and
-rejected on 2026-11-03 (fusion added 1,257 to 1,424 ms at p95 against a 600 ms limit; full
-replacement lost broad docs-page hits). Tuning arm 1 shipped the `stellarDocs.get_doc_page`
-page-read pointer for this class (#446; the owner kept it as a named exception to the
-pre-registered rule, [measurement](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
+Mintlify Discovery rarely indexes `<ResponseField>` text. Raw-candidate comparisons ruled out
+Raven's filter, site-MCP fusion/replacement failed latency/recall checks (2026-11-03), and tuning
+arm 1 shipped the `stellarDocs.get_doc_page` pointer (#446,
+[ARM-1.md](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
 
-Trigger: upstream action on `sd-059` (`stellar/stellar-docs#2995`, still open; last re-checked
-2026-11-09). Then re-run the Discovery check (`op_bad_signer`, `pageSize: 50`, Set Options
-result-code page in top 5) and the 190-token check recorded in
+Trigger: upstream action on `stellar/stellar-docs#2995` (open; last checked 2026-11-09). Re-run the
+`op_bad_signer` (`pageSize: 50`) and 190-token checks in
 [`improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md`](../improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md).
 
-Done when: `sd-059` is fixed upstream and retired under the `improvements-pipeline` skill.
+Done when: `sd-059` is fixed upstream and retired under `improvements-pipeline`.
 
 ### Fix Docs search misses on canonical pages
 
@@ -808,693 +618,535 @@ and a merged general fix or a filed finding.
 
 ### Clarify the model-facing `codemode.describe` response shape
 
-`codemode.describe` returns `{ ok: true, signature, inputSchema, ... }` at the top level, while
-service calls use `{ ok: true, data }`. A production check recovered from reading
-`spec.data.signature`
-([record](../research/audits/2026-11-09-playground-product-decision.md)). Decide between
-model-facing documentation and a forward-only shape change, and measure that change on its own.
+`codemode.describe` returns `{ ok: true, signature, inputSchema, ... }` at top level, while service
+calls use `{ ok: true, data }`. One 2026-11-09 Playground check hit and recovered from reading
+`spec.data.signature` ([record](../research/audits/2026-11-09-playground-product-decision.md)).
 
-Held: single recovered tool failure on 2026-11-09 (`noToolFailures` on Terra; the next call
-succeeded and the final answer passed). Changing either the model-facing tool description or the
-`codemode.describe` return shape is model-facing and needs its own paid measurement, which one
-recovered event does not justify. Trigger: repeated `spec.data.*` (or equivalent top-level vs.
-`.data` shape) errors in Playground or QA transcripts or production logs, or the next measured
-change to `src/mcp/tools.ts`, `src/demo/tools.ts`, or `src/executor/providers.ts` that already
-budgets a model-facing eval.
+Held: single recovered failure does not justify a standalone model-facing eval. Trigger: repeated
+`spec.data.*` shape errors in Playground/QA transcripts or production logs, or the next measured
+change to `src/mcp/tools.ts`, `src/demo/tools.ts`, or `src/executor/providers.ts`.
 
-Done when: one reviewed, measured correction makes the shape clear to models.
+Done when: one reviewed, measured change (docs or forward-only shape change) clarifies the shape.
 
 ### Triage the runtime and client gaps from the HackMeridian telemetry
 
-Each needs a check before a fix. The review's evidence is in the owner's private snapshot
-`2026-10-26-hackmeridian` (`usage/README.md`).
+Private evidence: `2026-10-26-hackmeridian` (`usage/README.md`). Check each before fixing:
 
-- `recoveryHint` appears on most successful executes, so agents probably ignore it. Show it only
-  for empty, thin, or conflicting results. Round item 3.1's production read could not read
-  the key: it was not in the capped key list. The Workers Logs read in "Decide the `execute`
-  timeout from one more Workers Logs read" searches for it by name.
-- Clients: Grok CLI never completed OAuth (every `/mcp` request got 401), Copilot CLI looped on
-  404 (protocol 2026-07-28), and one browser looped on the consent page with "CSRF token
-  mismatch". Reproduce each against current production, because the 2026-11-18 oauth-provider 1.x
-  deploy changed the OAuth path; "Watch sign-in rejects after the oauth-provider 1.x deploy" holds
-  the new reject events. Round item 4.1 ran Codex and Grok with no auth against the local server
-  and both completed: Grok speaks 2026-07-28 and the local server answers `server/discover` with
-  200, which points the Grok 401 loop at the OAuth path rather than the protocol. The 3.1 read
-  could not attribute the loops: user-agent queries returned no rows, and `/mcp` 401 responses are
-  a large share of requests whatever the client. The user-agent read in "Decide the `execute`
-  timeout from one more Workers Logs read" can.
-- Codex and Grok findings (round item 4.1, [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md)):
-  Codex printed both tool descriptions in 9 of 24 rows, so most runs reached `search` and `execute`
-  from the catalogue line alone, and in 3 rows sent `execute` without `code`; Codex passed `limit` on
-  4 of 38 `search` calls, Grok on every call. Check whether a stronger first sentence of the server
-  instructions or an argument hint in the catalogue-visible text helps Codex, as a routing/description
-  question with its own measurement. Grok's 20,000-byte clip cost no answer (61 events, none lost) but
-  cost spend and time.
+- **`recoveryHint`:** emitted on most successful executes, so agents likely ignore it; consider
+  limiting to empty, thin, or conflicting results. Read the `recoveryHint` key in the 2026-11-25
+  Workers Logs session ("Decide the `execute` timeout from one more Workers Logs read").
+- **Client loops:** Grok CLI 401 loop (local no-auth run in item 4.1 succeeded on protocol
+  2026-07-28, pointing at OAuth), Copilot CLI 404 loop, and browser CSRF mismatch on consent.
+  Reproduce against post-1.x production and attribute via the 2026-11-25 user-agent read (see also
+  "Watch sign-in rejects after the oauth-provider 1.x deploy").
+- **Codex / Grok ergonomics ([item 4.1 RECORD.md](rounds/2026-11-16-next-phase/items/4.1/RECORD.md)):**
+  Codex often relied on the catalogue line alone and sent `execute` without `code` in 3/24 rows.
+  Test a stronger first instruction line or catalogue argument hint only as a measured
+  routing/description change. Grok's 20,000-byte clip lost 0/61 answers (spend/time only).
 
 Done when: each bullet has a merged fix or a recorded "no change" decision.
 
 ### Explain the soft-empty and skipped-write anomalies from the production read
 
-Round item 3.1 saw two things it was not asked to measure:
+From round item 3.1:
 
-- `lumenloop.get_scf_submissions` returns soft-empty on most calls, and `scout.getRepoTrust` on most
-  of its (few) calls. A soft-empty is inconclusive, not absence, so a caller that stops there may
-  answer wrongly. Check which arguments produce them (a round or year filter that matches nothing,
-  a repository Scout does not track) and whether the hint should name a broader call.
-- A large share of `artifact_write` events carry `ok = false`. The code logs a skipped write as
-  `ok = false` with a `skipped` reason, and a thrown write with `errorName`; neither field was
-  readable in the first read.
+- `lumenloop.get_scf_submissions` and `scout.getRepoTrust` returned soft-empty on most calls. Check
+  triggering arguments via live probes (query text is not logged) and whether hints should suggest a
+  broader call.
+- Many `artifact_write` events logged `ok = false` (skipped writes log `skipped`; thrown writes log
+  `errorName`).
 
-Next: read the `skipped` and `errorName` values in the Workers Logs read named in "Decide the
-`execute` timeout from one more Workers Logs read", and sample the soft-empty calls' `op` events by operation
-and `caveat` (no query text is logged, so reproduce with live probes).
+Next: read `skipped` and `errorName` in the 2026-11-25 Workers Logs session ("Decide the `execute`
+timeout from one more Workers Logs read"), and sample soft-empty `op` events by operation and
+`caveat`.
 
-Done when: each anomaly has a cause, and a merged fix or a recorded "no change" decision.
+Done when: each anomaly has a cause and a merged fix or recorded "no change" decision.
 
 ### Fix the `getChangelog` ranking trap for release questions
 
-Raven cannot answer "what changed, with dates" or "which version is current". Scout's release
-index has dated rows for stellar-cli, stellar-core, js-stellar-sdk, and rs-soroban-sdk, but not
-stellar-rpc. No source gives the current npm, JSR, or crates version of common packages or the
-latest OpenZeppelin stellar-contracts release. Search also ranks `scout.getChangelog` (Scout's
-own API log) above `scout.searchResearch` with `source: "release"`.
+Raven lacks current npm/JSR/crates versions, latest OpenZeppelin stellar-contracts releases, and
+`stellar-rpc` release dates; `search` also ranks `scout.getChangelog` (Scout's API log) above
+`scout.searchResearch` (`source: "release"`). Owner decision 2 owns the release-source choice; this
+item owns the ranking trap independently ("proceeds either way" in decision 2 means neither branch
+resolves or blocks it).
 
-The source choice is the owner's ("Owner decisions", decision 2). This item holds the own-repo
-part, the ranking trap, which is independent of that source choice ("proceeds either way" in
-decision 2 means neither branch of decision 2 resolves or blocks this trap). The production read
-(round item 3.1) gives an upper bound only: history questions reach `scout.searchResearch` often,
-and `scout.getChangelog` ranks first in few searches, so the trap touches few callers and the fix
-is low value. Query text is not logged, so silence is "no measured demand", not absence. The fix
-needs a general mechanism or a description change that passes `npm run eval:routing -- --gate`
-with no holdout loss; no operation-specific exception. The test is probes Q5, R23, R33, and R35 of
-the HackMeridian review.
+Held: no measured demand in round item 3.1 (few first-place `scout.getChangelog` searches overall;
+upper bound only since query text is not logged), the held general routing repair, and zero holdout
+headroom in `eval/gates.json` (`top1` 12, `top3` 26, `forbiddenCaptures` 11). Trigger: owner
+authorization for the general scoring repair ("Preserve structured routing intent across extraction
+caps and gate tiers"), an Owner decision 2 choice that adds a release source and revisits
+release-query routing, or production/query-log evidence of release callers hitting
+`scout.getChangelog`.
 
-Held: independent of Owner decision 2's source choice, but held on its own evidence — no measured
-demand in round item 3.1 (few first-place `scout.getChangelog` searches overall, upper bound only
-because query text is not logged), the held general routing repair, and zero holdout headroom in
-`eval/gates.json` (`top1` 12, `top3` 26, `forbiddenCaptures` 11). Trigger: owner authorization for
-the general scoring repair ("Preserve structured routing intent across extraction caps and gate
-tiers"), an owner decision on decision 2 that adds a release source and revisits release-query
-routing, or production or query-log evidence showing release callers hitting `scout.getChangelog`.
+Fix must be a general mechanism or description change (no operation-specific exception) passing
+`npm run eval:routing -- --gate` with no holdout loss (tested on HackMeridian probes Q5, R23, R33,
+R35).
 
-Done when: the ranking trap is fixed through a gated general change, and either the four probes
-pass again or the owner's decision leaves release data upstream and the request is filed in
-`improvements/`.
+Done when: the trap is fixed via a gated general change, and either the four probes pass or Owner
+decision 2 leaves release data upstream and the request is filed in `improvements/`.
 
 ## Authentication follow-ups
 
 ### Watch sign-in rejects after the oauth-provider 1.x deploy
 
-Deploy `9f01ae3e` (#484, 2026-11-18, round item 7.3 PR 4) changed the OAuth path:
+Deploy `9f01ae3e` (#484, 2026-11-18,
+[DESIGN.md](rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md)) switched to per-origin
+providers (`<origin>/mcp`), a native-callback allowlist (`https`, loopback `http`, `claude:`,
+`cursor:`, `warp:`), `404` on root `/.well-known/oauth-protected-resource`, and dropped bare-origin
+grants (<10, all Devin CLI — accepted under 7.3 delegation). Immediate 150s post-deploy tail showed
+0 target rejects (one `token_not_found`).
 
-- One provider per served origin, with the resource `<origin>/mcp`.
-- A native-callback allowlist: https, loopback http, `claude:`, `cursor:` and `warp:`.
-- The root `/.well-known/oauth-protected-resource` document now answers `404`.
-- Grants bound to the bare origin `https://raven.stellar.org` (fewer than 10, all Devin CLI) are no
-  longer honored. They get `401` on the access token and `invalid_grant` on refresh. A client that
-  follows the `401` challenge or sends no `resource` signs in once; one that re-derives the bare
-  origin gets `invalid_target` and cannot sign in. This is the known bare-origin class
-  ([design](rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md), D1).
+Next (priority 2, 2026-11-25 Mac Workers Logs read; 7-day window): check for:
 
-The orchestrator accepted the bare-origin loss under the owner's 7.3 delegation ("decide and execute
-what sticks"). The owner does not use Devin. Devin CLI is one of many third-party dynamic client
-registration clients.
-
-What to watch in Workers Logs:
-
-- `auth_reject` with `redirect_refused:<scheme>`: a real client's scheme may be missing from
-  `NATIVE_REDIRECT_SCHEMES` (`src/auth/redirects.ts`). `redirect_refused:http` (non-loopback http)
-  and `redirect_refused:other` (unparseable) are not native-scheme leads (`redirectSchemeToken`,
-  `src/auth/redirects.ts`).
-- `oauth_error` with `grant_audience_unbound`, `token_audience_unbound` or `invalid_target`, beyond
+- `auth_reject` with `redirect_refused:<scheme>` (missing native scheme in `NATIVE_REDIRECT_SCHEMES`,
+  `src/auth/redirects.ts`; ignore `http` and `other`). Add schemes by name only for real clients.
+- `oauth_error` with `grant_audience_unbound`, `token_audience_unbound`, or `invalid_target` beyond
   the known bare-origin class.
 - `legacy_grant_resource_mismatch` and `resource_not_configured`.
 
-Baseline: the orchestrator's 150-second tail right after the deploy showed none of these, only one
-`token_not_found`.
+Denominator rule: auth logs only failures, so count `/authorize`, `/token`, and `/register` by
+status if platform rows are readable (see "Decide the `execute` timeout from one more Workers Logs
+read"); otherwise note rejects-only and run one positive control (fresh Claude Code sign-in via
+`claude:`).
 
-Auth logs only failures. A week with no rejects looks the same as a week with no sign-in attempts,
-so the read needs a denominator. Count `/authorize`, `/token` and `/register` requests by status if
-the platform rows can be read (the row-type question in "Decide the `execute` timeout from one more
-Workers Logs read"). If they cannot, the record says the read shows rejects only, and one positive
-control is added: a fresh Claude Code sign-in through the `claude:` callback.
+Rollback target: Worker version `fe3708cb` (storage-compatible; strands CIMD `private_key_jwt`
+clients).
 
-A refused scheme is a lead, not proof of demand. Add a scheme by name, and only for a real client.
-
-Rollback target: Worker version `fe3708cb`. It is storage-compatible, but it strands a CIMD
-`private_key_jwt` client.
-
-Done when: one read on 2026-11-25 shows no unexplained rejects, or each one is fixed or recorded.
-Workers Logs keep at most 7 days, so a later read loses deploy days; if the read slips, the record
-states the window it read.
+Done when: the 2026-11-25 read shows no unexplained rejects (recording exact window if slipped), or
+each is fixed or recorded.
 
 ## Observability and retention
 
 ### Keep 30 days of observability data, including queries and responses
 
 Owner, 2026-11-18: "30 is an allowance, today we have 7. I'd like to convert to actually doing 30
-everywhere. Do this work carefully, or plan for it maybe for now in TODO." This item is that plan.
+everywhere. Do this work carefully, or plan for it maybe for now in TODO."
 
 Current state: `/terms` (`src/site.ts`, "Operational and quality logs" and "Your choices";
-counsel-owned, the outer bound of what the service may do, which the owner treats as a 30-day
-allowance) says the Service stores observability data, "which may include the queries submitted and
-the responses returned, for 30 days, after which it is deleted", with opt-out and account deletion
-on request. Production currently keeps less than that:
+counsel-owned, treated by the owner as a 30-day allowance) permits storing observability data,
+"which may include the queries submitted and the responses returned, for 30 days, after which it is
+deleted", with opt-out and account deletion on request. Production today keeps less:
 
-- Workers Logs, traces and request metadata: at most 7 days (Cloudflare's platform limit; it cannot
-  be raised in Workers Logs itself).
-- AI Gateway request metadata: Cloudflare AI Gateway's row-count policy (`docs/operations.md`,
-  "Data retention"; payload collection is off per request in `src/demo/model-config.ts`).
-- No query or response text is logged. Several TODO items rely on that fact ("query text is not
-  logged, so silence is no measured demand"); 30-day capture would make demand measurable.
-- Oversized `execute` artifacts in R2 `stellar-raven-artifacts`: 7 days. These are a result cache,
-  not observability; whether they move to 30 days is a decision inside this item.
-- D1 usage rows (13 months) and OAuth records are not observability and do not change.
+- Workers Logs/traces/request metadata: ≤7 days (Cloudflare platform limit).
+- AI Gateway request metadata: row-count policy (`docs/operations.md#data-retention`; payload
+  collection off in `src/demo/model-config.ts`).
+- No query or response text is logged (several TODO items assume this).
+- R2 `stellar-raven-artifacts`: 7 days (result cache; whether to extend to 30 days is part of this
+  design). D1 usage rows (13 months) and OAuth records do not change.
 
-`docs/operations.md` ("Data retention") and `src/auth/retention.ts` own the periods;
-[`ideas/observability-r2-retention.md`](../ideas/observability-r2-retention.md) has an earlier
-Logpush-to-R2 sketch.
+References: `docs/operations.md#data-retention`, `src/auth/retention.ts`, and
+[`ideas/observability-r2-retention.md`](../ideas/observability-r2-retention.md).
 
-Design questions to settle before code (a design study, a Fable review, and a Codex frontier
-security review, because this stores user content):
+Design study required before code (with Fable review and Codex frontier security review, since this
+stores user content):
 
-1. Transport: Workers Logpush to an R2 bucket with a 30-day lifecycle rule, or the existing tail
-   consumer (`stellar-raven-usage`) writing to R2. Cost estimated from current request volume.
-2. Capture set: `search` queries, `execute` code, tool responses (with a size cap and a pointer for
-   artifacts), Playground turns. What is never captured: credentials, tokens, email addresses, IP
-   addresses (match the usage-statistics promise unless the owner decides otherwise).
-3. Opt-out, which `/terms` already promises: a per-account flag keyed by the hashed WorkOS subject,
-   checked in the capture path, with a test.
-4. Deletion on request: delete one account's records across the archive by its hashed subject.
-5. Access: private bucket, read-only analysis tooling, and the AGENTS.md rule that production data
-   and counts are never committed.
-6. One retention constant in `src/auth/retention.ts`, enforced by the bucket lifecycle and checked by
+1. Transport & cost: Workers Logpush to an R2 bucket (30-day lifecycle) vs. tail consumer
+   (`stellar-raven-usage`) writing to R2.
+2. Capture set: `search` queries, `execute` code, capped tool responses (with artifact pointers),
+   Playground turns. Never capture credentials or tokens (hard rule); also exclude emails and IPs
+   (matching the usage-statistics promise unless the owner decides otherwise).
+3. Opt-out: per-account flag keyed by hashed WorkOS subject, enforced in capture path with a test.
+4. Deletion on request: delete one account's archive records by hashed subject.
+5. Access: private bucket, read-only analysis tooling, never commit production data/counts.
+6. Single retention constant in `src/auth/retention.ts`, enforced by bucket lifecycle and
    `test/retention.test.ts`.
 
-The work stays inside the `/terms` text as written, so no counsel review is needed; capturing
-anything the terms do not name would need the legal lane first.
+Stays within `/terms` as written (no counsel review unless expanding beyond `/terms`).
 
-Next: an owner go ("Owner decisions", decision 5) to start the design study. It touches no file
-the dated runs read.
+Trigger: Owner decision 5 go (touches no dated-run files).
 
-Done when: the Raven-controlled observability archive keeps 30 days and deletes after it (native
-Workers Logs stay at Cloudflare's <=7-day platform limit and AI Gateway metadata stays on its
-row-count policy), opt-out and per-account deletion are implemented and tested, `docs/operations.md`,
-`src/auth/retention.ts`, `/terms` and `usage/README.md` agree, the TODO items that assume "query
-text is not logged" are updated, the idea file is folded or deleted, and a read 31 days after the
-deploy shows the oldest archived records gone.
+Done when: Raven's archive retains 30 days and deletes after 30 days (platform Workers Logs stay
+≤7 days; AI Gateway stays on row-count policy), opt-out and per-account deletion are tested,
+`docs/operations.md`, `src/auth/retention.ts`, `/terms`, and `usage/README.md` agree, TODO items
+assuming no query logging are updated, the idea file is folded/deleted, and a day-31 read confirms
+expiry.
 
 ## Eval instruments
 
 ### Method note: same-surface verdict noise, and the judge-tier cap
 
-Standing note, not a task. Two runs of the same 50 panel rows on the same surface differed on 17 rows (8
-up, 9 down, net 1) in the first measurement
-([step 0 to step 0-prime](rounds/2026-11-14-baseline-tuning/STEP-0-PRIME.md)); 7 of 35 rows differed once
-the judge tier matched. Part of that was the judge-tier cap: the stored run capped boundary panels at
-34 and left 10 eligible rows on one judge; the repeat capped at 50. Five of the eight ups in the
-arm 3 run were panel-to-single moves. Rules that follow:
+Standing note, not a task. Same-surface 50-row reruns differed on 17 rows (8 up, 9 down; 7/35 once
+judge tier matched; [STEP-0-PRIME.md](rounds/2026-11-14-baseline-tuning/STEP-0-PRIME.md)), partly
+from mismatched `--max-panel-cases` caps. Standing rules:
 
-- Fix `--max-panel-cases` and the stability register for every run that will be compared, so no
-  boundary-eligible row is skipped on one side only. Report the tier of every changed row and the
-  net on tier-matched rows beside the all-rows net.
-- A change smaller than the null is not a result: model the null as independent row flips (50 rows,
-  flip rate 0.12 to 0.20 gives a 95th-percentile net of 4 to 5; 0.34 gives 7), and trace each moved
-  row to a cause in the transcript before counting it.
-- A verdict is one sample from one judge tier. Do not read a single row's move as an effect.
+- Fix `--max-panel-cases` and the stability register across compared runs; report every changed
+  row's tier and the tier-matched net beside the all-rows net.
+- Treat changes inside the independent-flip null as noise (50 rows at 0.12–0.20 flip rate gives
+  95th-percentile net 4–5; 0.34 gives 7); trace every moved row in its transcript before counting.
+- Never read a single row's move as an effect.
 
-What is already enforced: `eval/qa/paired-verdict.mjs` (`comparisonProblems`) already refuses any
-pair whose tiering tuple differs — including `policy`, `judgePanel`, `stabilityThreshold`,
-`maxPanelCases`, `maxPanelCasesSource`, `defaultPanelPolicy`, and `stabilityRegisterSha256` — for
-cross-revision runs (and requires at least 100 eligible rows for a statistical verdict), and
-`eval/qa/run-qa.mjs --judge-stored` refuses to mix a different `--max-panel-cases` into a stored
-artifact. What remains: smaller or ad-hoc panel comparisons (`eval/qa/heldout-read.mjs`,
-`eval/qa/compare-architecture-ab.mjs`, or manual 50-row panel reads) do not enforce a matching
-tiering tuple, and no same-surface repeat of a full panel (50+ rows, unlike the narrow 17-row
-identifier trial R in tuning loop 2) at one fixed tiering tuple on the current surface has measured
-the panel null directly.
+Already enforced: `eval/qa/paired-verdict.mjs` (`comparisonProblems`) rejects mismatched
+`tieringTuple` fields (`policy`, `judgePanel`, `stabilityThreshold`, `maxPanelCases`,
+`maxPanelCasesSource`, `defaultPanelPolicy`, `stabilityRegisterSha256`) on cross-revision runs
+(requiring ≥100 eligible rows for a statistical verdict), and `eval/qa/run-qa.mjs --judge-stored`
+rejects mismatched `--max-panel-cases`. Remaining: sub-100 comparison paths
+(`eval/qa/heldout-read.mjs`, `eval/qa/compare-architecture-ab.mjs`, manual 50-row reads) do not
+enforce a matching tiering tuple, and no same-surface full-panel repeat (50+ rows, unlike loop 2's
+17-row trial R) at a fixed tiering tuple on the current surface has measured the panel null directly.
 
-Done when: either the sub-100 comparison paths (`heldout-read.mjs`, `compare-architecture-ab.mjs`)
-enforce the full matching judge-tiering tuple (`tieringTuple` in `eval/qa/paired-verdict.mjs`,
-including panel mode and policy, `maxPanelCases`, and `stabilityRegisterSha256`) and these standing
-noise rules move to `eval/EVALS.md`, or a same-surface repeat of a full panel (50+ rows) at one
-fixed tiering tuple on the current surface measures the null directly. Delete this note then.
+Done when: either `heldout-read.mjs` and `compare-architecture-ab.mjs` enforce the full matching
+`tieringTuple` and these rules move to `eval/EVALS.md`, or a same-surface full-panel repeat (50+
+rows) at one fixed tiering tuple measures the null directly. Delete this note then.
 
 ### Keep OpenCode out of client diagnostics
 
-OpenCode stays out of client diagnostics (owner, 2026-11-17): no decision depends on it. Round item
-4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) measured GPT-6.1 Terra in the Codex
-CLI and Grok 4.7 in the Grok CLI. Reopen on a production signal: OpenCode in the user-agent read,
-or a reported OpenCode failure. Then run Codex Terra through the ChatGPT login, smoke first, under
-its own cap, after the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)
-and the smoke rule are rewritten for that provider.
+OpenCode stays out of client diagnostics (owner, 2026-11-17; item 4.1 measured Codex CLI and Grok
+CLI, [RECORD.md](rounds/2026-11-16-next-phase/items/4.1/RECORD.md)). ChatGPT and SuperGrok OAuth
+logins work on Mac and agentpc (checked 2026-11-17); Anthropic is API-key-only in OpenCode and
+excluded by rule.
 
-Logins, checked 2026-11-17 with one trivial prompt each: ChatGPT and SuperGrok are logged in to
-OpenCode on the Mac and on agentpc. OpenCode offers Anthropic only through an API key, which the
-owner's rule excludes. Any OpenCode run starts with the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing)
-("OpenCode probe"), which checks that the provider's login is `oauth` and that no API-key provider is
-enabled. "Build a subscription second judge on OpenCode when a decision needs one" is the one OpenCode
-use the owner's rule leaves open.
+Trigger: OpenCode appears in the production user-agent read or a reported OpenCode failure. Then
+run the [`eval/EVALS.md#model-call-billing`](../eval/EVALS.md#model-call-billing) OpenCode OAuth
+probe first, rewrite [opencode-mac.md](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)
+for ChatGPT, and run smoke-first under a cap. (The one allowed OpenCode use today is "Build a
+subscription second judge on OpenCode when a decision needs one".)
+
+Done when: triggered diagnostic completes or owner retires OpenCode support.
 
 ### Build a subscription second judge on OpenCode when a decision needs one
 
-The repository has one judge: Claude Sonnet on the Claude Code subscription (`eval/qa/judge.mjs`).
-Round item 8.6 removed the AI Gateway judge, which existed because the Codex CLI could not be shown
-tool-blind (#387). No current decision needs judge-vendor diversity, so nothing is built. Checked
-on agentpc, 2026-11-18 and 2026-11-19 (Codex offline with no model call; one Grok probe call):
+One judge exists today: Claude Sonnet via Claude Code (`eval/qa/judge.mjs`; item 8.6 removed AI
+Gateway judging). No current decision needs vendor diversity. Agentpc CLI checks (2026-11-18/19):
 
-| CLI | Tool control | Tool-blind? |
+| CLI | Tool-blind? | Evidence |
 |---|---|---|
-| Codex (`codex-cli 0.169.0`) | `--disable <FEATURE>` and per-feature switches; no all-tools-off control | No. Offline `codex debug prompt-input` with every plausible `--disable` flag, web search disabled and an empty `CODEX_HOME` still defines the `exec` host, `wait`, `request_user_input` and the `collaboration` tools (2026-11-19, no model call; the command and tool list are in [EXEC.md](rounds/2026-11-16-next-phase/items/8.7/EXEC.md)). A deny-list also goes stale when a release adds a tool. Stays unsupported |
-| Grok (`grok 1.0.88`) | `--tools` (an allowlist), `--disallowed-tools`, `--deny` | No. Probe 2026-11-19 ([PROBE.md](rounds/2026-11-16-next-phase/items/8.7/probes/PROBE.md)): with `--tools ""`, `--deny 'mcp__*'` and no web search, `read_file` returned the canary and the full built-in set stayed defined. Not execution-blind. A different configuration (a non-empty allowlist of one inert built-in, or a permission mode that refuses every tool) would need its own pre-registered probe, and a Grok version change reopens this row |
-| OpenCode (`v2.3.0`) | Agent `permission` rules; an agent with `permission: {"*": "deny"}` resolves to a deny-all rule in `opencode debug agents --standalone` | Yes at the execution boundary (config verified offline). Tool definitions may still reach the model |
+| Codex (`0.169.0`) | No (unsupported) | Offline `codex debug prompt-input` still exposes `exec`, `wait`, `request_user_input`, `collaboration` with all `--disable` flags ([8.7 EXEC.md](rounds/2026-11-16-next-phase/items/8.7/EXEC.md)) |
+| Grok (`1.0.88`) | No | Probe with `--tools ""`, `--deny 'mcp__*'` still executed `read_file` ([PROBE.md](rounds/2026-11-16-next-phase/items/8.7/probes/PROBE.md)); version change or non-empty allowlist needs a new pre-registered probe |
+| OpenCode (`v2.3.0`) | Yes at execution boundary | `permission: {"*": "deny"}` resolves to deny-all in `opencode debug agents --standalone` (tool defs may still reach model) |
 
-Trigger: a decision that needs a second, non-Claude judge, such as a cross-arm grade difference that
-a second Claude family cannot settle. Then, under its own cap:
+Trigger: a decision requiring a non-Claude judge (e.g., cross-arm dispute a second Claude family
+cannot settle). Steps under a cap:
+1. Run the [`eval/EVALS.md#model-call-billing`](../eval/EVALS.md#model-call-billing) OAuth probe
+   for `openai` (ChatGPT) or `xai` (SuperGrok); confirm model via `opencode models --standalone`.
+2. Define a `judge` agent with `permission: {"*": "deny"}`, verify via `opencode debug agents
+   --standalone`, and run `--standalone -m <provider>/<model> --agent judge`.
+3. Calibrate on the 7 `npm run eval:qa:selftest` fixtures.
+4. Verify `opencode.db` has zero tool parts for the session after every run.
 
-1. Run the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing) for `openai` (ChatGPT) or
-   `xai` (SuperGrok), and confirm the exact model in `opencode models --standalone`.
-2. Define a `judge` agent with `permission: {"*": "deny"}`, check it with `opencode debug agents
-   --standalone`, and launch with `--standalone -m <provider>/<model> --agent judge`.
-3. Grade the seven fixtures behind `npm run eval:qa:selftest` as calibration.
-4. After every run, check that `opencode.db` holds no tool part for the session.
-
-Done when: the judge passes the calibration under its own cap and the after-run check is
-clean, or the decision is made without it. Delete this item then.
+Done when: calibration passes with a clean after-run check, or the decision settles without it.
 
 ### Close the remaining claim-support gaps of judge pack p9
 
-The judge uses pack `p9` ([result](rounds/2026-10-12-pack-p9/result-p9.md)). Known limits:
+Pack `p9` ([result-p9.md](rounds/2026-10-12-pack-p9/result-p9.md)) has known limits:
 
-- The November 3 model sweep reported an 85-row tag list cut to 82 rows in judge evidence, with
-  false wrong verdicts on `q-ti-vocab-project-tags-live`
-  ([ledger](rounds/2026-11-03-playground-model-sweep.md)). The 2026-11-14 audit retired that
-  case as Raven mechanics, but a long list can still be truncated. Before another
-  model-selection round, recover the transcript, compare its rendered pack, and repair any
-  confirmed truncation.
-- Field and unit limits: Etherfuse shows 5 of 7 records, stablecoin issuers 41 of 42, and
-  ERC-8004 0 of 2.
-- Five control rows lose 1 to 3 answer probes against p8.
-- The R8-1 sentence scope is unresolved.
-- The round follow-up "Check what the judge saw before changing how it weighs cited text" may
-  add a cited-text gap here.
-- Judges see capped transcript text and claim-anchored packs, while agents read full payloads
-  through `codemode.artifact.read`, so live-computed aggregates ("N of M events") stay
-  unanchorable. A pre-cap evidence sidecar would close it at the root: `run-qa.mjs` captures
-  uncapped `execute` payloads (or dev R2 artifact bodies) into a gitignored per-stamp sidecar, and
-  the pack builder prefers the sidecar over the capped transcript. Without it, the first break is
-  count and aggregation claims on live digest cases. This is a runner change and a pack-version
-  change, so it needs its own reviewed measurement.
+- **Long-list truncation:** an 85-row tag list clipped to 82 rows in the Nov 3 sweep
+  ([ledger](rounds/2026-11-03-playground-model-sweep.md)); before another model-selection round,
+  inspect the rendered pack and repair confirmed truncation.
+- **Field/unit limits & probe losses:** Etherfuse 5/7 records, stablecoin issuers 41/42, ERC-8004
+  0/2; 5 control rows lose 1–3 probes vs. p8; R8-1 sentence scope unresolved.
+- **Capped-transcript vs. artifact gap:** agents read full payloads via `codemode.artifact.read`
+  while judges see capped transcripts, leaving live aggregates ("N of M") unanchorable. Root fix: a
+  gitignored per-stamp pre-cap evidence sidecar in `run-qa.mjs` preferred by the pack builder
+  (runner + pack-version change; needs reviewed measurement).
+- **Cited-text input check (from `fp-2026-11-12`):** the round harness called correctly quoted
+  facts "fabricated" in ~2% of prototype `retrieve`/`read` answers and 0% of arm A (`search` +
+  `execute`). `eval/qa/evidence-pack.mjs` omits source-basis blocks for `freshness: stable` cases,
+  and non-`execute` sources had no block. Before revising `p9`/rubric, reviving a non-`execute`
+  prototype, or if a cited-fact dispute appears on the committed QA judge, inspect the exact stored
+  judge prompt to separate harness input, pack, and rubric causes (confirming disputes disappear
+  without grading unsupported claims up).
 
-Done when: a reviewed later pack closes these gaps with a capped measurement, or the owner
-accepts them as the standing limits of p9.
+Held: no pack revision is scheduled. Trigger: before another model-selection round (to inspect the
+rendered pack and repair confirmed truncation), next deliberate `p9` revision, revival of a
+non-`execute` prototype, or a cited-fact dispute on the committed judge.
+
+Done when: a reviewed, measured later pack closes these gaps, or the owner accepts them as standing
+`p9` limits.
 
 ### Decide whether a sourced summary error matches must-avoid "unsupported memory"
 
-Two of three judges matched a candidate's misread directory status to the must-avoid item "Do
-NOT claim unsupported memory is a source-supported current observation", which forces `wrong`
-under rubric `v2.11`. The saved evidence does not show memory (review R8, PR #264). A rubric or
-prompt change that separates a misread source from unsupported memory is a judging-semantics
-change: it needs the paid seven-call self-test, an independent review, and a paired re-judge.
-It fits the same change as the judge-evidence item in the round follow-ups.
+In review R8 (PR #264), 2/3 judges matched a misread directory status to must-avoid "Do NOT claim
+unsupported memory is a source-supported current observation" (forcing `wrong` under rubric
+`v2.11`), though saved evidence showed no memory. Separating misread sources from unsupported memory
+is a judging-semantics change (paid 7-call self-test, independent review, paired re-judge).
 
-Held: single historical row (review R8, PR #264), and changing rubric `v2.11` is a
-judging-semantics change not worth running alone. Trigger: the next deliberate revision to judge
-rubric `v2.11` or judge pack `p9` (alongside "Check what the judge saw before changing how it
-weighs cited text" and "Close the remaining claim-support gaps of judge pack p9"), or another
-judged run where a sourced summary misread is matched to the unsupported-memory avoid clause.
+Held: single historical row, not worth a standalone rubric change. Trigger: next deliberate revision
+to rubric `v2.11` or judge pack `p9` (alongside "Close the remaining claim-support gaps of judge
+pack p9"), or another judged run matching a sourced misread to unsupported memory.
 
-Done when: a reviewed decision is recorded, and any rubric change has its measurement.
+Done when: a reviewed decision is recorded, with measurement if the rubric changes.
 
 ### Reconcile the QA answering prompt with out-of-scope goldens
 
-The answering prompt asks for a plain, brief out-of-scope answer (`eval/qa/run-qa.mjs`), while
-goldens such as `q-edge-oos-solana-vs-aptos` and `q-raph-stolen-wallet-recovery` require
-decision support or acknowledgment. The second absorbed `q-n3-wallet-hacked-support-redirect` in
-the 2026-11-14 audit. The delegated October 1 adjudication keeps both
-([record](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)); the owner can veto it. A
-prompt change changes the implementation hash and needs a reviewed decision and measurement.
+`eval/qa/run-qa.mjs` asks for brief out-of-scope refusals, while goldens like
+`q-edge-oos-solana-vs-aptos` and `q-raph-stolen-wallet-recovery` require decision support or
+acknowledgment. The delegated 2026-10-01 adjudication keeps both
+([record](rounds/2026-10-01-backlog-closeout/owner-adjudications.md), owner veto open).
 
-Held: the delegated 2026-10-01 adjudication keeps both unchanged (owner veto open), and editing the
-answering prompt changes `qaImplementationSha256` and requires a paid before/after measurement.
-Trigger: an owner veto of the 2026-10-01 adjudication, a future answering-prompt revision that
-already moves `qaImplementationSha256`, or repeated out-of-scope grading failures in a judged run
-traced to the brief-refusal instruction.
+Held: editing the prompt changes `qaImplementationSha256` and requires paid before/after
+measurement. Trigger: owner veto of the 2026-10-01 adjudication, a prompt revision already moving
+`qaImplementationSha256`, or repeated out-of-scope failures traced to the brief-refusal rule.
 
-Done when: a reviewed decision changes the prompt with a measured before and after on the
-out-of-scope cases, or records why the prompt stays.
+Done when: a reviewed decision measures a prompt change on out-of-scope cases or records why it
+stays.
 
 ### Monitor Raven capability-boundary offers
 
-Three reviewed QA cases offered a later Raven lookup by G-address or transaction hash, which
-Raven does not expose. Monitor-only by owner decision
-([decisions](rounds/2026-09-03-owner-decisions.md),
-[adjudications](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)). The control case
-`q-jutsu-check-account-history` asks for public lookup guidance; a valid mechanism must not
-suppress it.
+Three reviewed QA cases offered a later Raven lookup by G-address or tx hash (unexposed).
+Monitor-only by owner decision ([decisions](rounds/2026-09-03-owner-decisions.md),
+[adjudications](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)); any future fix must not
+suppress public lookup guidance (`q-jutsu-check-account-history`).
 
-Reopen a free cause audit after a production occurrence, a transcript with an attempted
-account-scoped operation, model-facing prose that advertises the capability, or a new distinct
-QA case. A fired trigger allows free scans, a plan, and an independent plan review; a diagnostic
-and a headline sample each run under their own caps. Do not add another QA-prompt wording
-layer or copy case facts into a prompt.
+Trigger: production occurrence, transcript attempting an account-scoped op, model-facing prose
+advertising it, or a new distinct QA case. Reopens a free cause audit and reviewed plan (no extra
+QA-prompt layer or case facts in prompts); paid diagnostics run under their own caps.
 
-Done when: the owner retires the monitor, or a fired trigger leads to a reviewed resolution.
+Done when: owner retires the monitor or a fired trigger reaches a reviewed resolution.
 
 ### Monitor Friendbot network-context synthesis
 
-`q-edge-send-me-free-xlm` called Friendbot Testnet-only with no tool call, twice. Stellar Docs
-distinguish Testnet, Futurenet, and local Quickstart. One answering failure is not a finding. A
-repeat of the same case does not fire this monitor.
+`q-edge-send-me-free-xlm` twice called Friendbot Testnet-only without a tool call (Docs distinguish
+Testnet, Futurenet, and local Quickstart). Single-case repeats do not fire this monitor.
 
-Done when: the same defect appears in a second unrelated case (a different question family and
-primary service), a contract mismatch appears, or trace evidence shows the prompt requests the
-wrong behavior. Record each recurrence with its case ID, result stamp, and transcript.
+Trigger & done when: the same defect recurs in a second unrelated case (different question family
+and primary service), a contract mismatch appears, or traces show the prompt asks for it. Record
+recurrences with case ID, stamp, and transcript.
 
 ### Move the compiled case files into `eval/qa/compiled/`
 
-`eval/qa/cases.json`, `sample.json` and `tool-cases.json` sit where an unguarded session's
-`rg -g '*.json'` glob can reach them. The hook denies that glob in Claude Code, Codex, Grok and
-Antigravity where it is active (`eval/qa/README.md`, "Searching without reading case text"), but a
-session without the hook is not stopped. Moving them closes that hole at the source. About 30
-references change.
+`eval/qa/cases.json`, `sample.json`, and `tool-cases.json` sit where an unguarded `rg -g '*.json'`
+can reach them (hooks block this only where active; see `eval/qa/README.md`, "Searching without
+reading case text"). Moving them closes the hole (~30 references).
 
-Trigger: after every dated run and follow-up has merged, and `systemctl --user list-timers` on
-agentpc shows no `raven-dated` or `raven-watchdog` unit. The dated runs read the current paths
-(`items/1.4/dated/PRESTAGE.md`, `launch-dated-lead.sh`, `watchdog-dated.sh`, `sibling-check.mjs`),
-and so do the installed copies under `~/.local/share/raven-dated/`. A run that cannot show its
-event schedules a follow-up, so the last merge can fall after 2026-12-04.
+Trigger (priority 4): after every dated run and follow-up merges and `systemctl --user list-timers`
+on agentpc shows no `raven-dated` or `raven-watchdog` unit (dated scripts and
+`~/.local/share/raven-dated/` read current paths).
 
-Done when: no `rg -g '*.json'` file entry reaches the three files from the repo root, and the hook
-and `.ignore` tests are updated.
+Done when: `rg -g '*.json'` from repo root reaches none of the three files, and hook + `.ignore`
+tests are updated.
 
 ### Tag confirmation-only rows in the agent discovery runner and the agentic workflow
 
-`eval/run-routing.mjs`, `eval/run-protocol-history.mjs` (and
-`eval/lib/protocol-history-report.mjs`), `eval/discovery/run-discovery.mjs`, and
-`eval/discovery/run-replay.mjs` already import `eval/lib/confirmation-only.mjs`.
-`eval/discovery/run-agent-discovery.mjs` (which prints per-row outcomes to stdout),
-`eval/discovery/classify-misses.mjs` (which prints only `{ outPath, counts }` to stdout while
-writing untagged `rows` to its JSON file), and the agentic workflow
-(`eval/agentic/workflow-agentic-routing.js`, `eval/agentic/capture-proxy.mjs`, and
-`eval/agentic/reconcile-capture.mjs`) do not tag or hide a row that matches a QA headline
-question, although `eval/routing-qa-overlap.mjs` lists `discovery` and `agentic` sets. Both guides
-([`eval/discovery/README.md`](../eval/discovery/README.md),
-[`eval/agentic/README.md`](../eval/agentic/README.md)) state this and prescribe counts-only
-reporting.
+`eval/run-routing.mjs`, `eval/run-protocol-history.mjs` (`eval/lib/protocol-history-report.mjs`),
+`eval/discovery/run-discovery.mjs`, and `eval/discovery/run-replay.mjs` import
+`eval/lib/confirmation-only.mjs`. `eval/discovery/run-agent-discovery.mjs` (prints per-row stdout),
+`eval/discovery/classify-misses.mjs` (stdout is `{ outPath, counts }` only; JSON writes untagged
+`rows`), and `eval/agentic/{workflow-agentic-routing.js,capture-proxy.mjs,reconcile-capture.mjs}`
+do not, though both guides ([`eval/discovery/README.md`](../eval/discovery/README.md),
+[`eval/agentic/README.md`](../eval/agentic/README.md)) mandate counts-only reporting.
 
-Held: neither paid diagnostic (`run-agent-discovery.mjs` or `workflow-agentic-routing.js`) is
-scheduled to run, and `classify-misses.mjs` already limits console output to aggregate counts.
-Trigger: before the next paid run of `eval/discovery/run-agent-discovery.mjs` or the agentic
-workflow, or before inspecting per-row `classify-misses.mjs` output (unless the owner decides the
-counts-only guide rule is enough and deletes this item). Then wire `eval/lib/confirmation-only.mjs`
-into those paths so a listed row prints `confirmation-only` in place of its outcome, with the same
-fail-closed behavior as the one-shot runner.
+Held: neither paid diagnostic is scheduled and `classify-misses.mjs` stdout is counts-only. Trigger:
+before the next paid run of `run-agent-discovery.mjs` or the agentic workflow, or before inspecting
+per-row `classify-misses.mjs` output (unless owner accepts the guide rule). Wire
+`confirmation-only.mjs` fail-closed so listed rows print `confirmation-only`.
 
-Done when: every runner that replays a listed row tags it, or the owner accepts the guide rule.
+Done when: every runner replaying listed rows tags them, or owner accepts the guide rule.
 
 ### Run the judge self-test on the resolved judge model
 
-The QA judge default is the Claude Code alias `sonnet` (item 8.3), so it moved from `claude-sonnet-5`
-to the newest Sonnet (`claude-sonnet-5-5` on 2026-11-18). The paid seven-case self-test
-(`npm run eval:qa:selftest`) has never graded that model. Item 8.3 made no paid call, so it could not
-close this.
+The QA judge defaults to Claude Code alias `sonnet` (resolving to `claude-sonnet-5-5` as of
+2026-11-18) and launches with `--setting-sources ""`. The paid 7-case `npm run eval:qa:selftest` has
+not graded that model or launch flag yet.
 
-Trigger: the first headline judged run, or any run whose verdicts will be compared. Run the self-test
-under its own cap first, and let that run set the new baseline (`eval/EVALS.md`, rule 7).
-The self-test requires an exact `--judge-model` and refuses an alias: resolve `sonnet` first (the
-roster's one-call `modelUsage` read), pass that ID, and each candidate fails if its verdict reports
-another model. The call record has an exact key set and no model field, so record the exact ID beside
-the summary. Repeat it whenever the resolved judge model moves.
+Trigger: first headline judged run or any run with comparable verdicts (also repeat whenever the
+resolved judge ID moves). Resolve `sonnet` via `modelUsage`, pass the exact `--judge-model` ID
+(aliases are refused), run under a cap to set the new baseline (`eval/EVALS.md`, rule 7), and record
+the resolved ID beside the summary.
 
-The judge also launches with `--setting-sources ""` since item 8.6, which the same self-test covers.
-
-Done when: the self-test passes under its own cap and its record names the resolved judge
-ID.
+Done when: self-test passes under its cap with the resolved judge ID recorded.
 
 ### Bump the Playground catalog IDs when the AI Gateway lists a newer model
 
-No provider offers a family alias, so `DEMO_CATALOG_LATEST` in `src/demo/model-config.ts` (Terra,
-Haiku, Grok) names exact AI Gateway catalog IDs (item 8.3). The gauntlet default follows
-`DEMO_MODELS`, the shipped primary and fallback.
+`DEMO_CATALOG_LATEST` in `src/demo/model-config.ts` pins exact AI Gateway IDs for Terra, Haiku, and
+Grok (no provider offers a family alias).
 
-Trigger: the AI Gateway catalog lists a newer Terra, Haiku or Grok. Owner: the orchestrator,
-when it next reads the catalog. Bump the constant. Check `DEMO_ANTHROPIC_5X_MODEL` in the same
-change: it matches generation 5 only, and an unmatched Claude ID silently loses the
-adaptive-thinking options. A new primary or fallback
-model is a Playground change, so run the gauntlet on the candidate first
+Trigger: AI Gateway lists a newer Terra, Haiku, or Grok (owner: orchestrator on next catalog read).
+Bump the constant and check `DEMO_ANTHROPIC_5X_MODEL` (matches gen 5 only; an unmatched Claude ID
+silently drops adaptive thinking). Run the Playground gauntlet first for any new primary/fallback
 (`eval/playground/README.md`).
 
-Done when: no trigger remains open. Delete this item then and add it back at the next trigger.
+Done when: no trigger remains open (delete and re-add at next trigger).
 
 ## Documentation follow-ups
 
 ### Apply the item 8.2 deferred documentation changes after run 2.2c merges
 
-Round item 8.2 audited the living documents. It left these changes for after run 2.2c has merged
-(about 2026-12-04), because the dated runs read `AGENTS.md`, `golden-truth`, `improvements-pipeline`,
-`eval/qa/README.md` and the TODO anchors at launch. This item waits for the orchestrator's approval
-of the list; do not apply it before then. The list is the "Approval list" point 3 in the item's
-[RECONCILE.md](rounds/2026-11-16-next-phase/items/8.2/RECONCILE.md):
+Deferred from round item 8.2 until run 2.2c merges (~2026-12-04), because dated runs read
+`AGENTS.md`, `golden-truth`, `improvements-pipeline`, `eval/qa/README.md`, and TODO anchors. Waits
+on orchestrator approval of "Approval list" point 3 in
+[8.2 RECONCILE.md](rounds/2026-11-16-next-phase/items/8.2/RECONCILE.md):
 
-- The `CLAUDE.md` prohibition (the fact "there is no `CLAUDE.md`" already landed).
-- O-10: one statement of posting authority across `AGENTS.md` and the skills. Deploy authority
-  already reads one way (round item 8.8, owner 2026-11-19): deploy without asking under the
-  `AGENTS.md` owner delegation.
-- O-27: define owner, lead, orchestrator and lane once in `AGENTS.md` "Coordination".
-- O-30 (the `wrangler kv` usage sentences move to `docs/operations.md`), O-32 to O-38 (move or
-  reword `AGENTS.md` rules that are orchestrator handoff detail), and O-40 (shorten the Solo rule).
-- C-17: record the playground gauntlet's own Wrangler per model as an exception to "do not start a
-  second Wrangler process", or let the gauntlet reuse a server.
+- `CLAUDE.md` prohibition ("there is no `CLAUDE.md`" already landed).
+- O-10: one statement of posting authority across `AGENTS.md` and skills (deploy authority is
+  already unified).
+- O-27: define owner, lead, orchestrator, and lane once in `AGENTS.md` "Coordination".
+- O-30 (move `wrangler kv` rules to `docs/operations.md`), O-32–O-38 (move/reword orchestrator
+  handoff rules in `AGENTS.md`), O-40 (shorten Solo rule).
+- C-17: document the playground gauntlet's per-model Wrangler exception or let it reuse a server.
 - "File and response size come second" in `AGENTS.md` "Spend and evidence".
-- B-12 (declined as superseded), B-13, B-14 and the "Raven scoping" sentence in
-  `improvements-pipeline`, and the `golden-truth` lifecycle overlap.
-- O-12: split `eval/qa/README.md` (about 860 lines holding an operator guide, repo-wide agent rules,
-  pack internals and dated results).
-- Point the case-search hook message and the three `.ignore` headers at "Searching without reading
-  case text"; with the pointer line in "Held-out split" they stay navigable until then.
+- B-13, B-14, "Raven scoping" in `improvements-pipeline`, and `golden-truth` lifecycle overlap
+  (B-12 declined as superseded).
+- O-12: split `eval/qa/README.md` (operator guide, repo-wide rules, pack internals, dated results).
+- Point the case-search hook message and three `.ignore` headers at "Searching without reading case
+  text".
 
-Done when: the approved changes are applied and the rest are declined in the round ledger.
+Done when: approved changes land and the rest are declined in the round ledger.
 
 ## Dependencies
 
 ### Move `wrangler`, `miniflare`, and `@cloudflare/vitest-plugin` together
 
-Standing note. `@cloudflare/vitest-plugin` pins `wrangler`, `miniflare`, `esbuild`, and `zod` exactly,
-and `package.json` holds exact pins for `wrangler`, `miniflare`, and `esbuild`, with no `overrides`.
-Bump the plugin and `wrangler` in the same change, and expect a nested dev-only `zod` copy while
-the plugin's `zod` pin trails the root's. Check the lockfile for one `workerd` copy (exactly one key
-ending in `node_modules/workerd`) after every toolchain bump.
+Standing note. `@cloudflare/vitest-plugin` pins `wrangler`, `miniflare`, `esbuild`, and `zod`
+exactly; `package.json` holds exact pins for `wrangler`, `miniflare`, and `esbuild` with no
+`overrides` (root `zod` stays ranged, so a nested dev-only `zod` copy is expected while the plugin's
+pin trails root). Bump the plugin and `wrangler` together, check the lockfile for exactly one
+`node_modules/workerd` entry, and check `vitest` (`^5.1.0`) against the plugin's peer range
+(`^4.1.0 || ^5.0.0`). Never revert to deprecated `@cloudflare/vitest-pool-workers` (breaks on
+`miniflare >= 5.20261103.0-beta`) or `overrides`.
 
-The deprecated `@cloudflare/vitest-pool-workers` 0.23.0 is the dead end: it imports `getNodeCompat`
-from `miniflare`, which miniflare removed in `5.20261103.0-beta`. Its ceiling is `wrangler` 4.156.2
-with miniflare `5.20261102.0-beta`. Do not go back to the pool or to an `overrides` route.
-
-`vitest` is on 5.x (5.1.0 from round item 7.3, PR 5), inside the plugin's peer range
-`^4.1.0 || ^5.0.0`. Check that range before moving either one.
-
-Done when: the plugin no longer pins `wrangler` exactly. Delete this note then.
+Done when: the plugin stops pinning `wrangler` exactly. Delete this note then.
 
 ### Move the demo off the deprecated `workers-ai-provider`
 
-Cloudflare froze `workers-ai-provider`, and npm marks 4.0.1 deprecated (checked 2026-11-18). The
-replacement is `createAI` from `agents/models/ai-sdk`, which needs `agents` 0.32.0 or later;
-`agents` is 0.33.0 now, so that precondition is met. Still blocked: `createAI` string catalog
-models drop `providerOptions.anthropic` (adaptive `thinking` and `effort`) on the binding `/run`
-path (`cs-010`, [cloudflare/agents#2809](https://github.com/cloudflare/agents/issues/2809), open;
-repro under `rounds/2026-11-03-demo-createai/repro/`). The repro was re-run on `agents` 0.33.0 on
-2026-11-09 and still reproduces. The owner decided on 2026-11-03 to keep current behavior and not
-migrate through a different transport. The binding path has no stream-resume opt-out:
-cloudflare/agents#2790 was closed as not planned on 2026-11-03, so `createAI` keeps stream resume,
-and the reviewed decision the migration needs covers that.
+`workers-ai-provider@4.0.1` is frozen and deprecated. Replacement `createAI` (`agents/models/ai-sdk`)
+needs `agents >= 0.32.0` (met at `0.33.0`) but is blocked on `cs-010`
+([cloudflare/agents#2809](https://github.com/cloudflare/agents/issues/2809)): string catalog models
+drop `providerOptions.anthropic` (adaptive `thinking`/`effort`) on the binding `/run` path (repro in
+`rounds/2026-11-03-demo-createai/repro/`, reproduced on `0.33.0`). Owner decided (2026-11-03) not
+to change transport. `createAI` also has no stream-resume opt-out (`cloudflare/agents#2790` closed
+not-planned), so migration needs a reviewed decision covering stream resume.
 
-Done when: an `agents` release forwards Anthropic provider options for `anthropic/*` catalog ids
-(re-run the `cs-010` repro), a reviewed decision covers stream resume, `src/demo` and the demo
-tests (`test/demo-model-config.test.ts`, `test/demo-chat.test.ts`, `test/demo-eval-cost.test.ts`)
-no longer import the package, and `wai-001` is closed under the `improvements-pipeline` skill. The
-migration moves the demo model path, so it needs `npm run test:smoke`, the single-`workerd` check,
-and a Playground run of every demo model. The migration is not `fixed-upstream` evidence for
-`wai-001`; that close-out needs a reviewed lifecycle decision.
+Trigger: an `agents` release forwarding `providerOptions.anthropic` for `anthropic/*` catalog IDs.
+
+Done when: `cs-010` repro passes, stream-resume decision is reviewed, `src/demo` and
+`test/demo-{model-config,chat,eval-cost}.test.ts` drop `workers-ai-provider`, `npm run test:smoke` +
+single-`workerd` + full Playground model runs pass, and `wai-001` closes via a reviewed lifecycle
+decision (migration alone is not `fixed-upstream` evidence).
 
 ### Verify that xAI accepts the explicit tool `strict` field
 
-Both Playground tools set `strict: false`, and the field reaches the OpenAI-compatible chat
-transport of the Grok control model (`DEMO_GROK_CONTROL_MODEL`, the newest Grok in the AI Gateway
-catalog). xAI acceptance is unverified.
+Both Playground tools set `strict: false`, which reaches `DEMO_GROK_CONTROL_MODEL`'s
+OpenAI-compatible transport unverified.
 
-Done when: the gauntlet with the Grok control model selected by `--models` shows it accepts the
-request before the next control-model lane, or a reviewed change omits the field for that transport.
+Trigger & done when: before the next Grok control-model lane, the gauntlet (`--models`) confirms xAI
+accepts it, or a reviewed change omits `strict` for that transport.
 
 ### Confirm `npm run mcp-key` on wrangler 4.164.0
 
-`scripts/mcp-key.mjs` writes and revokes API keys through `wrangler kv key list`, `put` and
-`delete`. Wrangler moved to 4.164.0 in #483. Checked on 2026-11-18: `--help` for all three commands
-still lists `--binding`, `--remote`, `--prefix` and `--path`, and a local `kv key list --binding
-OAUTH_KV --prefix raven:api-key:v1:` returned a JSON array. The script fails closed: a failed list or
-put throws before any credential is written, and `rotate` overwrites without a delete first. Only
-the remote run is unchecked.
+`scripts/mcp-key.mjs` wraps `wrangler kv key list/put/delete` (fail-closed; `rotate` overwrites
+without deleting). Local list and `--help` flags passed on wrangler 4.164.0 (2026-11-18); only the
+remote path is unchecked.
 
-Next: in the 2026-11-25 Mac session, run one read-only `wrangler kv key list --binding OAUTH_KV
---remote --prefix raven:api-key:v1:`. Record the output shape only, never a key name. If it errors,
-fix the script before the next `npm run mcp-key` use of any kind, including the OpenAI reviewer-key
-revoke in "Obtain a written exception for the accepted two-tool endpoint".
+Next (priority 2, 2026-11-25 Mac session): run read-only `wrangler kv key list --binding OAUTH_KV
+--remote --prefix raven:api-key:v1:` and record output shape only (never a key name). Fix any error
+before any `npm run mcp-key` use, including revoking `openai-review-20261007`.
 
-Done when: the remote list parses as the script expects and the shape is recorded, or the script is
-fixed.
+Done when: remote list parses as expected and shape is recorded, or the script is fixed.
 
 ## Deferred programs
 
 ### Write ADRs for the per-origin OAuth design and the stellar.org admission
 
-Neither has a decision record; living docs cite the round records instead
-([DESIGN.md](rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md) for per-origin OAuth
-providers and the native-callback allowlist; #447 for the stellar.org source). Owner, 2026-11-18:
-write them if and when that area is tackled again.
+Neither has an ADR; living docs cite
+[DESIGN.md](rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md) and #447.
 
-Trigger: the next change to the OAuth host model, the callback allowlist, or the stellar.org source
-or its admission. Done when: the ADR is in `research/decisions/` and its index lists it.
-
+Trigger (owner, 2026-11-18): next change to OAuth host model, callback allowlist, or the
+`stellarOrg` source/admission. Done when: ADR is in `research/decisions/` and indexed.
 
 ### Keep `sources.locate` deferred
 
-Deferred by the owner on 2026-08-28. The design and the reopen rule are in
-`ideas/source-delivery-ranked-references.md`, section 8. Condition 3 needs live
-repository-recovery steering, which does not exist. Log an incident that meets conditions 1, 2,
-and 4 in the Horizon monitor item, but do not count it until condition 3 holds.
+Deferred by owner (2026-08-28). Reopen rule:
+[`ideas/source-delivery-ranked-references.md`](../ideas/source-delivery-ranked-references.md) §8.
+Condition 3 needs live repository-recovery steering (does not exist); log incidents meeting
+conditions 1, 2, and 4 in the Horizon monitor item without counting them until condition 3 holds.
 
-Done when: the full section 8 trigger fires and the owner approves a phase-zero study, or the
-owner retires the program.
-
-### A future `retrieve` or `read` tool
-
-No build is planned: eleven `retrieve` variants scored below the current design, and the best
-one failed live. If the idea returns, start from the design rules in the round record: accept a
-lone string for a list argument, give every model-written part a deterministic fallback, return
-PDF text or say it is unsupported, score lazily, and do not write a brief inside the request.
+Done when: full §8 trigger fires and owner approves a phase-0 study, or owner retires the program.
 
 ### Consider consolidating the auxiliary Workers
 
-Three Workers run beside `stellar-raven-codemode`: the usage collector, the usage report API,
-and the OpenAI domain challenge. The owner asked on 2026-10-25 whether fewer would do. Answer
-before any change:
+Three auxiliary Workers run beside `stellar-raven-codemode`: usage collector, usage report API, and
+OpenAI domain challenge. Owner asked (2026-10-25) whether fewer would do. Answer before any change:
 
-- Can the main Worker serve the report API and the challenge as fixed routes without widening
-  the MCP surface, the sandbox boundary, or the D1 binding's reach?
-- Can a Worker be its own tail consumer? Cite Cloudflare docs.
-- Does the collector's "no HTTP route" isolation in `usage/README.md` hold if it absorbs the
-  report API?
-- What changes in `usage-health`, `scripts/check-usage-deployment.mjs`, the fork setup, and the
-  dashboard's `USAGE_REPORT_URL`?
+- Can the main Worker serve the report API and challenge on fixed routes without widening MCP, the
+  sandbox, or D1 reach?
+- Can a Worker be its own tail consumer? (Cite Cloudflare docs.)
+- Does the collector's "no HTTP route" isolation (`usage/README.md`) hold if it absorbs the report
+  API?
+- What changes in `usage-health`, `scripts/check-usage-deployment.mjs`, fork setup, and
+  `USAGE_REPORT_URL`?
 
-Done when: the owner accepts a reviewed design note and it ships, or the owner keeps the split
-and this item is deleted.
+Done when: owner accepts and ships a reviewed design note, or keeps the split and deletes this item.
 
 ### Read the `skill_read` shape distribution
 
-[`ideas/skill-discovery-without-bundling.md`](../ideas/skill-discovery-without-bundling.md)
-pre-registered its decision rules for the `skill_read` events: read after 100 organic events or
-2026-09-30, whichever comes first. The date has passed and nothing fired the read. It is one Workers
-Logs calculation over `skill_read.shape` and `id` by the `cloudflare-observability-review` skill.
-Workers Logs hold at most seven days, so a read can count only the organic events from that window;
-if it counts fewer than 100, record the count and re-read later.
+[`ideas/skill-discovery-without-bundling.md`](../ideas/skill-discovery-without-bundling.md) sets
+pre-registered decision rules for `skill_read.shape` and `id` (after 100 organic events or
+2026-09-30, now overdue). Workers Logs hold ≤7 days; if fewer than 100 organic events exist in that
+window, record the count and re-read later.
 
-Next: take it in the next Workers Logs session (priority 2 above), apply the note's rules as
-written, and do not paraphrase them here.
+Next (priority 2, 2026-11-25 Mac Workers Logs session): run the `cloudflare-observability-review`
+calculation and apply the note's rules as written (do not paraphrase them here).
 
-Done when: the answers to both questions are recorded where the note says, and the note is deleted.
+Done when: both questions are answered where the note specifies, and the note is deleted.
 
 ### Measure long-horizon codegen with Raven installed
 
-No instrument measures long-horizon codegen with Raven installed. The only evidence is one external
-partner's run, in the
-[2026-08-07 codegen partner report](../research/audits/2026-08-07-codegen-partner-report.md): Raven
-served guidance for many of the reported defect classes, the defects occurred anyway, and the cause
-is unattributed (n=1).
+No instrument exists; the only evidence is n=1
+([2026-08-07 codegen partner report](../research/audits/2026-08-07-codegen-partner-report.md),
+unattributed defects despite served guidance).
 
-Trigger: the partner's per-round bug report arrives, or the owner funds a with-Raven versus
-without-Raven codegen A/B graded against the partner's external defect taxonomy. The A/B is a
-direction call and runs under a dollar cap.
-
-Done when: a capped A/B attributes the defects or the owner retires the question.
+Trigger: partner's per-round bug report arrives, or owner funds a capped with- vs. without-Raven
+codegen A/B against the partner taxonomy. Done when: a capped A/B attributes the defects or owner
+retires the question.
 
 ## OpenAI plugin submission
 
 ### Obtain a written exception for the accepted two-tool endpoint
 
-Package `0.1.2` was submitted on 2026-10-23; the last recorded portal state is `In review` and
-`Not published`, with the reply to OpenAI still an unsent draft. Check the portal and the
-correspondence before acting. The trimmed surface changes the tool descriptions the review
-cases describe; re-run the rehearsal before the next submission step.
-[`plugins/openai/README.md`](../plugins/openai/README.md) has the records and rules.
+Package `0.1.2` submitted 2026-10-23; last recorded portal state is `In review` / `Not published`
+with an unsent draft reply ([`plugins/openai/README.md`](../plugins/openai/README.md)). Check portal
+and correspondence first; re-run the rehearsal because the trimmed surface changed tool descriptions.
 
-Before publication, resolve publisher verification and privacy coverage. The difference between
-`/terms` (which states observability data, possibly including queries and responses, is stored "for
-30 days, after which it is deleted" — treated by the owner as an allowance) and production's
-7-day metadata-only retention is tracked in "Keep 30 days of observability data, including queries
-and responses". After the final review
-decision, revoke the reviewer API key `openai-review-20261007`. Before that revoke, finish
-"Confirm `npm run mcp-key` on wrangler 4.164.0".
+Before publication, resolve publisher verification and privacy coverage (the `/terms` 30-day
+allowance vs. 7-day metadata-only practice is tracked in "Keep 30 days of observability data,
+including queries and responses"). After the final decision, revoke reviewer key
+`openai-review-20261007` (only after "Confirm `npm run mcp-key` on wrangler 4.164.0").
 
-Done when: OpenAI grants the exceptions, or the owner approves another approach.
+Done when: OpenAI grants the exceptions, or owner approves another approach.
 
 ### Remove the OpenAI domain verification Worker after approval
 
-Trigger: OpenAI approves and publishes the app, or the owner withdraws the submission. Confirm
-in the portal that nothing still needs the live challenge. Then delete the
-`stellar-raven-openai-verification` Worker and its route, delete
-`plugins/openai/domain-verification/`, and update `plugins/openai/README.md` and
-`plugins/openai/VERIFICATION.md`.
+Trigger: OpenAI publishes the app or owner withdraws the submission. Confirm in the portal that the
+challenge is no longer needed, then delete `stellar-raven-openai-verification` Worker + route,
+delete `plugins/openai/domain-verification/`, and update `plugins/openai/{README,VERIFICATION}.md`.
 
-Done when: the Worker, its route, and its source are gone, and the published app still passes
-the portal's connection check or the owner has confirmed withdrawal.
+Done when: Worker, route, and source are gone, and the published app passes portal connection checks
+(or withdrawal is confirmed).
 
 ## Owner decisions
 
-Each decision names the question and the safe default. Record the answer in a round ledger or a
-decision record, then delete it here.
+Each decision states the question and safe default. Record the answer in a round ledger or ADR, then
+delete it here.
 
-1. **Which source, if any, to test for the facts no reached source holds.** Round item 1.3 classed
-   every residual source gap
-   ([CLASSIFICATION.md](rounds/2026-11-16-next-phase/items/1.3/CLASSIFICATION.md); probes in
-   [LEAVES.md](rounds/2026-11-16-next-phase/items/1.3/LEAVES.md)). Two facts remain: the XRP
-   Ledger facts (`ecosystem.chain-comparisons`, xrpl.org) and the NBU statement (`ll-039`). The NBU
-   fact waits upstream as `ll-039`, so the testable candidate is an other-chain source for
-   `ecosystem.chain-comparisons`. Pi Network's relation to Stellar (`sd-113`,
-   `wallets.pi-network`) does not earn a source, and `sd-113` is not forwarded (owner,
-   2026-11-17). Pass condition, fixed in advance: more correct answers and no more wrong ones.
-   Query and answer text are not logged, so telemetry shows no demand for these facts; silence is
-   no measured demand, not absence. Decision 6(b) deferred the choice until after round item 3.1,
-   and that read decides nothing here. Safe default: test none. The gaps stay recorded in the 1.3
-   classification.
-2. **Release and package-version data, and the Dashboard lumens API (decision 6(b)).** Options: an
-   upstream Scout request filed in `improvements/`, or a new host adapter (an ADR-0003 exposure
-   change). Safe default for release data: leave it upstream and file the request. Safe default for
-   the Dashboard lumens API: not added. It has no telemetry proxy (`stellarOrg` is two generic
-   operations and arguments are not logged), and round item 1.3's `sdf-mandate-holdings` row shows it
-   is not needed for that fact. "Fix the `getChangelog` ranking trap for release questions"
-   proceeds either way.
-3. **The MCP Skills extension** (SEP-2640, MCP SDK 2.4; from round item 7.3 PR 2's report). It could
-   publish Raven's pinned ecosystem skills through native client skill listing and reading. Its
-   `attach` is experimental. A new client-visible surface falls under ADR-0003, so it needs this
-   decision, a design study and a measured A/B. Safe default: not started.
+1. **Which source, if any, to test for facts no reached source holds.** Round item 1.3 classed every
+   residual source gap ([CLASSIFICATION.md](rounds/2026-11-16-next-phase/items/1.3/CLASSIFICATION.md),
+   [LEAVES.md](rounds/2026-11-16-next-phase/items/1.3/LEAVES.md)). NBU waits upstream (`ll-039`);
+   Pi Network (`sd-113`) does not earn a source and is not forwarded (owner, 2026-11-17). The
+   remaining candidate is an other-chain source for XRP Ledger (`ecosystem.chain-comparisons`,
+   xrpl.org). Pass bar: more correct answers and no more wrong ones. No query/answer logging means
+   no measured demand (not absence); item 3.1 decides nothing here. Safe default: test none.
+2. **Release and package-version data, and the Dashboard lumens API (decision 6(b)).** Options:
+   upstream Scout request in `improvements/`, or a new host adapter (ADR-0003 exposure change). Safe
+   default for release data: leave upstream and file the request. Safe default for Dashboard lumens
+   API: do not add (no telemetry proxy; item 1.3 `sdf-mandate-holdings` shows it is unneeded for
+   that fact). "Fix the `getChangelog` ranking trap for release questions" proceeds either way.
+3. **The MCP Skills extension** (SEP-2640, MCP SDK 2.4; experimental `attach`). Could expose pinned
+   ecosystem skills via native client skill listing/reading. ADR-0003 surface change: needs this
+   decision, a design study, and a measured A/B. Safe default: not started.
 4. **A production bearer credential for post-deploy checks**
-   (`research/audits/2026-11-06-remaining-sweep/live-host-check.mjs`, not run after the round item
-   7.3 deploys because no production bearer credential exists on the Mac or agentpc). It is the
-   only free check of both wire eras on all three hosts. Safe default: none. Deploy checks stay on
-   the OAuth metadata, the `/mcp` 401 and one connector `execute`.
+   (`research/audits/2026-11-06-remaining-sweep/live-host-check.mjs`, skipped after 7.3 deploys
+   because no prod bearer credential sits on Mac/agentpc). Only free check of both wire eras on all
+   three hosts. Safe default: none (keep OAuth metadata, `/mcp` 401, and one connector `execute`).
 5. **Keep 30 days of observability data, including queries and responses.** Whether to start the
-   design study for 30-day observability retention and query/response capture (see "Keep 30 days of
-   observability data, including queries and responses"). `/terms` (counsel-owned, the outer bound
-   of what the service may do, which the owner treats as a 30-day allowance) says observability
-   data, "which may include the queries submitted and the responses returned", is stored "for 30
-   days, after which it is deleted", with opt-out and account deletion on request; production keeps
-   at most 7 days in Workers Logs (and AI Gateway request metadata on its row-count policy) and
-   logs no query text. Safe default: not started; production stays at 7 days with no query or
-   response text logged.
+   design study for 30-day retention and query/response capture ("Keep 30 days of observability
+   data, including queries and responses"). `/terms` (counsel-owned, treated by the owner as a
+   30-day allowance) permits storing observability data, "which may include the queries submitted
+   and the responses returned", "for 30 days, after which it is deleted", with opt-out and account
+   deletion on request; production keeps ≤7 days in Workers Logs (AI Gateway on row-count policy)
+   and logs no query text. Safe default: not started (stay at 7 days, no query/response capture).
 
-Owner-blocked actions that already have an item (one line each, no decision needed here):
+Owner-blocked actions that already have an item (no decision needed here):
 
-- The OpenAI portal check and reply: "Obtain a written exception for the accepted two-tool endpoint".
-- The `sk-031` workflow cleanup patch and the `cs-006` contact authorization: "Improvements
-  follow-up".
-- The auxiliary-Workers question of 2026-10-25: "Consider consolidating the auxiliary Workers".
+- OpenAI portal check and reply: "Obtain a written exception for the accepted two-tool endpoint".
+- `sk-031` workflow cleanup patch and `cs-006` contact authorization: "Improvements follow-up".
+- Auxiliary-Workers question (2026-10-25): "Consider consolidating the auxiliary Workers".
