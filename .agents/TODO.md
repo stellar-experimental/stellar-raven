@@ -150,10 +150,10 @@ Trigger: the next 58-row panel run. Done when: it reports coverage against 55/58
 governance/incidents). Neither the rule nor its over-hedging risk is tested (0 claim statements in
 P2/R rested on `stellarOrg`).
 
-Held: no judged run with enough `stellarOrg`-backed claim answers is scheduled (P2 called it on 3/58
-rows; no third tuning loop). Trigger: the next judged QA run (e.g., "Prove the stellar.org source")
-or corroboration review producing at least 5 claim-word answers resting on `stellarOrg`; do not run
-a dedicated collection for this alone.
+Held: the [12-case provenance diagnostic](rounds/2026-11-20-stellar-org-answer-provenance.md)
+observed three answers using `stellarOrg` evidence. Trigger: a judged QA run or corroboration review
+produces at least 5 claim-word answers resting on `stellarOrg`; do not run a dedicated collection for
+this alone.
 
 Done when: readers score violation and over-hedge counts on at least 5 such answers; change the rule
 only on that read.
@@ -175,13 +175,11 @@ Done when: spent once on such a test, or retired by the owner; record which.
 
 ## Golden answers
 
-### Prove the stellar.org source
+### Monitor stellar.org routing and search depth
 
-`stellarOrg.search_site` and `stellarOrg.get_page` shipped in tuning loop 2
-([ledger](rounds/2026-11-15-tuning-loop-2.md)) and are **unproven**: P2 called the source on 3 of 12
-tuning rows citing stellar.org (5/12 cannot reach a cited page from the question as written); 1
-answer used a fact from it and 0 verdicts moved. `search_site` returns up to ~21,700 chars and was
-ignored on 2/3 rows. Harm is clean only down to what T=5 on 58 rows can detect.
+The [12-case provenance diagnostic](rounds/2026-11-20-stellar-org-answer-provenance.md)
+confirmed that one answer used a judged fact supplied only by `stellarOrg` in its returned
+evidence. Keep both operations. The diagnostic measured source use on the shipped surface.
 
 - **Routing reach (accepted, owner 2026-11-17):** top-5 on 8/40 off-golden questions; displaces
   non-SDF cards on 0/1/3 of 25 at limits 5/7/10 ([3.3 MEASURE.md](rounds/2026-11-16-next-phase/items/3.3/MEASURE.md)).
@@ -190,9 +188,6 @@ ignored on 2/3 rows. Harm is clean only down to what T=5 on 58 rows can detect.
 - **Algolia `pages` index (held):** ranked ~5/9 missed body-text phrases in top 4 (2026-11-14
   dashboard check; audit coverage unconfirmed). Add depth only on a production detail-lookup
   failure, using a search-only key.
-
-Done when: a run on the 12 source rows shows the source supplying a judged fact, or the owner
-accepts it as a coverage fix without a scored gain.
 
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
