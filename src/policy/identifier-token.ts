@@ -1,25 +1,9 @@
 /**
- * The identifier token rule for exact-row matching (src/executor/providers.ts `exactRowsOf`):
- * letters, an optional hyphen or space, then digits, as in `SEP-45`, `CAP-0046`, `sep24`, `SEP 45`.
- *
- * A token whose letters are title case (`Sep-24`, `Cap 12`) is not an identifier: it reads as a
- * month or a sentence-initial word, and would otherwise mark `sep-0024` exact for a question about
- * September. All-upper and all-lower letters are the two ways a standard's name is written. A run
- * of more than six digits is not an identifier either.
- *
- * A token joined to a number on either side by `-` or `.` is part of a longer string, not an
- * identifier: followed by one (`CVE-2024-1234`, `SEP-43.1`) or preceded by one (`10-SEP-2024`,
- * `2024-SEP-10`, `10-SEP-24`, a date). The rule is the shape, not a month list, and the host keeps
- * no list of standards.
- *
- * Accepted false mark: a date with no `-` or `.` joining its number to the token (`SEP 10, 2024`,
- * `10 SEP 24`, `2024/SEP-10`) still reads as `sep-10` or `sep-24`, so a question about that day can
- * mark `sep-0010` exact. The host cannot tell a date from a standard there, and a number and a
- * space before a standard is common in real queries (`Protocol 19 CAP-40`), so a space is not a join.
- *
- * Accepted missed mark, never a false one: the rule drops any token that directly follows a digit
- * and `-` or `.`, even when it is the only standard named (`BLS12-381-CAP-59` reads nothing;
- * `CAP-46-SEP-45` reads `cap-46`).
+ * Identifier token rule for exact-row matching (`src/executor/providers.ts` `exactRowsOf`):
+ * letters, optional hyphen or space, and 1–6 digits (e.g. `SEP-45`, `CAP-0046`, `sep24`).
+ * Rejects title-case words (`Sep-24`) to avoid months/sentence-initial words, and rejects
+ * tokens joined to adjacent digits by `-` or `.` (`CVE-2024-1234`, `SEP-43.1`, `10-SEP-2024`).
+ * Space before a token stays allowed for queries like `Protocol 19 CAP-40`.
  */
 
 export type IdentifierToken = {

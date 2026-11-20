@@ -1,21 +1,8 @@
 /**
- * Structural scoring adjustments over the vendored lexical scorer.
- * See src/catalog/README.md for admission, selection, and recovery.
- *
- * Stopword rescue retries a failed score without closed-class English words.
- * A score that already passes keeps its original vendor value.
- * Section weighting uses 0.75; default section entries remain unsearchable.
- * Section keywords blend at 0.4 when an experiment emits them.
- * Routing keywords blend at 1.0 with routing-coherence and schema checks.
- * Query aliases provide general canonical forms through QUERY_TOKEN_ALIASES.
- * Acronym rescue contracts content-word spans when source text supplies the acronym.
- * The ungated replica keeps the scoring scale while removing the coverage gate.
- *
- * searchCatalogPage uses ungated scores for short-page filling and targeted
- * full-page replacement. Service diversity and replacement belong to search.ts.
- * Final ordering applies tier interleaving and a separate freshness rule.
- * These adjustments use catalog-wide rules, not per-question service maps.
- * The routing gates check changes to the scoring contract.
+ * Structural scoring adjustments over the vendored lexical scorer (`src/catalog/README.md`).
+ * Adds keyword blending (`keywords` at 0.4, `routingKeywords` at 1.0), stopword rescue,
+ * query-side alias canonicalization, source-witnessed acronym rescue, a gate-free replica
+ * for tier-2 backfill, and per-service diversity selection.
  */
 import {
   normalizeSearchText,
@@ -105,28 +92,13 @@ function prepareQueryForm(query: string): ScoringQueryForm {
   };
 }
 
-/**
- * Section-keyword blend factor. Keyword matches ride the description slot
- * (vendor weight 5) in the augmented pass; damping their delta by 0.4 puts
- * them at effective weight 2 — the same tier as the vendor's own low-weight
- * `kind` field.
- */
+/** Low-weight blend for `entry.keywords` (effective weight 2 on the description slot's weight 5). */
 const KEYWORD_BLEND = 0.4;
 
-/**
- * Routing-keyword blend factor. Source-authored routing vocabulary receives
- * more weight than section keywords. The routing gates check changes.
- */
+/** Full-weight blend for curated upstream `routingKeywords`. */
 const ROUTING_KEYWORD_BLEND = 1.0;
 
-/**
- * Joined-keywords cache for the augmented scoring pass. Keyed on the
- * `keywords` ARRAY, not the scorable wrapper: searchCatalog() builds a fresh
- * wrapper object per entry per query, but passes `entry.keywords` by
- * reference from the parsed module-singleton manifest — the array's identity
- * is stable across queries, so the join is computed once per entry ever.
- * WeakMap so a reloaded manifest never pins the old arrays.
- */
+/** Memoized space-joined keyword string per array reference. */
 const joinedKeywordsCache = new WeakMap<readonly string[], string>();
 
 function joinedKeywords(keywords: readonly string[]): string {
@@ -244,19 +216,9 @@ function weightedScore(
 }
 
 /**
- * Lever 6: domain alias canonicalization on the query side. Real users
- * abbreviate ("tx history", "acct balance"); the catalog spells vocabulary
- * out, and the vendor's prefix match cannot bridge "tx"→"transaction"
- * ("transaction" does not start with "tx"). The table maps abbreviation →
- * canonical token, single-token to single-token only, and is curated from
- * DOMAIN knowledge — never from eval questions (STOPWORDS legitimacy rule).
- * Each entry was vetted against catalog vocabulary: the alias must not be a
- * load-bearing catalog token of its own (amm/dex/defi/nft/xlm/repo/sep/kyc/
- * dapp/wasm/cli/sdk all ARE catalog vocabulary and are deliberately absent;
- * the catalog's own 21 tx/txs tokens all MEAN transaction, so no shadowing).
- *
- * The offline corpus stays byte-identical because few cases contain these
- * aliases. The real-user lane validates the change. See eval/README.md.
+ * Domain abbreviation aliases on the query side (single-token -> single-token).
+ * Only abbreviations that are not distinct catalog terms belong here (e.g. `amm`,
+ * `dex`, `sep`, `sdk` are catalog vocabulary and must stay absent).
  */
 export const QUERY_TOKEN_ALIASES: ReadonlyMap<string, string> = new Map([
   ["tx", "transaction"],
@@ -266,13 +228,7 @@ export const QUERY_TOKEN_ALIASES: ReadonlyMap<string, string> = new Map([
   ["addr", "address"]
 ]);
 
-/**
- * Replace alias tokens with their canonical forms; null when the query
- * contains no alias token (the common case — zero extra scoring work).
- * Memoized on the raw query string: searchCatalogPage scores every catalog
- * entry with the same query, so the canonicalization must not re-tokenize
- * once per catalog entry.
- */
+/** Replace alias tokens with canonical forms, or null when none appear (memoized). */
 const canonicalizeCache = new Map<string, string | null>();
 
 export function canonicalizeQuery(query: string): string | null {
@@ -398,16 +354,8 @@ function acronymRescueScore(
 }
 
 /**
- * Lexical score with a stopword-rescue fallback: score the FULL query first
- * (vendor semantics unchanged for every entry that passes the coverage
- * gate), and only when the gate fails retry with the stopword-filtered
- * query. Natural-language questions otherwise return ZERO hits whenever the
- * closed-class words ("how", "what", "the", …) push token coverage under
- * the vendor's 60% threshold — the rescue makes coverage a statement about
- * content words without disturbing rankings that already worked.
- * Alias-bearing queries additionally score under their canonicalized form
- * and take the maximum. If lexical coverage still fails, source-witnessed
- * acronym forms can rescue the entry without changing the vendor scorer.
+ * Score the full query first (vendor semantics unchanged when the coverage gate passes),
+ * falling back to stopword-filtered, alias-canonicalized, and source-witnessed acronym forms.
  */
 export function scoreEntryWeighted(
   entry: WeightedScorableEntry,
@@ -417,11 +365,7 @@ export function scoreEntryWeighted(
   return acronymRescueScore(entry, prepared);
 }
 
-/**
- * Apply the weighting pipeline over the gate-free vendor replica.
- * search.ts uses it for short-page filling and targeted full-page replacement.
- * Tier interleaving uses TIER_INTERLEAVE_MARGIN; freshness ordering is separate.
- */
+/** Apply the weighting pipeline over the gate-free vendor replica (used for tier-2 backfill). */
 export function scoreEntryWeightedUngated(
   entry: WeightedScorableEntry,
   query: string,
@@ -431,35 +375,10 @@ export function scoreEntryWeightedUngated(
 }
 
 /**
- * Gate-free replica of the vendored scorer. Mirrors
- * vendor/search-scoring.ts `scoreField`/`scoreEntry` line for line EXCEPT
- * the coverage gate (vendor line 130) is dropped — entries still need at
- * least one matched token. Kept here so the vendor file stays byte-identical
- * (as with keyword double-scoring); if the vendor scorer is ever
- * re-vendored, update this replica to match.
- *
- * DRIFT GUARD: because the ONLY difference is the gate, the replica must
- * score identically to the vendor wherever the vendor passes —
- * test/scoring.test.ts sweeps the real manifest against a query battery and
- * asserts `scoreEntry(e,q) !== null ⇒ scoreEntryUngated(e,q) === scoreEntry(e,q)`.
- * A re-vendor that changes upstream math fails that suite loudly instead of
- * silently desyncing tier 2.
- *
- * Re-vendor checklist for an @cloudflare/codemode upgrade:
- *  1. Field weights + tokenization/normalization (vendor FIELD_WEIGHTS,
- *     normalizeSearchText, tokenize) — mirror any change into this replica,
- *     then make the drift suite green again.
- *  2. Coverage-gate semantics (thresholds, exactPhrase escape) — the gate is
- *     the one line deliberately absent here; if its meaning changes, re-check
- *     search.ts's tier-2 rationale, not just this file.
- *  3. Returned search shape upstream ({ results, total, truncated }) — ours
- *     mirrors it in searchCatalogPage; keep parity.
- *  4. Newly exported search helpers — prefer composing with upstream over
- *     maintaining this copy if searchConnectors becomes importable.
- *  5. Type-gen changes (vendor/json-schema-types.ts) affecting
- *     renderSignature and output compaction.
- *  6. Any native docs/snippet/section weighting upstream grows — may
- *     replace our kind weighting.
+ * Gate-free replica of `vendor/search-scoring.ts` (`scoreField`/`scoreEntry`), keeping the
+ * vendor file byte-identical while dropping only its coverage gate. `test/scoring.test.ts`
+ * asserts identical scores wherever the vendor gate passes; update this replica if the
+ * vendored scorer is upgraded.
  */
 const UNGATED_FIELD_WEIGHTS = { id: 12, name: 10, service: 8, description: 5, kind: 2 } as const;
 

@@ -1,42 +1,9 @@
 /**
- * Skill source — live retrieval of skill bodies from upstream, pinned.
- *
- * Skill markdown is NOT vendored into this repo and NOT shipped inside the
- * Worker bundle. Each catalog skill/section entry carries
- * `transport: { type: "file", url, sha, sha256 }` where `url` is a
- * raw.githubusercontent.com URL at the commit pinned in
- * ecosystem-skills/MANIFEST.json, `sha` is that file's git blob hash from the
- * same pinned tree, and `sha256` is a SHA-256 over the raw bytes recorded by
- * the catalog build. This module turns that into text.
- *
- * The source enforces three properties:
- *
- * 1. **Immutability.** The URL names a commit, never a branch, so upstream
- *    edits cannot change what this server serves. Re-pinning stays a reviewed,
- *    committed act (`ecosystem-skills/update.sh` prints the body diff, and
- *    ecosystem-skills/PIN-REVIEW.md records the attestation) — skills are
- *    prompt input, so an upstream edit must never reach the model without a
- *    human reading the diff.
- * 2. **Integrity.** Every fetched body is verified before it is decoded and
- *    served. SHA-256 is the SECURITY check: git's SHA-1 has practical
- *    chosen-prefix collisions, so it is provenance (it ties bytes to the git
- *    object the reviewer saw), not an adversarial boundary. Both must match;
- *    bytes that fail either are refused, not served.
- * 3. **Exposure hygiene.** Every served body uses the same non-exposed
- *    reference scrub as the builders. Live content cannot introduce a hidden
- *    reference to a retired skill or excluded Scout operation.
- *
- * Policy: **serve, do not store.** Raven
- * forwards this content and must never become its source of record. The caches
- * below are transport on a forwarding path; a durable owned mirror (R2, a
- * committed copy, a bundled copy) is out of scope by decision. Responses carry
- * the forwarded markdown and nothing else — no license text, notice, or
- * wrapper is attached.
- *
- * Caching: memo identity includes (url, sha256, sha). Memo hits reuse a
- * verified, scrubbed promise. Colo cache hits receive fresh verification.
- * Cache reads and writes are best-effort. Caches support forwarding and do
- * not supply a trust boundary. See src/skills/README.md for the read contract.
+ * Live pinned retrieval for ecosystem skill bodies (serve-don't-store; src/skills/README.md).
+ * Fetches commit-pinned `raw.githubusercontent.com` URLs, verifies both SHA-256 (integrity)
+ * and git blob SHA-1 (provenance), and applies `scrubNonExposedRefs`.
+ * Memo keys include `(url, sha256, sha)`; colo cache hits are re-verified on every read
+ * and all cache operations are best-effort transport only.
  */
 import { scrubNonExposedRefs } from "./scrub.ts";
 
@@ -66,12 +33,7 @@ export const SKILL_READ_DEADLINE_MS = 20_000;
 /** Immutable by construction (commit-pinned URLs) — cache for a year. */
 const CACHE_CONTROL = "public, max-age=31536000, immutable";
 
-/** "<url>\n<sha256>\n<sha>" -> in-flight or settled body. Keyed by the full
- *  verified identity, never the URL alone: a second entry pinning the same URL
- *  to different bytes must re-verify rather than inherit the first one's body.
- *  BOTH digests belong in the key. `verify` checks sha256 AND the git blob sha,
- *  so a key omitting the blob sha would let a pin with a mismatched provenance
- *  hash be served from memo without that half ever running. */
+/** Keyed by full verified identity `(url, sha256, sha)` so differing digests never share a memo entry. */
 const memo = new Map<string, Promise<string>>();
 
 const memoKey = (pin: SkillPin) => `${pin.url}\n${pin.sha256}\n${pin.sha}`;
@@ -212,20 +174,11 @@ export function createSkillSource(deps: SkillSourceDeps = {}): SkillSource {
       }
       return scrubNonExposedRefs(text, pin.url);
     })();
-    // A failed fetch must not poison the isolate for the rest of its life.
     const wrapped: Promise<string> = pending.catch((e: unknown) => {
-      // Delete ONLY an entry this call owns. A bypassing probe never wrote the
-      // memo, so it must never delete one either — its rejection would
-      // otherwise evict a perfectly good serving entry for the same pin,
-      // forcing the next real request back to the network. That is the canary
-      // amplifying the outage it exists to measure. The identity check also
-      // covers the race where another read has already replaced ours.
+      // Evict only an entry this call owns; a bypassing canary never writes or evicts the shared memo.
       if (!bypassMemo && memo.get(key) === wrapped) memo.delete(key);
       throw e;
     });
-    // The canary must not WRITE the memo either: a shared isolate serves real
-    // traffic, and seeding it from a cache-bypassing probe would hand the next
-    // reader a body it never verified through its own path.
     if (!bypassMemo) memo.set(key, wrapped);
     return { text: await wrapped, from };
   };

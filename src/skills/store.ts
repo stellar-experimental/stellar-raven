@@ -1,16 +1,7 @@
 /**
- * Exact-ID reads over pinned ecosystem skills; see src/skills/README.md.
- *
- * codemode.skill.read resolves catalog addresses, not filesystem paths.
- * transport carries { type: "file", url, sha, sha256 }; source.ts verifies
- * both digests and scrubs excluded references before serving content.
- * Bodies are forwarded, not bundled or kept in a durable owned mirror.
- * Build-time exposure supplies every readable entry under ADR-0003.
- * Unknown IDs fail with a suggestion, never fuzzy resolution or an alias.
- *
- * Heading sections accept slugs or exact heading text. Companion Markdown
- * files use file:<relpath>. Unknown or uncataloged sections fail the read.
- * Transport, integrity, pin, scrub, and deadline failures return envelopes.
+ * Exact-ID reads over pinned ecosystem skills (`codemode.skill.read`; src/skills/README.md).
+ * Fetches verified, scrubbed Markdown via `source.ts`, addresses `##` sections or `file:<relpath>`
+ * companions, and fails closed if parsed headings drift from cataloged section entries.
  */
 import type { Catalog, CatalogEntry } from "../catalog/types.ts";
 import { lastIdSegment } from "../catalog/id.ts";
@@ -60,12 +51,8 @@ export type SkillReadResult =
   | { ok: false; error: { service: "skills"; kind: "error"; message: string } };
 
 /**
- * Advisory-notice threshold, in estimated tokens (ceil chars/4) over the RAW
- * characters of the content actually being returned. The model boundary
- * (truncateForModel, DEFAULT_MAX_TOKENS = 6000) truncates the JSON-SERIALIZED
- * script return, which inflates raw chars by ~6–15% (escaped newlines,
- * quotes), so a raw-chars measurement needs headroom — warn from ~5000 est
- * tokens up rather than at the boundary itself.
+ * Advisory threshold in raw estimated tokens. Kept below `DEFAULT_MAX_TOKENS` (6000)
+ * because JSON serialization inflates raw chars by escaping newlines and quotes.
  */
 const NOTICE_THRESHOLD_TOKENS = 5000;
 
@@ -119,15 +106,8 @@ function editDistance(a: string, b: string): number {
 }
 
 /**
- * Nearest readable skill id for a failed lookup — a suggestion appended to
- * the exact-match error, never a resolution (no fuzzy top-hit acceptance).
- * Terminal-segment equality wins (catches "skills.smart-contracts" for
- * "skills.stellar-dev.smart-contracts"); otherwise smallest edit distance within a
- * typo-sized bound.
- *
- * Exported for src/skills/run.ts: skill.run's
- * unknown-id error reuses the same suggestion logic over the runnable subset
- * (run.ts passes a catalog narrowed to runnable entries). Behavior unchanged.
+ * Suggest the nearest readable skill id on an exact-match miss (never resolves).
+ * Reused by `src/skills/run.ts` over a runnable-only catalog slice.
  */
 export function nearestSkillId(catalog: Catalog, name: string): string | undefined {
   const candidates = catalog.entries.filter(

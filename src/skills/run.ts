@@ -1,39 +1,8 @@
 /**
- * runSkill — the host dispatch behind `codemode.skill.run`.
- * This pure module has no cloudflare:workers import. Providers wire it into
- * the sandbox, and unit tests exercise it directly.
- *
- * Resolution ladder — every rung an envelope, nothing throws toward the
- * caller: (1) name must be a non-empty string; (2) exact catalog id lookup,
- * miss names the full runnable set and the store's nearest-id suggestion
- * (never a resolution); (3) an existing-but-not-runnable entry points at
- * skill.read; (4) input validates via the same guard/validateArgs path
- * operations use — model code never owns the contract; (5) registry lookup
- * (belt: unreachable once assertRunnersWired runs at provider build);
- * (6) execute with a recording sub-facade under a host deadline.
- *
- * The host owns the audit trail (src/skills/README.md). Each
- * declared operation's facade function is
- * wrapped to append { op, ok, errorKind?, ms } to a ledger this module owns.
- * `calls` on the output, the error path's `error.details`, and the
- * `skill_run` event counts all come from that ledger — a buggy runner can
- * project a section wrongly, but it cannot make a failed call disappear from
- * the report or corroborate its own lie (its own `calls` key is overwritten
- * unconditionally).
- *
- * Deadline: Promise.race against RUNNER_DEADLINE_MS returns a timeout error
- * envelope on expiry. NOT cancellation — in-flight facade calls continue
- * detached until the request context ends (harmless: free read-only ops,
- * each still logging its own `op` event).
- *
- * Output-schema warn belt: after attaching `calls`, the full data payload is
- * validated against the runner's outputSchema — a mismatch logs
- * outputSchemaOk: false but does NOT fail the run (a defensive projection
- * half-handling upstream drift must surface in telemetry, not ship silently
- * under the advertised type). Ordering note: the design sketch lists the belt
- * before the calls attach; validating AFTER lets the belt check the exact
- * bytes the model receives, including the host-attached `calls` the schema
- * declares.
+ * Host dispatch behind `codemode.skill.run` (src/skills/README.md). Pure module (no `cloudflare:workers`).
+ * Runs exact-id lookup, host-side input validation, a recording sub-facade restricted to declared ops,
+ * a `RUNNER_DEADLINE_MS` race (does not cancel in-flight read-only calls), unconditional host-ledger
+ * `calls` attachment, and a warn-only output-schema check over the final payload.
  */
 import type { Catalog, CatalogEntry } from "../catalog/types.ts";
 import { lastIdSegment } from "../catalog/id.ts";
@@ -73,23 +42,14 @@ const err = (
   }
 });
 
-/**
- * Build the per-run recording sub-facade: ONLY the runner's declared ops
- * (src/skills/README.md — even an exposed-but-undeclared op has no fn here and fails
- * loudly), each wrapped to append to the host-owned ledger before returning
- * the untouched envelope. Namespace/fn naming mirrors the sandbox surface:
- * first id segment → service namespace, terminal segment → fn name.
- */
+/** Narrow facade to the runner's declared ops and record every call in the host ledger. */
 function buildSubFacade(runner: SkillRunner, facade: OpsFacade, ledger: CallRecord[]): OpsFacade {
   const sub: OpsFacade = {};
   for (const opId of runner.ops) {
     const service = opId.slice(0, opId.indexOf("."));
     const fnName = lastIdSegment(opId);
     const base = facade[service]?.[fnName];
-    // Belt only: assertRunnersWired pins declared ops ⊆ manifest ops, and the
-    // facade is built FROM the manifest — a hole here means a stale build,
-    // and the runner's own missing-fn throw will surface it as a runner-bug
-    // envelope rather than silently narrowing the surface.
+    // Belt: assertRunnersWired checks declared ops at startup; skipping lets the runner fail loudly on stale builds.
     if (!base) continue;
     (sub[service] ??= {})[fnName] = async (args?: unknown) => {
       const t0 = Date.now();
@@ -104,14 +64,8 @@ function buildSubFacade(runner: SkillRunner, facade: OpsFacade, ledger: CallReco
 }
 
 /**
- * Envelope-shaped runner result — expected-condition failures returned as
- * data. A result carrying `ok: false` is ALWAYS treated as a failure claim:
- * when its `error` slot is missing or malformed (a string, a number — a
- * runner bug, exactly the class the belts exist for), it becomes a
- * runner-bug ERROR envelope rather than falling through to the object check
- * and shipping as { ok: true, data: { ok: false, … } } — a success envelope
- * wrapping a failure-shaped payload that would log outcome "ok" and plant
- * the wrong __guardEnvelope traps.
+ * Treat any `{ ok: false }` return as a failure even if `error` is malformed,
+ * so a buggy runner cannot ship `{ ok: true, data: { ok: false, ... } }`.
  */
 function asErrorEnvelope(raw: unknown): { kind: "error" | "soft-empty"; message: string; hint?: string } | null {
   if (raw === null || typeof raw !== "object") return null;
@@ -131,16 +85,7 @@ function asErrorEnvelope(raw: unknown): { kind: "error" | "soft-empty"; message:
   };
 }
 
-/**
- * Canonical (key-sorted, recursive) stringify for the schema-equality check
- * below. scripts/build-catalog.mjs emits the manifest through sortKeysDeep
- * for byte-deterministic artifacts, so the manifest copy of a runner schema
- * is the SAME data in a different key order than the bundled object literal —
- * raw JSON.stringify equality (the design's first sketch) false-alarms on
- * every real build. Canonicalizing both sides keeps the intended property —
- * any SEMANTIC drift (added/removed/changed keys or values) still throws —
- * without demanding an ordering the emitter deliberately does not preserve.
- */
+/** Key-sorted JSON string so manifest schemas (sorted by build-catalog) compare cleanly with literal schemas. */
 function canonicalJson(value: unknown): string {
   const sort = (v: unknown): unknown => {
     if (Array.isArray(v)) return v.map(sort);
@@ -157,16 +102,8 @@ function canonicalJson(value: unknown): string {
 }
 
 /**
- * Startup wiring assertion (src/skills/README.md) — called at provider build,
- * THROWS on any mismatch so the first execute fails loudly, never silently:
- *  - every registry key resolves to an emitted skill entry with runnable: true;
- *  - every manifest-runnable entry has a bundled runner;
- *  - deep schema equality per id (canonicalJson above — generated data, so
- *    key-order-insensitive string equality suffices): id-set equality alone
- *    would let a stale manifest validate input against a DIFFERENT schema
- *    than the bundled runner expects (widened registry + stale manifest =
- *    spurious refusals; narrowed = unvalidated shapes reaching run());
- *  - every declared op resolves to an emitted operation entry.
+ * Verify registry and catalog parity at provider build (throws on drift):
+ * runnable ids match both ways, input/output schemas match deeply, and every declared op is exposed.
  */
 export function assertRunnersWired(catalog: Catalog, registry: Record<string, SkillRunner>): void {
   const byId = new Map(catalog.entries.map((e) => [e.id, e]));

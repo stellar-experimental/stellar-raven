@@ -1,28 +1,7 @@
 /**
- * Build-time keyword extraction for skill-section catalog entries.
- *
- * Section entries' descriptions are heading + first paragraph truncated to
- * 200 chars, so mid-section content (error codes, CLI flags, function names)
- * is lexically invisible to the search scorer. This module distills a
- * section's BODY into a small `keywords: string[]` manifest field that
- * scoring.ts blends in at low weight.
- *
- * Semantics mirror the vendored scorer exactly — same `tokenize` (camelCase
- * split, punctuation → spaces, lowercase), so every extracted keyword is a
- * token the scorer can actually match. Filtering:
- *   - stopwords (scoring.ts STOPWORDS — same closed-class set the query
- *     rescue uses),
- *   - single-character tokens (splitter shrapnel),
- *   - tokens already present in the entry's other scored fields (id, name,
- *     description, …) — keywords must ADD vocabulary, not double-count it.
- *
- * Deterministic ordering: frequency descending, first occurrence in the body
- * as the tie-break. Capped (default 64/section) to bound manifest growth —
- * the manifest is bundled into the Worker.
- *
- * Lives in src/catalog/** (explicit .ts imports, plain-Node importable) so
- * scripts/build-catalog.mjs, vitest, and the eval CLI can all load it the
- * same way search.ts is loaded (native type stripping, Node >= 23.6).
+ * Build-time keyword extraction for operation and skill-section catalog entries.
+ * Mirrors the vendored `tokenize` and `STOPWORDS`, excludes already-scored tokens,
+ * and orders deterministically by frequency descending then first occurrence.
  */
 import { tokenize } from "./vendor/search-scoring.ts";
 import { STOPWORDS } from "./scoring.ts";
