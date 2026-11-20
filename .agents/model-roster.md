@@ -7,60 +7,40 @@ a different measurement.
 
 ## Repo-work tiers
 
-| Tier | Family | Efforts | Working context |
-|---|---|---|---|
-| Codex frontier | Astra (`scripts/latest-model.mjs astra`) | per catalog | per catalog |
-| Codex workhorse | Sol (`scripts/latest-model.mjs sol`) | per catalog | per catalog |
-| Claude Fable | `fable` alias | per catalog | per catalog |
-| Claude Opus | `opus` alias | per catalog | per catalog |
-| Grok | `scripts/latest-model.mjs grok` | per catalog | per catalog |
+| Tier | Family |
+|---|---|
+| Codex frontier | Astra (`scripts/latest-model.mjs astra`) |
+| Codex workhorse | Sol (`scripts/latest-model.mjs sol`) |
+| Claude Fable | `fable` alias |
+| Claude Opus | `opus` alias |
+| Grok | `scripts/latest-model.mjs grok` |
 
-- Always pass the model flag. An unflagged Codex command inherits the host's
-  `~/.codex/config.toml`, which the repository does not set.
-- Claude Code takes the family alias and serves the newest model. Codex and Grok have no alias, so
-  `scripts/latest-model.mjs <family>` reads the CLI's offline catalog cache and prints one ID. It
-  exits non-zero with a reason when the cache is missing or has no match, and prints the cache's
-  `fetched_at` on stderr.
-- **Record the resolved ID for every run, and for a review gate.** Claude: the `modelUsage` key of
-  `--output-format json`, or `model` on the stream-json `system/init` line. Codex: the resolver's
-  output. Grok: the resolver's output plus the `modelUsage` key it reports, which can be a
-  server-side name.
-- `ultra` delegates to subagents. It is a separate execution system, not a higher effort.
-- Any other catalog entry is not a tier until `AGENTS.md` names one for it.
+- Always pass the model flag; unflagged Codex inherits `~/.codex/config.toml`.
+- Claude Code resolves family aliases directly. Codex and Grok use `scripts/latest-model.mjs <family>`, which reads the CLI's offline catalog cache, prints one ID (and `fetched_at` on stderr when present), and exits non-zero if missing or unmatched.
+- **Record the resolved ID for every run and review gate.** Claude: `modelUsage` key of `--output-format json` or `model` on stream-json `system/init`. Codex: resolver output. Grok: resolver output plus reported `modelUsage` key (which can be a server-side name).
+- `ultra` delegates to subagents; it is a separate execution system, not a higher effort.
+- Unlisted catalog entries are not tiers until `AGENTS.md` names them.
 
 ## Models for evals and tests
 
-Use this set when a test or an evaluation needs an answering client or a comparison across
-clients.
+Use this set for answering clients or cross-client comparisons. Codex and Grok flags use the two-step resolver form below.
 
 | Role | Family | CLI | Model flag |
 |---|---|---|---|
 | Default | Claude Sonnet | Claude Code | `--model sonnet` |
-| Default | Codex Terra | Codex | `-m "$M"`, with `M` from `scripts/latest-model.mjs terra` in the two-step form below |
-| Default | Grok | Grok | `--model "$M"`, with `M` from `scripts/latest-model.mjs grok` in the two-step form below |
+| Default | Codex Terra | Codex | `-m "$M"` (`terra`) |
+| Default | Grok | Grok | `--model "$M"` (`grok`) |
 | Add where it helps | Claude Opus | Claude Code | `--model opus` |
-| Add where it helps | Codex Sol | Codex | `-m "$M"`, with `M` from `scripts/latest-model.mjs sol` in the two-step form below |
-| Only when a decision names it | GPT Terra or Sol, or Grok, through OpenCode | OpenCode | `--standalone -m openai/$M` or `--standalone -m xai/$M` (`M` from `scripts/latest-model.mjs` for `terra`, `sol` or `grok`), `--agent <name>` where tools must be denied |
+| Add where it helps | Codex Sol | Codex | `-m "$M"` (`sol`) |
+| Only when a decision names it | GPT Terra/Sol or Grok via OpenCode | OpenCode | `--standalone -m openai/$M` or `--standalone -m xai/$M` (`terra`/`sol`/`grok`); add `--agent <name>` where tools must be denied |
 
-- OpenCode runs only after the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing)
-  ("Model-call billing"), and `opencode models --standalone` must list `<provider>/$M`: OpenCode
-  keeps its own catalog, which the resolver does not read. OpenCode stays out of client diagnostics
-  (TODO, "Keep OpenCode out of client diagnostics").
-- Haiku and Codex Luna are out of every test and eval: they are less common and too inconsistent
-  to weigh. The Playground fallback model is the one exception (`src/demo/model-config.ts`).
-- The eval defaults are family aliases. A run's identity is the exact ID it resolved, stored beside
-  the alias it requested (`eval/EVALS.md`). A change of resolved answering or judge model starts a
-  new baseline, under the `run-evals` skill.
+- OpenCode requires the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing), and `opencode models --standalone` must list `<provider>/$M` (OpenCode keeps its own catalog). OpenCode stays out of client diagnostics (TODO, "Keep OpenCode out of client diagnostics").
+- Haiku and Codex Luna stay out of all tests and evals except as the Playground fallback (`src/demo/model-config.ts`).
+- A change of resolved answering or judge model starts a new baseline (`eval/EVALS.md#evaluation-rules`).
 
 ## Launch lines
 
-Each lane is a background `hc` child with its first task on the launch line. Replace `<lane>`,
-`<worktree>`, `<family>`, `<alias>`, and `<task>`. Keep the task to one line that points at a brief
-file.
-
-Codex and Grok use the two-step form. A resolver failure then stops the launch. A command
-substitution inside the launch line would pass `-m ""`, and an empty Codex model inherits
-`~/.codex/config.toml`. The `echo` prints the resolved ID for the orchestrator to record.
+Launch each lane as a background `hc` child with a one-line task pointing to a brief file. Use the two-step form for Codex and Grok so a resolver failure stops the launch (command substitution would pass `-m ""` and fall back to `~/.codex/config.toml`), and record the printed `resolved:` ID.
 
 ```sh
 M=$(node <worktree>/scripts/latest-model.mjs <sol|astra|terra>) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> codex --no-daemon --dangerously-bypass-hook-trust -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<task>"
@@ -68,31 +48,18 @@ hc run --bg --name <lane> --cwd <worktree> claude --model <sonnet|opus|fable> --
 M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> grok --model "$M" --reasoning-effort high --always-approve "<task>"
 ```
 
-- **Codex** needs `--no-daemon` under `hc`. Its `workspace-write` sandbox cannot write under
-  `.agents/` or commit to the shared `.git`. Have it write findings to the ignored `tmp/`
-  directory, then copy and commit them yourself. With `-a never` it cannot approve MCP tool
-  calls, so it cannot repeat an authenticated Raven connector check. Before a paid lane, check
-  that `codex login status` prints "Logged in using ChatGPT". `--dangerously-bypass-hook-trust`
-  makes Codex run the project hook in `.codex/hooks.json` (the case-search guard); without it Codex
-  skips the hook unless it was approved in `/hooks`. An Antigravity (`agy`) lane needs no flag for
-  `.agents/hooks.json`, and Grok runs `.grok/hooks/` in a trusted folder.
-- **Grok** has no offline login check (`grok usage` cannot show the plan in this version). Before a
-  paid lane, establish the SuperGrok login interactively and keep `XAI_API_KEY` unset; a Codex lane
-  likewise keeps `OPENAI_API_KEY` unset. `--always-approve` can be denied as an unsafe launch when a Claude Code orchestrator
-  runs in auto mode. Do not retry. Treat the tier as unavailable and apply the fallback rule in
-  `AGENTS.md`, or ask the owner to launch it.
+- **Codex**: needs `--no-daemon` under `hc`. `workspace-write` cannot write under `.agents/` or commit to shared `.git` (have it write findings to ignored `tmp/`, then copy and commit yourself). `-a never` cannot approve MCP tool calls. Before a paid lane, confirm `codex login status` prints "Logged in using ChatGPT" and keep `OPENAI_API_KEY` unset. `--dangerously-bypass-hook-trust` enables `.codex/hooks.json` (the case-search guard) without `/hooks` approval. Antigravity (`agy`) runs `.agents/hooks.json` with no extra flag; Grok runs `.grok/hooks/` in a trusted folder.
+- **Grok**: no offline login check; establish SuperGrok login interactively and keep `XAI_API_KEY` unset. If a Claude Code auto-mode orchestrator rejects `--always-approve`, do not retry—use the `AGENTS.md` tier fallback or ask the owner to launch it.
 
 ## How to re-verify
 
-A family move needs no edit here. Check that the resolver still finds each family when a CLI
-renames one:
+Check that the resolver still finds each family when a CLI renames one:
 
 ```sh
 for f in sol astra terra grok; do node scripts/latest-model.mjs $f; done
 ```
 
-The CLIs cache their catalogs on disk. These reads are offline and select model fields only, never
-the credential fields the caches also hold:
+Offline catalog inspection (selects model fields only, never cached credentials):
 
 ```sh
 codex --version && jq '.client_version, (.models[]|{slug, visibility, description, context_window, default_reasoning_level, efforts:[.supported_reasoning_levels[].effort]})' ~/.codex/models_cache.json
@@ -101,13 +68,8 @@ claude --version && claude --help | grep -A4 -- '--model\|--effort'
 grep -E '^(model|model_reasoning_effort)' ~/.codex/config.toml
 ```
 
-Two reads use the network. `grok models` is the only source for the Grok CLI default. For a
-Claude alias, run `claude -p --model <alias> --output-format json "Reply ok" | jq '.modelUsage|keys'`
-and read the `claude-<family>-*` key.
+Network reads: `grok models` for the Grok CLI default; `claude -p --model <alias> --output-format json "Reply ok" | jq '.modelUsage|keys'` for a Claude alias's resolved `claude-<family>-*` key.
 
-- Map tiers from the catalog description, not the name. Codex family names change meaning
-  between generations. Read the description when a new generation lands.
-- Working context is the catalog's `context_window`, not `max_context_window`.
-- A catalog entry proves a model is selectable, not that a call works. The first lane on a newly
-  resolved ID is that check. When resolution or the launch fails, record the reason and take the
-  lane's tier fallback.
+- Map Codex tiers from catalog descriptions, not names (names change meaning across generations).
+- Working context is `context_window`, not `max_context_window`.
+- Catalog presence proves selectability, not a working call; the first lane on a new ID verifies it. On failure, record the reason and take the tier fallback.

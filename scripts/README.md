@@ -12,9 +12,7 @@ Files under `scripts/lib/` are shared helpers. Files under `scripts/catalog-data
 Keep a command when a package command, CI check, maintenance workflow, or generated artifact uses it.
 Delete a command only after checking package commands, workflows, documentation, and imports.
 
-`npm run mcp:surface` uses `run-mcp-surface.mjs` to build and run the local report.
-Each invocation uses its own temporary directory. The launcher removes that directory after completion.
-The launcher forwards arguments, including `--json`, to the report.
+`npm run mcp:surface` bundles `report-mcp-surface.mjs` into a temporary directory (removed on exit) and runs it in the caller's working directory, forwarding arguments (including `--json`).
 
 ## Generated-output entrypoints
 
@@ -38,23 +36,10 @@ The launcher forwards arguments, including `--json`, to the report.
 | `node scripts/refresh-inventory.mjs` | `inventory/*.json` | no; the daily `refresh.yml` reports drift |
 | `npm run improvements:index` | `improvements/INDEX.md` | yes (`npm run improvements:lint`) |
 
-`build-catalog.mjs` and `build-super-spec.mjs` read pinned skill bodies through `scripts/lib/skill-mirror.mjs`.
-The reader fetches each file from the upstream commit in `ecosystem-skills/MANIFEST.json`.
-It verifies the recorded Git blob hash and caches the bytes under the ignored `ecosystem-skills/.cache/` folder.
-A hash mismatch fails the build. The skill bodies are the builders' only uncommitted input.
+`build-catalog.mjs` and `build-super-spec.mjs` read pinned skill bodies through `scripts/lib/skill-mirror.mjs`, fetching from the upstream commit in `ecosystem-skills/MANIFEST.json`, verifying the Git blob hash (mismatch fails the build), and caching under ignored `ecosystem-skills/.cache/`. Skill bodies are the builders' only uncommitted input.
 
-The current catalog, spec, family-text, globe, index, and evaluation generators use `writeFileAtomic` from `scripts/lib/shared.mjs`.
-Atomic replacement prevents interrupted writes from leaving truncated tracked outputs.
-The retained prior-art compiler writes directly. CI checks its output after compilation.
-Generated modules are never edited by hand.
-Operator image and font generators stay outside the CI byte-sync checks.
-
-`improvements-file-issue.mjs` and `improvements-resolve.mjs` update the finding index through `writeIndex` from `improvements-lib.mjs`.
-Their tracked writes also use atomic replacement.
+All catalog, spec, family-text, globe, index, and evaluation generators use `writeFileAtomic` (`scripts/lib/shared.mjs`), and `improvements-file-issue.mjs` / `improvements-resolve.mjs` update the index atomically via `writeIndex` (`improvements-lib.mjs`). The retained prior-art compiler writes directly; CI checks its output. Never hand-edit generated files.
 
 ## Typing convention
 
-Scripts use `.mjs` because Node runs them directly.
-A `.d.mts` declaration is required when TypeScript imports a JavaScript module that needs types.
-Declarations exist for `build-catalog.mjs`, `build-family-text.mjs`, `exposure.mjs`, `emitted-text-guard.mjs`, and `lib/skill-mirror.mjs`.
-Use runtime tests for command-only scripts. Add declarations at an actual TypeScript import boundary.
+Scripts use `.mjs` for direct Node execution. Add a `.d.mts` declaration only at an actual TypeScript import boundary (currently `build-catalog.mjs`, `build-family-text.mjs`, `exposure.mjs`, `emitted-text-guard.mjs`, and `lib/skill-mirror.mjs`); test command-only scripts at runtime.

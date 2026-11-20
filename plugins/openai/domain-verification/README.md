@@ -1,29 +1,23 @@
 # OpenAI domain verification
 
-A separate Worker that serves Raven's OpenAI domain challenge. It holds no part of Raven's MCP
-server and none of its secrets.
+Separate Worker serving Raven's public OpenAI domain challenge (no MCP code or secrets).
 
-- Its only route is `raven.stellar.org/.well-known/openai-apps-challenge` on the `stellar.buzz`
-  zone. The route wins only at that exact path; `raven.stellar.org/*` still goes to
-  `stellar-raven-codemode`.
-- The challenge is public verification content, not a credential. Do not replace it with another
-  submission's challenge without checking the saved portal connection.
-- Keep this directory outside the `stellar-raven/` plugin ZIP.
-- [The work queue](../../../.agents/TODO.md) says when to remove this Worker.
+- Route: `raven.stellar.org/.well-known/openai-apps-challenge` on the `stellar.buzz` zone (`raven.stellar.org/*` still routes to `stellar-raven-codemode`).
+- Do not replace the challenge without checking the saved portal connection. Keep this directory outside `stellar-raven/`.
+- [`.agents/TODO.md`](../../../.agents/TODO.md) states when to remove this Worker.
 
-## Deploy
+## Deploy and validate
 
-Use Node 24.22 or later in the Node 24 line.
+Requires Node `>=24.22` in the Node 24 line. Run from this directory:
 
 ```sh
-npm ci --ignore-scripts
-cf deploy          # with an SDF Cloudflare credential, from this directory
+npm ci --ignore-scripts && npm run typecheck && npm run build && npm audit
 ```
 
-Never copy the credential into a file or a command argument. After a deploy, check the challenge
-response and the shared Raven deployment independently. The
-[verification notes](../VERIFICATION.md) record the first deployment and both checks.
+After validation passes, deploy with an SDF Cloudflare credential (never in a file or arg):
 
-## Local validation
+```sh
+cf deploy
+```
 
-`npm ci --ignore-scripts`, `npm run typecheck`, `npm run build`, and `npm audit`. The compiled Worker contains only the fixed-response handler.
+After deploying, verify both the challenge response and the main Raven deployment independently (first check recorded in [VERIFICATION.md](../VERIFICATION.md)).

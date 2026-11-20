@@ -1,42 +1,17 @@
 # improvements/ — upstream service findings
 
-## Principle
-
-Tuning this MCP server alone has a low ceiling. Evals against the server are better at finding
-gaps and errors upstream. The upstream targets are the services and the provider package that
-Raven depends on. A primary product of each eval run is a set of evidence-backed recommendations
-for those targets. This directory holds that set.
+Evals surface upstream gaps and errors more reliably than server-side tuning can mask them. This directory holds evidence-backed findings for upstream services and provider packages that Raven depends on.
 
 ## Collections
 
-- `lumenloop/` — the Lumenloop API and its content corpus: slugs, extraction quality,
-  vocabularies, and endpoint completeness.
-- `stellar-light-scout/` — the Stellar Light/Scout API: response semantics, missing fields, and
-  content-type consistency. It also records positive trust anchors.
-- `stellar-docs/` — the Stellar Docs search surface (the Mintlify search): ranking, chunking,
-  and vocabulary coverage. A docs-content finding also belongs here when the indexed source
-  content is stale or ambiguous. It also belongs here when the content lacks an explanation that
-  grounded agents need. See [Resolution paths](#resolution-paths-stellar-docs).
-- `skills/` — the upstream skill sources pinned in `ecosystem-skills/MANIFEST.json`.
-  Recommendations target the source repositories. Raven does not vendor skill bodies, so there is
-  no local copy to patch. A re-pin to a fork or to a patched branch is not a fix.
-- `workers-ai-provider/` — Cloudflare's `workers-ai-provider` package and its AI Gateway delegate
-  surface. Recommendations target `cloudflare/ai`.
-- `canonical-source/` — a primary dependency or product source that no collection above owns.
-  Examples are a package that Raven vendors and a product repository's own docs. Recommendations
-  target the repository that owns the defective fact or code.
+- `lumenloop/` — Lumenloop API and corpus (slugs, extraction, vocabularies, endpoints).
+- `stellar-light-scout/` — Stellar Light/Scout API (response semantics, missing fields, content types, positive trust anchors).
+- `stellar-docs/` — Stellar Docs (Mintlify) search ranking/chunking/vocabulary and stale, ambiguous, or missing indexed docs content ([Resolution paths](#resolution-paths-stellar-docs)).
+- `skills/` — Upstream skill repos pinned in `ecosystem-skills/MANIFEST.json`. Raven does not vendor skill bodies; re-pinning to a fork is not a fix.
+- `workers-ai-provider/` — Cloudflare's `workers-ai-provider` package and AI Gateway delegate (`cloudflare/ai`).
+- `canonical-source/` — Primary dependencies or product repos not owned above; targets the repo that owns the defective fact or code.
 
-Classify a web finding before you file it. The classes are `docs-content`, `docs-search`,
-`site-content`, `site-search`, and `canonical-source`. The two search classes include the related
-search index and its ingestion. Only `canonical-source` has its own collection. The other classes are
-routing categories, not directories.
-
-- A missing search result does not show that Docs or `stellar.org` must own the content.
-- Do not create an empty collection. A collection needs a verified finding and an identified
-  owner.
-- Correct a fact in the SEP, CAP, implementation, or product repository that owns it.
-- Add a dedicated site collection only when no existing service lifecycle can represent a verified
-  site finding honestly.
+Classify web findings as `docs-content`, `docs-search`, `site-content`, `site-search`, or `canonical-source` before filing (only `canonical-source` has its own directory; search classes include ingestion). A missing search hit does not prove Docs or `stellar.org` should own the fact—fix facts in the owning SEP, CAP, or product repo. Never create an empty collection; add a site collection only when no existing lifecycle fits a verified finding.
 
 ## Record format
 
@@ -70,31 +45,15 @@ evidence:
 | `declined-upstream` | An owner explicitly declined a change that still reproduces. The record carries the decline reference and a `disposition`. |
 | `fixed-upstream` | An author-side live re-check confirms the fix. |
 
-Refresh the status when upstream changes. A drift refresh is a natural checkpoint.
+This directory is an active queue, not an archive. `fixed-upstream` is short-lived before deletion; a distinct reviewer re-derives each deletion candidate (see "Drain `fixed-upstream`" in [`improvements-pipeline`](../.agents/skills/improvements-pipeline/SKILL.md)). Resolution appends a receipt to `resolved.json`; resolved IDs are never reused, and a GitHub closure or merge alone never proves a fix.
 
-This directory is an active queue, not an archive. `fixed-upstream` is a short-lived state before
-deletion. A distinct reviewer re-derives each deletion candidate; the skill's "Drain
-`fixed-upstream`" step has the checks.
+Keep declined, wontfix, legacy, and overfit records while the defect still reproduces. Retire a superseded record only when its upstream reference points to a self-contained successor preserving essential evidence.
 
-Resolution appends a compact receipt to `resolved.json`. IDs in that ledger are never reused. A
-GitHub closure or merge alone never meets the evidence bar.
-
-Keep declined, wontfix, legacy, and overfit decisions while the original defect still reproduces.
-Retire a superseded record only when its upstream reference points to a self-contained successor.
-That successor must preserve the essential evidence.
-
-Findings here are for the **services**. Fixes to this repository go to
-[`.agents/TODO.md`](../.agents/TODO.md): adapters, normalizers, the catalog, eval goldens, and eval
-instruments. A finding file can note that a fix landed here, but the own-repo work stays in that
-queue.
+Own-repo fixes (adapters, normalizers, catalog, goldens, evals) go to [`.agents/TODO.md`](../.agents/TODO.md), not here.
 
 ## Upstream filing channels
 
-`improvements/intake.json` resolves the repository for each collection and for each finding
-(`services.*` rules and per-finding overrides); the
-[improvements-pipeline skill](../.agents/skills/improvements-pipeline/SKILL.md) has the rules.
-`reported-upstream` means that a GitHub issue, or an equivalent, exists with the service owner.
-Record the exact issue URL in the finding's `evidence` list.
+`improvements/intake.json` resolves target repos per collection and per finding ([`improvements-pipeline`](../.agents/skills/improvements-pipeline/SKILL.md) owns the rules and follow-up loop). Record the exact upstream issue URL in `evidence` when marking `reported-upstream`.
 
 ### File a finding
 
@@ -102,44 +61,23 @@ Record the exact issue URL in the finding's `evidence` list.
 npm run improvements:file -- --file improvements/<collection>/<finding>.md --dry-run
 ```
 
-The dry run shows the resolved owner and the standardized body. Every filed body carries a durable
-`generated-by-stellar-raven` marker. Find Raven-filed issues across repositories with this command:
+Filed bodies include a `generated-by-stellar-raven` marker, an active `main` link, and (when committed cleanly) an immutable commit-pinned snapshot. Search Raven-filed issues with the quoted marker (older filings predate the marker):
 
 ```sh
 gh search issues --match body '"generated-by-stellar-raven"'
 ```
 
-The quoted form is required. An unquoted query tokenizes and matches unrelated repositories.
-Older Raven-filed issues have no marker, so a marker search does not find every Raven filing.
-
-When upstream work is deployed, a maintainer can open the **Upstream improvement ready for
-verification** issue form. The form takes the finding ID, the resolving issue or pull request, the
-deployment version or timestamp, and the smallest live recheck. Raven verifies the live surface
-independently before it marks a finding fixed.
-
-Before Raven retires a resolved file, it posts two items on the upstream reference: the dated live
-result and the commit-pinned source snapshot. New filing bodies include the active `main` link and
-an immutable snapshot. The source therefore stays auditable after the active queue is empty.
-
-The skill owns the follow-up loop and the rule to leave untouched open issues quiet.
+When upstream deploys a fix, maintainers can open the **Upstream improvement ready for verification** issue form; Raven verifies live independently before marking fixed. Before retiring a resolved file, post the dated live check and commit-pinned source snapshot on the upstream reference.
 
 ## Resolution paths (stellar-docs)
 
-Filing upstream is the default. The docs site runs on Mintlify, and Raven has no write path to its
-content or search configuration. `stellar-docs` findings divide by root cause:
+Raven has no write path to Mintlify content or search config, so filing upstream is the default:
 
-- **Content gaps.** A page is stale, wrong, ambiguous, or missing (for example `sd-004`). These
-  findings stay upstream with the content owner, usually `stellar/stellar-docs`.
-- **Search-mechanism gaps.** The Mintlify search ranks or chunks a page badly, or omits it. File
-  these upstream with the query, the expected page, and the observed hits.
+- **Content gaps** (stale, wrong, ambiguous, or missing pages): file with the content owner, usually `stellar/stellar-docs`.
+- **Search-mechanism gaps** (bad Mintlify ranking/chunking or omitted pages): file upstream with the query, expected page, and observed hits.
 
-A gap in Raven's own docs scoping (path scopes, the candidate window, or the query-term guard) is
-an own-repo fix, not a finding. It goes to `.agents/TODO.md` and needs a general mechanism and a
-read-only retrieval-level A/B win before it ships. `docs/stellar-docs.md` defines the scoping
-contract.
+Gaps in Raven's own docs scoping (path scopes, candidate window, query-term guard) go to `.agents/TODO.md` and require a general mechanism plus a read-only retrieval A/B win ([`docs/stellar-docs.md`](../docs/stellar-docs.md)).
 
 ## When findings get filed
 
-File a finding when an eval round, a drift refresh, an audit, or an upstream handoff shows an
-upstream defect. Filing the round's findings is part of closing the round; the
-[evaluation map](../eval/EVALS.md) describes the eval workflow.
+File upstream defects during eval rounds ([`eval/EVALS.md`](../eval/EVALS.md)), drift refreshes, audits, or upstream handoffs.
