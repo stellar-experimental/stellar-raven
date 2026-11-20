@@ -145,7 +145,8 @@ describe("QA measurement metrics", () => {
   });
 
   it("derives no coverage share from a panel union that exceeds the key facts", async () => {
-    // Three paraphrases of one missing fact exceed the 2 key facts; no coverage share is emitted.
+    // Three paraphrases of one missing fact exceed the 2 key facts, illustrating why missingFacts
+    // is never counted as a coverage ratio (coverage share is retired for every row).
     const panel = await judgeCasePanel(
       { golden: { keyFacts: ["Defines a memo.", "Explains the crediting use."] } },
       {

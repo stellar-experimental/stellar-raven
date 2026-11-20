@@ -331,7 +331,8 @@ describe("truncation at the model boundary", () => {
   });
 
   it("redact-then-clip: a secret straddling the result clip boundary leaks NO prefix", () => {
-    // Mirrors run.ts (redactSecrets before truncateForModel) with the secret straddling the 24k cut.
+    // Mirrors run.ts (redactSecrets before truncateForModel). Pad so the 29-char
+    // secret straddles the 24k cut while [REDACTED] fits inside the kept prefix.
     const secret = "llmcp_secret_value_1234567890"; // secret-scan:allow — synthetic fixture
     const maxChars = 6000 * 4;
     const value = {

@@ -1,6 +1,6 @@
 /**
- * Adapter unit tests against recorded fixtures (test/fixtures/) via an injected FetchLike.
- * Covers success, soft-empty, and error envelopes per service (ARCHITECTURE.md).
+ * Adapter unit tests against recorded fixtures and synthetic Mintlify fixtures (test/fixtures/)
+ * via an injected FetchLike. Covers success, soft-empty, and error envelopes (ARCHITECTURE.md).
  */
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";

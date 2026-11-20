@@ -311,7 +311,7 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     expect(wwwAuthenticate).toContain(
       'resource_metadata="https://mcp.test/.well-known/oauth-protected-resource/mcp"'
     );
-    // RFC 6750 §3: a credential-less 401 carries only the protected-resource pointer, no error= or body.
+    // RFC 6750 §3: a credential-less 401 returns a Bearer challenge with resource_metadata, no error=, and an empty body.
     expect(wwwAuthenticate).not.toContain("error=");
     expect(await response.text()).toBe("");
     expect(mcpFetch).not.toHaveBeenCalled();

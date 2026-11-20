@@ -14,7 +14,8 @@ import { buildDemoTools } from "../../src/demo/tools";
 
 // Captures OpenAI Responses API requests built from the production Playground tool builder and
 // model factory to detect silent wire-shape changes (`strict`, parameter schemas, follow-up steps)
-// across provider SDK updates. Descriptions are tested elsewhere; assembled routing is in server.test.ts.
+// across provider SDK updates. The tool-loop test reconstructs `streamText` directly without
+// running `src/demo/chat.ts`; descriptions are tested elsewhere, and server.test.ts stops pre-model.
 
 type FunctionTool = { type: string; name: string; strict?: unknown; parameters: unknown };
 type RequestBody = {

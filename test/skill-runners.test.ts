@@ -343,7 +343,8 @@ describe("runner confinement belts", () => {
   });
 
   it("import-discipline lint: specifiers ⊆ {./types.ts}, no forbidden tokens", () => {
-    // Static drift belt only; the fetch-stub test below and code review enforce confinement.
+    // Static drift belt (not a sandbox boundary); runners run host-side, so single-input
+    // fetch-stub tests support first-party code review rather than replacing runtime isolation.
     const FORBIDDEN = [
       "fetch(",
       "env.",

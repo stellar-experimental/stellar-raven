@@ -1,6 +1,7 @@
 /**
  * Standing guard that third-party skill bodies, section prose, and body-derived keywords
- * stay out of committed artifacts; only upstream pin addresses, slugs, and frontmatter descriptions commit.
+ * stay out of committed artifacts; only upstream pin addresses, slugs, frontmatter descriptions,
+ * verbatim section headings, and single-line companion-file titles commit.
  */
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";

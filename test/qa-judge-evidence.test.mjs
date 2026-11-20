@@ -1096,7 +1096,8 @@ describe("QA judge CLI evidence", () => {
   });
 
   it("classifies structured property names after control normalization", () => {
-    // Control bytes in a key name cannot bypass classification; only the value collapses.
+    // Control bytes in a key name cannot bypass classification; for these NUL and terminated
+    // sequences, the property name stays intact and only the value collapses.
     expect(
       sanitizeCliEvidenceText(JSON.stringify({ [`API${NUL}_KEY`]: "NUL_KEY_SECRET_SENTINEL" }))
     ).toBe(JSON.stringify({ [`API${NUL}_KEY`]: "[redacted]" }));

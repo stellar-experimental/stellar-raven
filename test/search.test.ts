@@ -103,7 +103,7 @@ describe("searchCatalog — contract shape", () => {
   });
 
   it("returns [] for queries with no lexical overlap", () => {
-    // Tokens must have zero lexical or prefix overlap; any single match triggers tier-2 backfill.
+    // Tokens must have zero lexical or prefix overlap; even weak overlap can surface tier-2 backfill on an otherwise-empty page.
     expect(searchCatalog(catalog, { query: "zzzzqqqq zzqqzzqq" })).toEqual([]);
     expect(searchCatalog(catalog, { query: "   " })).toEqual([]);
   });

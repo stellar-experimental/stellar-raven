@@ -134,7 +134,7 @@ describe("demo model config", () => {
   });
 
   it("builds OpenAI-wire reasoning options for OpenAI and provider-native Grok slugs", () => {
-    // store: false enables Zero Data Retention and makes the SDK request
+    // The gateway is Zero Data Retention; store: false makes the SDK request
     // reasoning.encrypted_content instead of replaying unstored response IDs.
     expect(demoOpenAiProviderOptions("openai/gpt-5.4", "low")).toEqual({
       providerOptions: {
