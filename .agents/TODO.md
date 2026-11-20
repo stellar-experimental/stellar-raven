@@ -321,16 +321,17 @@ left-open entry and closes or accepts it. Its brief must claim the exception and
 or reserve QA case" rule in `ITEM-LEAD.md`.
 
 Folded corpus-guide audit (deferred from item 8.2, which could not open `.ignore`d corpus paths):
-also check `eval/qa/corpus/README.md` and `eval/corpus/PROVENANCE.md` against the code and fix
+also audit `eval/qa/corpus/README.md` and `eval/corpus/PROVENANCE.md` against the code and fix
 what is stale (neither file is QA case text, and no other lane has read them). Because the
-maintenance exception's write set excludes non-corpus work outside the corpus, compiled outputs,
-register, sentinels, and `improvements/` scope (`eval/qa/README.md`, "Held-out split"), run the
-two-guide audit as a separate step or follow-up PR right after closing the register entries if
-editing `eval/corpus/PROVENANCE.md` would widen the exception PR, or have the owner accept both
-guides as unaudited.
+maintenance exception restricts its own session to work made necessary by the qualifying trigger
+(`eval/qa/README.md`, "Held-out split": "its sessions do no other work"), run this two-guide audit
+as a separate post-2.2c session and PR (not inside a maintenance-exception session, and even if the
+dated runs leave zero open register entries), with a brief authorizing only those two guide paths,
+or have the owner accept both guides as unaudited.
 
 Done when: the left-open register count is zero (or the owner accepts the entries still open), and
-both corpus guides are checked and corrected (or the owner accepts them as unaudited).
+both corpus guides are checked and corrected in that separate post-2.2c pass (or the owner accepts
+them as unaudited).
 
 ### Golden follow-ups from the sls-024 and sls-029 cap review
 
@@ -888,8 +889,9 @@ needs a general mechanism or a description change that passes `npm run eval:rout
 with no holdout loss; no operation-specific exception. The test is probes Q5, R23, R33, and R35 of
 the HackMeridian review.
 
-Held: independent of Owner decision 2's source choice, but held on its own evidence — low measured
-caller impact in round item 3.1, the held general routing repair, and zero holdout headroom in
+Held: independent of Owner decision 2's source choice, but held on its own evidence — no measured
+demand in round item 3.1 (few first-place `scout.getChangelog` searches overall, upper bound only
+because query text is not logged), the held general routing repair, and zero holdout headroom in
 `eval/gates.json` (`top1` 12, `top3` 26, `forbiddenCaptures` 11). Trigger: owner authorization for
 the general scoring repair ("Preserve structured routing intent across extraction caps and gate
 tiers"), an owner decision on decision 2 that adds a release source and revisits release-query
@@ -1022,18 +1024,21 @@ arm 3 run were panel-to-single moves. Rules that follow:
 - A verdict is one sample from one judge tier. Do not read a single row's move as an effect.
 
 What is already enforced: `eval/qa/paired-verdict.mjs` (`comparisonProblems`) already refuses any
-pair whose tiering tuple differs — including `maxPanelCases`, `maxPanelCasesSource`, and
-`stabilityRegisterSha256` — for cross-revision runs (and requires at least 100 eligible rows for a
-statistical verdict), and `eval/qa/run-qa.mjs --judge-stored` refuses to mix a different
-`--max-panel-cases` into a stored artifact. What remains: smaller or ad-hoc panel comparisons
-(`eval/qa/heldout-read.mjs`, `eval/qa/compare-architecture-ab.mjs`, or manual 50-row panel reads)
-do not enforce a matching tiering tuple, and no same-surface repeat at one fixed panel cap has
-measured the null directly.
+pair whose tiering tuple differs — including `policy`, `judgePanel`, `stabilityThreshold`,
+`maxPanelCases`, `maxPanelCasesSource`, `defaultPanelPolicy`, and `stabilityRegisterSha256` — for
+cross-revision runs (and requires at least 100 eligible rows for a statistical verdict), and
+`eval/qa/run-qa.mjs --judge-stored` refuses to mix a different `--max-panel-cases` into a stored
+artifact. What remains: smaller or ad-hoc panel comparisons (`eval/qa/heldout-read.mjs`,
+`eval/qa/compare-architecture-ab.mjs`, or manual 50-row panel reads) do not enforce a matching
+tiering tuple, and no same-surface repeat of a full panel (50+ rows, unlike the narrow 17-row
+identifier trial R in tuning loop 2) at one fixed tiering tuple on the current surface has measured
+the panel null directly.
 
 Done when: either the sub-100 comparison paths (`heldout-read.mjs`, `compare-architecture-ab.mjs`)
-enforce matching `maxPanelCases` and `stabilityRegisterSha256` and these standing noise rules move
-to `eval/EVALS.md`, or a same-surface pair at one cap measures the null directly. Delete this note
-then.
+enforce the full matching judge-tiering tuple (`tieringTuple` in `eval/qa/paired-verdict.mjs`,
+including panel mode and policy, `maxPanelCases`, and `stabilityRegisterSha256`) and these standing
+noise rules move to `eval/EVALS.md`, or a same-surface repeat of a full panel (50+ rows) at one
+fixed tiering tuple on the current surface measures the null directly. Delete this note then.
 
 ### Keep OpenCode out of client diagnostics
 
