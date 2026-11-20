@@ -2,7 +2,6 @@
 id: sd-114
 service: stellar-docs
 status: verified
-statusNote: "Verified locally on 2026-11-20; held in verified status pending upstream posting review."
 discovered: 2026-11-20
 upstreamTitle: "Docs search omits the Stellar Transaction page for contract ID derivation queries"
 evidence:
