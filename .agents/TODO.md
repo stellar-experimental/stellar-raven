@@ -29,10 +29,9 @@ approval, and each runs under a dollar cap and is recorded with its cost.
 3. Owner decisions (the list at the end).
 4. Free own-repo fixes that need no paid measurement: the smart-contracts malformed-input
    recurrence probe ("Probe the malformed-input gap in the pinned smart-contracts skill"), the
-   canonical-page Docs search re-probe ("Fix Docs search misses on canonical pages"), the two unread
-   corpus guides ("Audit the two corpus guides no lane has read"), and the case-file move once every
-   dated run and follow-up has merged and `systemctl --user list-timers` on agentpc shows no
-   `raven-dated` or `raven-watchdog` unit.
+   canonical-page Docs search re-probe ("Fix Docs search misses on canonical pages"), and the
+   case-file move once every dated run and follow-up has merged and `systemctl --user list-timers`
+   on agentpc shows no `raven-dated` or `raven-watchdog` unit.
 
 Everything not named here is a hold, a monitor or waits on its trigger. Do not start one without
 its trigger.
@@ -193,6 +192,12 @@ absence of a hit, and the readers disagreed on whether they were violations (the
 read 1, 2 and 1). P2 and R read 0 violations in 25 and 20 claim-word answers, so the rule cannot see
 the case. Do not reword the sentence on that evidence.
 
+Held: P2 and R read 0 violations in 25 and 20 claim-word answers, readers disagreed on whether
+absence-inferred statements violated the rule, and no third tuning loop is planned (owner,
+2026-11-16, decision 1). Trigger: the next corroboration-guard revision, or a future QA or
+production transcript review that surfaces repeated bare absence-of-standard claims with the guard
+in the result.
+
 Done when: a targeted read of the answers that state a standard, audit or incident is absent, on a
 panel with enough such rows to give a rate, has the readers agreeing on the class; then a reviewed
 general wording change is measured against the unchanged sentence.
@@ -212,6 +217,12 @@ R8 decided that `stellarOrg` stays outside the corroborating families, so each o
 carries the guard line, and `eval/qa/claim-read-brief.md` reads a `get_page` result as class 2 for
 SDF's own programmes and class 3 for governance and incident claims. No claim statement in P2 or R
 rested on a `stellarOrg` result, so the rule and its over-hedging risk are untested.
+
+Held: no judged run with enough `stellarOrg`-backed claim answers is scheduled (P2 called
+`stellarOrg` on 3 of 58 rows with 0 claim statements resting on it, and no third tuning loop is
+planned). Trigger: the next judged QA run (such as the run in "Prove the stellar.org source") or
+corroboration review that produces at least 5 claim-word answers resting on `stellarOrg` results;
+do not run a dedicated collection for this check alone.
 
 Done when: a run with at least 5 claim-word answers that rest on a `stellarOrg` result is read with
 the brief, and the readers' violation and over-hedge counts are recorded; the rule changes only on
@@ -309,7 +320,17 @@ left-open entry and closes or accepts it. Its brief must claim the exception and
 (a register entry that an earlier edit reopened). It must also override the "Never open a held-out
 or reserve QA case" rule in `ITEM-LEAD.md`.
 
-Done when: the count is zero, or the owner accepts the entries still open.
+Folded corpus-guide audit (deferred from item 8.2, which could not open `.ignore`d corpus paths):
+also check `eval/qa/corpus/README.md` and `eval/corpus/PROVENANCE.md` against the code and fix
+what is stale (neither file is QA case text, and no other lane has read them). Because the
+maintenance exception's write set excludes non-corpus work outside the corpus, compiled outputs,
+register, sentinels, and `improvements/` scope (`eval/qa/README.md`, "Held-out split"), run the
+two-guide audit as a separate step or follow-up PR right after closing the register entries if
+editing `eval/corpus/PROVENANCE.md` would widen the exception PR, or have the owner accept both
+guides as unaudited.
+
+Done when: the left-open register count is zero (or the owner accepts the entries still open), and
+both corpus guides are checked and corrected (or the owner accepts them as unaudited).
 
 ### Golden follow-ups from the sls-024 and sls-029 cap review
 
@@ -337,6 +358,13 @@ three corrections:
   severity, or reward claims.
 
 Do not infer an owner, denominator, deployment, or policy from search snippets.
+
+Held: primary evidence was unavailable on 2026-11-03 (the RWA and Phoenix pages lacked published
+source ownership, denominator, or award-status filter details, and the anonymous HackerOne policy
+page returned an application error). Trigger: primary evidence becomes readable (published owner,
+denominator, or dated submission records for RWA or Phoenix, or a readable controlling HackerOne
+policy revision), or a future `golden-truth` or `improvements` review touches one of those three
+topics.
 
 Done when: primary evidence supports a reviewed correction or an explicit continued hold.
 
@@ -369,24 +397,13 @@ revision.
 Done when: each row is edited through `golden-truth`, confirmed unchanged, or has its pointer
 rerouted, and each topic is authored as a case or declined with a reason.
 
-### Audit the two corpus guides no lane has read
-
-`eval/qa/corpus/README.md` and `eval/corpus/PROVENANCE.md` are living guides that the item 8.2
-documentation audit could not open: both sit under paths no audit lane may read. Their claims are
-unchecked against the code.
-
-Next: a golden-maintenance lane that is allowed to open those two paths checks each claim against
-the code and fixes what is stale.
-
-Done when: both guides are checked and corrected, or the owner accepts them as unaudited.
-
 ## Improvements follow-up
 
 Recheck only when the named change or new evidence arrives. An untouched issue needs no
 reminder. The [November 5 ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding
 tables cover every finding.
 
-- **sls-116** (stellarlight#1952, inbound handoff #427): three items still reproduce on
+- **sls-116** (stellarlight#1952; inbound handoff #427 closed 2026-11-19, round item 8.12b): three items still reproduce on
   2026-11-17 (Scout 1.9.150) and #1952 has no maintainer reply. Next check, only after a Scout
   release that touches SCF data or a reply on #1952: (1) `GET
   /api/projects/search?scfAwarded=true&limit=100` at offsets 0 to 700 should name
@@ -644,8 +661,14 @@ names; another ended with an unscoped absence claim
 ([result](rounds/2026-10-10-weekend/answer-style/result-v2.md)). Scout's own `didYouMean` path
 already attaches the caveat and needs no change.
 
-Next: a general mechanism, in result data or adapter behavior and not a per-question rule, that
-keeps a corrected-name match from being presented as the asked entity.
+Held: single-row residual risk from the 2026-10-13 answer-style measurement (Scout's `didYouMean`
+path already attaches `caveat: "unverified-match"`, and a general adapter or result change is
+model-facing and requires paid abstention and absence verification; no third tuning loop is
+planned). Trigger: a second distinct ambiguous-entity case or production transcript shows a caller
+presenting an `unverified-match` result as the asked entity, or the next deliberate answer-style or
+adapter-envelope revision. Then design a general mechanism, in result data or adapter behavior and
+not a per-question rule, that keeps a corrected-name match from being presented as the asked
+entity.
 
 Done when: a reviewed measurement shows both runs of the row say the identity is unverified or
 ask for context, with no regression in the abstention or absence slices.
@@ -676,6 +699,12 @@ controls, and Raven's routing gates.
 The D3 deletion failed its answer gate and did not ship. The directory field-placement
 exception remains a known design risk. Do not repeat D3 or add entity-specific exceptions
 ([evidence](../research/audits/2026-09-17-routing-audit/m1-c1-passkeys-loss-review.md)).
+
+Held: D3 failed its answer gate on 2026-09-17 and the general routing repair stays held
+("Priorities"; "Preserve structured routing intent across extraction caps and gate tiers").
+Trigger: owner authorization for a general scoring repair with new mechanism evidence (same trigger
+as "Preserve structured routing intent across extraction caps and gate tiers"), or a routing defect
+traced directly to the directory field-placement exception.
 
 Done when: a general mechanism passes frozen routing controls and independently reviewed answer
 checks.
@@ -727,7 +756,7 @@ removed and this item is deleted.
 
 ## Executor and tool surface
 
-### Point agents at the page when a docs hit has no body
+### Recheck `sd-059` after upstream action on Mintlify Discovery search
 
 `sd-059` ([stellar/stellar-docs#2995](https://github.com/stellar/stellar-docs/issues/2995)):
 Mintlify Discovery search rarely returns `<ResponseField>` text, so a result-code page often comes
@@ -783,6 +812,14 @@ service calls use `{ ok: true, data }`. A production check recovered from readin
 `spec.data.signature`
 ([record](../research/audits/2026-11-09-playground-product-decision.md)). Decide between
 model-facing documentation and a forward-only shape change, and measure that change on its own.
+
+Held: single recovered tool failure on 2026-11-09 (`noToolFailures` on Terra; the next call
+succeeded and the final answer passed). Changing either the model-facing tool description or the
+`codemode.describe` return shape is model-facing and needs its own paid measurement, which one
+recovered event does not justify. Trigger: repeated `spec.data.*` (or equivalent top-level vs.
+`.data` shape) errors in Playground or QA transcripts or production logs, or the next measured
+change to `src/mcp/tools.ts`, `src/demo/tools.ts`, or `src/executor/providers.ts` that already
+budgets a model-facing eval.
 
 Done when: one reviewed, measured correction makes the shape clear to models.
 
@@ -842,12 +879,21 @@ latest OpenZeppelin stellar-contracts release. Search also ranks `scout.getChang
 own API log) above `scout.searchResearch` with `source: "release"`.
 
 The source choice is the owner's ("Owner decisions", decision 2). This item holds the own-repo
-part, the ranking trap. The production read (round item 3.1) gives an upper bound only: history
-questions reach `scout.searchResearch` often, and `scout.getChangelog` ranks first in few searches,
-so the trap touches few callers and the fix is low value. Query text is not logged, so silence is
-"no measured demand", not absence. The fix needs a general mechanism or a description change that
-passes `npm run eval:routing -- --gate` with no holdout loss; no operation-specific exception. The
-test is probes Q5, R23, R33, and R35 of the HackMeridian review.
+part, the ranking trap, which is independent of that source choice ("proceeds either way" in
+decision 2 means neither branch of decision 2 resolves or blocks this trap). The production read
+(round item 3.1) gives an upper bound only: history questions reach `scout.searchResearch` often,
+and `scout.getChangelog` ranks first in few searches, so the trap touches few callers and the fix
+is low value. Query text is not logged, so silence is "no measured demand", not absence. The fix
+needs a general mechanism or a description change that passes `npm run eval:routing -- --gate`
+with no holdout loss; no operation-specific exception. The test is probes Q5, R23, R33, and R35 of
+the HackMeridian review.
+
+Held: independent of Owner decision 2's source choice, but held on its own evidence — low measured
+caller impact in round item 3.1, the held general routing repair, and zero holdout headroom in
+`eval/gates.json` (`top1` 12, `top3` 26, `forbiddenCaptures` 11). Trigger: owner authorization for
+the general scoring repair ("Preserve structured routing intent across extraction caps and gate
+tiers"), an owner decision on decision 2 that adds a release source and revisits release-query
+routing, or production or query-log evidence showing release callers hitting `scout.getChangelog`.
 
 Done when: the ranking trap is fixed through a gated general change, and either the four probes
 pass again or the owner's decision leaves release data upstream and the request is filed in
@@ -975,8 +1021,19 @@ arm 3 run were panel-to-single moves. Rules that follow:
   row to a cause in the transcript before counting it.
 - A verdict is one sample from one judge tier. Do not read a single row's move as an effect.
 
-Done when: `run-qa.mjs` or a compare script refuses to pair two runs whose panel cap or register
-differ, or a same-surface pair at one cap measures the null directly. Delete this note then.
+What is already enforced: `eval/qa/paired-verdict.mjs` (`comparisonProblems`) already refuses any
+pair whose tiering tuple differs — including `maxPanelCases`, `maxPanelCasesSource`, and
+`stabilityRegisterSha256` — for cross-revision runs (and requires at least 100 eligible rows for a
+statistical verdict), and `eval/qa/run-qa.mjs --judge-stored` refuses to mix a different
+`--max-panel-cases` into a stored artifact. What remains: smaller or ad-hoc panel comparisons
+(`eval/qa/heldout-read.mjs`, `eval/qa/compare-architecture-ab.mjs`, or manual 50-row panel reads)
+do not enforce a matching tiering tuple, and no same-surface repeat at one fixed panel cap has
+measured the null directly.
+
+Done when: either the sub-100 comparison paths (`heldout-read.mjs`, `compare-architecture-ab.mjs`)
+enforce matching `maxPanelCases` and `stabilityRegisterSha256` and these standing noise rules move
+to `eval/EVALS.md`, or a same-surface pair at one cap measures the null directly. Delete this note
+then.
 
 ### Keep OpenCode out of client diagnostics
 
@@ -1056,6 +1113,12 @@ prompt change that separates a misread source from unsupported memory is a judgi
 change: it needs the paid seven-call self-test, an independent review, and a paired re-judge.
 It fits the same change as the judge-evidence item in the round follow-ups.
 
+Held: single historical row (review R8, PR #264), and changing rubric `v2.11` is a
+judging-semantics change not worth running alone. Trigger: the next deliberate revision to judge
+rubric `v2.11` or judge pack `p9` (alongside "Check what the judge saw before changing how it
+weighs cited text" and "Close the remaining claim-support gaps of judge pack p9"), or another
+judged run where a sourced summary misread is matched to the unsupported-memory avoid clause.
+
 Done when: a reviewed decision is recorded, and any rubric change has its measurement.
 
 ### Reconcile the QA answering prompt with out-of-scope goldens
@@ -1066,6 +1129,12 @@ decision support or acknowledgment. The second absorbed `q-n3-wallet-hacked-supp
 the 2026-11-14 audit. The delegated October 1 adjudication keeps both
 ([record](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)); the owner can veto it. A
 prompt change changes the implementation hash and needs a reviewed decision and measurement.
+
+Held: the delegated 2026-10-01 adjudication keeps both unchanged (owner veto open), and editing the
+answering prompt changes `qaImplementationSha256` and requires a paid before/after measurement.
+Trigger: an owner veto of the 2026-10-01 adjudication, a future answering-prompt revision that
+already moves `qaImplementationSha256`, or repeated out-of-scope grading failures in a judged run
+traced to the brief-refusal instruction.
 
 Done when: a reviewed decision changes the prompt with a measured before and after on the
 out-of-scope cases, or records why the prompt stays.
