@@ -44,9 +44,9 @@ Single host, no host-health cache, no Mintlify SDK.
   network error, timeout, or 5xx; never retry 4xx (including `429`) or malformed JSON.
 - **Budget.** Every lookup, `/index` retry, and redirect probe shares one `OPERATION_BUDGET_MS`
   (24,000 ms) deadline; each attempt clips to remaining time and skips if `< 500 ms` remains.
-- **404.** Only `{"message":"No results found"}` (search) and `{"message":"Page not found"}` (page)
-  mean absence. Any other `404` body (e.g., `No deployment related to <domain> exists`) returns
-  `error` with `status: 404`.
+- **404.** Only `{"message":"No results found"}` or `{"message":"Page not found"}` means absence
+  (both endpoints check the same set). Any other `404` body (e.g.,
+  `No deployment related to <domain> exists`) returns `error` with `status: 404`.
 
 ## Operations
 
@@ -86,9 +86,9 @@ Prefixes match whole path segments (`/docs/tokens` excludes `/docs/tokens-legacy
 includes. `hitsPerPage` applies after filtering, so scoped operations see only candidates inside the
 50-section window.
 
-`search_doc_titles` keeps the first section per page and ranks by query terms in title, then path,
-then upstream rank, without `content`. `includeContent: true` returns each matched section's full
-Markdown with no extra request.
+`search_doc_titles` keeps the first section per page and ranks by query-term score (2 per title
+match, 1 per path match; ties broken by upstream rank), without `content`. `includeContent: true`
+returns each matched section's full Markdown with no extra request.
 
 ### Search output
 
@@ -96,8 +96,9 @@ Payload: `{ hits, candidates, pathFiltered? }` (`candidates` = pre-scope count; 
 when an `include` scope ran). Each hit is `{ url, path, title, section?, snippet, content? }`:
 
 - `url` — site URL, adding `#<anchor>` only when the section starts with an H2–H6 ATX heading
-  matching a unique rendered heading ID for that page in `src/adapters/stellar-docs-anchors.json`
-  (backticks and zero-width spaces stripped; no extra fetch). Repeated/unknown headings, H1s, and
+  matching a unique rendered heading ID for that page in the deployed
+  `src/adapters/stellar-docs-anchors.json` snapshot (backticks and zero-width spaces stripped; no
+  extra fetch; live headings can drift until the next refresh). Repeated/unknown headings, H1s, and
   unknown pages keep the page URL.
 - `path` — site-relative path with leading slash and no `/index`.
 - `title` — search metadata title, else final path segment.
@@ -113,11 +114,11 @@ leading slashes) and queries the page endpoint:
 
 - **Index pages.** A "Page not found" without `/index` retries `<path>/index`; any other failure
   returns `error`.
-- **Moved pages.** If both lookups return "Page not found", the adapter sends one unauthenticated
-  `GET https://developers.stellar.org/<path>` with `redirect: "manual"` (first attempt timeout, no
-  retry; probe failure = no redirect). If 3xx `Location` stays on `https://developers.stellar.org`,
-  starts with `/docs/` or `/meetings/`, and differs from `path`, it fetches that target (with the
-  same `/index` retry) and returns the new `url` and `path`.
+- **Moved pages.** If lookup returns "Page not found" (after any `/index` retry), the adapter sends
+  one unauthenticated `GET https://developers.stellar.org/<path>` with `redirect: "manual"` (first
+  attempt timeout, no retry; probe failure = no redirect). If 3xx `Location` stays on
+  `https://developers.stellar.org`, starts with `/docs/` or `/meetings/`, and differs from `path`,
+  it fetches that target (with the same `/index` retry) and returns the new `url` and `path`.
 - Still missing → `soft-empty` (`status: 404`).
 
 Result: `{ url, path, title, content }` (Markdown in on-page order; `title` from first H1 or final
@@ -136,13 +137,15 @@ Ok calls return `{ ok: true, data }` (dispatcher adds `asOf` and `asOfBasis: "ob
 operations use the `corpus`, `detail`, or `exact` lane, so ok hits carry no `caveat`). Failures
 return `{ ok: false, error }` with `kind: "error" | "soft-empty"`.
 
-Search returns `soft-empty` (with a broader-operation hint) when:
+Search returns `soft-empty` in three cases:
 
-1. Upstream returns no sections (empty array or "No results found" `404`).
-2. Zero candidates match the path scope (message states candidate count).
-3. Zero in-scope sections contain a query term (3+ char words or words with a digit, minus
-   stopwords; hyphenated tokens like `SEP-10` match whole and split; checks title, path, content).
-   This guards against semantic search returning unrelated nearest sections.
+1. Upstream returns no sections (empty array or "No results found" `404`; hint advises rephrasing).
+2. Zero candidates match the path scope (message states candidate count; hint advises broadening
+   once with `stellarDocs.search_docs`).
+3. Query terms survive tokenization (3+ char words or words with a digit, minus stopwords;
+   hyphenated tokens like `SEP-10` match whole and split) and zero in-scope sections match any term
+   in title, path, or content (hint advises rephrasing or corroborating with Lumenloop/Scout). This
+   set-level guard catches semantic search returning unrelated nearest sections.
 
 What a result proves:
 
@@ -173,12 +176,14 @@ What a result proves:
   File wrong, stale, or missing pages against `stellar/stellar-docs` via
   [improvements-pipeline](../.agents/skills/improvements-pipeline/SKILL.md). Never fork docs content
   locally or add a second index without measured benefit justifying upkeep.
-- **Search-mechanism changes.** Scope or guard changes require a measured win on a free, read-only
-  retrieval A/B over golden docs pages using a general mechanism (no per-query/per-page exceptions).
+- **Search-mechanism changes.** Any Raven-side search change (e.g. a new scope, guard change, or
+  ranking adjustment) requires a measured win on a free, read-only retrieval A/B over golden docs
+  pages using a general mechanism (no per-query/per-page exceptions).
 - **Anchor index.** Run `npm run docs:anchors:build` after docs site updates (keyless; reads sitemap
-  and rendered pages; atomic replace only if every page succeeds; unchanged capture keeps timestamp).
-  `refresh.yml` runs it daily and reports anchor drift; Worker builds do not. A committed fixture
-  pins rendered heading pairs across 11 pages.
+  and rendered pages; atomic replace only if every page succeeds; unchanged capture keeps timestamp;
+  the index is a snapshot, so live headings can drift until refreshed). `refresh.yml` runs it daily
+  and reports anchor drift; Worker builds do not. A committed fixture pins rendered heading pairs
+  across 11 pages.
 - **Generated files.** Refresh scripts own `inventory/`; `specs/stellar-docs.json` owns mappings.
   Run adapter tests, regenerate catalog/spec, and run baseline gates after any mapping/schema edit.
 

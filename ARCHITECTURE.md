@@ -24,7 +24,12 @@ See [PLAN.md](PLAN.md) for scope, [README.md](README.md) for connection and [loc
 
 `src/server.ts` handles every Worker request. `raven.stellar.org` is canonical; `raven.stellar.buzz` and `agents.stellar.buzz` are alias hosts ([src/hosts.ts](src/hosts.ts)). Alias browser pages `308` to the canonical host; `/mcp`, `/.well-known/`, and exact `/register`, `/authorize`, `/callback`, and `/token` routes stay on each alias so issuer, resource, consent cookies, and WorkOS callbacks stay same-origin.
 
-Each production origin has a module-scoped OAuth provider whose single resource is `<origin>/mcp`, binding its tokens and grants (an unbound grant binds on first refresh; an unbound access token stays valid on all three origins until it expires, ≤1 hour; see the [OAuth per-origin design record](.agents/rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md)). `selectOAuthOrigin` ([src/hosts.ts](src/hosts.ts)) inspects `request.url` origin only—never `Host` or forwarding headers—after alias redirects and API-key/dev MCP bypasses. Any unsupported origin (e.g. a production hostname over `http:` or non-default port) gets `404` before the Playground, any provider, or WorkOS runs. Loopback dev (`http:` on `localhost`, `127.0.0.1`, `[::1]`, any port) builds a provider per request. Every dispatch passes a copied `env` with `OAUTH_PROVIDER` cleared so shared `env` is never mutated. Only `/.well-known/oauth-protected-resource/mcp` is served; the bare-origin path returns `404`.
+Each production origin has a module-scoped OAuth provider whose single resource is `<origin>/mcp`, binding its tokens and grants (an unbound grant binds on first refresh; an unbound access token stays valid on all three origins until it expires, ≤1 hour; see the [OAuth per-origin design record](.agents/rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md)).
+
+- `selectOAuthOrigin` ([src/hosts.ts](src/hosts.ts)) inspects `request.url` origin only—never `Host` or forwarding headers—after alias redirects and API-key/dev MCP bypasses.
+- Any request reaching `selectOAuthOrigin` from an unsupported origin (e.g. a production hostname over `http:` or non-default port) gets `404` before the Playground, any provider, or WorkOS runs.
+- Loopback dev (`http:` on `localhost`, `127.0.0.1`, `[::1]`, any port) builds a provider per request. Every dispatch passes a copied `env` with `OAUTH_PROVIDER` cleared so shared `env` is never mutated.
+- Only `/.well-known/oauth-protected-resource/mcp` is served; the bare-origin path returns `404`.
 
 `/mcp` checks authorization in order:
 
@@ -184,13 +189,13 @@ Code constants are authoritative; update this matrix when they change. Retention
 
 ### Playground-only `/playground/chat`
 
-Method, origin, auth, body size, and message shape are validated before consuming hourly allowance; a valid turn consumes allowance even if execution later fails. Signed cookies hold the peppered WorkOS subject (`dev-loopback` on loopback dev).
+Method, origin, auth, body size, and message shape are validated before consuming hourly allowance; a valid turn consumes allowance even if execution later fails. Signed cookies hold the peppered WorkOS subject; loopback dev falls back to `dev-loopback` without a cookie.
 
 | Area | Limit or behavior | Source |
 | --- | --- | --- |
 | Hourly allowance | 30 chats/subject/UTC hour (best-effort KV; concurrent requests may slightly exceed) | [budget.ts](src/demo/budget.ts) |
 | Rate response | `429`, `Retry-After: 3600` | [chat.ts](src/demo/chat.ts) |
-| Request body | 384 KiB before JSON parse | [chat.ts](src/demo/chat.ts) |
+| Request body | 384 KiB `Content-Length` (`413`) and 393,216 decoded chars (`400`) before JSON parse | [chat.ts](src/demo/chat.ts) |
 | Replay history | Newest 20 messages, ≤24,000 chars when possible (always keeps final message) | [budget.ts](src/demo/budget.ts) |
 | User message | 8,000 chars (composer blocks; server returns `400 message_too_long`) | [budget.ts](src/demo/budget.ts), [page.ts](src/demo/page.ts) |
 | Whole turn | 120s abort signal | [chat.ts](src/demo/chat.ts) |
@@ -198,7 +203,7 @@ Method, origin, auth, body size, and message shape are validated before consumin
 | Model output | 4,096 output tokens | [budget.ts](src/demo/budget.ts) |
 | Search calls / page | 3/turn; default 5 hits, max 6 | [budget.ts](src/demo/budget.ts), [tools.ts](src/demo/tools.ts) |
 | Hit text | 220-char description; 400-char signature preserving callable line | [tools.ts](src/demo/tools.ts) |
-| Execute calls / code | 3/turn; 8,000 chars; rejects `Promise.all({ ... })` before running | [budget.ts](src/demo/budget.ts), [tools.ts](src/demo/tools.ts) |
+| Execute calls / code | 3/turn; 8,000 chars; rejects detected `Promise.all({ ... })` before running | [budget.ts](src/demo/budget.ts), [tools.ts](src/demo/tools.ts) |
 | Recovery | ≤1 hint-driven cycle/turn (structural failure recovery stays active) | [steps.ts](src/demo/steps.ts) |
 | Artifacts | None (ownerless) | [tools.ts](src/demo/tools.ts) |
 
@@ -210,7 +215,7 @@ Method, origin, auth, body size, and message shape are validated before consumin
 | Execute code / tool calls | Non-empty string; no application length or per-session call cap | [tools.ts](src/mcp/tools.ts), [server.ts](src/server.ts) |
 | Refresh grant | Fixed window; rotation does not extend it ([retention](docs/operations.md#data-retention)) | [gate.ts](src/auth/gate.ts) |
 | Identity revalidation | WorkOS runs at browser auth; later WorkOS changes do not synchronously revoke grants | [workos.ts](src/auth/workos.ts) |
-| Artifact owners / limits | OAuth subjects and loopback `dev-local`; ≤2 MiB body; ≤8,192 B metadata (first 12 calls, 180-char op names); per execute: 8 `info`, 4 `read` | [server.ts](src/server.ts), [store.ts](src/artifacts/store.ts), [providers.ts](src/executor/providers.ts) |
+| Artifact owners / limits | OAuth subjects and loopback `dev-local`; ≤2 MiB body; ≤8,192 B metadata (up to 12 calls within cap, 180-char op names); per execute: 8 `info`, 4 `read` | [server.ts](src/server.ts), [store.ts](src/artifacts/store.ts), [providers.ts](src/executor/providers.ts) |
 
 ### Usage collection
 
@@ -228,7 +233,7 @@ Generated files come from scripts, never hand edits. The manifest defines the ex
 
 `build-catalog.mjs` fetches pinned skill files (via a gitignored cache), verifies both digests, scopes `inventory/stellar-docs-titles.json` by each docs op's `mintlify.include`, and produces deterministic output (sorted keys, input-derived timestamps). Docs ops come from `specs/stellar-docs.json` ([docs/stellar-docs.md](docs/stellar-docs.md)); stellar.org ops come from `specs/stellar-org.json` ([stellar-org.ts](src/adapters/stellar-org.ts) pins origin, guards paths, follows same-origin redirects only, caps size; measurements in [research/services/stellar-org-site.md](research/services/stellar-org-site.md)).
 
-`src/policy/scout-exposure.ts` owns Scout exclusions; `scripts/exposure.mjs` owns all other exclusion lists. Builders fail on stale exclusions, unresolved retirements, orphaned notes, missing pinned files or build-authority IDs, non-exposed refs in model-facing text, runnable-schema mismatches, or stale generated outputs. Pin updates require body-diff review ([ecosystem-skills/README.md](ecosystem-skills/README.md)).
+`src/policy/scout-exposure.ts` owns Scout exclusions; `scripts/exposure.mjs` owns all other exclusion lists. Builders fail on stale exclusions, unresolved retirements, orphaned notes, missing pinned files or build-authority IDs, non-exposed refs in model-facing text, and runnable-schema mismatches. Unit tests (`test/super-spec.test.ts`, `test/family-text.test.mjs`) and the CI artifact-sync gate reject stale generated outputs. Pin updates require body-diff review ([ecosystem-skills/README.md](ecosystem-skills/README.md)).
 
 [ci.yml](.github/workflows/ci.yml) runs typecheck, bundle builds, unit tests, offline smoke tests (pinned skills served locally), eval contracts, routing gates, and artifact byte-sync (rebuilding catalog, family text and corroboration guard, super spec, globes, skill index, and eval artifacts). [refresh.yml](.github/workflows/refresh.yml) checks live inventories (by op-ID set, not version string), docs titles/anchors, skill pins/availability, and the Worker canary daily ([docs/operations.md](docs/operations.md#scheduled-workflows)).
 
@@ -238,7 +243,9 @@ Generated files come from scripts, never hand edits. The manifest defines the ex
 
 - `mcp_request`: access mode, status, timing, request ID, normalized Ray ID; OAuth uses `subjectHash` and secret-keyed `clientHash` (null if unattributed); API-key logs validated key name and null OAuth fields; rejected bearers omit identity. Network/geo/TLS never become identity.
 - Search events: query size, limits, counts, tiers, recovery IDs, response size, timing.
-- Execute events: outcomes, sizing, truncation, artifact use, bounded `sourceBasis` (`calls.first` carries telemetry-only `attempts` and `finalStatus`), per-service `sources` (calls, attempts, outcomes, status buckets `2xx`, `3xx`, `4xx`, `429`, `5xx`, `timeout`, `network`, `none`; exact statuses stay on `op`), and `errorName` (`null` on success, else `SyntaxError`, `TypeError`, `ReferenceError`, `timeout`, or `other`, also set as `sandbox.errorName` on `codemode.execute`; classified from `@cloudflare/codemode`'s `err.message` via [script-hints.ts](src/executor/script-hints.ts), so model-thrown matching text can misclassify).
+- Execute events: outcomes, sizing, truncation, artifact use, and bounded `sourceBasis` (`calls.first` carries telemetry-only `attempts` and `finalStatus`).
+- Execute per-service `sources`: calls, attempts, outcomes, and status buckets (`2xx`, `3xx`, `4xx`, `429`, `5xx`, `timeout`, `network`, `none`; exact statuses stay on `op`).
+- Execute `errorName`: `null` on success, else `SyntaxError`, `TypeError`, `ReferenceError`, `timeout`, or `other` (also set as `sandbox.errorName` on `codemode.execute`; classified from `@cloudflare/codemode`'s `err.message` via [script-hints.ts](src/executor/script-hints.ts), so model-thrown matching text can misclassify).
 - Op, runner, and `skill_read` events: IDs, outcomes, timing (`skill_read` distinguishes `memo`, `cache`, `upstream`).
 
 Procedures live in [cloudflare-observability-review](.agents/skills/cloudflare-observability-review/SKILL.md).

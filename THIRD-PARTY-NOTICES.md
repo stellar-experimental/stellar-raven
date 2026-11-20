@@ -33,8 +33,9 @@ Raven forwards upstream skill content and does not store it:
 `MANIFEST.json` records each source's `LICENSE`/`NOTICE` filenames (`license_files`) at the pinned
 commit to document license presence; Raven does not fetch, copy, or serve those files.
 
-Only two routing-derived facts are committed per skill—the one-line YAML frontmatter `description`
-(for `search` scoring) and `##` section headings (for `skill.read` addressing). No section prose,
+Only routing-derived metadata is committed per skill: the frontmatter `description` for `search`
+scoring (falling back to the first paragraph or skill name if omitted), `##` section headings in
+`SKILL.md`, and single-line H1/H2 titles (or filenames) for companion files. No section prose,
 excerpts, or body-derived keyword lists are committed (`test/skill-content-not-vendored.test.ts`).
 
 ## Vendored code: `src/catalog/vendor/`

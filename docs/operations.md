@@ -10,8 +10,10 @@ The Worker is `stellar-raven-codemode` ([`wrangler.jsonc`](../wrangler.jsonc)); 
 
 Always run `npm run deploy`, never `wrangler deploy` directly:
 
-- `predeploy` (`scripts/deploy-preflight.mjs`) refuses a dirty tree or `HEAD != origin/main`. Set
-  `DEPLOY_ALLOW_UNCLEAN=1` only for a deliberate off-main deploy.
+- `predeploy` (`scripts/deploy-preflight.mjs`) fetches `origin/main` and fails closed on fetch
+  errors, a dirty tree, unreadable refs, or `HEAD != origin/main`. `DEPLOY_ALLOW_UNCLEAN=1` skips
+  the entire preflight and deploys the working tree as-is; use it only for a deliberate off-main
+  deploy.
 - `postdeploy` (`scripts/check-usage-deployment.mjs`) verifies the usage tail consumer and daily
   cleanup schedule (skips with a notice if no Cloudflare credential is available).
 
@@ -32,7 +34,8 @@ Run the [`CONTRIBUTING.md`](../CONTRIBUTING.md) checks before releasing. After d
 2. Wait ~1 minute for new routes to propagate.
 3. Verify `/` returns `200`, `GET /health` returns `200`, and unauthenticated `POST /mcp` returns
    `401` with `WWW-Authenticate: Bearer` naming `resource_metadata`.
-4. Verify `GET /health/skills` returns `200` after the next hourly canary run.
+4. Verify `GET /health/skills` returns `200` with `checkedAt` after the deploy (after the next
+   hourly canary run).
 
 Catalog deploys follow the same checks via `.agents/skills/live-drift-resolution/SKILL.md`.
 
@@ -50,15 +53,15 @@ npm run mcp-key -- revoke admin
 - Names match `[a-z][a-z0-9-]{0,31}`.
 - `create` and `rotate` print the credential once after writing to KV (`--out` writes a new `0600`
   file instead). Clients send `Authorization: Bearer <name>:<token>`.
-- KV propagation takes 60s+ ([How KV works](https://developers.cloudflare.com/kv/concepts/how-kv-works/)),
-  so revocation is not instantaneous.
+- KV propagation can take 60 seconds or more ([How KV works](https://developers.cloudflare.com/kv/concepts/how-kv-works/));
+  revocation is not an immediate emergency control.
 
 ## Health checks
 
 | Route | Meaning |
 |---|---|
 | `GET /health` | Worker heartbeat |
-| `GET /health/skills` | Last hourly skill-retrieval canary verdict (`src/skills/canary.ts`); returns `503` if failed or never run |
+| `GET /health/skills` | Last hourly skill-retrieval canary verdict (`src/skills/canary.ts`); returns `503` if failed, never ran, or unreadable/invalid |
 
 ## Scheduled workflows
 
