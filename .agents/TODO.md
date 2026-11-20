@@ -34,7 +34,10 @@ its trigger.
 
 No third tuning loop (owner, 2026-11-16, decision 1). A QA headline run starts only when a named
 decision needs it (`run-evals` section 1); it needs no approval. The general routing repair stays
-held until new mechanism evidence exists.
+held until new mechanism evidence exists. The tool surface stays trimmed `search` + `execute`
+([ADR-0011](../research/decisions/0011-tool-surface-stays-code-mode-trimmed.md); live-data loss
+accepted in [decision 5](rounds/2026-11-16-next-phase/DECISIONS.md), reopened by a fix that keeps
+most of the token saving).
 
 ## Held-out status
 
@@ -400,7 +403,8 @@ Held by this item:
   [6.3 RESULTS](rounds/2026-11-16-next-phase/items/6.3/RESULTS.md),
   [RESULTS-2](rounds/2026-11-16-next-phase/items/6.3/RESULTS-2.md),
   [7.2 RESULTS](rounds/2026-11-16-next-phase/items/7.2/RESULTS.md); reopen only on `/api/rwa`
-  schema change, general mixed-intent routing, or owner product need — never on routine drift),
+  schema change, general mixed-intent routing, or owner product need — never on routine drift, and
+  any re-test needs an owner or orchestrator decision),
   `GET /api/quality`, `reviewSubmission`, `analyzeHackathonSubmissions`, `getHackathonSubmission`,
   and `locateSource`.
 - **Builder extraction of Scout enums and examples:** `scripts/build-catalog.mjs` turns input-schema
@@ -446,8 +450,10 @@ Acceptance checks:
     `reviewSubmission` does not rank on non-hackathon questions, and absorb needs only a
     manifest-fingerprint re-baseline.
 
-Done when: all twelve checks and the 22 hackathon negative probes pass in a reviewed general
-scoring/builder change.
+Done when: all twelve checks pass in a reviewed general scoring/builder change, and
+`analyzeHackathonSubmissions`, `getHackathonSubmission`, and `searchHackathonBuilds` no longer enter
+non-hackathon pages in the 544-row corpus or the verify lane's 22 hackathon negative probes, with no
+graded loss.
 
 ### `search` does not surface the research lane for protocol-history questions
 
@@ -469,8 +475,9 @@ PH3 does not open. Reopen rules:
   entities showing the same absent-lane pattern, neither paraphrasing a frozen positive. Opens a
   token-reachability audit; owner then decides on PH3.
 - **PH3 (new non-card evidence box):** owner-opened for corpus-derived route vocabulary or another
-  non-card source, with an independently authored contract on an accepted epoch and reviewed
-  pre-registration brief (attempt-three brief §16).
+  non-card source, with an independently authored contract on an accepted epoch and a
+  pre-registration brief carrying every item from the attempt-three brief §16 that passes
+  independent review before any fetch.
 
 The **identifier pointer** is part of this hold. Loop 2's host-pointer trial R did not ship (21%
 per-fire follow rate vs. >33% bar; 0 traced verdict moves; archived in
@@ -667,11 +674,13 @@ Held: no measured demand in round item 3.1 (few first-place `scout.getChangelog`
 upper bound only since query text is not logged), the held general routing repair, and zero holdout
 headroom in `eval/gates.json` (`top1` 12, `top3` 26, `forbiddenCaptures` 11). Trigger: owner
 authorization for the general scoring repair ("Preserve structured routing intent across extraction
-caps and gate tiers"), an Owner decision 2 choice adding a release source, or production/query-log
-evidence of release callers hitting `scout.getChangelog`.
+caps and gate tiers"), an Owner decision 2 choice that adds a release source and revisits
+release-query routing, or production/query-log evidence of release callers hitting
+`scout.getChangelog`.
 
-Fix must be a general mechanism or description change passing `npm run eval:routing -- --gate` with
-no holdout loss (tested on HackMeridian probes Q5, R23, R33, R35).
+Fix must be a general mechanism or description change (no operation-specific exception) passing
+`npm run eval:routing -- --gate` with no holdout loss (tested on HackMeridian probes Q5, R23, R33,
+R35).
 
 Done when: the trap is fixed via a gated general change, and either the four probes pass or Owner
 decision 2 leaves release data upstream and the request is filed in `improvements/`.
@@ -734,7 +743,8 @@ stores user content):
 1. Transport & cost: Workers Logpush to an R2 bucket (30-day lifecycle) vs. tail consumer
    (`stellar-raven-usage`) writing to R2.
 2. Capture set: `search` queries, `execute` code, capped tool responses (with artifact pointers),
-   Playground turns. Exclude credentials, tokens, emails, and IPs unless owner decides otherwise.
+   Playground turns. Never capture credentials or tokens (hard rule); also exclude emails and IPs
+   (matching the usage-statistics promise unless the owner decides otherwise).
 3. Opt-out: per-account flag keyed by hashed WorkOS subject, enforced in capture path with a test.
 4. Deletion on request: delete one account's archive records by hashed subject.
 5. Access: private bucket, read-only analysis tooling, never commit production data/counts.
@@ -836,9 +846,9 @@ Pack `p9` ([result-p9.md](rounds/2026-10-12-pack-p9/result-p9.md)) has known lim
   judge prompt to separate harness input, pack, and rubric causes (confirming disputes disappear
   without grading unsupported claims up).
 
-Held: no pack revision is scheduled. Trigger: next deliberate `p9` revision, model-selection round
-hitting truncation, revival of a non-`execute` prototype, or a cited-fact dispute on the committed
-judge.
+Held: no pack revision is scheduled. Trigger: before another model-selection round (to inspect the
+rendered pack and repair confirmed truncation), next deliberate `p9` revision, revival of a
+non-`execute` prototype, or a cited-fact dispute on the committed judge.
 
 Done when: a reviewed, measured later pack closes these gaps, or the owner accepts them as standing
 `p9` limits.
@@ -977,11 +987,12 @@ Done when: approved changes land and the rest are declined in the round ledger.
 ### Move `wrangler`, `miniflare`, and `@cloudflare/vitest-plugin` together
 
 Standing note. `@cloudflare/vitest-plugin` pins `wrangler`, `miniflare`, `esbuild`, and `zod`
-exactly; `package.json` matches with exact pins and no `overrides`. Bump the plugin and `wrangler`
-together (a nested dev-only `zod` copy is expected while the plugin's pin trails root), check the
-lockfile for exactly one `node_modules/workerd` entry, and check `vitest` (`^5.1.0`) against the
-plugin's peer range (`^4.1.0 || ^5.0.0`). Never revert to deprecated
-`@cloudflare/vitest-pool-workers` (breaks on `miniflare >= 5.20261103.0-beta`) or `overrides`.
+exactly; `package.json` holds exact pins for `wrangler`, `miniflare`, and `esbuild` with no
+`overrides` (root `zod` stays ranged, so a nested dev-only `zod` copy is expected while the plugin's
+pin trails root). Bump the plugin and `wrangler` together, check the lockfile for exactly one
+`node_modules/workerd` entry, and check `vitest` (`^5.1.0`) against the plugin's peer range
+(`^4.1.0 || ^5.0.0`). Never revert to deprecated `@cloudflare/vitest-pool-workers` (breaks on
+`miniflare >= 5.20261103.0-beta`) or `overrides`.
 
 Done when: the plugin stops pinning `wrangler` exactly. Delete this note then.
 
