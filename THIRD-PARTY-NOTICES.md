@@ -1,39 +1,26 @@
 # Third-party notices
 
-This repository is licensed under [Apache-2.0](./LICENSE). The third-party content below keeps
-its own license.
+This repository is licensed under [Apache-2.0](./LICENSE). Third-party content below keeps its own
+license.
 
 ## Ecosystem skills — served, not stored
 
-Raven forwards skill content. It does not store it. The repository shows this in three ways.
+Raven forwards upstream skill content and does not store it:
 
-**1. The repository stores no skill body.** Ecosystem skill bodies are the `SKILL.md` playbooks
-and their companion files. They are not committed here, and the Worker bundle does not contain
-them. The repository commits an address for each file:
-
-- `ecosystem-skills/MANIFEST.json` records the upstream repository and a full commit SHA for each
-  source. It records a path and a git blob hash for each file.
-- `catalog/manifest.json` also records a SHA-256 for each file.
-
-Raven is never the source of record for this content. A durable mirror is out of scope by
-decision. This applies to an R2 bucket, a committed copy, and a bundled copy.
-
-**2. Caches are transport, not a store.** For a read, the Worker fetches the file from
-`raw.githubusercontent.com` at the pinned commit. It verifies the file against both recorded
-digests and returns it. Three caches hold copies in transit: a colo edge cache, an in-isolate
-memo, and a gitignored build cache. They prevent a new fetch of the same bytes for each request.
-Upstream remains the source.
-
-**3. Responses carry upstream content and provenance.** Whole-skill reads preserve upstream YAML
-frontmatter. Companion-file reads include any upstream YAML frontmatter. Heading-section reads
-return only the requested `##` section. `data.url` names the pinned main `SKILL.md`. Each
-returned section names its exact pinned source in its own `url`. The owner closed the
-counsel-review question on 2026-11-18: forwarding was already approved, and Raven stores no skill
-body ([decision](./.agents/rounds/2026-11-16-next-phase/DECISIONS.md)).
-
-At read time, `scrubNonExposedRefs` (`src/skills/scrub.ts`) removes model-facing references that
-are not in Raven's manifest. One pass removes references to retired skills. A second pass removes
-complete Markdown sections, rows, or list items that name excluded Scout operations.
+1. **No stored bodies.** Upstream `SKILL.md` playbooks and companion files are neither committed nor
+   bundled into the Worker, and a durable mirror (R2, committed, or bundled) is out of scope.
+   `ecosystem-skills/MANIFEST.json` commits each source's upstream repo, full commit SHA, file
+   paths, and git blob hashes; `catalog/manifest.json` also records each file's SHA-256.
+2. **Transport caches only.** On read, the Worker fetches the pinned file from
+   `raw.githubusercontent.com`, verifies both digests, and forwards it. The colo edge cache,
+   in-isolate memo, and gitignored build cache avoid repeat fetches; upstream stays the source of
+   record.
+3. **Provenance and exposure scrub.** Whole-skill and companion-file reads preserve upstream YAML
+   frontmatter; heading-section reads return only the requested `##` section. `data.url` names the
+   pinned `SKILL.md`, and each returned section names its exact pinned source in `url`. At build and
+   read time, `scrubNonExposedRefs` (`src/skills/scrub.ts`) removes retired-skill references and
+   strips or narrows excluded Scout operation references (complete sections, table rows,
+   blockquotes, and affected sentences or list items).
 
 | Source | Upstream | License |
 | --- | --- | --- |
@@ -43,25 +30,20 @@ complete Markdown sections, rows, or list items that name excluded Scout operati
 | `stellar-light` | [Stellar-Light/stellar-scout](https://github.com/Stellar-Light/stellar-scout) | MIT |
 | `trustless-work` | [Trustless-Work/trustlesswork-skill](https://github.com/Trustless-Work/trustlesswork-skill) | Apache-2.0 (Trustless Work) |
 
-`MANIFEST.json` records the names of each source's `LICENSE` and `NOTICE` files (`license_files`)
-at the same pinned commit. This record shows that every upstream source has a license. Raven does
-not fetch, copy, or serve those files.
+`MANIFEST.json` records each source's `LICENSE`/`NOTICE` filenames (`license_files`) at the pinned
+commit to document license presence; Raven does not fetch, copy, or serve those files.
 
-The repository commits two derived facts about each skill, because routing needs them:
-
-- The one-line `description` from the skill's YAML frontmatter. `search` scores it.
-- The `##` section headings. `skill.read` uses them to address parts of a body.
-
-The repository does not commit section prose, body excerpts, or keyword lists derived from a
-body. `test/skill-content-not-vendored.test.ts` guards this rule.
+Only routing-derived metadata is committed per skill: the frontmatter `description` for `search`
+scoring (falling back to the first paragraph or skill name if omitted), `##` section headings in
+`SKILL.md`, and single-line H1/H2 titles (or filenames) for companion files. No section prose,
+excerpts, or body-derived keyword lists are committed (`test/skill-content-not-vendored.test.ts`).
 
 ## Vendored code: `src/catalog/vendor/`
 
-`normalize.ts`, `search-scoring.ts`, and `json-schema-types.ts` are copies from
-[`@cloudflare/codemode`](https://www.npmjs.com/package/@cloudflare/codemode) **v0.4.2**. Each file
-header documents its adaptations. Version 0.4.2 is the snapshot that the copies came from. It is
-not the version that the Worker depends on; `package.json` pins that version separately. The
-package uses the MIT license:
+`normalize.ts`, `search-scoring.ts`, and `json-schema-types.ts` are copied from
+[`@cloudflare/codemode`](https://www.npmjs.com/package/@cloudflare/codemode) **v0.4.2** (snapshot
+source, independent of the runtime version in `package.json`; adaptations are documented in each
+file header). MIT license:
 
 > MIT License Copyright (c) 2025 Cloudflare, Inc.
 >
@@ -82,22 +64,20 @@ package uses the MIT license:
 
 ## Fonts
 
-The public site embeds the IBM Plex Serif, IBM Plex Sans, and IBM Plex Mono fonts as base64 WOFF2
-data in `src/fonts.ts`. `scripts/gen-og.mjs` also uses these fonts to render `/og.png` (`src/og.ts`).
-The fonts are © IBM Corp. and are licensed under the
+`src/fonts.ts` embeds IBM Plex Serif, IBM Plex Sans, and IBM Plex Mono as base64 WOFF2 (fetched from
+Google Fonts by `scripts/gen-site-fonts.mjs`); `scripts/gen-og.mjs` uses the same fonts (from
+`google/fonts`) to render `/og.png` (`src/og.ts`), and logo SVGs in `public/` outline their glyphs.
+IBM Plex fonts are © IBM Corp., licensed under the
 [SIL Open Font License 1.1](https://openfontlicense.org/open-font-license-official-text/).
-`scripts/gen-site-fonts.mjs` fetches them from Google Fonts.
-The logo SVGs in `public/` contain IBM Plex Serif and IBM Plex Mono glyphs converted to outlines.
 
 ## Other snapshot data
 
-- `ecosystem-skills/catalog.json` — a factual snapshot of the public
-  [stellarlight.xyz/api/skills](https://stellarlight.xyz/api/skills) ecosystem directory.
-- `inventory/*.json` — interface metadata that the upstream services publish for consumption:
-  operation names, descriptions, and schemas. `scripts/refresh-inventory.mjs` regenerates it.
-  Partner-tier Lumenloop items are name-only stubs. Partner-tier detail is never committed to this
-  repository.
-- `eval/corpus/` — project-authored corpora from this project's retired prior-art repositories.
-  They include questions adapted from reviewed external collections. See
-  [`eval/corpus/PROVENANCE.md`](./eval/corpus/PROVENANCE.md).
-- `assets/repo/banner.png` — the README banner image.
+- `ecosystem-skills/catalog.json` — factual snapshot of the public
+  [stellarlight.xyz/api/skills](https://stellarlight.xyz/api/skills) directory.
+- `ecosystem-skills/community.json` — factual snapshot of the public community skills directory from
+  `stellar/stellar-dev-skill`.
+- `inventory/*.json` — published upstream interface metadata regenerated by
+  `scripts/refresh-inventory.mjs`. Partner-tier Lumenloop items stay name-only stubs.
+- `eval/corpus/` — project-authored corpora including questions adapted from reviewed external
+  collections ([`eval/corpus/PROVENANCE.md`](./eval/corpus/PROVENANCE.md)).
+- `assets/repo/banner.png` — README banner image.

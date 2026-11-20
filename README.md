@@ -4,41 +4,37 @@
 
 # Stellar Raven
 
-Stellar Raven is a remote MCP server on Cloudflare Workers. It gives agents two tools over one
-catalog of Stellar ecosystem sources: Lumenloop, Stellar Light/Scout, Stellar Docs, the stellar.org
-website, and selected ecosystem skills.
+Stellar Raven is a remote MCP server on Cloudflare Workers exposing two tools over one catalog of
+Stellar ecosystem sources: Lumenloop, Stellar Light/Scout, Stellar Docs, stellar.org, and pinned
+ecosystem skills.
 
-- `search` finds service operations and skills.
-- `execute` runs agent-written JavaScript in a Dynamic Worker isolate with no network access.
-  Host-side adapters make every service call and hold every secret.
-
-The `search` description names each source family's scope, so agents can plan which family can
-answer a question.
+- `search` finds service operations and skills, and describes each source family's scope.
+- `execute` runs agent-written JavaScript in a networkless Dynamic Worker isolate. Host adapters
+  make all service calls and hold all secrets.
 
 ## Sources and operators
 
-| Source family | Run by | How Raven reads it |
+| Source family | Operator | How Raven reads it |
 |---|---|---|
-| Lumenloop (`lumenloop.*`) | The independent Lumen Loop team ([lumenloop.com](https://lumenloop.com/)) | Its API, with an API key that Lumen Loop issued to Raven |
-| Stellar Light/Scout (`scout.*`) | The Stellar Light team ([stellarlight.xyz](https://stellarlight.xyz/)) | Its read-only public API, which it publishes for AI tools and agents |
-| Stellar Docs (`stellarDocs.*`) | The Stellar Development Foundation ([developers.stellar.org](https://developers.stellar.org/docs)) | The search index of the official docs site |
-| stellar.org (`stellarOrg.*`) | The Stellar Development Foundation ([stellar.org](https://stellar.org)) | The site's own keyless search, without blog, press, and events rows, and the text of one page at a time |
+| Lumenloop (`lumenloop.*`) | Lumen Loop ([lumenloop.com](https://lumenloop.com/)) | API, using a key Lumen Loop issued to Raven |
+| Stellar Light/Scout (`scout.*`) | Stellar Light ([stellarlight.xyz](https://stellarlight.xyz/)) | Public read-only API for AI tools and agents |
+| Stellar Docs (`stellarDocs.*`) | Stellar Development Foundation ([developers.stellar.org](https://developers.stellar.org/docs)) | Official docs search and page API |
+| stellar.org (`stellarOrg.*`) | Stellar Development Foundation ([stellar.org](https://stellar.org)) | Keyless site search (excluding blog, press, and events) and single-page reads |
 
-Selected ecosystem skills come from Lumen Loop, OpenZeppelin, the Stellar Development Foundation,
-Stellar Light, and Trustless Work. Raven pins each source at a reviewed commit, and each skill keeps
-its own license. [`ecosystem-skills/README.md`](./ecosystem-skills/README.md) describes the pin set.
+Pinned ecosystem skills come from Lumen Loop, OpenZeppelin, the Stellar Development Foundation,
+Stellar Light, and Trustless Work at reviewed commits; each keeps its own license
+([`ecosystem-skills/README.md`](./ecosystem-skills/README.md)).
 
 ## Connect
 
-Add `https://raven.stellar.org/mcp` to an MCP client that supports streamable HTTP and OAuth.
-Raven is its own OAuth authorization server, and WorkOS AuthKit handles sign-in. Compatible
-clients find and complete this flow automatically. An access token lasts 1 hour. Clients refresh
-it automatically for 90 days, then the user signs in again. [Data retention](./docs/operations.md#data-retention)
-lists every duration.
+Add `https://raven.stellar.org/mcp` to any MCP client supporting streamable HTTP and OAuth. Raven
+is its own OAuth authorization server with WorkOS AuthKit sign-in; compatible clients complete the
+flow automatically. Access tokens last 1 hour and refresh for 90 days before requiring sign-in again
+([Data retention](./docs/operations.md#data-retention)).
 
-Existing connections to `raven.stellar.buzz/mcp` and `agents.stellar.buzz/mcp` remain supported,
-including OAuth sign-in and token refresh on the original host. Browser pages on those hosts
-redirect to `raven.stellar.org`. Use the canonical URL above for new connections.
+Existing connections to `raven.stellar.buzz/mcp` and `agents.stellar.buzz/mcp` stay supported
+(including OAuth and token refresh on the original host); browser pages on those hosts redirect to
+`raven.stellar.org`. Use the canonical URL for new connections.
 
 | Page | URL |
 |---|---|
@@ -47,34 +43,30 @@ redirect to `raven.stellar.org`. Use the canonical URL above for new connections
 | Terms and privacy | https://raven.stellar.org/terms |
 | Health | https://raven.stellar.org/health |
 
-For help, use the `#raven` channel in the
-[Stellar Developers Discord](https://discord.gg/stellardev). To report a vulnerability, read
-[SECURITY.md](./SECURITY.md).
+For help, ask in `#raven` on the [Stellar Developers Discord](https://discord.gg/stellardev). Report
+vulnerabilities via [SECURITY.md](./SECURITY.md).
 
 ## Run locally
 
 1. Use Node 24 (`.nvmrc`) and run `npm ci`.
-2. Create `.dev.vars` with the variable names in the `.dev.vars` step of
-   [`ci.yml`](./.github/workflows/ci.yml). Set `DEV_ALLOW_UNAUTHENTICATED=true` to skip OAuth.
-   This bypass works only for the loopback hosts `localhost`, `127.0.0.1`, `::1`, and `[::1]`.
-   A Lumenloop call needs a real `LUMENLOOP_API_KEY`. A Stellar Docs call needs a real
-   `MINTLIFY_ASSISTANT_API_KEY` (a Mintlify assistant key, prefix `mint_dsc_`). Without it, the call
-   returns an error. A Stellar Light/Scout or stellar.org call needs no key.
-3. Run `npm run typegen`. It generates `env.d.ts` from `wrangler.jsonc` and the names in
-   `.dev.vars`.
-4. Run `npm run dev` and connect a client to `http://localhost:8787/mcp`. Restart the server after
-   you edit `.dev.vars`.
+2. Create `.dev.vars` with the variable names from the `.dev.vars` step in
+   [`ci.yml`](./.github/workflows/ci.yml). Set `DEV_ALLOW_UNAUTHENTICATED=true` to bypass OAuth
+   (works only on loopback hosts: `localhost`, `127.0.0.1`, `::1`, `[::1]`). Lumenloop requires a
+   real `LUMENLOOP_API_KEY`; Stellar Docs requires a real `MINTLIFY_ASSISTANT_API_KEY` (prefix
+   `mint_dsc_`, otherwise calls error). Stellar Light/Scout and stellar.org need no key.
+3. Run `npm run typegen` to generate `env.d.ts` from `wrangler.jsonc` and `.dev.vars`.
+4. Run `npm run dev` and connect to `http://localhost:8787/mcp`. Restart after editing `.dev.vars`.
 
-The Worker reads `.dev.vars`. Maintenance scripts, such as `scripts/refresh-inventory.mjs`, read
-`.env`. Git ignores both files.
+The Worker reads `.dev.vars`; maintenance scripts (such as `scripts/refresh-inventory.mjs`) read
+`.env`. Git ignores both.
 
 ## Test
 
 ```sh
 npm run typecheck   # tsc
-npm test            # unit and contract tests (no service credentials; a cold skill cache downloads pinned files from GitHub)
-npm run test:smoke  # the assembled Worker and the Dynamic Worker boundary
-npm run build       # dry-run the Worker bundle
+npm test            # unit and contract tests (no credentials; cold skill cache fetches pinned files from GitHub)
+npm run test:smoke  # assembled Worker and Dynamic Worker boundary
+npm run build       # dry-run Worker bundle
 ```
 
 [`test/README.md`](./test/README.md) maps the test suites.
@@ -96,5 +88,4 @@ npm run build       # dry-run the Worker bundle
 ## License
 
 [Apache-2.0](./LICENSE) © 2026 Stellar Development Foundation. Third-party code, fonts, and
-upstream skill content keep their own licenses. Read
-[THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md).
+upstream skills keep their own licenses ([THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md)).
