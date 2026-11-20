@@ -1,12 +1,6 @@
 /**
- * SSE frame schema for `/playground/chat` — our own small vocabulary rather than
- * the AI SDK UI-message protocol (design Decision 1: we own both ends, there
- * is no `useChat` client). Trace states loosely mirror the AI SDK's
- * input-streaming -> input-available -> output-available/output-error, but
- * are re-expressed here so the wire format can't drift with an SDK bump.
- *
- * Pure module: no cloudflare:workers import, no env access — safe to unit
- * test under plain Node (test/demo-frames.test.ts).
+ * SSE frame schema for `/playground/chat`. Decoupled from the AI SDK UI-message
+ * protocol so the wire format stays stable across SDK bumps. Pure module.
  */
 
 import type { AnswerCost } from "./eval-cost.ts";

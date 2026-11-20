@@ -1,34 +1,16 @@
 /**
- * Forward-only response normalization for Lumenloop operations whose upstream
- * wire shape is needlessly difficult to consume safely.
- *
- * `search_content_semantic` ranks rows with one comparable similarity score,
- * but returns a type-keyed map. A caller that projects only the first guessed
- * collection can therefore erase the strongest evidence. Normalize that one
- * known contract at the adapter boundary into a single ranked list. This does
- * not inspect the caller's question, label identity matches, or add evidence;
- * it preserves every upstream row and its source collection. It also adds a
- * small canonical projection for the cross-collection fields callers need
- * most often, while naming the upstream date/source field selected so those
- * values are not mistaken for a stronger provenance claim.
- *
- * The schema constant is imported by both catalog/spec generators so the
- * documented sandbox contract cannot drift from the runtime adapter.
+ * Response normalization for Lumenloop operations whose upstream wire shape hides evidence.
+ * `search_content_semantic` returns a type-keyed map with one comparable similarity score;
+ * normalizing it into `{ items, counts, meta }` prevents callers from dropping top rows by
+ * guessing a collection key. Imported by catalog/spec generators so schemas stay in sync.
  */
 
 export const LUMENLOOP_SEMANTIC_OPERATION = "lumenloop.search_content_semantic";
 
 /**
- * The live 2026-08-18 probe disproved these inventory output schemas. The
- * adapter returns their upstream `data` values unchanged, so publishing the
- * schemas would teach a false `r.data.results` access path. Keep their output
- * contracts unknown until a future probe supports exact replacement schemas.
- * See improvements/lumenloop/ll-029-output-schema-top-level-shape-drift.md
- * for the shared defect; ll-019 covers find_av_passages.
- *
- * Do not infer this list from the shared legacy schema shape. Other operations
- * can legitimately return an object with `results`, and their contracts stay
- * model-visible unless evidence disproves them too.
+ * Operations whose inventory output schemas contradict live payloads (ll-029, ll-019).
+ * Keep their output schemas null until exact replacements are verified; do not infer
+ * this set from schema shape alone, because other operations validly return `{ results }`.
  */
 export const LUMENLOOP_UNVERIFIED_OUTPUT_SCHEMA_OPERATIONS = new Set([
   "lumenloop.find_av_passages",
@@ -116,12 +98,7 @@ export const LUMENLOOP_SEMANTIC_OUTPUT_SCHEMA = {
 
 type JsonRecord = Record<string, unknown>;
 
-/**
- * Lumenloop currently accepts an unknown list_documents sort key. The live
- * operation schema documents its supported fields in prose, so make that
- * closed set executable in both generated model-facing contracts. This runs
- * through the normal host-side schema guard before the adapter sends traffic.
- */
+/** Enforce `list_documents` sort keys as a closed enum; upstream documents them in prose only. */
 export function lumenloopInputSchema(operationId: string, upstream: unknown): unknown {
   if (
     operationId !== "lumenloop.list_documents" ||
@@ -205,9 +182,7 @@ export function normalizeLumenloopOutput(operationId: string, data: unknown): un
 
   const input = data as JsonRecord;
   const keys = Object.keys(input);
-  // Keep the authored boundary idempotent. This matters for provider-level
-  // composition and makes an upstream migration to the canonical contract a
-  // no-op instead of relabeling the `items` array as collection "items".
+  // Keep normalization idempotent so already-canonical payloads are not re-wrapped as collection "items".
   if (
     keys.length === 3 &&
     keys.every((key) => key === "items" || key === "counts" || key === "meta") &&

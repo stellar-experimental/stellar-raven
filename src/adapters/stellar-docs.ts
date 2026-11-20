@@ -1,22 +1,9 @@
 /**
- * Stellar Docs adapter — Mintlify discovery API client
- * (docs/stellar-docs.md describes the contract).
- *
- * Each stellarDocs catalog entry carries its request mapping in
- * `transport.mintlify` (authored in specs/stellar-docs.json):
- *  - endpoint    — "search" (POST /discovery/v1/search/<domain>) or
- *                  "page" (POST /discovery/v1/page/<domain>).
- *  - include     — site-relative path prefixes a hit must start with
- *                  ({category} placeholders filled from args).
- *  - exclude     — path prefixes a hit must not start with.
- *  - conditional — "arg=value" → include/exclude overrides (null clears).
- *  - groupBy     — "page": one row per page, ranked by query words in the
- *                  page title and path (search_doc_titles).
- *
- * The search service has no facets, scores, or counts, and it always returns
- * its nearest sections. Path scoping therefore happens here over a fixed
- * candidate window, and a result whose kept sections contain no query term is
- * soft-empty. A soft-empty result never establishes corpus absence.
+ * Stellar Docs adapter: Mintlify discovery API client (docs/stellar-docs.md).
+ * Request mappings live in `transport.mintlify` (specs/stellar-docs.json).
+ * Mintlify search has no facets or scores and always returns nearest sections, so path scoping
+ * runs over a fixed candidate window and, when surviving topic terms exist, results whose kept
+ * sections contain none return `soft-empty`.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import anchorIndex from "./stellar-docs-anchors.json";
@@ -35,10 +22,7 @@ const MAX_ERROR_BODY_CHARS = 1024;
 const SNIPPET_CHARS = 300;
 /** An attempt with less time left than this is not started. */
 const MIN_ATTEMPT_MS = 500;
-/**
- * The 404 bodies that mean "nothing here" (live, 2026-11-02). Any other 404 body — for example
- * `{"error":"No deployment related to <domain> exists"}` — is a configuration failure, not absence.
- */
+/** 404 messages meaning absence; any other 404 (e.g. bad deployment) is a configuration error. */
 const ABSENT_MESSAGES = new Set(["No results found", "Page not found"]);
 
 type PathScope = { include?: string[] | null; exclude?: string[] | null };

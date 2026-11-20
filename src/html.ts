@@ -1,29 +1,7 @@
 /**
- * Tiny auto-escaping HTML template helper.
- *
- * The site and playground pages are server-rendered as strings inlined into a
- * Worker response — no framework, no client bundle. That keeps the strict CSP
- * (a single pinned script hash) easy to reason about, but hand-concatenating
- * markup with manual `escapeHtml(...)` calls is a footgun: forget one and you
- * have an injection or a broken page.
- *
- * `html` closes that gap. Interpolated values are escaped by default; only
- * values you explicitly wrap in `raw(...)` (or another `html` result) are
- * emitted as trusted markup. Composition is safe: nesting `${html`…`}` does
- * NOT double-escape, because `html` returns a `RawHtml` the outer template
- * recognises.
- *
- *   html`<p class="lede">${userText}</p>`            // userText is escaped
- *   html`<ul>${items.map((i) => html`<li>${i}</li>`)}</ul>`  // list composes
- *   html`<div>${raw(prebuiltMarkup)}</div>`          // opt out for known-safe HTML
- *
- * Interpolation rules:
- *   - string            → escaped
- *   - number            → String(n), unescaped (digits are always safe)
- *   - RawHtml           → emitted verbatim (from `raw()` or a nested `html`)
- *   - array             → each element rendered by these same rules, joined
- *   - null / undefined  → "" (so `cond ? html`…` : null` renders nothing)
- *   - boolean           → "" (so the `cond && html`…`` guard renders nothing)
+ * Auto-escaping HTML tagged template for server-rendered pages.
+ * Interpolations are HTML-escaped by default unless wrapped in `raw(...)` or
+ * returned by a nested `html` template. Booleans and nullish values render `""`.
  */
 
 /** Marks a string as already-safe HTML so `html` emits it without escaping. */

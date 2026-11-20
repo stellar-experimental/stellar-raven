@@ -289,21 +289,11 @@ export default {
   },
 
   /**
-   * Skill-availability canary (wrangler.jsonc `triggers.crons`).
-   *
-   * The one check that runs from the Worker's own network position. Everything
-   * else that watches the serve-don't-store path — `check-mirrors --fetch`,
-   * `check-skills-drift` — runs on a GitHub Actions runner and therefore cannot
-   * see a Cloudflare-side egress failure at all. This can, because it IS the
-   * Worker.
-   *
-   * It only records a verdict. `refresh.yml` reads it through `/health/skills`
-   * and decides what it means, so a flaky probe cannot page anyone by itself.
+   * Skill-availability canary (`triggers.crons` in wrangler.jsonc). Runs inside the
+   * Worker to detect Cloudflare-side egress failures that CI runners cannot see, and
+   * stores only a verdict for `/health/skills` and `refresh.yml`.
    */
   async scheduled(_controller, env, _ctx): Promise<void> {
-    // One task, so await it directly rather than registering it with
-    // ctx.waitUntil — the invocation's result is exactly this promise's result,
-    // and a rejection surfaces in Cron Past Events either way.
     await runAndStoreSkillCanary(getCatalog(), env.OAUTH_KV);
   }
 } satisfies ExportedHandler<Env>;

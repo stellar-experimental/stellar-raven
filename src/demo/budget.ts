@@ -1,16 +1,7 @@
 /**
- * Cost-control caps and clamp helpers for `/playground`. The
- * real enforcement is in-request (caller wires DEMO_CAPS into `stepCountIs`,
- * the tool `execute:` closures, and the request-size checks); `demoThrottle`
- * is an HONEST best-effort cross-request bucket only — Workers KV has no
- * atomic consume, so concurrent requests can overrun it. That's acceptable
- * because the WorkOS gate already bounds the audience;
- * do not upgrade this to a hard cap without a new design (DO or a
- * Cloudflare rate-limiting product).
- *
- * Pure module except `demoThrottle`, which only touches the KV binding
- * passed in — no cloudflare:workers import, safe under plain Node
- * (test/demo-budget.test.ts uses an in-memory KV fake).
+ * Cost-control caps, history clamping, and best-effort KV throttling for `/playground`.
+ * Workers KV has no atomic increment, so `demoThrottle` can overrun under concurrency
+ * (read-modify-write); hard per-request caps bound each turn (not the hourly bucket). Pure module (no `cloudflare:workers`).
  */
 
 import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";

@@ -1,26 +1,8 @@
 /**
- * AI SDK tool defs for the /playground page — `search` + `execute` wrapping
- * the SAME in-process internals the MCP handlers use (design Decision 2:
- * searchCatalogPage/getCatalog and createExecuteRunner directly, no HTTP
- * round-trip to /mcp), with the exported production descriptions/input
- * schemas. The search description gets one demo evidence appendix; callable
- * schemas remain the production contract.
- *
- * Behavior mirrors src/mcp/tools.ts registerTools handler-for-handler —
- * unknown-service validation, nextSteps copy, truncateForModel /
- * truncateLogsForModel shaping, logEvent fields — with bounded demo deltas
- * (design Decision 5, all in-request enforced here because stepCountIs alone
- * does not cap tool calls within one model step):
- *  - search `limit` clamped to DEMO_CAPS.maxSearchLimit,
- *  - ≤ DEMO_CAPS.maxSearchCallsPerTurn catalog searches per shared turn
- *    budget (structured refusal as data, never a throw),
- *  - ≤ DEMO_CAPS.maxExecuteCallsPerTurn sandbox runs per shared turn
- *    budget (structured refusal as data, never a throw),
- *  - execute code length capped at DEMO_CAPS.maxExecuteCodeChars.
- * Every call emits tool-start/tool-result trace frames via opts.emit.
- *
- * WORKER-ONLY MODULE: imports src/executor/run.ts (→ cloudflare:workers);
- * only the demo chat handler may import it, never plain-Node test graphs.
+ * AI SDK `search` and `execute` tools for `/playground`, calling the in-process catalog
+ * and executor directly (no HTTP hop to `/mcp`). Mirrors `src/mcp/tools.ts` with turn-scoped
+ * demo caps enforced in-closure because `stepCountIs` does not cap tool calls within one step.
+ * Worker-only: imports `src/executor/run.ts` (`cloudflare:workers`).
  */
 import { tool } from "ai";
 import { z } from "zod";

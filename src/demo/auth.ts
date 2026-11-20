@@ -1,15 +1,6 @@
 /**
- * Playground session cookie and parked-state validation.
- *
- * The /playground/chat endpoint uses a short-lived signed cookie minted by
- * the /callback demo branch after the WorkOS exchange — no OAuth token ever
- * reaches the browser. Cookie value is `<base64url payload>.<base64url mac>`
- * where payload is JSON `{ sub, iat, exp }` and the MAC is HMAC-SHA256 keyed
- * by MCP_SERVER_SECRET. `__Host-` prefix + SameSite=Strict: deliberately
- * stricter than the Lax MCP-flow cookies in src/auth/workos.ts.
- *
- * Pure module: WebCrypto only, no cloudflare:workers import — unit-testable
- * under plain Node (test/demo-auth.test.ts).
+ * Playground session cookie (`__Host-`, `SameSite=Strict`, HMAC-SHA256) and parked-state
+ * validation. Minted by `/callback` so no OAuth token reaches the browser. Pure module.
  */
 import { timingSafeEqualBytes } from "../auth/timing.ts";
 

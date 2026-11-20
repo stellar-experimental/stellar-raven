@@ -1,21 +1,6 @@
 /**
- * Auth gate — OAuthProvider wiring plus the local-dev bypass
- * (ARCHITECTURE.md).
- *
- * Everything at /mcp is WorkOS-backed OAuth EXCEPT:
- *  1. Named API keys — `Authorization: Bearer <name>:<token>`, validated
- *     against SHA-256 digests stored under an isolated OAUTH_KV prefix.
- *  2. Local dev — `DEV_ALLOW_UNAUTHENTICATED=true` AND the request hostname is
- *     local (localhost / 127.0.0.1 / ::1). wrangler dev serves on localhost so
- *     local dev keeps working; the local-host gate is a second factor so a
- *     mistakenly-deployed var does NOTHING on the public custom domains
- *     (raven.stellar.org and its stellar.buzz aliases). Still set ONLY in
- *     `.dev.vars`.
- *
- * Pure module: no cloudflare:workers import (the OAuthProvider class itself
- * imports it, so `new OAuthProvider(...)` lives in src/server.ts; tests
- * construct one from these same options with `cloudflare:workers` aliased —
- * see vitest.config.ts). Unit-tested in test/auth.test.ts.
+ * OAuthProvider options and loopback dev-bypass guard (ARCHITECTURE.md).
+ * Pure module (no `cloudflare:workers` import); `new OAuthProvider` lives in src/server.ts.
  */
 import type { OAuthProviderOptions } from "@cloudflare/workers-oauth-provider";
 import { WorkOSAuthHandler } from "./workos";
@@ -50,14 +35,8 @@ export function mcpResource(origin: string): string {
 }
 
 /**
- * Options for `new OAuthProvider(...)` — exported (rather than the instance)
- * so plain-Node tests can build a provider around a stub /mcp handler and
- * assert the real emitted behavior (401 + WWW-Authenticate, discovery docs).
- *
- * `resource` is the one canonical resource this provider binds tokens to. Raven
- * serves three origins, so src/server.ts builds one provider per origin, each
- * with its own `<origin>/mcp` (see "Request routes and authorization" in
- * ARCHITECTURE.md).
+ * Options for `new OAuthProvider(...)`, built per served origin in src/server.ts
+ * so tokens bind to that origin's `<origin>/mcp` resource (ARCHITECTURE.md).
  */
 export function oauthProviderOptions(
   mcpHandler: ExportedHandler<Env> & { fetch: NonNullable<ExportedHandler<Env>["fetch"]> },
@@ -77,13 +56,8 @@ export function oauthProviderOptions(
     // needs the `global_fetch_strictly_public` compat flag (wrangler.jsonc);
     // the provider gates on BOTH before advertising/serving it.
     clientIdMetadataDocumentEnabled: true,
-    // Native-app callbacks (RFC 8252 private-use schemes). This deviates from
-    // upstream's advice to leave it off for MCP servers: Claude Code (`claude:`),
-    // Cursor (`cursor:`) and Warp (`warp:`) callbacks were measured in
-    // production grants on 2026-11-18, and without the flag the provider
-    // refuses every such authorization. Raven narrows what it admits to an
-    // allowlist of https, loopback http and those three schemes
-    // (src/auth/redirects.ts), checked at authorization in workos.ts.
+    // Enable RFC 8252 native callbacks for Claude, Cursor, and Warp; src/auth/redirects.ts
+    // narrows what `/authorize` admits to https, loopback http, and those three schemes.
     allowPrivateUseRedirectUris: true,
     // Refuse a registration that lists a remote-http or malformed callback, or
     // that lists no callback Raven would use at authorization.

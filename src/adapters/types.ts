@@ -1,21 +1,9 @@
 /**
- * Shared adapter types — the uniform result envelope every service adapter
- * returns into the sandbox.
- *
- * Design (ARCHITECTURE.md, "soft-empty ≠ error ≠ data"):
- *  - Adapters NEVER throw toward the sandbox. Every outcome is a value:
- *      { ok: true,  data }                — real evidence
- *      { ok: false, error: AdapterError } — error OR soft-empty
- *  - `error.kind` is the two-way discriminator the model (and tests) branch
- *    on: "error" (call failed / args invalid), "soft-empty" (the service
- *    answered politely with nothing — unknown slug, zero hits, guidance
- *    text). There is no "denied": exposure is filtered at build time
- *    (ADR-0003), so nothing callable can be policy-refused at runtime.
- *  - One envelope across three heterogeneous services keeps the `execute`
- *    prompt honest: model code checks `r.ok` and never has to guess whether
- *    a bare array vs `{error}` vs `{text}` means failure.
- *
- * Node-testable: no cloudflare:workers imports here or in any adapter.
+ * Uniform result envelope across all four service adapters (ARCHITECTURE.md).
+ * Expected adapter contract: return `{ ok: true, data }` or `{ ok: false, error }` envelopes
+ * (`error.kind` `"error"` or `"soft-empty"`) for upstream/validation outcomes rather than throwing.
+ * Exposure is filtered at build time (ADR-0003), so there is no `"denied"` kind.
+ * Node-testable: no `cloudflare:workers` imports in any adapter.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 
@@ -27,12 +15,8 @@ export type AdapterEnv = {
 };
 
 /**
- * Wall-clock bound for ONE operation call, in milliseconds. It is one budget per call, not per
- * attempt: Lumenloop and Scout make one request under one `AbortSignal.timeout` (header and body
- * read); Stellar Docs and stellar.org `get_page` clip every attempt, the `/index` retry, redirect
- * hops and the site probe to one deadline. A retry added to any adapter takes the REMAINING
- * budget, never a fresh one, so a timeout cannot multiply. The bound is per call, not per script:
- * three sequential hung calls still exceed the 60 s `execute` limit.
+ * Wall-clock budget for one operation call (ms), covering headers, body, retries, and redirects.
+ * Any retry must use the remaining budget, never a fresh one, so timeouts cannot multiply.
  */
 export const OPERATION_BUDGET_MS = 24_000;
 
@@ -55,20 +39,14 @@ export type AdapterError = {
 };
 
 /**
- * Host-derived evidence signals on an ok service-call result. Adapters never
- * set them; the operation dispatcher (src/executor/providers.ts) derives them
- * from the result shape, the catalog retrieval profile, and allowlisted
- * upstream metadata. Failed envelopes carry none of them. The caveat values
- * share no word with the `soft-empty` error kind, so an ok result with no
- * rows cannot read as a failed call.
+ * Host-derived evidence caveat on ok results, set by src/executor/providers.ts (never adapters).
+ * Values stay disjoint from `soft-empty` so an empty ok result cannot read as a failed call.
  */
 export type ResultCaveat = "no-rows" | "unverified-match";
 
 /**
- * A row of a candidate-lane result that the host recognized as the document its query names by
- * identifier. `index` is the row's position in the payload's rows array; `key` is the row URL's
- * own slug (a slug such as `<series>-<number>`). The host judges no relevance: it reports an agreement between
- * the query, the row's source label, and the row's URL.
+ * Candidate-lane row whose source label and URL slug match an identifier named in the query.
+ * Reports agreement only, never relevance.
  */
 export type ExactRow = { index: number; key: string };
 

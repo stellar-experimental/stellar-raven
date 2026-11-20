@@ -1,23 +1,7 @@
 /**
- * /playground page — server-rendered, same visual system as site.ts
- * (dark-green field, hot orange, IBM Plex superfamily, terminal chrome).
- *
- * Two states, one shell:
- *   - demoPage({ authenticated: false }) → locked: honest explainer, sign-in
- *     button (/playground/login), and a static example trace rendered from
- *     hard-coded sample data using the SAME card markup the live client
- *     builds, so the locked page previews exactly what a session looks like.
- *   - demoPage({ authenticated: true })  → chat UI: message list, composer,
- *     and the trace renderer driven by one inline vanilla script that POSTs
- *     /playground/chat and parses the DemoFrame SSE stream (src/demo/frames.ts).
- *
- * Trace honesty rules (design Decision 1 + review): tool cards render the
- * envelope as returned — error.kind is only ever "error" or "soft-empty" —
- * and a tool-start whose tool-result never arrives before done/error is
- * marked STALLED, never silently dropped.
- *
- * Expand/collapse is native <details>/<summary> in both states, so the locked
- * page needs zero JavaScript and the live client gets toggling for free.
+ * Server-rendered `/playground` page in two states: locked (script-free preview with static
+ * sample trace and WorkOS sign-in) and authenticated (vanilla SSE chat client).
+ * Unresolved `tool-start` frames are marked STALLED on turn end, never silently dropped.
  */
 import {
   BASE,
@@ -234,16 +218,7 @@ details.tcard[open]>summary::before{transform:rotate(90deg)}
 }
 `;
 
-// ---------------------------------------------------------------------------
-// Inline client script (authenticated state only).
-//
-// Vanilla JS, no framework: keeps the chat history in an array replayed to
-// POST /playground/chat each turn, parses the SSE stream with fetch + ReadableStream
-// + TextDecoder, and renders every DemoFrame. All dynamic content enters the
-// DOM via textContent — never innerHTML — so model/tool output can't inject
-// markup. Defensive on stream shape (vercel/ai#10980 bug class): a turn that
-// ends without `done` stalls its open cards and says so.
-// ---------------------------------------------------------------------------
+// Inline client script (authenticated state only). Dynamic text uses textContent/createTextNode (no innerHTML); Markdown links allow only http(s) or same-origin paths.
 
 export const DEMO_SCRIPT_CORE = `
 function mdCommitIndex(s, from){
