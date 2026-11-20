@@ -1,207 +1,89 @@
 # Live ecosystem-partner documentation as a Raven source
 
 Status: held product idea (reviewed 2026-11-19: **hold stands**; no implementation round, no
-promotion to phases 2–4). Reopen only if one of the triggers below fires. Raised as
-[issue #1](https://github.com/stellar-experimental/stellar-raven/issues/1); the dated evidence and
-the full admission contract live in
+promotion to phases 2–4). Reopen only if a trigger below fires. Raised as
+[issue #1](https://github.com/stellar-experimental/stellar-raven/issues/1); dated evidence and the
+full admission contract live in
 [`research/partner-doc-source-onboarding.md`](../research/partner-doc-source-onboarding.md).
 
 ## Current decision
 
-The issue asks one question and it resolves into two answers that point in opposite directions.
+1. **Do not federate partner MCP servers.** Under [ADR-0003](../research/decisions/0003-build-time-exposure-filtering.md),
+   model code never owns endpoints, arguments, auth, or exposure; federating a partner MCP inverts
+   that boundary. Verified 2026-11-19: Alchemy's hosted MCP (`mcp.alchemy.com/mcp`) exposes 168
+   tools behind OAuth 2.1 including account/app mutations (`create_app`, `update_app`,
+   `update_allowlist`), and OpenZeppelin's hosted MCP (`mcp.openzeppelin.com`) advertises contract
+   generation rather than documentation retrieval.
+2. **Allowlisted first-party partner Markdown is a viable fourth authority class**, held behind a
+   four-phase ship gate (no runtime adapter until it passes). Authority stays claim-scoped (Stellar
+   Docs/SEPs/CAPs for protocol behavior; partner for its own products; pinned skills never override
+   first-party reference docs); conflicts return as dated, attributed conflicts rather than merged
+   facts.
 
-**1. Do not federate partner MCP servers.** Not as an integration rule, and not for the two
-partners named. This declines the mechanism asked for in the issue thread itself — "ideally we'd
-tap into their docs mcps if they have them" and "most should have by now" (2026-07-09) — so it owes
-those commenters a reason. The reason is a measured finding about what those servers actually are,
-not a position on MCP:
+## Why the hold stands (2026-11-19 review)
 
-- Alchemy's hosted MCP documents 168 tools behind OAuth 2.1, including account/app mutations such
-  as `create_app`, `update_app`, `select_app`, and `update_allowlist`. Mounting it to read
-  documentation would import an authenticated operational surface Raven did not ask for.
-- OpenZeppelin's hosted MCP advertises contract *generation*, not documentation retrieval. It
-  answers a different question than the one this issue is about.
-
-Raven's whole boundary is that model code never owns endpoints, arguments, auth, or exposure
-(ADR-0003). A federated partner MCP inverts that: the partner decides what is callable, and the
-tool surface changes underneath us without a repo change.
-
-**2. Allowlisted first-party partner Markdown is a credible fourth authority class** — and it is
-the mechanism that actually delivers what the issue wants. Partner docs are authoritative for that
-partner's own products, and their public Markdown is a bounded, reviewable, commit-pinnable source.
-The design is written and the retrieval evidence is strong. It is **held behind a four-phase ship
-gate**, and no runtime adapter ships until that gate passes.
-
-Authority stays claim-scoped, never a global ranking: Stellar Docs, SEPs, and CAPs remain
-authoritative for protocol behavior; a partner is authoritative for its own products; mirrored
-skills are procedural interpretation pinned to a commit and never override newer first-party
-reference docs. Conflicts are returned as conflicts, with dates and provenance — never merged into
-a synthetic fact, and never resolved by letting the newer timestamp silently win.
-
-## Why the HOLD currently stands
-
-- **The harness's phase-1 retrieval gate now reports `pass`, with a smaller measured gap than the
-  July upper bound.** The 2026-11-19 paired 12-case run
-  (`npm run eval:partner-docs -- --raven-url http://localhost:8795/mcp --json`, zero baseline or
-  candidate fetch errors, zero prompt-signal hits) scored **21/96 (21.9%)** on the harness baseline
-  across 85 distinct fact groups (18/64 = **28.1%** on the original eight, up from 7/64 = 10.9% on
-  2026-07-10; 3/32 = **9.4%** on the four independent cases) versus **95/96 (99.0%)** on the
-  candidate arm (+77.1 percentage points, 12 wins, 0 regressions, median 118.3 ms / p95 308.9 ms;
-  `retrievalAdmissionGate: "pass"`). The harness baseline already includes `scout.searchResearch`
-  on Alchemy cases, but still omits Scout and full Docs page reads on OpenZeppelin cases, so the
-  harness figure remains a narrow baseline rather than full Raven.
-- **Current full-Raven sources raise literal recall to 50.0% (closing 36.5% of the candidate lead),
-  leaving a real but unmeasured-demand residue.** Unioning the harness baseline with broader
-  partner-relevant Raven reads on 2026-11-19 (`stellarDocs.get_doc_page`, `stellarDocs.search_docs`,
-  `scout.searchResearch`, `scout.searchProjects`, `stellarOrg.search_site`, and the three pinned
-  OpenZeppelin skills, excluding echoed query strings) recovers 27 of the 75 harness misses, raising
-  literal Raven recall from **21/96 (21.9%)** to **48/96 (50.0%)** against the candidate's 95/96
-  (99.0%) (+49.0 percentage points, 11 wins, 1 tie on `alchemy-stellar-data-overview` at 8/8, 0
-  regressions; 48/96 facts still unmatched, including the documented `data envelope` authoring
-  defect in `alchemy-stellar-balances` and counting incidental hits such as `Lazy`/`Eager` from
-  upgrade-migration audits rather than `FeeForwarder`):
-  - *Now largely covered in Docs/Scout/skills:* `alchemy-stellar-data-overview` reaches **8/8**
-    (`/docs/data/indexers` via `sd-010`, plus Scout); `openzeppelin-stellar-suite` reaches **7/8**
-    (misses `Timelock Controller` by phrase); `openzeppelin-stellar-rwa` reaches **6/8** (misses
-    `compliance contract`, `forced transfer`); `openzeppelin-smart-account` reaches **5/8** (misses
-    `CustomAccountInterface`, `Protocol 23`, `authorization flow`).
-  - *Absent across deterministic Docs/Scout-search/skills probes (48/96 across all 12 cases):*
-    Alchemy Stellar Data API endpoint contracts (`/data/stellar/transfers`, `transferType`,
-    `fromLedger`/`toLedger`; `/data/stellar/balances`, `native XLM`, `first page`, `data envelope`
-    [known authoring defect]; `/data/stellar/nfts`, `mutually exclusive`, `assetIssuer`,
-    `asOfLedger`, `Invalid pageKey`, `Max holdings per page`, `Bearer`; and the product-split
-    phrases `Looking for Stellar JSON-RPC methods instead`, `api.g.alchemy.com`, `getLatestLedger`,
-    `results under a data envelope`) and Alchemy RPC quickstart details (`getNetwork`, `apiKey`,
-    `getLatestLedger`, `getLedgerEntries` in an Alchemy context); OpenZeppelin self-hosted Relayer
-    policy fields (`/docs/tools/openzeppelin-relayer` describes both self-hosted Relayer and managed
-    Channels, but its code examples cover managed Channels and omit `sponsored transactions`,
-    `fee_payment_strategy`, `allowed_tokens`, `concurrent_transactions`, and the classic-only
-    `only classic Stellar assets` / `credit_alphanum4` / `credit_alphanum12` /
-    `Soroban token support will be available` constraint); and OpenZeppelin's `FeeForwarder`
-    (`FeeForwarder`, `max_fee_amount`, `collect_fee_and_invoke`, `set_allowed_fee_token`,
-    `sweep_token`, `simulate the transaction off-chain`).
-  - *Undated repository-walkthrough reach via `scout.explainRepo`:* Live 2026-11-19 probes of
-    `scout.explainRepo` (`answerSource: "deepwiki"`) do return code-grounded walkthroughs for
-    `OpenZeppelin/stellar-contracts` (`FeeForwarder`, `max_fee_amount`, `collect_fee_and_invoke`,
-    direct `impl Upgradeable` with no `Migratable` trait) and `OpenZeppelin/openzeppelin-relayer`
-    (`fee_payment_strategy`, `allowed_tokens`, `concurrent_transactions`), but with DeepWiki's
-    `answerAsOf: null` warning to verify against source. Alchemy has no public Stellar Data API
-    repository in Scout, so its Data API endpoint contracts remain absent across every Raven source.
-- **Upstream `coverage-watch` confirms the partner-content gap persists, but recorded live failures
-  do not meet the reopen bar.** The 2026-11-16 `coverage-watch` run (weekly since 2026-11-12;
-  rolling issue [Stellar-Light/stellarlight#562](https://github.com/Stellar-Light/stellarlight/issues/562)
-  and run [`43919580750`](https://github.com/Stellar-Light/stellarlight/actions/runs/43919580750)
-  `coverage-gap-evidence` artifact) reports **1 of 4 `own`** (Sentora via `lumenloop-research`),
-  **3 of 4 `mention`** (Alchemy via `dev-docs`, OpenZeppelin via `audit`, Chainlink via `sdf-blog`),
-  and **0 of 4 `none`**. That aligns with
-  [stellarlight#448](https://github.com/Stellar-Light/stellarlight/pull/448), which declined to
-  ingest copies of partner docs (narrower than this hold, since request-time allowlisted fetch
-  under serve-do-not-store is not a copy). Across Raven's owned QA battery and `improvements/`
-  ledger, the recorded live-failure residue does not clear the two-failure trigger:
-  - *Alchemy:* **0** recorded owned-QA or production failures. The issue's concrete example healed
-    upstream via `stellar/stellar-docs#2573` (`sd-010`, live 2026-07-15) and
-    [stellarlight#446](https://github.com/Stellar-Light/stellarlight/pull/446).
-  - *OpenZeppelin:* **0** unqualified failures where no exposed Raven source holds the fact, and
-    **at most 1** stale-skill failure if undated DeepWiki is excluded:
-    [`sk-022`](../improvements/skills/sk-022-oz-upgrade-skill-retired-derive-api.md)
-    (`q-soroban-oz-upgradeable-macro`) produced wrong QA answers in September 2026 when agents read
-    the pinned `upgrade-stellar-contracts` skill (still pinned at `f82d2d95` teaching retired
-    `#[derive(Upgradeable)]` / `#[derive(UpgradeableMigratable)]` macros on 2026-11-19, with
-    `OpenZeppelin/openzeppelin-skills#16` still open and uncommented), and neither Stellar Docs nor
-    `scout.searchResearch` carries the correction; however, `scout.explainRepo`
-    (`OpenZeppelin/stellar-contracts`, undated DeepWiki) does return the direct `impl Upgradeable`
-    and no-`Migratable`-trait answer. Outside the two candidate partners,
-    [`sk-025`](../improvements/skills/sk-025-trustless-work-beta-auth-scope.md) records a pinned
-    Trustless Work skill vs Core API auth conflict without verified deployed auth behavior.
-  - *Rest of owned QA and production:* Round item 1.3's residual source-gap classification found
-    **0** unreached Alchemy or OpenZeppelin gaps; production Workers Logs keep no query text today,
-    so production demand for the absent endpoint and configuration schemas is **unmeasured** (not
-    proven absent, not proven present).
-- **Phases 2–4 have not run, and two candidate-side operational details drifted.** Reliability
-  (≥100 probes over 24h, verified 304 / stale-if-error), paired headline QA (≥16 cases, same
-  answering and judge models, zero new wrong answers), and the security/non-regression pass remain
-  unstarted. Phase 3 is the ship decision, not phase 1. Before any future phase-2 run:
-  - Alchemy's Markdown endpoints now return `cache-control: public, max-age=0, must-revalidate`
-    with no `ETag` or `Last-Modified` (changed from `max-age=3600` in July), so the
-    `min(upstream max-age, 1h)` cache rule in `research/partner-doc-source-onboarding.md` would
-    produce a 0-second fresh TTL and no conditional 304 revalidation.
-  - OpenZeppelin's candidate URLs in `eval/partner-docs/cases.json` still pin commit `f304ed55`
-    (2026-07-09) and `relayer/1.4.x/stellar.mdx`, while `OpenZeppelin/docs` `main` (`4d74c325`,
-    2026-11-17) has advanced to Relayer `1.8.x` / root `content/relayer/stellar.mdx` and added Vault
-    and Confidential Token modules (live check confirmed the classic-only Relayer fee-token policy
-    still holds verbatim on `main`).
-- **MCP federation remains declined.** Verified on 2026-11-19: Alchemy's hosted MCP
-  (`mcp.alchemy.com/mcp`) still documents 168 tools behind OAuth, and OpenZeppelin's hosted MCP
-  (`mcp.openzeppelin.com`) still advertises contract generation rather than documentation retrieval.
+- **Narrow harness vs. full Raven recall:** The 2026-11-19 12-case harness run
+  (`npm run eval:partner-docs -- --raven-url http://localhost:8795/mcp --json`) scored 21/96 (21.9%)
+  baseline vs. 95/96 (99.0%) candidate (`retrievalAdmissionGate: "pass"`, median 118.3 ms / p95
+  308.9 ms, 0 fetch errors, 0 prompt-signal hits). Adding broader current Raven reads
+  (`stellarDocs.get_doc_page`, `scout.searchResearch`, `scout.searchProjects`, `stellarOrg`, pinned
+  OZ skills) raises literal recall to 48/96 (50.0%): `alchemy-stellar-data-overview` reaches 8/8,
+  `openzeppelin-stellar-suite` 7/8, `openzeppelin-stellar-rwa` 6/8, `openzeppelin-smart-account`
+  5/8. Remaining gaps are Alchemy Stellar Data API endpoint contracts (absent everywhere; no public
+  repo in Scout), OZ self-hosted Relayer policy fields, and OZ `FeeForwarder` (`scout.explainRepo`
+  covers OZ repos via undated DeepWiki with `answerAsOf: null`).
+- **Live failures do not clear the reopen bar:** Weekly upstream `coverage-watch`
+  ([stellarlight#562](https://github.com/Stellar-Light/stellarlight/issues/562), 2026-11-16) shows 1
+  of 4 `own` (Sentora), 3 of 4 `mention` (Alchemy, OpenZeppelin, Chainlink), 0 `none`. Recorded
+  live failures: 0 for Alchemy (`sd-010` / [stellarlight#446](https://github.com/Stellar-Light/stellarlight/pull/446)
+  healed the issue's example); 0 unqualified for OpenZeppelin (at most 1 stale-skill failure if
+  excluding undated DeepWiki: [`sk-022`](../improvements/skills/sk-022-oz-upgrade-skill-retired-derive-api.md),
+  while [`sk-025`](../improvements/skills/sk-025-trustless-work-beta-auth-scope.md) is outside the
+  two candidate partners); 0 unreached Alchemy/OZ gaps in round item 1.3. Production demand is
+  unmeasured (no query logging today).
+- **Phases 2–4 unstarted; two operational drifts before any phase-2 run:**
+  - Alchemy Markdown endpoints now return `cache-control: public, max-age=0, must-revalidate` with
+    no `ETag` or `Last-Modified`, giving a 0s TTL and no 304 revalidation under the draft
+    `min(upstream max-age, 1h)` rule.
+  - `eval/partner-docs/cases.json` pins `OpenZeppelin/docs` at `f304ed55` (`relayer/1.4.x/stellar.mdx`),
+    while `main` (`4d74c325`, 2026-11-17) moved to Relayer `1.8.x` / `content/relayer/stellar.mdx`
+    and added Vault and Confidential Token modules (classic-only fee-token constraint still holds).
 
 ## Triggers to revisit
 
-Reopen the **Markdown source lane** (to promote to phase 2) only after **two unrelated,
-live-reproduced production or owned-QA failures** where all of the following hold:
-
-1. The missing or incorrect fact is present on a current first-party partner page.
-2. No currently exposed source — including official Docs after the improvements pipeline has had a
-   chance to correct them — returns dated, quotable support for it.
-3. The failure is a source-coverage problem, not answer craft, stale truth metadata, or routing.
-
-Measured production demand once query observability ships (showing repeated unanswered or wrong
-partner-endpoint questions) also fires re-evaluation.
-
-Reopen the **MCP federation question** only on a narrower, different fact: a partner shipping a
-read-only, unauthenticated, documentation-scoped MCP surface with a stable tool contract. That is
-not what either partner ships today, and it is the only shape that would not import an operational
-surface. A partner adding *more* tools is evidence against, not for.
+- **Markdown source lane (promote to phase 2):** two unrelated, live-reproduced production or
+  owned-QA failures where (1) the fact exists on a current first-party partner page, (2) no exposed
+  source (after improvements-pipeline fixes) returns dated, quotable support, and (3) the cause is
+  source coverage, not answer craft, stale truth metadata, or routing — **or** measured production
+  demand once query observability ships showing repeated partner-endpoint misses.
+- **MCP federation:** only if a partner ships a read-only, unauthenticated, documentation-scoped
+  MCP surface with a stable tool contract (more tools is evidence against).
 
 ## Re-evaluation requirements
 
 If a trigger fires:
 
-1. Refresh OpenZeppelin's pinned commit and Relayer path in `eval/partner-docs/cases.json`, widen
-   the harness baseline to match current Raven sources (including full Docs pages and Scout on
-   OpenZeppelin), and re-run `npm run eval:partner-docs -- --raven-url <bound URL>/mcp --json` over
-   all 12 cases.
-2. Check the newest weekly `coverage-watch` run in
-   [Stellar-Light/stellarlight#562](https://github.com/Stellar-Light/stellarlight/issues/562)
-   (`own` / `mention` / `none`) and re-count live production or owned-QA failures on partner-only
-   facts. If both the coverage residue and live-failure set are empty, close (delete) the idea
-   without an implementation round; if a coverage gap remains but qualifying live failures stay
-   below two (and production telemetry does not show repeated partner-endpoint misses), keep the
-   idea **held** without advancing to phase 2.
-3. Settle the caching policy for `max-age=0, must-revalidate` sources (Alchemy) before running
-   phase 2's 24-hour reliability and 304 / stale-if-error probes.
-4. Do not build a generic `fetch_url`, a caller-selected endpoint, or an MCP proxy. The smallest
-   useful surface is one host adapter with manifest-authored, closure-captured source identities.
-5. Treat fetched prose as untrusted data even from a first-party domain: never into catalog
-   descriptions, server instructions, or tool error hints.
-6. Honour serve-do-not-store. This lane must not become the reason Raven starts owning a mirror of
-   someone else's content (ARCHITECTURE §6).
-7. Phase 3 is the decision, not phase 1. Ship only on a measured answer-quality win with correct
-   provenance on every partner-specific claim, and OpenZeppelin cases must show value beyond the
-   existing skill and docs paths.
+1. Refresh OpenZeppelin's pinned commit/Relayer path in `eval/partner-docs/cases.json`, widen the
+   harness baseline to full current Raven sources, and re-run `npm run eval:partner-docs`.
+2. Re-check weekly `coverage-watch` ([stellarlight#562](https://github.com/Stellar-Light/stellarlight/issues/562))
+   and live-failure counts; delete this idea if both coverage residue and live failures are empty,
+   or keep held if qualifying live failures remain < 2 without telemetry demand.
+3. Settle caching for `max-age=0, must-revalidate` sources (Alchemy) before phase-2 24h reliability
+   probes.
+4. Build one manifest-authored, closure-captured host adapter (never generic `fetch_url`,
+   caller-selected endpoints, or an MCP proxy).
+5. Treat fetched prose as untrusted data (never in catalog descriptions, server instructions, or
+   error hints) and honor serve-do-not-store ([`ARCHITECTURE.md`](../ARCHITECTURE.md) §6).
+6. Phase 3 (paired headline QA, ≥16 cases, zero new wrong answers, provenance verified, OZ value
+   beyond existing skills/docs) is the ship gate, not phase 1.
 
-## Durable references
+## References
 
-- Design, admission contract, and ship gate:
-  [`research/partner-doc-source-onboarding.md`](../research/partner-doc-source-onboarding.md)
-- Harness and case corpus: [`scripts/eval-partner-docs.mjs`](../scripts/eval-partner-docs.mjs),
-  [`eval/partner-docs/`](../eval/partner-docs/README.md)
-- The upstream correction that closed the issue's concrete example:
-  [`stellar/stellar-docs#2573`](https://github.com/stellar/stellar-docs/pull/2573), tracked as
-  `sd-010` and resolved 2026-07-15 in [`improvements/resolved.json`](../improvements/resolved.json)
-- Active partner skill-vs-docs finding counted in the 2026-11-19 review:
-  [`sk-022`](../improvements/skills/sk-022-oz-upgrade-skill-retired-derive-api.md) (and outside
-  the two candidate partners,
-  [`sk-025`](../improvements/skills/sk-025-trustless-work-beta-auth-scope.md))
-- Work on this issue in the Stellar Light upstream, which this lane must be measured against:
-  [`#446`](https://github.com/Stellar-Light/stellarlight/pull/446) (corrected the `alchemy` record,
-  2026-07-10), [`#448`](https://github.com/Stellar-Light/stellarlight/pull/448) (the converging
-  earlier "no", plus the `#447` retraction and its negative-grep lesson),
-  [`#561`](https://github.com/Stellar-Light/stellarlight/pull/561) / rolling issue
-  [`#562`](https://github.com/Stellar-Light/stellarlight/issues/562) (coverage-and-freshness
-  detector, weekly since 2026-11-12),
-  [`#564`](https://github.com/Stellar-Light/stellarlight/pull/564) (fixed that detector's URL-only
-  "served" verdict), [`#565`](https://github.com/Stellar-Light/stellarlight/pull/565) (ingested ≠
-  retrievable; `q=Alchemy` returned zero results), and
-  [`#657`](https://github.com/Stellar-Light/stellarlight/pull/657) (`data-providers` research
-  anchor for the Alchemy roster case)
-- Lessons from admitting a source: [`source-addition.md`](../.agents/skills/run-evals/references/source-addition.md)
+- [`research/partner-doc-source-onboarding.md`](../research/partner-doc-source-onboarding.md),
+  [`scripts/eval-partner-docs.mjs`](../scripts/eval-partner-docs.mjs),
+  [`eval/partner-docs/README.md`](../eval/partner-docs/README.md),
+  [`source-addition.md`](../.agents/skills/run-evals/references/source-addition.md)
+- Resolved example: `sd-010` (`stellar/stellar-docs#2573`, [`improvements/resolved.json`](../improvements/resolved.json));
+  active findings: [`sk-022`](../improvements/skills/sk-022-oz-upgrade-skill-retired-derive-api.md),
+  [`sk-025`](../improvements/skills/sk-025-trustless-work-beta-auth-scope.md)
+- Upstream Stellar Light work: `#446`, `#448`, `#561`/`#562`, `#564`, `#565`, `#657`

@@ -1,120 +1,59 @@
 # Retrieval demand report
 
-Status: possible future work. The live id query is enough until someone needs the question text,
-or needs the same ranking after the Workers Logs window.
+Status: held. Reopen only when an operator needs question text, or needs the same ID ranking past
+the 7-day Workers Logs window, with purpose, access, retention, and disclosure written first.
 
-MCP is the primary surface. The Playground is a secondary source. Include it when the same report
-already has a place for it. Do not design the collection around it.
+MCP is the primary surface; Playground is secondary (include only alongside MCP, never design around
+it).
 
-## The desire
+## Goal
 
-The desired reading is the question an MCP caller is trying to answer. Take that reading from the
-text the MCP client actually sends. A catalog id or an operation id is only a proxy for that
-question.
+Understand what callers ask MCP (`/mcp` never receives the user's raw prompt, only the model's
+distillation):
 
-Two MCP texts carry the intent:
+1. **Lookup arguments inside `execute`:** string queries passed to content lookups (e.g.,
+   `lumenloop.search_content_semantic`, `stellarDocs.search_docs`, `scout.searchResearch`) paired
+   with operation ID.
+2. **Catalog `search` query:** shorter distillation, often naming a tool family.
 
-1. **Lookup strings inside `execute`.** The model sends code. The string arguments to content
-   lookups are the closest text Raven receives to the question being answered. Examples are the
-   query passed to `lumenloop.search_content_semantic`, `stellarDocs.search_docs`, or
-   `scout.searchResearch`. The operation id says which tool ran. The argument says what the model
-   asked that tool to find.
-2. **Catalog `search` query.** The model also sends a `search` query so Raven can pick source
-   material. That text is a shorter distillation. It often names a tool family, not the question.
+Playground messages on `/playground/chat` (`demo-chat-start` logs `latestUserChars` and
+`historyChars` only) stay out of scope for the primary extract.
 
-MCP does not receive the person's original question. The host model keeps it. The reading above is
-the model's distillation, taken from the text that arrives on `/mcp`.
+## What logs show today (7-day window)
 
-The Playground message on `/playground/chat` is the person's own words. `demo-chat-start` records
-`latestUserChars` and `historyChars` only. That message is out of scope for the primary extract.
-Playground search ids and Playground executes can sit beside the MCP counts.
+Workers Observability calculations rank call volume (not questions; one `execute` may repeat an op):
 
-## What logs can show today
-
-Workers Observability calculations can rank these MCP fields for about 7 days:
-
-- `op.id`, each upstream operation an execute script calls
-- `search` field `top.0`, the first catalog id, split by `source` (`tool` or `codemode`)
+- `op.id` (currently mixes MCP and Playground; note that when sharing until a `surface` field exists)
+- `search` `top.0` split by `source` (`tool` | `codemode`), plus `demo-search` `top.0` secondary
 - `skill_read.id` and `skill_run.id`
 
-`demo-search` field `top.0` is the same fact for the Playground. Keep it in a secondary column.
-
-The query shape that held on 2026-10-02:
-
-- service `stellar-raven-codemode`
-- app logs only, `$metadata.type = cf-worker`
-- `view: calculations`, grouped counts
-- 14 adjacent windows of 12 hours across 7 days
-- `abr_level` 1 on every window
-
-A flat 7-day `events` query is the wrong instrument. The
-[observability skill](../.agents/skills/cloudflare-observability-review/SKILL.md) owns that trap.
-The procedure there is the way to repeat this sample.
-
-Leave the resulting counts out of git. [The usage guide](../usage/README.md) forbids committed
-production counts.
-
-Read the ranking as call volume. One execute script can call the same operation many times. Say
-that in any share-out. These counts show which tools run. They do not show the question.
-
-`op` has no surface field today, so an operation total mixes MCP execute and Playground execute.
-MCP execute is the bulk of that mix. A share-out should say the count is mixed, or split it once
-the surface is known.
+Verified query shape (2026-10-02): service `stellar-raven-codemode`, `$metadata.type = cf-worker`,
+`view: calculations`, 14 adjacent 12-hour windows, `abr_level` 1. Follow
+[`cloudflare-observability-review`](../.agents/skills/cloudflare-observability-review/SKILL.md)
+(never a flat 7-day `events` query), and never commit production counts
+([`usage/README.md`](../usage/README.md)).
 
 ## Held intent extract
 
-This note exists for a redacted extract of the two MCP texts:
-
-- the string arguments of search-like operations inside `execute`
-- the catalog `search` query string
-
-Store an aggregate, such as token counts or a short redacted form. Keep the operation id with the
-lookup string so the subject stays attached to the tool. Do not store the execute script.
-
-The id counts above can be kept as the safe layer under that extract. An id table alone does not
-meet the desire.
+To capture subject demand beyond public IDs, store a redacted aggregate (e.g., token counts or short
+redacted forms) of search-like `execute` arguments (paired with `op.id`) and catalog `search`
+queries. Never store full `execute` scripts or Playground chat text (highest pasted-secret risk).
 
 Gates before any collection:
 
-- Redact secrets before storage. Host-secret redaction is not enough. Callers paste their own keys
-  into query text and into code.
-- Name the purpose, who can read it, and the retention period.
-- Update the usage disclosure before collection starts.
-- Follow the usage guide's ban on a published list of raw queries or reversible short-query hashes.
-  A private aggregate can exist under that ban. A public "top questions" list of raw strings cannot.
+- Redact caller-pasted secrets before storage (host-secret redaction alone is insufficient).
+- Document purpose, access, and retention, and update user disclosure first.
+- Follow `usage/README.md`'s ban on publishing raw query lists or reversible short-query hashes.
+- Do not feed raw user traffic into discovery cases ([`eval/discovery/README.md`](../eval/discovery/README.md)).
 
-Playground chat text stays out. It is the text most likely to contain a pasted secret, and it is
-not the primary source. Full execute code stays out for the same reason.
+Distinct from [`observability-r2-retention.md`](./observability-r2-retention.md) (forensic raw logs),
+the monthly usage report (tool/account counts only), and
+[`user-controlled-personalization.md`](./user-controlled-personalization.md) (per-user memory).
 
-A possible later use of the extract is a source of live evaluation candidates written by nobody on the team. The same gates apply, and the discovery instrument still forbids raw user traffic as case input ([the discovery guide](../eval/discovery/README.md)).
+## Optional daily public-ID aggregate
 
-## What this note is not
-
-This is not a raw log archive. [The R2 retention note](./observability-r2-retention.md) covers that
-held path, and its trigger is forensic history rather than a subject reading.
-
-This is not the monthly usage report. That report stores tool counts and account hashes. It stores
-no catalog ids and no query text.
-
-This is not per-user memory. [The personalization note](./user-controlled-personalization.md) covers
-that held path.
-
-## Id aggregate, if the 7-day window is not enough
-
-Build a small count of public ids when an operator needs the MCP ranking on a schedule, or after
-Workers Logs expire. Keep one row per day and id, with a count. Include:
-
-- operation id
-- search first-id, with source `tool` or `codemode`
-- skill-read id and skill-run id
-- surface, so MCP stays separate from Playground
-
-Add Playground search first-id in the same table when the surface column exists. Do not add a
-Playground-only store.
-
-Keep the no-payload rule from [the architecture](../ARCHITECTURE.md) for this layer. Store no
-query text, execute code, answers, account hashes, or request ids in the id table. Catalog ids
-and operation ids are already public.
-
-Put either aggregate next to the usage collector only after its purpose, access, and retention
-are written down. The 13-month response table is a different purpose. Do not widen it by default.
+If 7-day logs are too short for ID rankings, store daily counts of public IDs (`op.id`, `search`
+`top.0` + `source`, `skill_read.id`, `skill_run.id`, `surface`, plus Playground `demo-search`
+`top.0`). Keep the no-payload rule ([`ARCHITECTURE.md`](../ARCHITECTURE.md)): no query text, code,
+answers, account hashes, or request IDs. Place beside the usage collector only after documenting
+purpose, access, and retention; do not widen the 13-month response table by default.
