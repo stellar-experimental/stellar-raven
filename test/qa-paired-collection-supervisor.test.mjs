@@ -315,6 +315,7 @@ function planFixture(activeCorpusCount = 500) {
         "--claude-path", "/usr/bin/claude",
         "--expect-claude-binary-sha256", inputHashes.agentBinarySha256,
         "--expect-claude-environment-sha256", inputHashes.agentEnvironmentSha256,
+        "--judge-model", "judge-model",
         "--paired-listeners", listenersPath,
         "--expect-paired-listeners-sha256", listenersSha256,
         "--out", p6SummaryArtifactPath
@@ -1282,6 +1283,7 @@ describe("paired QA collection supervisor", () => {
   it.each([
     ["P6 call count", (plan) => { plan.p6.calls = 6; }, /seven calls/],
     ["P6 identity flag", (plan) => setFlag(plan.p6.command, "--runner-revision", "b".repeat(40)), /exact wrapper command/],
+    ["P6 judge model", (plan) => setFlag(plan.p6.command, "--judge-model", "other-judge"), /exact wrapper command/],
     ["P6 wrapper hash", (plan) => { plan.p6.wrapperSha256 = "0".repeat(64); }, /p6 wrapper does not match/],
     ["P6 judge hash", (plan) => { plan.p6.judgeSha256 = "0".repeat(64); }, /p6 judge implementation does not match/],
     ["flip source order", (plan) => {

@@ -23,10 +23,7 @@ the linked ledger. Every item follows the spend rules in
    its `recoveryHint`, `skipped`, `errorName` and user-agent questions), "Read the `skill_read`
    shape distribution", and "Confirm `npm run mcp-key` on wrangler 4.164.0".
 3. Owner decisions (the list at the end).
-4. Free own-repo fixes that need no paid measurement: the smart-contracts malformed-input
-   recurrence probe ("Probe the malformed-input gap in the pinned smart-contracts skill"), the
-   canonical-page Docs search re-probe ("Fix Docs search misses on canonical pages"), and the
-   case-file move once every dated run and follow-up has merged and `systemctl --user list-timers`
+4. Free own-repo fixes that need no paid measurement: the case-file move once every dated run and follow-up has merged and `systemctl --user list-timers`
    on agentpc shows no `raven-dated` or `raven-watchdog` unit.
 
 Everything not named here is a hold, a monitor, or waits on its trigger. Do not start one without
@@ -364,20 +361,6 @@ ADR-0008, and the 10/12 positive + 0/8 premature-detour gate.
 
 Done when: a reviewed v3 plan ships, or the owner retires the recovery program.
 
-### Probe the malformed-input gap in the pinned smart-contracts skill
-
-The security reference in `skills.stellar-dev.smart-contracts` (repository `stellar/stellar-dev-skill`)
-numbers its vulnerability classes, and none covers malformed or short input. The nearest entry is
-check-then-act races, a different thing. Only generic input-validation advice exists; a length or
-bounds guard before decoding or slicing is absent. The evidence is the
-[2026-08-07 codegen partner report](../research/audits/2026-08-07-codegen-partner-report.md), so it
-is older than the current pin.
-
-Next: a recurrence probe against the current pinned commit, through the `improvements-pipeline`
-skill. If the gap still reproduces, file a finding under `improvements/skills/`.
-
-Done when: the probe shows the gap closed, or a finding records it.
-
 ## Routing
 
 Search stays lexical-only (owner, 2026-11-03;
@@ -588,33 +571,26 @@ Trigger: upstream action on `stellar/stellar-docs#2995` (open; last checked 2026
 
 Done when: `sd-059` is fixed upstream and retired under `improvements-pipeline`.
 
-### Fix Docs search misses on canonical pages
+### Fix two Raven `search` misroutes of canonical Docs pages
 
-Two mechanisms miss canonical Docs pages, and they need different fixes. Keep them apart:
+Raven `search` sends two questions to an operation whose path scope excludes the canonical page,
+while `stellarDocs.search_docs` ranks the page in its top 5 (re-probe 2026-11-20,
+[PROBE.md](rounds/2026-11-16-next-phase/items/8.13/docsprobe/PROBE.md)):
 
-- Raven `search` routing (which operation and page cards a question reaches). The HackMeridian
-  review of 2026-10-26 found three misses: the testnet reset section on `/docs/networks`, the
-  Custom Account example, and the fee-sponsorship pages. It predates #474, which on 2026-11-17
-  replaced 666 Algolia-era page titles with 982 live ones, and those titles feed the catalog
-  keywords. The misses may be gone.
-- `stellarDocs.search_docs` ranking (Mintlify). The fact for `q-soroban-contract-id-derivation` is on
-  `/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction`
-  ("based on `contractIDPreimage` value and the network identifier") and, with "sha256", on
-  `/docs/tokens/stellar-asset-contract`. On 2026-11-17 `stellarDocs.search_docs` did not return the
-  first page for the question wording or for `contractIDPreimage` in the top 10;
-  `HOST_FUNCTION_TYPE_CREATE_CONTRACT` returned it at rank 1. Round item 1.3 classed it "reached, not
-  surfaced" ([CLASSIFICATION.md](rounds/2026-11-16-next-phase/items/1.3/CLASSIFICATION.md)). This
-  miss is not filed upstream. Round item 1.3 filed the same class for SEP-7 as `sd-112`, and that
-  precedent applies if the re-probe shows a Mintlify ranking miss.
+- Testnet reset: `search_soroban_contract_docs` ranks first and excludes `/docs/networks`.
+- Fee sponsorship: `search_rpc_horizon_data_docs` or `search_protocol_concepts_docs` ranks first;
+  both exclude `/docs/build/guides/transactions/*`.
 
-Next: one free re-probe of the three HackMeridian pages and the contract-id page on current `main`,
-recorded per search path (Raven `search`, then `stellarDocs.search_docs`). Add routing cases only
-for what still misses, and add them first. A mechanism must be general (no per-query exception),
-pass a free retrieval A/B ([`docs/stellar-docs.md`](../docs/stellar-docs.md), "Maintenance"), and
-pass `npm run eval:routing -- --gate`. A Mintlify ranking miss goes to `improvements/`.
+The Custom Account example now passes on both paths. The contract-id derivation miss is Mintlify
+ranking, filed as `sd-114` ([stellar-docs#3170](https://github.com/stellar/stellar-docs/issues/3170)).
 
-Done when: the re-probe is recorded per path, and each page that still misses has a routing case
-and a merged general fix or a filed finding.
+Held: holdout top1, top3 and forbidden captures sit on their gate limits, and per-query exceptions
+are banned. Trigger: the general routing repair ("Preserve structured routing intent across
+extraction caps and gate tiers") gains headroom. Then add routing cases for both pages first; a fix
+must be general and pass a free retrieval A/B ([`docs/stellar-docs.md`](../docs/stellar-docs.md#maintenance))
+and `npm run eval:routing -- --gate`.
+
+Done when: both questions reach an operation that can return the canonical page.
 
 ### Clarify the model-facing `codemode.describe` response shape
 
@@ -971,7 +947,7 @@ on orchestrator approval of "Approval list" point 3 in
   already unified).
 - O-27: define owner, lead, orchestrator, and lane once in `AGENTS.md` "Coordination".
 - O-30 (move `wrangler kv` rules to `docs/operations.md`), O-32–O-38 (move/reword orchestrator
-  handoff rules in `AGENTS.md`), O-40 (shorten Solo rule).
+  handoff rules in `AGENTS.md`). O-40 is moot: the Solo rule was removed on 2026-11-20.
 - C-17: document the playground gauntlet's per-model Wrangler exception or let it reuse a server.
 - "File and response size come second" in `AGENTS.md` "Spend and evidence".
 - B-13, B-14, "Raven scoping" in `improvements-pipeline`, and `golden-truth` lifecycle overlap

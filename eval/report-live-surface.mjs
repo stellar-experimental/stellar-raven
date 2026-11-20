@@ -49,7 +49,9 @@ export async function fetchLiveSurface(url, { fetchImpl = fetch, token = null } 
     });
     const text = await response.text();
     if (!response.ok) {
-      throw new Error(`${url} → HTTP ${response.status}: ${text.slice(0, 200)}`);
+      // A proxy can echo the Authorization header; never print the token.
+      const excerpt = token ? text.split(token).join("[redacted]") : text;
+      throw new Error(`${url} → HTTP ${response.status}: ${excerpt.slice(0, 200)}`);
     }
     return parseMcpHttpPayload(text);
   };
