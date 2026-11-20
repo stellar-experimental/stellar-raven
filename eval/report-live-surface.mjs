@@ -8,7 +8,8 @@
  *   node eval/report-live-surface.mjs [--port 8788 | --url <url>] [--label <name>]
  *     [--json <path>] [--expect-sha256 <hex>] [--expect-source-revision <sha>]
  *
- * Non-local targets require `RAVEN_MCP_BEARER_TOKEN` (sent, never printed).
+ * Non-local targets require `RAVEN_MCP_BEARER_TOKEN` (sent in `Authorization`, not logged directly;
+ * HTTP error paths still print up to 200 chars of the server response body).
  */
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";

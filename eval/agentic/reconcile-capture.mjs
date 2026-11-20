@@ -5,7 +5,8 @@
  *
  * Fails closed on unattributable traffic (missing/unknown marker, JSON-RPC batch,
  * non-`search` tool call, unparseable body, non-200 status, or empty report when search
- * traffic was captured). Wire-vs-transcript forensics only — not adversarial isolation.
+ * traffic was captured). Wire-vs-transcript forensics only — not adversarial isolation
+ * (the same-user evaluated process can modify the capture file or call upstream directly).
  *
  * Usage:
  *   node eval/agentic/reconcile-capture.mjs \

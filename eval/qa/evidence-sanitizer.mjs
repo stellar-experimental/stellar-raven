@@ -1,8 +1,8 @@
 /**
- * Bounded, credential-free evidence sanitizer for judge CLI failures (`eval/qa/judge.mjs`).
+ * Bounded, pattern-redacted evidence sanitizer for judge CLI failures (`eval/qa/judge.mjs`).
  * Preserves raw C1 control bytes during decoding so escape-split credentials are caught, redacts
- * plaintext and structured JSON credentials, and bounds excerpts while keeping raw `totalBytes`
- * and `sha256`.
+ * known credential patterns and sensitive JSON keys, and bounds excerpts while keeping raw
+ * `totalBytes` and `sha256`.
  */
 import { createHash } from "node:crypto";
 
@@ -655,7 +655,8 @@ function tryParseJson(text) {
   }
 }
 
-// Serialize once with an explicit stack (depth-bounded); never rescan serialized JSON as plaintext.
+// Depth-bounded explicit-stack redaction followed by one JSON.stringify pass; never rescan
+// serialized JSON as plaintext (it would consume serialized quotes and corrupt following fields).
 function sanitizeStructuredJson(value, tally = newRedactionTally()) {
   return JSON.stringify(redactSensitiveValues(value, tally));
 }

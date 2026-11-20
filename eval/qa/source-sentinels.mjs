@@ -10,7 +10,8 @@
  *   node eval/qa/source-sentinels.mjs --report <file.md> [--previous <body.md>] # CI issue report + $GITHUB_OUTPUT
  *
  * In `--report` mode, stale sentinels are listed unread, `--previous` retains unreadable drifted
- * sentinels to prevent issue churn, and total fetch failure exits 2 so outages cannot close the issue.
+ * sentinels to prevent issue churn, and the run exits 2 when every selected sentinel ends as a
+ * fetch error (none carried forward via `--previous` or marked stale).
  */
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";

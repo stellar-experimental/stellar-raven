@@ -7,8 +7,8 @@ import { createHash } from "node:crypto";
 import { resolvedModelFromStream } from "./model-identity.mjs";
 
 /**
- * Stored outcome schema version (stamped in `meta`). Bump only on breaking shape changes
- * (v4: settings-free isolation + init MCP connection status + projected search results;
+ * Stored outcome schema version (stamped in `meta`). Bump on breaking shape or collection-contract
+ * changes (v4: settings-free isolation + init MCP connection status + projected search results;
  * optional `resolvedModel` does not bump it).
  */
 export const AGENT_RESULT_SCHEMA = "qa-agent-result-v4";
@@ -55,7 +55,7 @@ const PROJECTION_STATE_OF = Object.freeze({
   otherFailed: "other-failed"
 });
 
-/** Provider-safeguard notice markers (either suffices; neither appears in model answers). */
+/** Provider-safeguard notice markers checked on `resultMessage.is_error` responses (either suffices). */
 const PROVIDER_SAFEGUARD_MARKERS = [
   "safeguards flagged this message",
   "real-time-cyber-safeguards-on-claude"

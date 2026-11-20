@@ -6,7 +6,7 @@
  *
  * Lanes never merge into the legacy 338 strict aggregate. Writes `eval/results/routing-<ts>.json`;
  * console prints aggregates only (pass `--rows` for holdout/protocol-history rows; `--dump-ranked
- * <file>` writes top-5 hit IDs per case; `--gate` exits 1 on `eval/gates.json` breach or
+ * <file>` writes top-5 hit IDs per case excluding holdout; `--gate` exits 1 on `eval/gates.json` breach or
  * denominator drift; `--manifest <path>` grades an alternate manifest).
  *
  * Imports `src/catalog/search.ts` via native TS type-stripping, falling back to `typescript`
