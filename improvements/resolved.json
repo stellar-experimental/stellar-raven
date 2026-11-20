@@ -2280,6 +2280,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/a5fe62e1187d628759bbf60cc0738688e13db66d/improvements/skills/sk-039-assets-token-interface-types.md"
     },
     {
+      "id": "sk-040",
+      "title": "skills/smart-contracts/security.md lists 11 numbered vulnerability classes and omits malformed or short-input handling. No file in…",
+      "service": "skills",
+      "discovered": "2026-08-07",
+      "resolved": "2026-11-20",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/193",
+        "https://github.com/stellar/stellar-dev-skill/pull/194"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/pull/194"
+      ],
+      "liveRecheck": "2026-11-20 02:15Z curl https://skills.stellar.org/skills/smart-contracts/security.md (HTTP 200, last-modified 01:55:10 GMT, 13389 bytes): class 12 Malformed and short byte inputs at line 149, IndexBounds rule line 153, checklist line 208; testing.md line 264 covers short or malformed byte inputs; published files match merge 6258d71d8cc6",
+      "reviewEvidence": "Distinct reviewer Codex gpt-6.2-sol (high, read-only) re-derived on 2026-11-20: read #193 and #194, confirmed deployment by curl and blob match, re-ran the trigger against the old pin and the live pages, checked the new text against rs-soroban-sdk 27ae4ffd9fce; verdict retire",
+      "sourceCommit": "1b667e0666a752963af60e30afc7b8ac5c36105f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1b667e0666a752963af60e30afc7b8ac5c36105f/improvements/skills/sk-040-smart-contracts-malformed-input-gap.md"
+    },
+    {
       "id": "sls-001",
       "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but in an order agents universally read as ranking. An eval…",
       "service": "stellar-light-scout",
