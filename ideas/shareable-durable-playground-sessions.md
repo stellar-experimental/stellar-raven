@@ -69,9 +69,10 @@ first user message (no extra model call).
 
 ## Transcript and replay contract
 
-Persist per turn: user text, final or bounded partial assistant text, `tool-start` input and
-`tool-result` output/success for `search`/`execute`, status, and timestamps. Never persist or share
-`thinking` frames or transient UI state; write once per turn (never token-by-token).
+Persist per turn: user text, final or bounded partial assistant text, a bounded trace array
+(`tool-start` input and `tool-result` output/success for `search`/`execute`), status, and
+timestamps. Never persist or share `thinking` frames or transient UI state; write once per turn
+(never token-by-token).
 
 UI renders the full saved transcript; model replay stays clamped by `clampHistory` in
 `src/demo/budget.ts` (newest 20 user/assistant messages, 24,000-char budget; tool traces remain
@@ -113,8 +114,9 @@ session ID, run the clamped model loop, and finalize the turn.
 - **Owner concurrency:** guard owner sends with optimistic `version` checks (conflict → reload).
 - **Revoked before send / expired cookie / D1 pre-write failure:** reject without creating a fork or
   starting model spend.
-- **Post-fork model failure:** keep the private fork with its `failed` turn for retry; never
-  redirect back to the source.
+- **Client disconnect / timeout / provider failure:** stop spend via the existing abort path and
+  finalize the `failed` turn when possible. After fork creation, keep the private fork with its
+  `failed` turn for retry; never redirect back to the source.
 - **Worker termination on `pending`:** mark stale `pending` turns `failed` after the turn timeout
   ceiling plus margin.
 - **Post-stream D1 failure:** report persistence failure honestly in telemetry and UI.

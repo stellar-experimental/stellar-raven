@@ -24,9 +24,9 @@ fail-closed read-time sectioning invariant, buying partial reads and `availableS
 
 Instrument: `skill_read` telemetry (`src/observability.ts` `logSkillRead`, emitted in
 `src/executor/providers.ts`), recording `id`, `shape` (`whole | sections | files | mixed`),
-`requested`, `retrievals`, `from` (`memo | cache | upstream | none`), `ms`, `ok`, and `error` (no
-body text or caller identity; verified live 2026-07-30, deploy `64d9db06`). Read only organic
-traffic, never author probes.
+`requested`, `retrievals`, `from` (`memo | cache | upstream | none`), `ms`, and `outcome`
+(`ok | error | soft-empty`) — no body text or caller identity (verified live 2026-07-30, deploy
+`64d9db06`). Read only organic traffic, never author probes.
 
 ## Pre-registered decision rules
 
@@ -45,8 +45,8 @@ guidance and new-field filter traps in
   (skills + QA + agentic) — the distribution only decides whether to run that A/B.
 - **`ms` split by `from`:** always split memo vs. cache vs. upstream (first reading: upstream 61–80
   ms, memo 0 ms).
-- **`ok: false` rate:** read while in logs; the hourly canary (`evt = "skill_canary"`) and
-  `refresh.yml` own availability monitoring.
+- **`outcome = "error"` rate:** read while in logs (group by `id` and `from`); the hourly canary
+  (`evt = "skill_canary"`, which logs `ok: false`) and `refresh.yml` own availability monitoring.
 
 ## What a win would delete
 

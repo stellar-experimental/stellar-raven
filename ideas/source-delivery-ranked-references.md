@@ -112,9 +112,10 @@ append `roles matched: <roles> — compare before asserting`.
   `sources/locators.descriptor.json` (`schemaVersion`, `indexSha256`, `allowlistSha256`,
   `builderVersion`, `objectKey`, `builtAt`). No build-time fallback digest.
 - **Load & degrade:** Worker loads `objectKey` via `SOURCE_LOCATORS`, verifies SHA-256 and zod
-  schema, memoizes per isolate by `indexSha256` (optional colo Cache API re-verified on hit). Any
-  mismatch rejects the index (`index-mismatch` error on `sources.locate`, attachments disabled,
-  `sources_index` telemetry; `search`/`execute` never fail).
+  schema, checks `schemaVersion`, embedded `allowlistSha256`, and `builderVersion` against the
+  deployed descriptor, and memoizes per isolate by `indexSha256` (optional colo Cache API
+  re-verified on hit). Any mismatch rejects the index (`index-mismatch` error on `sources.locate`,
+  attachments disabled, `sources_index` telemetry; `search`/`execute` never fail).
 
 ## 4. Scoring design
 

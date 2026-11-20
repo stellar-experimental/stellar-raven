@@ -1,7 +1,8 @@
 # Observability R2 Retention Plan
 
-Status: held research note. Do not build until a trigger below fires or Owner decision 5 starts the
-30-day observability design study ([`.agents/TODO.md`](../.agents/TODO.md)).
+Status: held research note. Do not build until a trigger below fires and the required privacy and
+security design review completes (Owner decision 5 in [`.agents/TODO.md`](../.agents/TODO.md)
+authorizes starting the design study, not a direct build).
 
 [`ARCHITECTURE.md`](../ARCHITECTURE.md) owns current logging and exclusions;
 [`docs/operations.md#data-retention`](../docs/operations.md#data-retention) owns retention periods;
@@ -44,13 +45,15 @@ or client fields in app logs if multi-request attribution is needed.
 
 ## Triggers
 
-Build only if one of these holds:
+Open the design study (and build only after security/privacy review) if one of these holds:
 
-- Owner decision 5 starts the 30-day observability archive ("Keep 30 days of observability data,
-  including queries and responses").
+- Owner decision 5 starts the 30-day observability design study ("Keep 30 days of observability
+  data, including queries and responses").
 - An eval, incident, abuse review, or agent-run investigation needs evidence older than 7 days.
 - A recurring report needs raw per-request evidence beyond aggregate Worker metrics.
 - Cloudflare shortens Workers Logs retention or makes API/dashboard reads unreliable.
+- A compliance or privacy decision asks for a bounded retention archive with a documented lifecycle
+  in place of ad hoc local files.
 
 ## Staged build
 

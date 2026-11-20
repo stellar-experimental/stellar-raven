@@ -67,8 +67,10 @@ frames, history clamp, tool counters, code-size cap, timeout, and per-subject ho
 Run only after hosted-use confirmation (or accepting a disposable spike): dev-only flagged route
 with in-memory store; exercise login, cancel/expiry, model discovery, multi-turn reasoning
 continuity, logout, forced refresh, simultaneous tabs, abort/timeout, 401/429/kill-switch, and
-secret-isolation checks; pass playground semantic corpus with quality ≥ shipped primary, plus
-standard repo gates and secrets scan.
+secret-isolation checks. Production stays blocked until all items pass, the strongly consistent
+session design proves one refresh winner with no stale-token replay, privacy/consent copy is
+reviewed, playground semantic corpus quality is ≥ shipped primary, and standard repo gates +
+secrets scan pass.
 
 ## Triggers to revisit
 

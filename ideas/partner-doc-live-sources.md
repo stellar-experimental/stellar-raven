@@ -64,7 +64,9 @@ full admission contract live in
 If a trigger fires:
 
 1. Refresh OpenZeppelin's pinned commit/Relayer path in `eval/partner-docs/cases.json`, widen the
-   harness baseline to full current Raven sources, and re-run `npm run eval:partner-docs`.
+   harness baseline to full current Raven sources, and re-run
+   `npm run eval:partner-docs -- --raven-url <bound URL>/mcp --json` over all 12 cases (omitting
+   `--raven-url` measures only the candidate arm and returns `inconclusive`).
 2. Re-check weekly `coverage-watch` ([stellarlight#562](https://github.com/Stellar-Light/stellarlight/issues/562))
    and live-failure counts; delete this idea if both coverage residue and live failures are empty,
    or keep held if qualifying live failures remain < 2 without telemetry demand.
@@ -74,8 +76,9 @@ If a trigger fires:
    caller-selected endpoints, or an MCP proxy).
 5. Treat fetched prose as untrusted data (never in catalog descriptions, server instructions, or
    error hints) and honor serve-do-not-store ([`ARCHITECTURE.md`](../ARCHITECTURE.md) §6).
-6. Phase 3 (paired headline QA, ≥16 cases, zero new wrong answers, provenance verified, OZ value
-   beyond existing skills/docs) is the ship gate, not phase 1.
+6. Phase 3 (paired headline QA, ≥16 cases, ≥3 net `wrong/partial -> correct` wins, zero new wrong
+   answers, zero unsupported partner claims, verified provenance on every partner-specific claim,
+   and OZ incremental value beyond existing skills/docs) is the ship gate, not phase 1.
 
 ## References
 
