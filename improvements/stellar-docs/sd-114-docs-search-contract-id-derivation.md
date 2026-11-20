@@ -2,16 +2,17 @@
 id: sd-114
 service: stellar-docs
 status: verified
+statusNote: "Verified locally on 2026-11-20; held in verified status pending upstream posting review."
 discovered: 2026-11-20
 upstreamTitle: "Docs search omits the Stellar Transaction page for contract ID derivation queries"
 evidence:
-  - "2026-11-20 POST https://api.mintlify.com/discovery/v1/search/stellardevelopmentfoundation with body {\"query\": \"how is a Soroban contract ID derived\", \"pageSize\": 50} returned HTTP 200 and 40 sections. None of them is from /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction. /docs/tokens/stellar-asset-contract ranked 31st."
-  - "Same day, same endpoint, body {\"query\": \"how is a Soroban contract ID calculated from deployer address and salt\", \"pageSize\": 50} returned HTTP 200 and 35 sections. None is from /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction. The top two pages are /docs/build/smart-contracts/example-contracts/deployer and /docs/build/guides/conventions/deploy-contract, which do not state the SHA-256 or HashIDPreimage formula. /docs/tokens/stellar-asset-contract ranked 14th."
-  - "Same day, same endpoint, body {\"query\": \"Soroban contract ID derivation sha256 network identifier\", \"pageSize\": 50} returned HTTP 200 and 50 sections. /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction ranked 16th (rank 15 in Raven stellarDocs.search_docs after excluding /meetings/), and /docs/tokens/stellar-asset-contract ranked 47th. Body {\"query\": \"contract ID preimage network ID\", \"pageSize\": 50} returned 50 sections with those pages at ranks 19 and 32. Body {\"query\": \"how are Soroban contract addresses derived\", \"pageSize\": 50} returned 46 sections with those pages at ranks 36 and 21."
-  - "Same day, same endpoint, bare XDR identifier controls returned /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction at rank 1 and /docs/tokens/stellar-asset-contract at rank 3: {\"query\": \"contractIDPreimage\", \"pageSize\": 50} (50 sections) and {\"query\": \"HOST_FUNCTION_TYPE_CREATE_CONTRACT\", \"pageSize\": 50} (50 sections)."
-  - "2026-11-20 GET https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction.md returned HTTP 200. Under ### InvokeHostFunctionOp -> #### Function -> item 3 (HOST_FUNCTION_TYPE_CREATE_CONTRACT), it defines ContractIDPreimage (CONTRACT_ID_PREIMAGE_FROM_ADDRESS and CONTRACT_ID_PREIMAGE_FROM_ASSET) and states: \"The final contract identifier is created by computing SHA-256 of this together with the network identifier as a part of HashIDPreimage\" (ENVELOPE_TYPE_CONTRACT_ID). That explanation has no dedicated heading."
-  - "All queries also ran through Raven stellarDocs.search_docs (hitsPerPage 20). The results match the direct Mintlify calls: all five natural derivation queries omit both pages from the top 10, while both XDR identifier queries rank stellar-transaction 1st. Raven path scoping does not hide the page."
-  - "Verified locally on 2026-11-20; not yet posted upstream pending review."
+  - "2026-11-20 POST https://api.mintlify.com/discovery/v1/search/stellardevelopmentfoundation with {\"query\": \"how is a Soroban contract ID derived\", \"pageSize\": 50} returned HTTP 200 and 40 sections. None is from /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction. Top hits include /docs/build/guides/transactions/signing-soroban-invocations (#1) and /docs/learn/migrate/evm/smart-contract-deployment (#2). /docs/tokens/stellar-asset-contract ranked 31st."
+  - "Same day, same endpoint, {\"query\": \"how is a Soroban contract ID calculated from deployer address and salt\", \"pageSize\": 50} returned HTTP 200 and 35 sections. None is from /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction. Top hits are /docs/build/smart-contracts/example-contracts/deployer (#1) and /docs/build/guides/conventions/deploy-contract (#2). Neither states the SHA-256 or HashIDPreimage formula. /docs/tokens/stellar-asset-contract ranked 14th."
+  - "Same day, same endpoint, {\"query\": \"Soroban contract ID derivation sha256 network identifier\", \"pageSize\": 50} returned HTTP 200 and 50 sections. Top hit is /docs/learn/migrate/evm/smart-contract-deployment. /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction ranked 16th (15th in Raven stellarDocs.search_docs after excluding /meetings/), and /docs/tokens/stellar-asset-contract ranked 47th."
+  - "Same day, same endpoint: {\"query\": \"contract ID preimage network ID\", \"pageSize\": 50} returned 50 sections with stellar-transaction 19th and stellar-asset-contract 32nd. {\"query\": \"how are Soroban contract addresses derived\", \"pageSize\": 50} returned 46 sections with stellar-transaction 36th and stellar-asset-contract 21st."
+  - "Same day, same endpoint, bare XDR symbol controls ranked /docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction 1st and /docs/tokens/stellar-asset-contract 3rd: {\"query\": \"contractIDPreimage\", \"pageSize\": 50} (50 sections) and {\"query\": \"HOST_FUNCTION_TYPE_CREATE_CONTRACT\", \"pageSize\": 50} (50 sections)."
+  - "2026-11-20 GET https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction.md returned HTTP 200. Under ### InvokeHostFunctionOp -> #### Function -> item 3 (HOST_FUNCTION_TYPE_CREATE_CONTRACT), it defines ContractIDPreimage (CONTRACT_ID_PREIMAGE_FROM_ADDRESS and CONTRACT_ID_PREIMAGE_FROM_ASSET). It also states the SHA-256 formula over HashIDPreimage (ENVELOPE_TYPE_CONTRACT_ID) with networkID. That block has no dedicated heading."
+  - "All queries also ran through Raven stellarDocs.search_docs (hitsPerPage 20). All five natural derivation queries omit both pages from the top 10. Both bare XDR symbol queries rank stellar-transaction 1st. Raven path scoping does not hide the page."
 ---
 
 ## Finding
@@ -27,9 +28,10 @@ The same search ranks that page first for the exact XDR symbols `contractIDPreim
 `how is a Soroban contract ID calculated from deployer address and salt`. Even
 `Soroban contract ID derivation sha256 network identifier` places it 16th of 50 sections.
 
-A developer asking how contract IDs are derived gets deployer guides and EVM migration pages. Those
-top pages mention deployer address and salt, but they omit SHA-256, `HashIDPreimage`, and
-`networkID`. Readers miss the exact formula unless they already know the XDR symbol name.
+A developer asking how contract IDs are derived gets invocation guides, deployer guides, and EVM
+migration pages in the top results. Deployer guides mention address and salt, but they omit
+SHA-256, `HashIDPreimage`, and `networkID`. Readers miss the exact formula in the top 10 results
+unless they query an exact XDR symbol.
 
 ## Evidence
 
