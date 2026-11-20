@@ -1,33 +1,13 @@
 name: Refresh (live drift check)
 
-# Re-fetches the live service surfaces (Lumenloop /v1/tools + /v1/me union,
-# Stellar Light /api/openapi.json, Stellar Docs Mintlify backend and llms.txt
-# page index and rendered section anchors) and rebuilds the derived
-# artifacts. Any diff = upstream drift -> per-kind keyed drift issues are
-# opened/updated/closed by scripts/sync-drift-issues.mjs and the run fails so
-# drift is impossible to miss. Diffing op-id sets is the signal —
-# info.version is NOT (Scout has shipped new ops without bumping it).
+# Re-fetches live service surfaces (Lumenloop, Stellar Light, Stellar Docs) and rebuilds derived
+# artifacts. scripts/sync-drift-issues.mjs reconciles one keyed `<class>:<source>` issue per drift
+# kind and fails on drift. Diffing op-id sets is the signal (Scout may add ops without bumping info.version).
 #
-# Also checks the
-# ecosystem-skills/ pin set for upstream drift (pinned commit SHAs /
-# stellarlight catalog / community directory) via check-skills-drift.mjs —
-# detection only; pins are never auto-advanced from CI, because skill bodies are
-# prompt input.
-#
-# Every failure class is an explicit enum mapped to a stable `<class>:<source>`
-# drift key with its own issue and remediation. Three run FIRST, before any
-# builder: pinned-file availability (`check-mirrors --fetch`, cache-bypassing —
-# bodies are served not stored, so an unresolvable pin is a live user-facing
-# outage), the deployed Worker's own retrieval verdict (`/health/skills`), and
-# the QA stale-gospel due-date queue. The generic "job crashed" issue is
-# reserved for faults that fit none of them.
-#
-# The first two answer DIFFERENT questions and both are needed: this workflow
-# runs on a GitHub Actions runner, so it can only prove the pins resolve from
-# GitHub's network. Whether the deployed Worker can reach them from a Cloudflare
-# colo is unobservable here — only the Worker can answer that, which is why an
-# hourly cron inside it (src/skills/canary.ts) records a verdict this step reads.
-# Green pins + red canary = the content is fine and our access to it is not.
+# Skills drift (check-skills-drift.mjs) is detection-only; pins require human review.
+# Three checks run before builders: upstream pin resolution (`check-mirrors --fetch`, GitHub runner
+# egress), deployed Worker `/health/skills` canary (Cloudflare egress, src/skills/canary.ts), and
+# stale QA gospel due dates. Unclassified crashes before detect-drift open `refresh-failure`.
 
 on:
   schedule:
@@ -43,8 +23,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Assignment subscribes the maintainer to later plain comments without requiring repo watch.
-  # Do not replace it with a bot @mention: delivery is undocumented and would direct-ping daily.
+  # Assign rather than @mention to subscribe the maintainer without daily direct pings.
   REFRESH_ISSUE_ASSIGNEE: ${{ vars.REFRESH_ISSUE_ASSIGNEE || (github.repository == 'stellar-experimental/stellar-raven' && 'kalepail' || github.repository_owner) }}
   RAVEN_SERVICE_URL: ${{ vars.RAVEN_SERVICE_URL || 'https://raven.stellar.org' }}
 
@@ -89,67 +68,45 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          # Node 24: build-catalog.mjs relies on native TS type-stripping, stable
-          # since Node 23.6 (see scripts/build-catalog.mjs). Do not drop below 24.
+          # Node 24 required for native TS type-stripping (scripts/build-catalog.mjs).
           node-version: 24
           cache: npm
       - run: npm ci
-      # FIRST, and before any builder: prove every pinned skill file still
-      # resolves upstream. `--fetch` bypasses ecosystem-skills/.cache, but this
-      # still runs first so the answer is recorded even if a later step dies —
-      # and so the class is reported as what it is. A pin that stops resolving
-      # is not a flaky script: bodies are not stored, so production skill.read
-      # is failing for real users right now.
+      # Run before builders so an unresolvable pin (live skill.read outage) is classified accurately.
       - name: check pinned skill files resolve upstream
         id: pins
         run: |
           set -o pipefail
           ec=0
           node scripts/check-mirrors.mjs --fetch 2>&1 | tee pin-availability.txt || ec=$?
-          # Three-way, like every other checker here: a runner-side network
-          # fault or a crashed script must NOT file an issue asserting that
-          # production is down. Only exit 1 means the pin itself is gone.
+          # Only exit 1 proves a missing pin; other non-zero exits map to error, not an outage issue.
           case "$ec" in
             0) echo "state=clean" >> "$GITHUB_OUTPUT" ;;
             1) echo "state=unresolvable" >> "$GITHUB_OUTPUT" ;;
             *) echo "state=error" >> "$GITHUB_OUTPUT" ;;
           esac
-      # The Worker's own verdict on whether IT can still reach the pinned files.
-      # The step above proves the pins resolve from a GitHub Actions runner,
-      # which says nothing about Cloudflare egress; only the Worker can answer
-      # that, so an hourly cron stores a verdict and this reads it. Staleness is
-      # a failure too: a cron that stopped firing is an outage of the detector.
+      # Worker-side egress check (runner check above does not prove Cloudflare reachability); stale verdict also fails.
       - name: check production skill retrieval (Worker-side)
         id: canary
         run: |
           set -o pipefail
-          # Bounded: without a deadline a stalled connection burns the whole
-          # job timeout instead of producing the `error` state, so the
-          # check-error path below would never run.
+          # Bounded timeouts so a stall yields state=error instead of burning the job timeout.
           code=$(curl -sS --connect-timeout 5 --max-time 20 -o canary.json \
             -w '%{http_code}' "${RAVEN_SERVICE_URL%/}/health/skills" || echo "000")
           cat canary.json || true
           echo
-          # Classifier lives in a tested script, not inline here: YAML-embedded
-          # logic cannot be unit tested, and the first inline draft was a
-          # SyntaxError that would have failed every run without ever working.
+          # Keep classifier in a tested script rather than inline YAML.
           state=$(node scripts/classify-canary.mjs "$code" canary.json)
           echo "state=$state" >> "$GITHUB_OUTPUT"
           echo "canary state: $state"
-      # Captured, not hard-failed: a past-due reverifyBy is the truth-maintenance
-      # queue firing as designed (a documented lane with a documented owner), not
-      # an automation fault. Failing here would have routed it to the generic
-      # "job crashed" issue with no case ids in it.
+      # Capture instead of failing hard so past-due reverifyBy routes to its keyed drift issue.
       - name: check for stale QA gospel
         id: gospel
         run: |
           set -o pipefail
           ec=0
           node eval/qa/lint-corpus.mjs --stale 2>&1 | tee stale-gospel.txt || ec=$?
-          # lint-corpus exits 1 for BOTH a past-due case and its own parse/lint
-          # faults, so the exit code alone cannot tell the truth-maintenance
-          # queue firing from the linter breaking. The `[stale]` finding it
-          # prints is the discriminator; without one, exit 1 is a check error.
+          # Exit 1 covers both stale cases and lint faults; [stale] distinguishes the two.
           if [ "$ec" = "0" ]; then
             echo "state=clean" >> "$GITHUB_OUTPUT"
           elif [ "$ec" = "1" ] && grep -q '\[stale\]' stale-gospel.txt; then
@@ -169,8 +126,7 @@ jobs:
             *) echo "state=error" >> "$GITHUB_OUTPUT" ;;
           esac
           exit "$ec"
-      # refresh-inventory.mjs reads .env at the repo root; the runner is
-      # ephemeral and .env is never uploaded anywhere.
+      # refresh-inventory.mjs reads .env; removed before later steps and never uploaded.
       - name: materialize .env from repo secrets
         run: |
           {
@@ -178,10 +134,7 @@ jobs:
             echo "MINTLIFY_ASSISTANT_API_KEY=${{ secrets.MINTLIFY_ASSISTANT_API_KEY }}"
           } > .env
       - run: node scripts/refresh-inventory.mjs
-      # build-catalog / family-text / spec:build fetch pinned skill bodies on a cold
-      # runner. When check-mirrors already proved a pin unresolvable, skip them so
-      # the confirmed pin outage reaches detect drift and opens pins:ecosystem-skills
-      # instead of crashing into the generic refresh-failure issue.
+      # Skip builders when a pin is already proven unresolvable so detect-drift still opens pins:ecosystem-skills.
       - name: rebuild derived catalog and specs
         id: builders
         if: steps.pins.outputs.state != 'unresolvable'
@@ -189,12 +142,8 @@ jobs:
           node scripts/build-catalog.mjs
           npm run family-text:build
           npm run spec:build
-      # Detection only — never runs ecosystem-skills/update.sh from CI (mirrored
-      # skills are prompt input; upstream edits go through human review). Reads
-      # LUMENLOOP_API_KEY from the materialized .env like refresh-inventory.mjs.
-      # Exit codes are a three-way contract: 0 = clean, 1 = drift, 2 = check
-      # error — captured explicitly and mapped to drift=true|false|error so the
-      # detect-drift step consumes an enum, never a truthy/empty guess.
+      # Detection only (pins require human review); reads LUMENLOOP_API_KEY from .env.
+      # Exit codes: 0=clean, 1=drift, 2=error.
       - name: check skills-mirror drift
         id: skills
         env:
@@ -231,17 +180,12 @@ jobs:
             --anchors-state "$ANCHORS_STATE" \
             --skills-drift "$SKILLS_DRIFT" --skills-file skills-drift.json \
             --derived-checked "$DERIVED_CHECKED"
-      # The credential comes in as a step env var, not from .env: the drift step above
-      # deletes .env before this runs. Without it every authenticated probe reports
-      # `inconclusive (missing host credential …)`, which is indistinguishable in the log
-      # from a probe that ran and could not decide — so the recurrence lane looks alive
-      # while silently never probing.
+      # Pass credential via env because detect-drift removed .env; without it authenticated probes report inconclusive.
       - name: run improvement recurrence probes
         env:
           LUMENLOOP_API_KEY: ${{ secrets.LUMENLOOP_API_KEY }}
         run: npm run improvements:probes
-      # Issues track the default branch only; a manual dispatch from another
-      # branch runs in --dry-run mode so it cannot close or mutate main's issues.
+      # Non-default branches run --dry-run so manual dispatches cannot mutate main's issues.
       - name: sync drift issues
         if: (success() || failure()) && steps.drift.outcome == 'success'
         env:
@@ -258,17 +202,13 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --assignee "$REFRESH_ISSUE_ASSIGNEE" \
             "${extra[@]}"
-      # Runs after the issue sync step so any detected drift issues are still
-      # reconciled before the job fails on a checker error.
+      # Fail on checker errors after issue sync so detected drift is still reconciled.
       - name: fail on skills drift check error
         if: steps.drift.outputs.skills_error == 'true'
         run: |
           echo "::error::skills drift check errored — see skills-drift.json output"
           exit 1
-      # These two fail the job WITHOUT asserting a domain fact. A crashed
-      # check-mirrors or a runner-side network fault is not evidence that
-      # production is down, and a broken corpus linter is not evidence that a
-      # golden is past due — so neither opens or closes a drift issue.
+      # Checker errors fail the job without asserting a domain outage or stale case.
       - name: fail on pin-availability check error
         if: steps.drift.outputs.pins_error == 'true'
         run: |
@@ -289,15 +229,8 @@ jobs:
         run: |
           echo "::error::live refresh detected drift or an anchor capture error — see the open drift issue(s)"
           exit 1
-      # Crash guard for GENUINELY UNCLASSIFIED failures only. Every drift class
-      # with a documented owner — unresolvable pin, stale gospel, inventory,
-      # skills-HEAD, anchor capture error — is captured as an enum above and reported in
-      # its own keyed drift issue with its own remediation, so it never lands here. What
-      # remains is a real script fault (refresh-inventory / build-catalog /
-      # family-text / spec:build) that died before drift detection completed, which
-      # would otherwise be just a red scheduled run. Gated on the drift step NOT
-      # having succeeded, so the intentional exit-1 steps above don't trip this.
-      # Static body only — never echoes .env / secret values.
+      # Fallback for unclassified crashes before detect-drift succeeds (known drift classes open keyed issues above).
+      # Static body only — never echoes .env or secrets.
       - name: open or update refresh-failure issue
         if: failure() && steps.drift.outcome != 'success'
         env:

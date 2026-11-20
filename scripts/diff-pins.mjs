@@ -1,20 +1,9 @@
 #!/usr/bin/env node
 /**
- * diff-pins.mjs — print a unified diff of skill BODIES between two manifests.
- *
- * The review gate for re-pinning. Skill markdown is prompt input, and pinning by
- * hash means a re-pin commit shows only sha changes — the text itself never
- * reaches `git diff` the way it did when bodies were vendored. This fetches both
- * the old and new pinned bytes and prints the actual difference, so the human
- * running `update.sh` sees what the model will start reading.
- *
- * Writes nothing to the repo: the diff is terminal output by design (committing
- * it would re-introduce the vendored copy this design removes).
- *
+ * Print a unified diff of pinned skill bodies between two manifests for human review
+ * (stdout only; writes nothing to the repo).
  * Usage: node scripts/diff-pins.mjs <old-manifest.json> <new-manifest.json>
- * Exit 0 always on success, whether or not anything changed; non-zero only if a
- * pinned file could not be fetched (fail closed — an unreviewable pin is not
- * a reviewed pin).
+ * Exits 0 on success; non-zero if an incoming pinned file cannot be fetched.
  */
 import { readFileSync } from "node:fs";
 import { RETIRED_ONBOARDING_SKILLS, scrubNonExposedRefs } from "./exposure.mjs";
@@ -108,10 +97,7 @@ for (const [key, next] of after) {
   if (prev && prev.file.sha === next.file.sha) continue;
   changed++;
   if (!prev) {
-    // A brand-new file is the case with the MOST unreviewed prompt input, not
-    // the least: every byte is incoming. Print it in full — a header alone let
-    // an operator "review" an upstream addition or rename without ever seeing
-    // the text, then truthfully attest to it.
+    // Print brand-new files in full so incoming prompt text is reviewed before attestation.
     console.log(`\n### NEW ${key} (${next.file.size} bytes)`);
     console.log("### Entirely new prompt input — review it in full.");
     const newText = await readSkillFile(next.source, next.skill.name, next.file);
@@ -121,13 +107,7 @@ for (const [key, next] of after) {
     reportScrubNarrowings(newText, key, next.skill.name);
     continue;
   }
-  // The NEW bytes are mandatory — you cannot review what you cannot read. The
-  // OLD bytes are best-effort: if upstream force-pushed and GC'd the commit we
-  // are pinned to, the old side is simply gone. Aborting there would brick the
-  // re-pin in the exact disaster this tool exists to help recover from (dead
-  // pin, failing reads, and the fix refusing to run because it cannot draw a
-  // two-sided diff). The gate is "a human saw what is coming IN", not "a human
-  // saw a diff".
+  // New bytes are required; old bytes are best-effort so a GC'd upstream pin can still be replaced.
   const newText = await readSkillFile(next.source, next.skill.name, next.file);
   let oldText = null;
   try {

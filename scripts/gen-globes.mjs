@@ -1,19 +1,8 @@
 /**
- * Regenerate the baked dither-globe backdrops used as plain CSS
- * background-images (governed by img-src 'self' data:, so no page script and no
- * CSP change — the OAuth consent page and the demo playground's locked state
- * both ship ZERO script). Both are the SAME sphere (scripts/lib/dither-globe.mjs
- * — a frozen frame of the landing WebGL shader math), recoloured per surface:
- *
+ * Deterministic generator (`npm run site:globes`) for static data-URI globe backdrops
+ * (zero page script, no CSP change), using scripts/lib/dither-globe.mjs:
  *   src/demo/globe.ts     DEMO_GLOBE_PNG_BASE64     dark green  (playground)
  *   src/consent-globe.ts  CONSENT_GLOBE_PNG_BASE64  light olive (OAuth consent)
- *
- * The OG/social image is the same sphere in orange but lives in gen-og.mjs
- * (it needs ImageMagick to composite the editorial type over the globe).
- *
- *   node scripts/gen-globes.mjs   (or: npm run site:globes)
- *
- * Deterministic — never hand-edit the emitted modules, rerun this instead.
  */
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -22,48 +11,32 @@ import { writeFileAtomic } from "./lib/shared.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// One PNG pixel == one shader "cell" (the shader pixelates to cells and upscales;
-// we do the same via image-rendering:pixelated). Geometry depends only on
-// cols/rows + scale/off, so both surfaces share the framing the landing hero uses.
-// PAD_LEFT widens the frame leftwards so the WHOLE sphere fits: at 560 cols the
-// sphere ran ~238px past the left edge, and on wide viewports (aspect > ~1.6 the
-// frame's left edge moves on-screen) that cut showed as a hard vertical seam
-// through the dither. Multiple of 4 → the 4x4 Bayer phase is unchanged, and
-// 560+280 = 840 keeps the CSS background-size a round 240vmin.
+// 1 PNG pixel == 1 shader cell. PAD_LEFT (multiple of 4 to preserve 4x4 Bayer phase;
+// 560+280 = 840 keeps CSS background-size at 240vmin) prevents left-edge clipping on wide viewports.
 const PAD_LEFT = 280;
 const BASE = { cols: 560, rows: 350, scale: 1.72, offX: -0.36, offY: -0.46, time: 2.5 };
 const FRAME = {
   ...BASE,
   cols: BASE.cols + PAD_LEFT,
-  // Re-centre so the sphere lands in the same place it did in the 560px frame,
-  // just PAD_LEFT px further from the left edge (offX is in uv, hence /m/scale).
+  // Shift offX in UV units to keep the sphere centered identically inside the wider frame.
   offX: BASE.offX + PAD_LEFT / 2 / (Math.min(BASE.cols, BASE.rows) * BASE.scale)
 };
 
-// --green #151f14 — the .stage field colour both pages paint under the globe, so
-// the sphere's unlit dither blends seamlessly into the page background.
+// Matches page `.stage` `--green` (#151f14) so unlit dither blends seamlessly.
 const FIELD = [0.082, 0.122, 0.078];
 
 const SURFACES = [
   {
     file: ["src", "demo", "globe.ts"],
     name: "DEMO_GLOBE_PNG_BASE64",
-    // Dark green a touch BELOW the field (#0e160e ≈ the page --bg) — the
-    // playground stacks a lot of text (sign-in, ToS/Privacy consent, footer,
-    // example session) over the bottom-left corner, so its sphere recedes as a
-    // subtle shadow-dither without fighting the overlaid copy or orange accents.
-    // Not as dark as it once was — a gentler recess reads better once the tones
-    // no longer clash with content.
+    // Slightly darker than FIELD (#0e160e) so the sphere recedes behind playground copy.
     front: [0.055, 0.086, 0.055],
     what: "demo /playground .stage backdrop (dark green — recessed behind the chat UI)"
   },
   {
     file: ["src", "consent-globe.ts"],
     name: "CONSENT_GLOBE_PNG_BASE64",
-    // The exact MIRROR of the playground globe: the approve screen's sphere sits
-    // LIGHTER than the field by the same small delta (#151f14 + (11,15,10) →
-    // #202e1e) that the playground's sits DARKER. So the two read as a matched
-    // pair — one recessed, one lifted — both only a touch off the background.
+    // Symmetric lighter offset above FIELD (#202e1e) to pair with the recessed playground globe.
     front: [0.125, 0.18, 0.118],
     what: "OAuth /authorize consent .stage backdrop (light olive — a touch above the field)"
   }

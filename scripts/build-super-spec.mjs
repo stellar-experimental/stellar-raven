@@ -1,36 +1,13 @@
 #!/usr/bin/env node
 /**
- * build-super-spec.mjs — deterministic unified "super spec" builder.
- * ARCHITECTURE.md describes the generated specification and sandbox boundary.
+ * Deterministic builder for `specs/super-spec.json` (`codemode.spec()` in the sandbox;
+ * see ARCHITECTURE.md).
  *
- * Emits specs/super-spec.json: ONE OpenAPI-3.1-STYLE document covering every
- * service this MCP fronts — lumenloop, scout, stellarDocs — plus a synthetic
- * `skills` core service. `execute` exposes this document in its Dynamic
- * Worker sandbox as `codemode.spec()`.
- *
- * Dialect (see ARCHITECTURE.md):
- *  - paths keyed by namespaced callable name: `/{service}/{operation}`
- *    (e.g. "/lumenloop/search_directory", "/scout/searchProjects");
- *  - operationId = the exact catalog id ("lumenloop.search_directory") —
- *    identical to the sandbox call `lumenloop.search_directory(args)`;
- *  - standard OpenAPI shapes (summary/description/tags/parameters/
- *    requestBody/responses/components) so generic spec-grepping code works;
- *  - per-operation vendor extensions: x-service, x-execute (exact sandbox
- *    call line), x-upstream (real HTTP method+path), x-mintlify (stellarDocs
- *    request mapping);
- *  - spec-level x-services (per-service metadata incl. the stellarDocs
- *    backend block + measured corpus taxonomy) and x-generated (provenance,
- *    counts, size).
- *
- * Exposure consistency (ADR-0003): the spec contains EXACTLY the operations
- * in catalog/manifest.json — the manifest is the exposed surface, filtered at
- * build time by scripts/build-catalog.mjs, and every path here is callable.
- * Nothing uncallable is described: no denied paths, no x-policy layer.
- *
- * Determinism: object keys sorted recursively, entries sorted by path,
- * generatedAt taken from the catalog manifest (itself derived from input
- * snapshots — never wall clock). Running twice yields byte-identical output
- * (asserted by test/super-spec.test.ts).
+ * Emits one OpenAPI 3.1 document over lumenloop, scout, stellarDocs, stellarOrg, and
+ * the synthetic `skills` service. Paths are `/{service}/{operation}` with `operationId`
+ * matching the catalog id; includes `x-service`, `x-execute`, `x-upstream`, `x-mintlify`,
+ * `x-services`, and `x-generated`. Exposure matches `catalog/manifest.json` exactly
+ * (ADR-0003). Determinism is asserted by `test/super-spec.test.ts`.
  */
 import { readFileSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -67,11 +44,6 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_PATH = join(ROOT, "specs", "super-spec.json");
 
 const readJson = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
-
-// ---------------------------------------------------------------------------
-// Local helpers. The three that MUST agree with build-catalog.mjs now come
-// from ./lib/skill-markdown.mjs instead of being copied here.
-// ---------------------------------------------------------------------------
 
 /** Recursively sort object keys (arrays keep order) for stable output. */
 function sortKeysDeep(value) {
@@ -217,17 +189,14 @@ function buildLumenloopPaths(inv, exposed) {
 // scout (Stellar Light) — embedded OpenAPI carried near-verbatim, re-keyed
 // ---------------------------------------------------------------------------
 
-/** Rewrite internal $refs to the namespaced components ("#/components/schemas/scout.X"). */
+/** Rewrite internal $refs to namespaced components ("#/components/<group>/<service>.<name>"). */
 function namespaceRefs(node, service) {
   if (Array.isArray(node)) return node.map((n) => namespaceRefs(n, service));
   if (!node || typeof node !== "object") return node;
   const out = {};
   for (const [key, value] of Object.entries(node)) {
     if (key === "$ref" && typeof value === "string") {
-      // Every component group, not an allowlist of four: definitions in ANY
-      // group get renamed to "<service>.<name>" below, so a ref into a group
-      // missing from an allowlist would keep pointing at the pre-rename name
-      // and dangle (and, since the prune, be dropped as unreachable).
+      // Match every component group so no renamed definition dangles after pruning.
       out[key] = value.replace(/^#\/components\/([^/]+)\//, `#/components/$1/${service}.`);
     } else {
       out[key] = namespaceRefs(value, service);
@@ -237,19 +206,8 @@ function namespaceRefs(node, service) {
 }
 
 /**
- * Every local component pointer reachable from `node`, normalized to
- * "<group>/<name>".
- *
- * Deliberately matches any STRING VALUE shaped like a local component pointer,
- * not just values under a `$ref` key: OpenAPI puts real component pointers in
- * `discriminator.mapping` values, and JSON Schema adds `$dynamicRef`. A
- * `$ref`-key-only walk misses both and would prune a live schema. Deep pointers
- * (`#/components/schemas/B/$defs/X`) normalize to their CONTAINING component
- * (`schemas/B`), which is the unit pruning operates on.
- *
- * Over-collecting is safe here (it only keeps a component); under-collecting
- * deletes live schema, so this errs toward keeping. `assertEveryComponentRefResolves`
- * is the fail-closed backstop for anything this still misses.
+ * Collect local `#/components/<group>/<name>` pointers from any string value (covers `$ref`,
+ * `$dynamicRef`, and `discriminator.mapping`). Deep pointers normalize to their containing component.
  */
 function componentPointersIn(node, acc = new Set()) {
   if (!node || typeof node !== "object") return acc;
@@ -269,17 +227,7 @@ function componentPointersIn(node, acc = new Set()) {
   return acc;
 }
 
-/**
- * Fail closed: after pruning, every local component pointer in the emitted
- * document must resolve to a definition that still exists.
- *
- * This is the invariant that makes the reachability walk above safe to be
- * imperfect. Without it, an unhandled reference shape silently deletes a live
- * schema and the sandbox receives a spec whose $ref resolves to `undefined` —
- * which JSON serialization then drops entirely, so the model sees a
- * silently-degraded contract instead of an error. A dangling ref must break the
- * build, not ship.
- */
+/** Fail closed if any component pointer dangles after pruning. */
 function assertEveryComponentRefResolves(doc) {
   for (const pointer of componentPointersIn(doc)) {
     const [group, name] = pointer.split("/");
@@ -293,20 +241,7 @@ function assertEveryComponentRefResolves(doc) {
   }
 }
 
-/**
- * Drop component definitions no exposed path can reach (ADR-0003).
- *
- * Upstream components are copied wholesale, so a component that exists only to
- * describe an EXCLUDED operation rides along into the sandbox spec — dead
- * weight that also carries the excluded endpoint's prose. `scout.FeedbackRequest`
- * did exactly that: the request body of the excluded `POST /api/feedback`, whose
- * description named the raw path, which is the leak the emitted-text guard below
- * now catches. Pruning is the general fix (a scrub-list entry would only silence
- * that one sentence and keep shipping the dead schema); it also makes the spec's
- * own "nothing uncallable is described" claim true of components, not just paths.
- *
- * Reachability is transitive: a kept component's own $refs are kept too.
- */
+/** Drop component definitions unreachable (transitively) from exposed paths (ADR-0003). */
 function pruneUnreachableComponents(paths, components) {
   const reachable = componentPointersIn(paths);
   for (let grew = true; grew; ) {
@@ -495,26 +430,15 @@ function buildStellarOrg(spec, exposed) {
   return paths;
 }
 
-// ---------------------------------------------------------------------------
-// skills — a synthetic core service: 3 operations, index embedded as data
-// (design doc §3: judicious representation, NOT 278 paths; section-level
-// discovery via a heading-list index per skill)
-// ---------------------------------------------------------------------------
+// Synthetic `skills` service (4 operations; heading-list index embedded in /skills/list_skills).
 
 function buildSkillIndex(manifest, exposed, texts) {
-  // Exposure-aware: advertise ONLY skills/sections the catalog contains.
-  // Retired skills are never emitted by build-catalog.mjs (ADR-0003), so they
-  // drop out here too — codemode.spec()'s index stays consistent with what
-  // read_skill will actually serve. Slug disambiguation MUST match
-  // build-catalog.mjs so the candidate ids line up.
+  // Emit only skills/sections exposed in the manifest (ADR-0003); slug disambiguation must match build-catalog.mjs.
   const index = [];
   for (const source of manifest.sources) {
     for (const skill of source.skills) {
       const skillId = `skills.${source.id}.${skill.name}`;
-      if (!exposed.has(skillId)) continue; // retired skill — not advertised
-      // Bodies are fetched from the pinned upstream commit and hash-verified
-      // (scripts/lib/skill-mirror.mjs) — never vendored here. Only the
-      // frontmatter description and the `##` headings reach the spec.
+      if (!exposed.has(skillId)) continue;
       const key = `${source.id}/${skill.name}/SKILL.md`;
       const loaded = texts.get(key);
       if (loaded === undefined) throw new Error(`skill file ${key} was not loaded`);
@@ -893,20 +817,9 @@ async function main() {
     }
   };
 
-  // Deterministic serialization: sort keys everywhere (arrays keep order;
-  // `paths` key order therefore also becomes lexicographic — stable).
   const sorted = sortKeysDeep(spec);
-
-  // Fail closed before anything ships: pruning must never have removed a
-  // component something still points at.
   assertEveryComponentRefResolves(sorted);
-
-  // ADR-0003 leak guard over the WHOLE emitted spec, not just its paths. This
-  // artifact is serialized into the sandbox and returned by codemode.spec(), so
-  // it is emitted text by the same definition build-catalog.mjs and
-  // build-family-text.mjs already guard. Running it here closes the coverage hole
-  // that let scout.FeedbackRequest's description ship the excluded
-  // "/api/feedback" path; fail the build rather than write the leak.
+  // ADR-0003 leak guard over the full serialized spec (paths + components) returned by codemode.spec().
   assertNoNonExposedRefsInText(JSON.stringify(sorted), "specs/super-spec.json");
 
   mkdirSync(dirname(OUT_PATH), { recursive: true });

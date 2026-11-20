@@ -19,28 +19,16 @@ const MAX_DOC_BYTES = 256 * 1024;
 const DEFAULT_TIMEOUT_MS = 8_000;
 
 /**
- * Phase 1 of the ship gate in research/partner-doc-source-onboarding.md requires the original
- * page-derived cohort to be expanded with at least four INDEPENDENT cases whose information need
- * did not come from reading the candidate page.
- *
- * What this constant checks is the COUNT, and only the count: a suite that has not been expanded
- * cannot report `pass`. It does NOT check independence itself. `caseType` classifies the
- * information need behind the question; the scoring rubric is unchanged, and every fact group in
- * both cohorts is still a literal string drawn from the candidate page. So a high candidate score
- * on an independent case is expected by construction and is not evidence of generalisation —
- * `provenance` is a human-reviewable claim, not a machine-checked one, and phase 3 is where
- * generalisation is actually measured.
+ * Phase 1 gate floor (`research/partner-doc-source-onboarding.md`): requires at least four
+ * independent cases by count only; provenance independence stays human-reviewed.
  */
 export const PHASE1_MIN_INDEPENDENT_CASES = 4;
 const CASE_TYPES = new Set(["page-derived", "paraphrase", "negative", "conflict"]);
 const INDEPENDENT_CASE_TYPES = new Set(["paraphrase", "negative", "conflict"]);
 
 /**
- * Per-operation argument builders, NOT a name map. Each service takes its own envelope, and the
- * Scout adapter forwards unrecognised args straight into the query string — so reusing the
- * stellarDocs shape for `scout.searchResearch` would send `hitsPerPage`/`includeContent` as dead
- * query params and silently fall back to Scout's default page size, making the arms unequal
- * without anything failing.
+ * Per-operation argument builders (Scout forwards unknown args as query params, so reusing
+ * stellarDocs arg shapes would silently fall back to Scout's default page size).
  */
 const OPERATION_CALLS = new Map([
   ["stellarDocs.search_docs", (q) => `stellarDocs.search_docs({ query: ${q}, hitsPerPage: 10, includeContent: true })`],

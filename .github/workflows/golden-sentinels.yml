@@ -1,20 +1,10 @@
 name: Golden source sentinels
 
-# Re-reads the primary sources named in eval/qa/source-sentinels.json and keeps exactly one open
-# issue (label `golden-sentinels`) in step with the drift set. A drift queues the named case for
-# golden-truth re-verification before its `truth.reverifyBy` date; it is never evidence by itself.
-#
-# The report is deterministic (eval/qa/source-sentinels.mjs): its first line carries a fingerprint
-# of the drift set only. The open issue's body is passed back as --previous, so a drifted sentinel
-# whose source is unreadable on this run stays in the drift set and cannot churn the issue.
-#   drift, no open issue          -> open one
-#   drift, fingerprint differs    -> replace the body and add one comment
-#   drift, fingerprint same       -> no change
-#   no drift, no read errors      -> close an open issue
-#   no drift, some read errors    -> leave an open issue as is (an unread page proves nothing)
-# Any unreadable or stale sentinel then fails the run, so a dead source is visible in the Actions
-# history even when no issue is open. Every fetch failing exits 2 before the issue step.
-# No secret is needed; a fork runs it unchanged.
+# Re-reads primary sources in eval/qa/source-sentinels.json and keeps one `golden-sentinels`
+# issue in sync with the drift set (queues cases for golden-truth re-verification; not evidence itself).
+# eval/qa/source-sentinels.mjs fingerprints the drift set on line 1 and takes the open issue as
+# --previous so an unreadable drifted sentinel stays in the set instead of churning the issue.
+# Read errors keep an open issue open and fail the run after sync; total fetch failure exits 2 first. Keyless.
 
 on:
   schedule:

@@ -1,21 +1,8 @@
 /**
- * skill-mirror.mjs — build-time access to the pinned ecosystem skills.
- *
- * Skill bodies are NOT vendored in this repo (see ecosystem-skills/README.md).
- * The committed source of truth is ecosystem-skills/MANIFEST.json: per source a
- * repo + commit SHA, per file a path + git blob hash. This module turns that
- * into (a) the immutable raw URL every catalog entry carries as its transport
- * and (b) the file's text, fetched once into a gitignored working cache and
- * verified against the pinned blob hash.
- *
- * Every builder that needs skill text (build-catalog.mjs, build-super-spec.mjs,
- * ecosystem-skills/build-index.mjs) goes through here, so they all read exactly
- * the bytes the Worker serves at runtime (src/skills/source.ts performs the
- * same verification against the same hashes).
- *
- * The cache is a build convenience, never an input: delete it and the next
- * build refetches. A hash mismatch fails the build loudly rather than baking
- * unreviewed upstream bytes into a generated artifact.
+ * Build-time access to pinned ecosystem skills (`ecosystem-skills/MANIFEST.json`).
+ * Resolves immutable raw URLs and fetches/caches bodies under `ecosystem-skills/.cache/`,
+ * verifying git blob SHAs against the manifest so every builder reads the same bytes
+ * `src/skills/source.ts` serves at runtime. Hash mismatches fail the build.
  */
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -129,12 +116,8 @@ export async function readSkillFile(source, skillName, file, options) {
 }
 
 /**
- * Text plus the SHA-256 the catalog pins for runtime verification.
- *
- * `{ noCache: true }` skips the working cache and goes to upstream. That is the
- * difference between "these bytes are the pinned bytes" (any cache hit proves
- * that) and "this pin still RESOLVES upstream" — only a real request proves the
- * second, and an availability check that a warm cache can satisfy is not one.
+ * Text plus SHA-256 for runtime verification.
+ * Pass `{ noCache: true }` for availability checks that must prove upstream still resolves.
  */
 export async function readSkillFileWithDigest(source, skillName, file, { noCache = false } = {}) {
   const cachePath = join(CACHE_DIR, file.sha);

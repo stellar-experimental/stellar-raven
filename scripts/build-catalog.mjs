@@ -1,21 +1,10 @@
 #!/usr/bin/env node
 /**
- * build-catalog.mjs — deterministic catalog builder. See ARCHITECTURE.md.
- *
- * Reads the three inventory snapshots (inventory/*.json) + the skill pin set
- * (ecosystem-skills/MANIFEST.json) and emits catalog/manifest.json — the unified
- * index the MCP `search` tool ranks. Zero dependencies. NOT offline: skill
- * bodies are not stored in this repo, so the pinned files are fetched from
- * upstream and hash-verified (scripts/lib/skill-mirror.mjs), through a
- * gitignored working cache. Everything else is a committed input.
- *
- * Determinism: entries sorted by id, object keys sorted recursively,
- * generatedAt derived from the NEWEST input snapshot timestamp (never wall
- * clock) — running twice on the same inputs yields byte-identical output.
- *
- * The entry shape is validated end-to-end by src/catalog/types.ts
- * (catalogSchema) in test/catalog.test.ts; this script stays plain JS so it
- * runs with `node` alone.
+ * Deterministic builder for `catalog/manifest.json` (see ARCHITECTURE.md).
+ * Reads inventory snapshots (`inventory/*.json`), authored specs (`specs/*.json`), and
+ * `ecosystem-skills/MANIFEST.json`; fetches and hash-verifies pinned skill bodies via
+ * `scripts/lib/skill-mirror.mjs`. Sorted ids/keys and input-derived `generatedAt` keep
+ * repeated builds byte-identical. Shape is validated by `test/catalog.test.ts`.
  */
 import { readFileSync, mkdirSync, statSync } from "node:fs";
 import { join, dirname, resolve, relative, isAbsolute } from "node:path";
@@ -60,20 +49,8 @@ const OUT_PATH = join(ROOT, "catalog", "manifest.json");
 
 const readJson = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
 
-// ---------------------------------------------------------------------------
-// Operation keywords: descriptions are prose, so
-// schema-level vocabulary — property names and enum values — plus the docs
-// page-title snapshot are lexically invisible to the search scorer. Distill
-// them into the same low-weight `keywords` field skill sections carry
-// (KEYWORD_BLEND damping, scoring.ts lever 4). Two noise controls, both
-// measured necessary (a naive schema-prose version regressed extended strict
-// top1 74→71 and skills top5 23→22 on 2026-07-03): only NAMES and ENUMS are
-// harvested (no schema description prose), and tokens shared across a large
-// fraction of the same service's operations (pagination/envelope
-// boilerplate: page, offset, total, …) are dropped by a document-frequency
-// filter — shared vocabulary distinguishes nothing and rescues wrong ops
-// into the gated tier.
-// ---------------------------------------------------------------------------
+// Operation keywords (scoring.ts lever 4): harvest schema property names, enum values, and
+// docs page titles (never schema description prose), dropping high-DF per-service boilerplate.
 
 /** Collect property names and enum values from a JSON schema subtree. */
 function schemaTextParts(schema, out = []) {
@@ -97,20 +74,12 @@ function schemaTextParts(schema, out = []) {
   return out;
 }
 
-/**
- * Fraction of a service's ops sharing a token before it is considered
- * boilerplate. 0.3: an envelope field on every op is dropped; a field
- * shared by 2–3 related ops (of 12+) survives.
- */
+/** Max fraction of a service's ops sharing a token before it is dropped as boilerplate. */
 const OP_KEYWORD_MAX_DF = 0.3;
 
 /**
- * Attach `keywords` to each operation entry of ONE service. Non-operation
- * entries pass through untouched. `extraBodiesById` adds service-specific
- * vocabulary sources (docs page titles), which join the schema tokens under
- * the SAME document-frequency filter: a routing keyword is only useful when
- * it distinguishes this op from its siblings ("muxed" appears on one docs
- * op and survives; "contract" appears on most and is dropped).
+ * Attach `keywords` to operation entries of one service, applying the per-service DF filter
+ * across schema tokens and `extraBodiesById` (e.g. docs page titles).
  */
 function attachOperationKeywords(entries, extraBodiesById = new Map(), { cap } = {}) {
   const ops = entries.filter((e) => e.kind === "operation");
@@ -154,25 +123,15 @@ function attachOperationKeywords(entries, extraBodiesById = new Map(), { cap } =
 }
 
 /**
- * Attach `routingKeywords` (scoring.ts lever 7) to operation entries from
- * upstream-curated routing vocabulary (`bodiesById`: Scout's x-routing
- * purpose/useWhen/exampleQuestions/keywords, collected by buildScout).
- * Deliberately NO document-frequency filter (unlike attachOperationKeywords):
- * the vocabulary is curated per-op upstream, so cross-op overlap is signal,
- * not schema shrapnel. extractKeywords still dedups against the entry's
- * already-scored fields, and the result lands in its own field so scoring
- * can weight curated routing vocabulary above schema keywords. Run BEFORE
- * attachOperationKeywords so the schema pass can exclude these tokens.
+ * Attach `routingKeywords` (scoring.ts lever 7) from upstream-curated routing vocabulary
+ * without DF filtering (cross-op overlap is curated signal). Run before attachOperationKeywords
+ * so the schema pass excludes these tokens.
  */
 function attachRoutingKeywords(entries, bodiesById) {
   return entries.map((entry) => {
     const bodies = bodiesById.get(entry.id);
     if (!bodies || bodies.length === 0) return entry;
-    // Explicit 256 cap (four times the schema-keyword default 64): upstream
-    // curates this field for routing, and new repeated vocabulary must not
-    // evict previously-visible terms from a broad operation. Scout 1.7.18's
-    // largest set is 149 tokens; 256 keeps it whole while still bounding the
-    // Worker-bundled manifest.
+    // Cap at 256 (4x schema-keyword default) so broad ops keep curated terms while bounding manifest size.
     const routingKeywords = guardedExtractKeywords(bodies.join("\n"), {
       exclude: [entry.id, entry.service, entry.kind, entry.description],
       cap: 256
@@ -383,21 +342,9 @@ export function stellarDocsTitleExtras(entries, titlesSnapshot, catalogEntries) 
   return out;
 }
 
-// ---------------------------------------------------------------------------
-// Exposure filtering — build-time, data-driven (ADR-0003; supersedes the
-// runtime deny-list of ADR-0002). The manifest IS the exposed surface: an
-// entry is either emitted (callable/readable) or it does not exist to
-// consumers. The exclusion DATA lives in scripts/exposure.mjs, shared by every
-// emitter (manifest, super-spec, description rewrites, skill sectioning) so the
-// surfaces cannot drift; the fail-loud guards that pin that data to the live
-// inventories live here, where the inventory inputs are read. Exclusion
-// reasons live in exposure.mjs and the ADRs — never in emitted entries, never
-// as runtime policy.
-// ---------------------------------------------------------------------------
+// Build-time exposure drift guards (ADR-0003). Exclusion data lives in scripts/exposure.mjs;
+// these checks fail loud when upstream inventories move out from under exact-match exclusions.
 
-// Drift guard: exclusions are exact-match data, so an upstream rename/removal
-// must break the build (stale exclusion = a write endpoint may have moved),
-// not silently stop matching.
 export function assertScoutExclusionsResolve(openapi) {
   const present = new Map();
   for (const [path, pathItem] of Object.entries(openapi.paths)) {
@@ -440,13 +387,7 @@ export function assertScoutExclusionsResolve(openapi) {
   }
 }
 
-// Inverse gate: upstream marks write/side-effecting scout operations with
-// `x-side-effecting: true` (all three current POSTs carry it, all excluded).
-// A FUTURE marked operation must not auto-emit just because nobody updated
-// the exclusion data — emitting a side-effecting op is a reviewed exposure
-// decision (ADR-0003; AGENTS.md hard rules), never a default. Exported for
-// the guard tests. Found by the 2026-07-12 coverage review (Solo 607): until
-// this gate, the upstream signal was ingested but enforced nowhere.
+// Inverse gate: fail if upstream marks any non-excluded Scout op `x-side-effecting: true` (ADR-0003).
 export function assertSideEffectingOpsExcluded(openapi, excluded = EXCLUDED_SCOUT_OPS) {
   for (const [path, pathItem] of Object.entries(openapi.paths ?? {})) {
     for (const method of HTTP_METHODS) {
@@ -476,11 +417,7 @@ function assertLumenloopExclusionsResolve(inv) {
   }
 }
 
-// Refresh-safety guard: the retirement is pinned to upstream skill NAMES, so an
-// ecosystem-skills re-sync (update.sh) that RENAMES or REMOVES a retired skill
-// would silently un-retire it (the stale name would stop matching and the skill
-// would leak back into the exposed catalog). Fail the build LOUDLY instead —
-// forcing a human to reconcile RETIRED_ONBOARDING_SKILLS with the new mirror.
+// Fail if a retired skill name disappears from the mirror so renames cannot silently un-retire it.
 function assertRetirementNamesResolve(skillsManifest) {
   const mirrorNames = new Set(
     skillsManifest.sources.flatMap((s) => s.skills.map((sk) => sk.name))
@@ -495,20 +432,8 @@ function assertRetirementNamesResolve(skillsManifest) {
   }
 }
 
-// Lumenloop serves 14 skills of its own via /v1/skills (metadata only; bodies
-// are zips). They are NOT emitted: every PUBLIC one duplicates a canonical
-// skills.* mirror entry — one skill, one id (ADR-0003 kills the
-// lumenloop.skill.* twin namespace entirely). Guard the duplication assumption
-// loudly: a NEW upstream-served public skill with no mirror counterpart must
-// break the build (mirror it via ecosystem-skills/update.sh, or exclude it
-// here with a reason), not vanish silently.
-//
-// Partner-set skills are exempt BY POLICY: they are deliberately not mirrored
-// (partner-tier content must not live in this public repo — mirror source
-// removed 2026-07-06) and never emitted. The inventory keeps them as
-// name-only stubs (`set: "partner"`, no description/files) purely so the
-// /v1/skills union stays observable and drift in the partner set still
-// surfaces in inventory diffs.
+// Lumenloop `/v1/skills` metadata is never emitted directly (ADR-0003): public skills must have
+// a mirrored `skills.*` entry, while partner-set stubs are exempt by policy and unemitted.
 function assertLumenloopSkillsMirrored(inv, skillsManifest) {
   const mirrorNames = new Set(
     skillsManifest.sources.flatMap((s) => s.skills.map((sk) => sk.name))
@@ -611,12 +536,7 @@ function buildLumenloop(inv) {
   const consumedNotes = new Set();
 
   for (const tool of inv.tools) {
-    // Partner-lane tools exist in the inventory only as name stubs (no
-    // description/schemas — partner-tier detail is not persisted in this
-    // public repo). A stub that is not excluded is unemittable AND a policy
-    // breach: fail loudly so exposing a partner tool is always a deliberate
-    // change (extend the exclusions, or restore detail persistence together
-    // with the budget gate — see AGENTS.md "Hard rules").
+    // Partner tools are name-only stubs in inventory; fail if one is unexcluded (AGENTS.md).
     if (tool.partner_stub && !lumenloopOpExcluded(tool)) {
       throw new Error(
         `lumenloop tool "${tool.name}" is a partner name-only stub but is not excluded — ` +
@@ -718,27 +638,15 @@ function scoutOutputSchema(op, openapi) {
 
 export function buildScout(inv) {
   const entries = [];
-  // Scout 1.7.16 (sls-051 structural fix) moved routing vocabulary — synonym
-  // chains, region/product terms, question exemplars — out of description
-  // prose into a machine-readable `x-routing` extension per operation.
-  // Upstream's documented consumer convention: score it as separately-
-  // weighted fields, never concatenated into the description. Collected
-  // here (purpose/useWhen/exampleQuestions/keywords) and attached as the
-  // `routingKeywords` field via attachRoutingKeywords (scoring.ts lever 7).
-  // Keep `notFor` outside positive routing vocabulary. Its left-hand clauses
-  // become separate negative evidence. Route labels after `->` stay excluded.
+  // Upstream `x-routing` vocabulary (purpose/useWhen/exampleQuestions/keywords) feeds
+  // `routingKeywords` (scoring.ts lever 7), kept separate from description prose;
+  // `notFor` stays outside positive routing and supplies negative exclusion clauses only.
   const routingExtras = new Map();
-  // Phrase metadata preserves the same positive fields as source strings.
-  // Multiword keywords such as "top projects" are real published phrases.
-  // Separate keyword items never join. `notFor` never enters positive phrases.
   const routingPhraseExtras = new Map();
   const openapi = inv.openapi;
   const base = openapi.servers?.[0]?.url ?? "https://stellarlight.xyz";
   const consumedNotes = new Set();
-  // Rewrite the upstream OpenAPI's raw-REST cross-references to callable
-  // scout.<op> names (map derived from this same spec) and strip markdown —
-  // scout is the only source whose descriptions carry `**`/backticks and dead
-  // "/api/..." pointers the sandbox can never call. See description-notes.mjs.
+  // Rewrite raw REST paths / snake_case refs to callable scout.<op> names (see description-notes.mjs).
   const refPairs = scoutRefRewrites(openapi);
 
   for (const [path, pathItem] of Object.entries(openapi.paths)) {
@@ -942,10 +850,7 @@ export const BUILD_AUTHORITY_SKILL_ROLES = Object.freeze({
   "skills.stellar-dev.data": ["infrastructure"]
 });
 
-// Same refresh-safety problem as the retirement list, one layer up: the roles
-// above are pinned to exact skill IDs, and all four live in stellar-dev, which
-// churns. An upstream rename would silently drop a skill's build-authority role
-// (no error, just a quietly weaker prior-art cue). Fail the build instead.
+// Fail loud if a build-authority skill ID disappears on upstream re-pin.
 export function assertBuildAuthorityIdsResolve(entries) {
   const skillIds = new Set(entries.filter((e) => e.kind === "skill").map((e) => e.id));
   const stale = Object.keys(BUILD_AUTHORITY_SKILL_ROLES).filter((id) => !skillIds.has(id));
@@ -961,11 +866,7 @@ export function assertBuildAuthorityIdsResolve(entries) {
 function buildSkills(manifest, texts, arm) {
   const entries = [];
   const syncedAt = manifest.synced_at;
-  // Section-level `keywords` are distilled from BODY text, and sections are
-  // out of search in the shipped arm (searchable:false), so emitting them
-  // would put upstream-derived prose in a committed artifact that nothing
-  // scores. Arm A is the only arm that puts sections back in search, so it is
-  // the only arm that gets them.
+  // Only arm A puts sections back in search; omit body-derived section keywords otherwise.
   const emitSectionKeywords = arm === "A";
   const loadedOf = (sourceId, skillName, filePath) => {
     const key = `${sourceId}/${skillName}/${filePath}`;
@@ -1097,28 +998,19 @@ function buildSkills(manifest, texts, arm) {
   return entries;
 }
 
-// ---------------------------------------------------------------------------
-// Skills-form experiment arms from ADR-0005. One categorical treatment over
-// the assembled entries controls which
-// representation of the pinned skill store enters search. Everything else —
-// exposure, exact-id reads/runs, schemas, pins, scoring constants — is a
-// control. Arm B is the default build. Arm A restores section search for
-// replication, and arm C removes all skills from search.
-// ---------------------------------------------------------------------------
+// ADR-0005 experiment arms: B (default, whole skills searchable), A (sections searchable), C (no skills searchable).
 
 const SKILLS_FORM_ARMS = ["A", "B", "C"];
 
 function applySkillsFormArm(entries, arm) {
-  if (arm === "B") return entries; // shipped default
+  if (arm === "B") return entries;
   if (arm === "A") {
-    // Legacy pre-2026-07-13 representation: sections re-enter search.
     return entries.map((e) => {
       if (e.service !== "skills" || e.kind !== "skill-section") return e;
       const { searchable, ...rest } = e;
       return rest;
     });
   }
-  // Arm C: all skills out of search.
   return entries.map((e) => (e.service === "skills" ? { ...e, searchable: false } : e));
 }
 
@@ -1127,22 +1019,12 @@ function sha256Json(value) {
   return createHash("sha256").update(JSON.stringify(value), "utf8").digest("hex");
 }
 
-// ---------------------------------------------------------------------------
-// Runnable skills attach `runnable: true` and runner schemas to existing skill entries.
-// src/skills/README.md defines the read and run contract for each exact skill ID.
-// Registry keys and declared operations must resolve exactly against the emitted surface.
-// An invalid runner or operation fails the build.
-// Guard tests import attachRunnableSkills without running the catalog builder.
-// ---------------------------------------------------------------------------
-
+// Attach `runnable: true` and runner schemas (src/skills/README.md); fails if any key or declared op drifts.
 export function attachRunnableSkills(entries, registry = RUNNERS) {
   const opIds = new Set(entries.filter((e) => e.kind === "operation").map((e) => e.id));
   const byId = new Map(entries.map((e) => [e.id, e]));
   for (const [id, runner] of Object.entries(registry)) {
     const entry = byId.get(id);
-    // A registry key with no emitted skill entry = the skill was renamed or
-    // retired (or the key is a typo). Silence here would ship a runner the
-    // catalog never advertises — dead code at best, id drift at worst.
     if (!entry || entry.kind !== "skill") {
       throw new Error(
         `RUNNERS registry key "${id}" matched no emitted skill entry — the skill was renamed/` +
@@ -1150,10 +1032,6 @@ export function attachRunnableSkills(entries, registry = RUNNERS) {
           `skills mirror (registry drift must break the build, not silently un-expose the runner).`
       );
     }
-    // Every declared op must resolve to an emitted operation entry: this is
-    // the guard that turns an upstream constituent-op retirement (e.g. a
-    // live-drift refresh dropping one) into a build failure instead of a
-    // missing facade fn at dispatch time.
     for (const opId of runner.ops) {
       if (!opIds.has(opId)) {
         throw new Error(
@@ -1238,26 +1116,9 @@ export function attachCardCaveats(entries, caveats = CARD_CAVEATS) {
   return out;
 }
 
-// ---------------------------------------------------------------------------
-// Assemble
-// ---------------------------------------------------------------------------
-
-// The ADR-0003 leak guard, run over the fully assembled manifest: no emitted
-// text may name an operation that is not itself emitted, reference an
-// excluded scout endpoint by its raw REST spelling, or mention a retired
-// skill. This is the systemic backstop for the whole leak class — a scrub or
-// rewrite that goes stale fails the build here instead of shipping a pointer
-// to a capability consumers must never learn about. Every operation schema
-// and every runnable-skill schema contributes its JSON too: schema text ships
-// through signatures and describe/catalog views, so it must follow the same
-// exposure boundary as descriptions. Exported for the guard tests.
-//
-// The "any service.op token not in opIds" check needs the full assembled
-// manifest as an allowlist, so it stays here; the other three checks (raw
-// excluded scout path, retired-skill ref, excluded operation names) are
-// allowlist-free and factored into scripts/emitted-text-guard.mjs so any
-// OTHER emitted text (e.g. the /demo page/prompts) can run them too without
-// a manifest — see assertNoNonExposedRefsInText.
+// ADR-0003 backstop over the assembled manifest: rejects non-exposed `service.op` tokens
+// (needs full `opIds` allowlist) and delegates raw-path/retired-skill checks to
+// scripts/emitted-text-guard.mjs. Guards operation and runnable-skill schemas too.
 export function assertNoNonExposedRefs(entries) {
   const opIds = new Set(entries.filter((e) => e.kind === "operation").map((e) => e.id));
   // Service-callable tokens ("scout.getPartners"); the lookbehind skips

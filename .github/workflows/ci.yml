@@ -5,16 +5,12 @@ on:
     branches: [main]
   pull_request:
 
-# Explicit least-privilege token: this workflow only reads the repo. The repo
-# default is currently read-only too, but that's a mutable setting — pin it
-# here so fork PRs on the public repo can never inherit anything broader.
+# Pin read-only permissions so fork PRs cannot inherit broader repo defaults.
 permissions:
   contents: read
 
 jobs:
-  # The public repository uses GitHub secret scanning and push protection.
-  # The local hook and this CI job also run scripts/scan-secrets.mjs.
-  # This job needs no npm installation and scans all tracked files.
+  # Defense-in-depth over GitHub secret scanning; runs without npm ci.
   secrets:
     runs-on: ubuntu-latest
     steps:
@@ -35,30 +31,21 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
-          # Node 24: build-catalog.mjs relies on native TS type-stripping, stable
-          # since Node 23.6 (see scripts/build-catalog.mjs). Do not drop below 24.
+          # Node 24 required for native TS type-stripping (scripts/build-catalog.mjs).
           node-version: 24
           cache: npm
       - run: npm ci
-      # wrangler types derives the Env interface from wrangler.jsonc bindings
-      # PLUS .dev.vars names; without the stub, Env loses the secret members and
-      # tsc fails. Names only — never real values.
+      # wrangler types derives Env from wrangler.jsonc plus .dev.vars names (placeholders only).
       - name: stub .dev.vars for type generation
         run: printf 'LUMENLOOP_API_KEY=x\nMINTLIFY_ASSISTANT_API_KEY=x\nWORKOS_CLIENT_ID=x\nWORKOS_API_KEY=x\nMCP_SERVER_SECRET=x\nDEV_ALLOW_UNAUTHENTICATED=x\n' > .dev.vars
       - run: npm run typegen
       - run: npm run typecheck
-      # Bundle/deploy path: dry-run the Worker build so a broken bundle, a missing/
-      # renamed binding, a bad import, or a size regression fails CI here instead of
-      # only surfacing at the manual `npm run deploy`. Offline — `--dry-run` exits
-      # before any upload, so no secrets or network are needed.
+      # Dry-run Worker bundle offline to catch bundle, binding, or import regressions before deploy.
       - run: npm run build
       - run: npm run build:usage
       - run: npm run test:usage-report
       - run: npm run build:usage-report
-      # Pin .gitleaks.toml semantics in CI too: without the binary the
-      # test/scan-secrets-gitleaks.test.mjs suite self-skips and the config is
-      # only exercised on developer machines.
-      # Version pinned to the release the suite was written against.
+      # Install pinned gitleaks so test/scan-secrets-gitleaks.test.mjs runs instead of self-skipping.
       - name: install gitleaks
         run: |
           mkdir -p "$RUNNER_TEMP/gitleaks"
@@ -70,33 +57,19 @@ jobs:
           tar -xzf "$RUNNER_TEMP/gitleaks/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks" gitleaks
           echo "$RUNNER_TEMP/gitleaks" >> "$GITHUB_PATH"
           "$RUNNER_TEMP/gitleaks/gitleaks" version
-      # NETWORK NOTE: since skill bodies stopped being vendored, several lanes
-      # fetch the files pinned in ecosystem-skills/MANIFEST.json from
-      # raw.githubusercontent.com and verify them against the recorded digests.
-      # That is NOT confined to the artifact gate below — on a cold checkout it
-      # includes `npm test` (test/skills.test.ts, test/search.test.ts,
-      # test/executor-providers.test.ts via test/helpers/skill-source.ts) and the
-      # smoke lane's config. The cache below makes it one fetch per MANIFEST
-      # revision; the workerd lane itself stays offline behind its outbound wall.
+      # Cache upstream pinned skill bodies fetched by npm test, smoke, and builders (verified against MANIFEST.json digests).
       - name: cache pinned skill bodies
         uses: actions/cache@v4
         with:
           path: ecosystem-skills/.cache
           key: skill-bodies-${{ hashFiles('ecosystem-skills/MANIFEST.json') }}
-      # test/case-search-ignore.test.mjs runs real ripgrep over the `.ignore` layout and fails, not
-      # skips, in CI when `rg` is missing.
+      # test/case-search-ignore.test.mjs requires real ripgrep in CI.
       - name: ensure ripgrep
         run: command -v rg || { sudo apt-get update && sudo apt-get install -y ripgrep; }
       - run: npm test
-      # workerd smoke lane (test/smoke/): the assembled router
-      # + real Dynamic Worker executor boundary via @cloudflare/vitest-plugin.
-      # Offline enforced (miniflare outboundService wall) — auth/keys are
-      # test-only fakes from its config, so no repo secrets are needed.
+      # Assembled Worker + Dynamic Worker boundary tests (offline miniflare wall; fake keys).
       - run: npm run test:smoke
-      # Offline evaluation checks include the grader fixtures and three routing gates.
-      # eval/gates.json owns the legacy, skills, and holdout thresholds.
-      # The judge self-test uses the live Claude CLI and stays outside CI.
-      # See .agents/skills/run-evals/SKILL.md for its manual gate.
+      # Offline eval checks; thresholds live in eval/gates.json (live judge self-test stays manual).
       - run: npm run eval:selftest
       - run: npm run eval:qa:lint -- --stale --enforce-floors
       - run: npm run eval:qa:register -- --check
@@ -105,21 +78,14 @@ jobs:
           BASE="$(node -e 'const event = process.env.GITHUB_EVENT_PATH ? JSON.parse(require("node:fs").readFileSync(process.env.GITHUB_EVENT_PATH, "utf8")) : {}; process.stdout.write(event.pull_request?.base?.sha ?? event.before ?? "HEAD^")')"
           node eval/qa/lint-corpus.mjs --live-contract eval/qa/corpus/live/live-cases.json --since "$(git merge-base HEAD "$BASE")"
       - run: npm run improvements:lint
-      # A skill pin cannot move without a recorded human review of the body diff
-      # (skills are prompt input; the text no longer appears in `git diff`).
+      # Require a human review ledger entry whenever a skill pin moves.
       - name: skill pin review ledger
         run: |
           BASE="$(node -e 'const e = process.env.GITHUB_EVENT_PATH ? JSON.parse(require("node:fs").readFileSync(process.env.GITHUB_EVENT_PATH, "utf8")) : {}; process.stdout.write(e.pull_request?.base?.sha ?? e.before ?? "HEAD^")')"
           node scripts/check-pin-review.mjs --base "$BASE"
       - run: npm run eval:routing -- --gate
-      # Generated artifacts must match their sources exactly (they are rebuilt,
-      # never hand-edited). op-classes reads the freshly-rebuilt
-      # catalog/manifest.json (so it runs after build-catalog).
-      # Font and social-image generation use unpinned remote font sources.
-      # site:fonts fetches Google Fonts CSS and font bytes.
-      # site:og downloads GitHub fonts and uses ImageMagick.
-      # Their operator-generated outputs stay outside the CI byte-sync gate.
-      # Regenerate og.ts after globe changes and fonts.ts after FACES changes.
+      # Verify generated artifacts match their sources (op-classes depends on build-catalog).
+      # site:fonts and site:og fetch unpinned remote fonts and stay outside CI sync.
       - name: generated artifacts in sync
         run: |
           node scripts/build-catalog.mjs
@@ -127,9 +93,7 @@ jobs:
           npm run spec:build
           npm run site:globes
           node scripts/check-mirrors.mjs
-          # INDEX.md is generated from MANIFEST.json + groups.json, so it can go
-          # stale (or carry a false claim) without any other check noticing —
-          # check-mirrors only asserts the file exists.
+          # check-mirrors only checks INDEX.md exists; rebuild it to catch stale content.
           node ecosystem-skills/build-index.mjs
           node eval/corpus/raven-next/research/golden/_meta/compile.mjs
           node eval/compile-routing.mjs

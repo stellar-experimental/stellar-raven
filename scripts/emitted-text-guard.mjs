@@ -1,23 +1,8 @@
 /**
- * emitted-text-guard.mjs — reusable core of the ADR-0003 "no non-exposed
- * refs in emitted text" leak guard (research/decisions/0003-…), factored out
- * of scripts/build-catalog.mjs's `assertNoNonExposedRefs` so every emitter of
- * user-facing text — not just catalog manifest entries — can run the SAME
- * checks against the SAME exclusion data (scripts/exposure.mjs).
- *
- * `assertNoNonExposedRefsInText(text, label)` scans one blob of prose for:
- *   - an excluded lumenloop op name, bare ("request_research") or
- *     service-qualified ("lumenloop.request_research")
- *   - an excluded Scout op name, bare or service-qualified
- *   - a raw excluded-scout-endpoint path ("/api/feedback", …)
- *   - a retired-skill id/reference (lumenloop-api-*, lumenloop-mcp-connect)
- *
- * It does NOT reproduce build-catalog.mjs's general "any lumenloop./scout./
- * stellarDocs.<name> callable token not present in the manifest's opIds"
- * check — that check needs the full assembled manifest as an allowlist and
- * only makes sense there. This helper is for text with no such allowlist
- * (demo page copy, demo system/tool prompts): it only knows what must NOT
- * appear (the exclusion data), not the full set of what's currently exposed.
+ * Allowlist-free ADR-0003 emitted-text guard shared across catalog, super-spec, and
+ * demo emitters (backed by scripts/exposure.mjs).
+ * Rejects excluded Lumenloop/Scout op names, raw excluded Scout paths, and retired-skill refs.
+ * Full `service.op` allowlist checking stays in scripts/build-catalog.mjs (`assertNoNonExposedRefs`).
  */
 import {
   EXCLUDED_LUMENLOOP_OPS,
