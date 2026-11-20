@@ -4,7 +4,7 @@ Research notes and possible future work. These notes are not committed product p
 
 | Idea | State | Reopen trigger or review date | Work queue item |
 |---|---|---|---|
-| [Observability R2 retention](./observability-r2-retention.md) | Held | A forensic question needs request, log, or trace evidence older than seven days, or another trigger in the note | None |
+| [Observability R2 retention](./observability-r2-retention.md) | Held | A forensic question needs request, log, or trace evidence older than seven days, or another trigger in the note | "Keep 30 days of observability data, including queries and responses" |
 | [Retrieval demand report](./retrieval-demand-report.md) | Held | An operator needs question text, or the same ranking after the Workers Logs window, with purpose, access, retention, and disclosure written first | None |
 | [User-controlled personalization](./user-controlled-personalization.md) | Deferred | An owner decision to build personalization | None |
 | [Live ecosystem-partner documentation](./partner-doc-live-sources.md) | Held (reviewed 2026-11-19) | The note's triggers | None |
