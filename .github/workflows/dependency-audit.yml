@@ -1,17 +1,10 @@
 name: Dependency audit
 
-# Runs `npm audit` against the committed package-lock.json and keeps exactly one open issue
-# (label `dependency-audit`) in step with the findings. This repository uses issues, not
-# Dependabot pull requests, for dependency advisories.
-#
-# The report is deterministic (scripts/summarize-npm-audit.mjs): its first line carries a
-# fingerprint of the normalized findings, so the issue is edited only when the findings change.
-#   findings, no open issue      -> open one
-#   findings, fingerprint differs -> replace the body and add one comment
-#   findings, fingerprint same    -> no change
-#   no findings, open issue       -> comment and close
-# An npm error or a malformed report fails the run before the issue step, so a failed audit
-# can never close the issue as clean. No secret is needed; a fork can run it unchanged.
+# Runs `npm audit` against package-lock.json and keeps one `dependency-audit` issue in sync
+# (this repo uses issues rather than Dependabot PRs).
+# scripts/summarize-npm-audit.mjs writes a deterministic fingerprint on line 1 so the issue
+# edits only when findings change; an audit or report error fails before sync so it never closes
+# an open issue as clean. Keyless.
 
 on:
   schedule:

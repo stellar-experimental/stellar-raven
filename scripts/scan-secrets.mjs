@@ -1,39 +1,16 @@
 #!/usr/bin/env node
 /**
- * scan-secrets.mjs — zero-dependency secret guard (local pre-commit + CI backstop).
+ * Zero-dependency secret scanner (pre-commit hook + CI backstop under GitHub secret scanning).
  *
- * Why this exists: this repo is public (since 2026-07-03), so GitHub's native
- * secret scanning + push protection are active on top (see
- * .github/secret_scanning.yml for the path exclusions). This engine is
- * defense-in-depth UNDER that — it catches a secret earlier and works
- * regardless of GitHub plan/visibility: (1) a pre-commit hook that blocks a
- * secret before it becomes a commit, and (2) a CI job that re-scans the tree
- * as a server-side backstop. No npm deps — runs with `node` alone (Node >= 24,
- * like the other scripts/*.mjs).
+ * Modes: --staged (default, added lines only) | --tree (all tracked text files; NUL/binary skipped for content layers).
+ * Layers:
+ *   A. Block staging/tracking .env and .dev.vars.
+ *   B. Exact-match live values from local .env/.dev.vars (excluding PUBLIC_KEYS).
+ *   C. High-signal token formats (outside IGNORE_GLOBS).
+ *   D. keyword = long literal in code/config files only.
  *
- * Modes:
- *   --staged  (default)  scan only lines ADDED in the staged diff. Used by the
- *                        pre-commit hook. Also blocks staging .env / .dev.vars.
- *   --tree               scan all tracked files. Used by CI (which runs
- *                        `node scripts/scan-secrets.mjs --tree` directly) and
- *                        for a full local audit (npm run secrets:scan -- --tree).
- *
- * Detection layers (high precision — a noisy hook is a disabled hook):
- *   A. Env files must never be staged/tracked (belt-and-suspenders over .gitignore).
- *   B. Exact-match against the LIVE values in local .env / .dev.vars, if present.
- *      Catches THIS repo's real secrets without ever hardcoding them here. Public
- *      identifiers (application/client IDs, dev flags) are excluded — see PUBLIC_KEYS.
- *      In CI those files don't exist, so this layer no-ops and the regexes carry.
- *   C. High-signal token formats (private keys, PATs, provider keys, JWTs, Stellar
- *      secret seeds) — everywhere except vendored fixtures (IGNORE_GLOBS).
- *   D. keyword = "long secret-looking literal" — code/config files only (never .md
- *      or the eval corpus, which are full of documented public examples).
- *
- * Escape hatches: a line containing `secret-scan:allow` is skipped; literals in
- * KNOWN_PUBLIC (documented public values) never fire. Commit bypass (discouraged):
- * `git commit --no-verify`.
- *
- * Exit 0 = clean, 1 = findings, 2 = usage/internal error.
+ * Escape hatches: `secret-scan:allow` on a line, or add documented public values to KNOWN_PUBLIC.
+ * Exit: 0 = clean, 1 = findings, 2 = error.
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
@@ -44,36 +21,26 @@ const ROOT = execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "
 // Private aggregate data needs a separate boundary from credential patterns.
 execFileSync(process.execPath, [join(ROOT, "scripts/check-private-usage.mjs"), process.argv.includes("--tree") ? "--tree" : "--staged"], { stdio: "inherit" });
 
-// ── Config ──────────────────────────────────────────────────────────────────
-
-// Env-var NAMES whose values are public identifiers, not secrets — excluded from
-// layer B so e.g. an Algolia Application ID (public by design) never trips the
-// scanner.
+// Public identifier env names excluded from layer B.
 const PUBLIC_KEYS = /(APPLICATION_ID|CLIENT_ID|DEV_ALLOW|_PUBLIC$|PUBLIC_)/i;
 
-// Documented public values that appear in research docs on purpose. Belt over
-// layer C/D so an edit to those docs never false-positives.
+// Documented public literals exempt from layers C/D.
 const KNOWN_PUBLIC = new Set([
   "VNSJF5AWIZ",                          // retired Stellar Docs Algolia Application ID (public; dated research records)
   "c932e7670879e29070e269d202fb6740",    // retired Stellar Docs DocSearch search-only key (public; dated research records)
   "yXtzs-p7TOyu9BQddSwV9g",              // Algolia-hosted MCP URL path token (documented non-secret)
 ]);
 
-// Vendored fixtures / binaries: base64 blobs + example tokens live here (see
-// eval/corpus/PROVENANCE.md). Excluded from format/keyword heuristics (layers
-// C/D) — layers A/B still apply everywhere.
+// Excluded from format/keyword heuristics (layers C/D); layer A applies to all tracked paths, layer B to text files.
 const IGNORE_GLOBS = [
   /^eval\/corpus\//,
-  // Public per-case SHA-256 maps include ids ending in "auth"/"token";
-  // line-oriented assignment heuristics otherwise misclassify those hashes.
+  // Public per-case SHA-256 maps include ids ending in "auth"/"token".
   /^eval\/qa\/consistency-register\.json$/,
   /\.(gz|zip|tar|tgz|png|jpg|jpeg|gif|pdf|webp|ico|woff2?)$/i,
 ];
 
-// Code/config extensions where layer D (keyword = long literal) is allowed.
 const CODE_EXT = /\.(ts|tsx|js|mjs|cjs|json|jsonc|yml|yaml|toml|sh|bash|env|ini|cfg|conf)$/i;
 
-// Layer C — high-signal token formats. Each: [label, regex].
 const PATTERNS = [
   ["private key block", /-----BEGIN (?:RSA |EC |OPENSSH |PGP |DSA )?PRIVATE KEY-----/],
   ["GitHub token", /\bgh[pousr]_[A-Za-z0-9]{36,}\b/],
@@ -235,31 +202,25 @@ function scan({ mode }) {
 
 const redact = (s) => (s.length <= 8 ? "****" : `${s.slice(0, 4)}…${s.slice(-2)} (${s.length} chars)`);
 
-// ── gitleaks upgrade path ─────────────────────────────────────────────────────
-// If gitleaks is installed, run it too (broader ruleset). Non-fatal if absent.
+// Optional broader backstop when gitleaks is installed; non-fatal if absent.
 function tryGitleaks(mode) {
   try {
     execFileSync("gitleaks", ["version"], { stdio: "ignore" });
   } catch {
     return null;
   }
-  // Use the repo config so gitleaks honours the same generated-file allowlist
-  // the custom layers already apply (see IGNORE_GLOBS). Without it the two
-  // scanners disagree and gitleaks blocks on known-public content hashes.
+  // Share .gitleaks.toml allowlists with IGNORE_GLOBS so public hashes do not false-positive.
   const configPath = join(ROOT, ".gitleaks.toml");
   const configArgs = existsSync(configPath) ? ["--config", configPath] : [];
-  // Tree mode's full-tree coverage comes from the custom layers above; the
-  // gitleaks backstop scans only the last commit. `gitleaks dir` would widen
-  // it but drags in untracked files — including .env, whose real secrets must
-  // never reach a scanner report — so the narrower git-mode invocation stays.
+  // Keep tree mode in git-mode (`-1 HEAD`): `gitleaks dir` would scan untracked .env files.
   const args = mode === "staged"
     ? ["git", "--staged", "--redact", ...configArgs]
     : ["git", "--redact", "--log-opts=-1 HEAD", ...configArgs];
   try {
     execFileSync("gitleaks", args, { cwd: ROOT, stdio: "inherit" });
-    return true; // clean
+    return true;
   } catch {
-    return false; // gitleaks found something (it printed its own report)
+    return false;
   }
 }
 

@@ -1,23 +1,12 @@
 #!/usr/bin/env node
 /**
- * Deploy preflight — runs as npm `predeploy`, before `wrangler deploy`.
- *
- * `wrangler deploy` bundles the WORKING TREE, not a commit. With several agents
- * committing path-scoped from one shared checkout, the tree is intermittently
- * equal to no commit at all: on 2026-07-30 the root briefly held a local commit
- * with four files reverted, and a deploy in that window would have shipped a
- * partial tree while appearing to ship main. The same shared-tree churn split
- * one change across two commits (9ccfeb4 / b8acfff), leaving main red between
- * them. This refuses to deploy anything that is not exactly the pushed commit.
- *
- * Override with DEPLOY_ALLOW_UNCLEAN=1 for a deliberate off-main deploy.
+ * Deploy preflight (runs as npm `predeploy` before `wrangler deploy`).
+ * `wrangler deploy` bundles the working tree, not a commit; refuse unless the tree is
+ * clean and HEAD matches fetched `origin/main`. Override with `DEPLOY_ALLOW_UNCLEAN=1`.
  */
 import { spawnSync } from "node:child_process";
 
-/**
- * Pure decision half, so the rules are testable without a git fixture.
- * @returns {string[]} human-readable failures; empty means safe to deploy.
- */
+/** @returns {string[]} Failure messages; empty means safe to deploy. */
 export function preflightFailures({ dirty, head, origin, fetchFailed }) {
   const failures = [];
   if (fetchFailed) {
@@ -26,9 +15,7 @@ export function preflightFailures({ dirty, head, origin, fetchFailed }) {
   if (dirty) {
     failures.push(`working tree is not clean; wrangler would bundle these changes:\n${dirty}`);
   }
-  // Missing refs fail closed. Treating an unreadable HEAD or origin/main as
-  // "nothing to compare" would silently skip the only check that proves the
-  // tree equals the pushed commit.
+  // Missing refs fail closed rather than skipping the comparison.
   if (!head) failures.push("could not resolve HEAD");
   if (!origin) failures.push("could not resolve origin/main");
   if (head && origin && head !== origin) {
@@ -42,17 +29,12 @@ function git(...args) {
   return { ok: r.status === 0, out: (r.stdout ?? "").trim() };
 }
 
-// Executed only when run as a script, so the test can import the pure half.
 if (process.argv[1] && process.argv[1].endsWith("deploy-preflight.mjs")) {
   if (process.env.DEPLOY_ALLOW_UNCLEAN === "1") {
     console.warn("deploy preflight SKIPPED (DEPLOY_ALLOW_UNCLEAN=1) — deploying the working tree as-is");
     process.exit(0);
   }
-  // Fetch BEFORE resolving origin/main. Object properties evaluate in source
-  // order, so reading the ref first captured the PRE-fetch value: a stale local
-  // origin/main that happened to equal HEAD passed preflight even when the
-  // remote had already moved on, which is exactly the obsolete-deploy this
-  // guard exists to refuse.
+  // Fetch before resolving origin/main so a stale local ref cannot pass.
   const fetchFailed = !git("fetch", "--quiet", "origin", "main").ok;
   const failures = preflightFailures({
     fetchFailed,

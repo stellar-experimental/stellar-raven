@@ -10,88 +10,27 @@ import { DEMO_MODELS, demoReasoningEffortOverride } from "../src/demo/model-conf
 import { formatBudgetUsd } from "../eval/qa/spend-budget.mjs";
 
 /**
- * DO NOT EDIT ANYTHING UNDER `src/` WHILE A RUN IS IN FLIGHT, and keep heavy
- * concurrent work (agent CLIs, `npm test`) off the machine. Each model gets its
- * own `wrangler dev`, which watches the worker's module graph: one save
- * hot-reloads the isolate and kills the turn that is streaming, which lands in
- * the artifact as a bare `http:200` with no terminal frame — indistinguishable
- * from a product bug by eye. Demonstrated 2026-08-06 by touching a watched file
- * mid-turn (run id `2026-08-06-reload-repro`): both perturbed turns died,
- * the one between the two reloads passed. Six turns of the same day's
- * `2026-08-06-cache-off` run were lost this way and briefly read as an Anthropic
- * regression; a clean re-probe of the same prompts went 6/6.
+ * Live Playground chat smoke gauntlet (one `wrangler dev` per model).
  *
- * A failing turn now carries `workerLog` in the JSON artifact. Read it before
- * diagnosing anything: `⎔ Reloading local server...` as the last line means the
- * turn was killed by a reload, not by the model.
+ * Keep `src/` untouched and avoid heavy concurrent jobs during a run: `wrangler dev`
+ * hot-reloads kill streaming turns (leaving bare `http:200` with no terminal frame).
+ * Check `workerLog` in the JSON artifact for `⎔ Reloading local server...` before
+ * diagnosing a failure, or copy and query
+ * `.wrangler/state/v3/observability/miniflare-wobs-trace-store/*.sqlite`: a killed
+ * turn has a root `POST` span with NULL `duration_ms`/`outcome` and no `demo-chat` log.
  *
- * AND THE ARTIFACT IS NOT THE ONLY RECORD. `wrangler dev` persists spans and app
- * logs to `.wrangler/state/v3/observability/miniflare-wobs-trace-store/*.sqlite`,
- * which outlives a deleted JSON artifact — it is how the 2026-08-06 post-routing
- * failures were resolved after theirs was gone. Copy the file before querying it.
- * A killed turn is a root `POST` span with NULL `duration_ms`/`outcome` (the span
- * never closed) and NO `demo-chat` log line. That pair is conclusive: `demo-chat`
- * is emitted from runTurn's own `finally`, so any invocation that ran to any
- * conclusion — including a gateway cache replay — logs it. No log plus no closed
- * span means the invocation was destroyed, which no model behavior can cause.
+ * Default matrix is `DEMO_MODELS` (per-model smoke, not failover); select other models
+ * with `--models`. Note Anthropic 4.x ids use dashes (`claude-sonnet-4-6`) while 5.x
+ * uses dots (`claude-sonnet-5.5`).
  *
- * The default matrix is the shipped Playground tuple, primary then fallback
- * (DEMO_MODELS), each model alone on its own server. It is a per-model
- * transport and tool-loop smoke test, not a hand-off test: no run here makes the
- * primary fail over to the fallback (offline tests cover the hand-off). A tuple
- * change moves the default with it. Select any other model explicitly with
- * --models (Sonnet and Grok routing stay reachable that way), and state in the
- * run plan the decision it serves.
+ * Model routing caveats (src/demo/model-config.ts):
+ * - Omit `transport: "gateway"` for `anthropic/` (passthrough Unified Billing is narrower).
+ * - `moonshotai/kimi-k3` uses the providers-less binding and requires `temperature: 1`.
+ * - No `@cf/` model is in `DEFAULT_MODELS`; `test/demo-model-config.test.ts`
+ *   (`DEMO_KIMI_CONTROL_MODEL`) covers the `model.startsWith("@")` branch.
  *
- * Dated observations: the 2026-08-06 matrix (run ids 2026-08-06-latest-matrix / -route-probe)
- * routed `openai/gpt-5.6-terra`, not 6.1. `openai/gpt-6.1-terra` routed in the 2026-11-03 probe
- * (research/gauntlets/2026-11-03-sweep-probe-summary.md) and passed 8/8 on 2026-11-10
- * (research/audits/2026-11-10-playground-gpt61-terra-recheck.md). `anthropic/claude-haiku-5.5`
- * (research/audits/2026-11-09-playground-product-decision.md) passed all five required promotion
- * fields on 16/16 turns; the broader diagnostic, which also requires an expected search call, passed
- * 14/16 (two Soroswap-builder turns made none). `anthropic/claude-sonnet-5.5` and `xai/grok-4.7`
- * routed in the 2026-11-03 sweep (research/gauntlets/). A slug that has not been probed
- * does not belong in the default, because a wrong one does not look like a
- * typo. Anthropic 4.x versions take DASHES (`claude-sonnet-4-6`, not `4.6`); a
- * dotted 4.x id authenticates and returns "model … was not found", which reads
- * like a provider outage. The catalog writes 5.x point releases with a dot
- * (`claude-sonnet-5.5`).
- *
- * Routing notes for models you select explicitly — see src/demo/model-config.ts:
- *   - claude-fable-5 was failing `x-api-key header is required` because
- *     `transport: "gateway"` selects provider PASSTHROUGH, whose Unified Billing
- *     catalog is narrower than the run catalog. Omitting `transport` for
- *     anthropic/ fixed it with no key.
- *   - moonshotai/kimi-k3 was failing `Unknown gateway provider "moonshotai"`
- *     because workers-ai-provider's registry has no such vendor. It routes
- *     through a providers-less binding instance instead, and needs
- *     `temperature: 1` — it rejects anything else.
- *
- * Deliberately ABSENT, with the reason so nobody re-adds them on a hunch:
- *
- *  - `google/gemini-*` — absent from the default matrix. The November 3
- *    Gemini 3.8 Flash probe superseded the August routing failure: the current
- *    Google passthrough completes tool replay. Select it explicitly with
- *    --models for a reviewed run; that single probe does not verify every
- *    Gemini model. See the dated sweep audit.
- *  - `@cf/zai-org/glm-*` — routed fine after the `reasoning_effort` fix and
- *    answered, but each dropped a tool call (`toolFailures=1`). Dropped on
- *    quality, not plumbing; re-probe before re-adding.
- *
- * NOTE: no `@cf/`-hosted model remains in this matrix, so the `model.startsWith("@")`
- * branch in demoModelSettings (the reasoning_effort omission that GLM forced) is
- * no longer exercised by a LIVE run. It stays unit-covered via
- * DEMO_KIMI_CONTROL_MODEL in test/demo-model-config.test.ts — keep that test.
- *
- * `Payment Required` IS NOT A BROKEN MODEL. The stellar-raven-demo gateway
- * carries a $100 / 24h SLIDING cost limit (spend_limits rule 70415088). Near the
- * cap a cost-based limiter refuses the most EXPENSIVE request while cheaper ones
- * still fit, so it presents as one model failing every prompt in ~180ms while
- * the rest of the matrix stays green — which looks exactly like a dead model.
- * Seen 2026-08-06: claude-fable-5 0/8 with `Payment Required`, then green again
- * on re-probe once the window slid. A full run of the default matrix is 16
- * turns; a wider --models selection or back-to-back runs can hit the limit.
- * Check the gateway's spend window before debugging the model.
+ * `Payment Required` indicates the `stellar-raven-demo` gateway's $100/24h sliding
+ * spend limit (can reject expensive models while cheaper ones pass), not a dead model.
  */
 export const DEFAULT_MODELS = DEMO_MODELS.map(({ model }) => model);
 

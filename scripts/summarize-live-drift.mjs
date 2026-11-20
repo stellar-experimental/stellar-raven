@@ -560,21 +560,8 @@ function main() {
   for (const id of lumenloop.touchedCatalogIds) touchedCatalogIds.add(id);
   classificationLines.push(...lumenloop.lines);
 
-  // Refresh commits Lumenloop's FULL OpenAPI document, not just its tool list,
-  // so an operation added/removed/renamed there — or a routing-text or
-  // schema-only change — moves the inventory while the tool summary above
-  // reports nothing. That left the operator with an unexplained diff and a
-  // report that implied there was nothing to explain. Account/write-surface
-  // changes are exactly the policy-relevant kind, even while excluded.
-  //
-  // Its touched ids DO count toward runner intersection. Lumenloop's OpenAPI
-  // operationIds are not a separate namespace from its tool names — 18 of 33
-  // match exactly, and three of those (find_content_by_entity, list_documents,
-  // search_content_semantic) are declared ops of the stellar-ecosystem-digest
-  // runner. Withholding them would report OpenAPI-only drift on a declared op
-  // while the same issue said no runner was affected. Non-matching ids are
-  // harmless: runnerIntersections filters against each runner's exact declared
-  // ops, so an account/write id simply never matches.
+  // Summarize Lumenloop's embedded OpenAPI too so OpenAPI-only or account-surface diffs are
+  // explained and overlap with runner-declared ops is captured (runnerIntersections filters by declared ops).
   const lumenloopOpenapi = summarizeOpenapiInventory("inventory/lumenloop.json", "lumenloop", {
     label: "inventory/lumenloop.json (OpenAPI surface)",
     skipUnchangedNote: true

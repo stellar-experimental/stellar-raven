@@ -18,10 +18,7 @@ import {
 } from "./improvements-lib.mjs";
 
 const args = parseArgs(process.argv.slice(2));
-// Canonical whole-ref match, so a successor ref is compared as a ref and never as a substring of
-// one: `issues/2` must not "match" `issues/2593`. The trailing class excludes letters, `_` and `-`
-// as well as digits — a digits-only lookahead still parsed the malformed `issues/99evil` as issue
-// 99, which would let a token that is not a real ref satisfy the guard.
+// Whole-ref match (negative lookahead rejects trailing word/hyphen chars like `issues/99evil`).
 const GITHUB_REF_RE = /https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/(?:issues|pull)\/\d+(?![\w-])/g;
 const RAVEN_REPO = "stellar-experimental/stellar-raven";
 const HANDOFF_TEMPLATE = "upstream-improvement-ready.yml";
@@ -53,15 +50,8 @@ if (args.renderBodyFile) {
   process.exit(0);
 }
 
-// A finding outside the repository has no public source record, so filing it points a public issue
-// at a path only the filer's machine can see. `path.relative` does not fail on an out-of-tree path
-// — it walks up with `../`, or returns the target absolute when it cannot reach — and `renderBody`
-// joins that onto a blob URL, so the link is dead by construction. That is how a `mktemp` fixture
-// became stellar/stellar-docs#2716 (reported in stellar-experimental/stellar-raven#4).
-//
-// The gate sits AFTER --dry-run and --render-body-file deliberately: inspecting the body of an
-// out-of-tree finding is useful and posts nothing. Only the path that writes to a public
-// repository fails closed.
+// Refuse to post findings outside this repo (would link a dead public blob URL).
+// Checked after --dry-run / --render-body-file so local inspection still works.
 if (escapesRepo(finding.relPath)) {
   console.error(`${finding.frontmatter.id}: ${args.file} resolves outside the repository`);
   console.error(`Its source record would render as ${finding.relPath}, which is not a repo path.`);
@@ -69,19 +59,9 @@ if (escapesRepo(finding.relPath)) {
   process.exit(2);
 }
 
-// The dedupe guard and the lint's "a cited GitHub URL implies a filing" rule are both correct,
-// but together they deadlock one real case: a finding that WAS filed, whose issue then closed
-// covering something else, and whose residual now needs a fresh report. It cannot stay
-// reported-upstream (the filer refuses) and it cannot drop to verified (the lint refuses).
-// --successor-to is the narrow way through, and every clause below is load-bearing. The first
-// version of this guard was substring-only over the whole evidence list, which meant
-// `--successor-to https` satisfied it for any finding citing any URL — including declined and
-// fixed ones the lifecycle says must never be re-filed. That was a duplicate-filing hole, not a
-// containment.
+// Re-filing guard: only `reported-upstream` may file a `--successor-to` issue, and only when the
+// target ref is an exact cited ref in the same repo and every cited ref is live-confirmed closed.
 if (["reported-upstream", "declined-upstream", "fixed-upstream"].includes(finding.frontmatter.status)) {
-  // declined and fixed are never re-filable. Declined means an owner said no and the pipeline
-  // says do not pester; fixed means there is nothing left to report. Only a live report that
-  // closed without covering its finding can have a successor.
   if (finding.frontmatter.status !== "reported-upstream") {
     console.error(
       `${finding.frontmatter.id}: status is ${finding.frontmatter.status}; this finding is not re-filable`,
@@ -97,8 +77,6 @@ if (["reported-upstream", "declined-upstream", "fixed-upstream"].includes(findin
     console.error("Use --dry-run or --render-body-file to inspect the issue body without posting.");
     process.exit(2);
   }
-  // EXACT match against canonical refs parsed out of the evidence — not a substring of the raw
-  // text. Substring matching accepted a bare scheme, and `issues/2` also "matches" `issues/2593`.
   const citedRefs = new Set(
     (finding.frontmatter.evidence ?? []).flatMap((entry) => String(entry).match(GITHUB_REF_RE) ?? []),
   );
@@ -109,10 +87,6 @@ if (["reported-upstream", "declined-upstream", "fixed-upstream"].includes(findin
     console.error(`recorded refs: ${[...citedRefs].join(", ") || "(none)"}`);
     process.exit(2);
   }
-  // The superseded report must live in the repo we are filing into. Without this, a closed ref in
-  // ANY cited repo would authorise a new issue in a DIFFERENT one — a finding citing several
-  // upstreams could be used to open an issue somewhere that never had a predecessor at all. A
-  // successor supersedes a report where that report actually lives; anything else is a new finding.
   const successorRepo = args.successorTo.split("/").slice(3, 5).join("/");
   if (successorRepo !== repo) {
     console.error(
@@ -121,9 +95,6 @@ if (["reported-upstream", "declined-upstream", "fixed-upstream"].includes(findin
     console.error("A successor must supersede a report in the same repository it is filed into.");
     process.exit(2);
   }
-  // A ref that is still OPEN has an owner tracking it, so a second issue is a duplicate by
-  // definition. Read live state rather than trusting the caller — this is the condition the whole
-  // flag exists to assert, so it is the one thing not taken on faith.
   const state = readIssueState(args.successorTo);
   if (state !== "closed") {
     console.error(
@@ -132,16 +103,9 @@ if (["reported-upstream", "declined-upstream", "fixed-upstream"].includes(findin
     console.error("An open report already has an owner — follow up there instead of filing a duplicate.");
     process.exit(2);
   }
-  // Checking only the NAMED ref is not dedupe. Once a successor has been filed it joins the
-  // evidence, so the finding can cite an old closed report AND a live open one — and naming the
-  // old one again would open a third issue while the second is still being worked. Every recorded
-  // ref must be closed before another is opened.
+  // Every sibling cited ref must also prove closed (fail closed on "unknown").
   for (const ref of citedRefs) {
     if (ref === args.successorTo) continue;
-    // Require a confident "closed", exactly as for the named ref. Blocking only on literal
-    // "open" would let an UNREADABLE sibling through — a transient gh failure, a deleted or
-    // private ref, or junk output — and an unreadable live report is not evidence that it closed.
-    // This is the same fail-open shape that was just repaired above; it must not survive here.
     const refState = readIssueState(ref);
     if (refState !== "closed") {
       console.error(`${finding.frontmatter.id}: recorded ref ${ref} is ${refState}, not closed`);

@@ -1,17 +1,8 @@
 #!/usr/bin/env node
-// check-mirrors.mjs — validate the ecosystem-skills/ PIN SET in THIS repo.
-//
-// Skill bodies are not vendored here (they are fetched from upstream at the
-// pinned commit and hash-verified — see ecosystem-skills/README.md), so this
-// validates the pin metadata rather than files on disk: manifest completeness,
-// a resolvable commit + blob sha per file, skill_count, group coverage (no
-// duplicates, no ungrouped skills), catalog.json presence.
-//
-// Offline by default. With --fetch it additionally retrieves every pinned file
-// FROM UPSTREAM (bypassing the working cache) and verifies it against its blob
-// sha — the end-to-end check that the pins the Worker serves from still
-// resolve. Run it BEFORE any builder, or the builder's cache writes make the
-// check about local bytes instead of upstream availability.
+// Validate ecosystem-skills/ pin metadata (manifest completeness, commit/blob SHAs,
+// skill_count, group coverage, catalog.json and INDEX.md presence).
+// Offline by default; `--fetch` bypasses ecosystem-skills/.cache to prove every pin still
+// resolves upstream and matches its blob SHA.
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -91,21 +82,12 @@ function checkEcosystemSkills() {
   assertFile("ecosystem-skills/INDEX.md");
 }
 
-/**
- * --fetch: prove every pin still RESOLVES UPSTREAM and hashes as recorded.
- *
- * `noCache` is what makes that claim true. Reading through the working cache
- * proves only that the bytes we already hold match the pin — which a warm
- * `ecosystem-skills/.cache/` always satisfies, so the check would pass while
- * upstream was gone. In the daily refresh the builders run first and warm every
- * exposed file, so a cached `--fetch` there verified essentially nothing.
- */
+/** Fetch every pinned file from upstream (`noCache: true`) and verify its blob SHA. */
 async function checkPinsResolve() {
   const manifest = readJson("ecosystem-skills/MANIFEST.json");
   const jobs = [];
   for (const source of manifest.sources) {
-    // A malformed pin cannot be fetched; checkEcosystemSkills already recorded
-    // its shape failure, which keeps the exit a pin problem (1), not a crash (2).
+    // Skip malformed pins already recorded by checkEcosystemSkills (keeps exit 1, not 2).
     if (pinnedSourceFailures(source).length) continue;
     for (const skill of source.skills) {
       for (const file of skill.files) {
@@ -121,15 +103,8 @@ async function checkPinsResolve() {
   console.log(`fetched + verified ${jobs.length} pinned skill files (upstream, cache bypassed)`);
 }
 
-// Three-way exit contract, matching scripts/check-skills-drift.mjs and consumed
-// as an enum by .github/workflows/refresh.yml:
-//   0 = pins valid (and, with --fetch, all resolving upstream)
-//   1 = a real pin problem — the manifest is malformed, or a pinned file no
-//       longer resolves. With --fetch that is a LIVE user-facing outage.
-//   2 = the CHECK itself failed (crash, unreadable manifest, runner network
-//       fault). Fails the job, but must never be reported as an outage: the
-//       whole point of the classified drift issue is that it asserts a domain
-//       fact, and "our checker broke" is not one.
+// Exit codes (consumed by .github/workflows/refresh.yml):
+// 0 = valid/resolving, 1 = malformed manifest, missing pin, or hash mismatch, 2 = check/transport error.
 try {
   checkEcosystemSkills();
   if (process.argv.includes("--fetch")) await checkPinsResolve();
@@ -141,11 +116,7 @@ try {
 if (failures.length) {
   console.error("mirror checks failed:");
   for (const failure of failures) console.error(`- ${failure}`);
-  // A 4xx on an immutable commit-pinned URL is upstream genuinely losing the
-  // content — the domain result. A transport error, a 5xx that survived the
-  // retries, or a 429 says something about THIS runner's network, not about
-  // what users are being served; reporting that as a production outage would
-  // cry wolf on exactly the alert that must stay trustworthy.
+  // Only 4xx (excluding 429) proves an upstream pin is gone; transport/5xx/429 are check errors (exit 2).
   const transportOnly =
     process.argv.includes("--fetch") &&
     failures.every((f) => /could not fetch/.test(f) && !/HTTP 4(?!29)/.test(f));

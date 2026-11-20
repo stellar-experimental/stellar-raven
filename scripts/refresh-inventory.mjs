@@ -1,30 +1,16 @@
 #!/usr/bin/env node
-// refresh-inventory.mjs — regenerate the three service inventory snapshots under inventory/.
+// Regenerate the four service inventory snapshots under inventory/ (lumenloop,
+// stellar-light, stellar-docs + titles, stellar-org).
+//   node scripts/refresh-inventory.mjs [--service lumenloop|stellar-light|stellar-docs|stellar-org]
 //
-//   node scripts/refresh-inventory.mjs
-//   node scripts/refresh-inventory.mjs --service stellar-light
+// Reads .env (LUMENLOOP_API_KEY, MINTLIFY_ASSISTANT_API_KEY) + process.env.
+// Deterministic and idempotent (preserves existing fetchedAt when content is unchanged);
+// refuses to write if any `.env` or `SECRET_ENV_NAMES` value (>=6 chars) appears in output.
 //
-// Plain Node 24 (global fetch, node:fs only — no deps). Reads .env at the repo
-// root for LUMENLOOP_API_KEY / MINTLIFY_ASSISTANT_API_KEY.
-//
-// Guarantees:
-//   - Deterministic output: object keys sorted recursively, tool/skill arrays
-//     sorted by name, so diffs are meaningful.
-//   - Idempotent: a file is rewritten only if its content (ignoring the
-//     top-level `fetchedAt`) actually changed; back-to-back runs produce zero diff.
-//   - No key material in outputs: every .env value is asserted absent from
-//     every output before writing.
-//
-// LUMENLOOP_PARTNER_TOOLS supplies names hidden by GET /v1/tools.
-// The union count must match GET /v1/me tools.available. See ARCHITECTURE.md.
-// GET /v1/skills lists partner skills with available:false, so skills need no authored name list.
-// GET /v1/me supplies no skill count for a corresponding check.
-//
-// PUBLISH-SAFETY (2026-07-06, go-public cleanup): partner-lane tools and
-// partner-set skills are persisted as NAME-ONLY stubs (`partner_stub: true`)
-// — no descriptions, no schemas, no file paths, and `me.limits` is dropped.
-// Partner-tier detail must never be committed to this public repo; the names
-// alone keep the union guards and drift diffs working.
+// LUMENLOOP_PARTNER_TOOLS supplies partner names hidden by GET /v1/tools (validated against
+// GET /v1/me tools.available; see ARCHITECTURE.md). Partner-lane tools and partner-set skills
+// are persisted as name-only stubs (`partner_stub: true`; no descriptions, schemas, files, or
+// `me.limits`) so partner-tier detail is never committed.
 
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -86,15 +72,9 @@ function stableStringify(value) {
   return `${JSON.stringify(sortDeep(value), null, 2)}\n`;
 }
 
-// Env var names this script reads for auth — asserted absent from every output
-// even on an env-only run (no .env file, e.g. secrets exported into the
-// environment) where parseEnvFile below returns nothing.
+// Union .env entries and secret process.env vars so env-only runs are still scrub-checked.
 const SECRET_ENV_NAMES = ["LUMENLOOP_API_KEY", "MINTLIFY_ASSISTANT_API_KEY"];
 
-// Scrub-check values: the union of .env entries (generic — every value, as
-// before) AND process.env values for the secret key names above, so a run that
-// supplies secrets via the environment instead of .env is still guarded. Keyed
-// by name=value so the two sources dedupe.
 const SECRET_VALUES = (() => {
   const byPair = new Map();
   const add = (k, v) => {
@@ -191,9 +171,7 @@ async function refreshLumenloop() {
     lumenloopGet("/me", apiKey),
     lumenloopGet("/skills", apiKey), // lists partner skills but marks them available:false
     lumenloopGet("/changelog"),
-    // Raw OpenAPI 3.1 document (keyless, NOT enveloped — plain fetch, not lumenloopGet).
-    // Covers the 18 guest tool-invoke paths + account/discovery endpoints only; the 3
-    // partner tools are absent by design (same hidden-lane quirk as /v1/tools).
+    // Raw OpenAPI 3.1 (keyless, not enveloped); omits partner tools like /v1/tools.
     fetchJson(`${LUMENLOOP_BASE}/openapi.json`, { label: "lumenloop /openapi.json" }),
   ]);
 
@@ -208,12 +186,7 @@ async function refreshLumenloop() {
     );
   }
 
-  // Partner-lane tools are persisted as NAME-ONLY stubs: no detail fetch, no
-  // description/schemas. Partner-tier detail must not live in this public
-  // repo; the names alone keep the union count-guard above honest and keep
-  // build-catalog's exclusion guard (EXCLUDED_LUMENLOOP_OPS must resolve
-  // against the inventory) working. buildLumenloop fails loudly if a stub is
-  // ever not excluded, so restoring detail is always a deliberate change.
+  // Persist partner tools as name-only stubs (publish-safety; keeps union and exclusion guards intact).
   const listedSet = new Set(listedToolNames);
   const tools = await Promise.all(
     toolNames.map(async (name) => {
@@ -226,13 +199,7 @@ async function refreshLumenloop() {
   );
   tools.sort((a, b) => a.name.localeCompare(b.name));
 
-  // Skills: metadata only (never zip/file contents). The list marks partner-set
-  // skills available:false even with a partner key. PUBLIC-set skills store the
-  // upstream description + file paths from the detail endpoint; PARTNER-set
-  // skills are name/set/tier stubs only (no detail fetch, no description, no
-  // file paths) for the same publish-safety reason as the tool stubs — the
-  // names keep the /v1/skills union observable so partner-set drift still
-  // shows up in inventory diffs.
+  // Skills metadata only (no zip contents); partner-set skills stay name/set/tier stubs.
   const skills = await Promise.all(
     (skillList.skills ?? []).map(async (entry) => {
       if (entry.set === "partner") {

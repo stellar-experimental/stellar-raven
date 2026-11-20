@@ -1,16 +1,9 @@
 /**
- * Catalog-level guidance appended to specific op descriptions (data, like the
- * deny-list; exact-match on the tool/operation name). Sharpens boundaries and
- * flags result-shape traps the upstream descriptions miss.
- *
- * Shared by build-catalog.mjs (manifest descriptions) and
- * build-super-spec.mjs (in-sandbox spec descriptions) so the two model-facing
- * surfaces cannot drift. These descriptions feed lexical scoring, so keep
- * notes source-scoped and measure wording changes with the routing gate.
+ * Catalog-level guidance appended to specific operation descriptions (exact-match on name).
+ * Shared by build-catalog.mjs and build-super-spec.mjs so manifest and sandbox stay aligned.
+ * These strings feed lexical scoring; measure wording changes with the routing gate.
  */
 
-// These notes cover verified gaps in the upstream descriptions. They state
-// source boundaries and evidence semantics that apply beyond one query.
 export const LUMENLOOP_DESCRIPTION_NOTES = {
   find_content_by_entity:
     'Catalog note: entity_type "person" can return ok data with all-empty groups even for heavily covered people (live-verified 2026-07-03). This is a data-shaped empty, not a transport or soft-empty failure. It supports only the scoped statement that this exact lookup linked no content. For open-world person coverage, use search_content_semantic, then require exact identity plus source and date before attribution.',
@@ -20,17 +13,13 @@ export const LUMENLOOP_DESCRIPTION_NOTES = {
     "Catalog note: this is the wide-net recovery lane for open-world identity, history, event, and obscure-topic questions after directory, entity, or docs lookups are empty or off-target. Raven normalizes every returned collection into one items array, globally sorted by the upstream similarity score; each row carries collection, while counts and meta preserve shape context. Filter items before projecting compact fields. Semantic rows are candidates, not attribution: require exact identity plus source and date, and discard merely adjacent results."
 };
 
-// Whole-skill discovery descriptions are host-owned routing text. An override
-// does not modify pinned source bytes; skill.read still applies its existing
-// exposure scrub. Keep overrides exact-ID and narrow. Every generator validates
-// that each key still resolves, so a rename cannot silently drop curated text.
+// Host-owned discovery descriptions (exact-ID; generators fail if a key goes stale).
+// Does not alter pinned bytes served by skill.read.
 export const SKILL_DESCRIPTION_OVERRIDES = Object.freeze({
   "skills.trustless-work.trustless-work-dev":
     "Escrow-as-a-service integration for single-release and multi-release escrows, milestone releases, dispute handling, and the provider REST API, React SDK, or Blocks UI.",
-  // Upstream e9ab7dbb662d appends "Blux is also an option." Its short tokens
-  // (is, an, also, option) prefix- and substring-match unrelated queries and moved
-  // six top-five lists (2026-10-08 drift review). Remove this override when the
-  // general routing repair stops short tokens from matching alone.
+  // Omits upstream "Blux is also an option.", whose short tokens noisy-match unrelated queries.
+  // Remove once short-token routing stops matching alone.
   "skills.stellar-dev.dapp":
     "Stellar dApp / frontend development. Covers the JavaScript stellar-sdk (browser + Node.js), Freighter wallet, Stellar Wallets Kit (multi-wallet), Wallet Standard, smart accounts with passkeys, transaction building / signing / submission, smart contract invocation from the client, simulation, and error handling. Use when building a React/Next.js/Node.js app that talks to Stellar — classic operations or smart contracts."
 });
@@ -50,35 +39,15 @@ export function assertSkillDescriptionOverrideIdsResolve(skillIds, consumer) {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Callable-name rewrite for scout descriptions (shared, deterministic).
-//
-// The scout entries carry their descriptions verbatim from the upstream Stellar
-// Light OpenAPI, which cross-references sibling operations by RAW REST endpoint
-// (e.g. "POST /api/feedback", "use /api/partners with ?type/?sector") and by
-// snake_case MCP-tool name (e.g. "use get_leaderboard"). Model code can NEVER
-// issue raw HTTP and the sandbox surface is camelCase — it invokes each
-// operation as scout.<opId>(args) — so both spellings are dead pointers.
-// Rewrite them using a map derived mechanically from the SAME spec
-// (path+method -> operationId), so it stays correct across inventory
-// refreshes. Only exact spec-declared API paths and exact snake forms of
-// spec-declared operationIds are touched — never generic slash-prose like
-// "on/off-ramp" or "upcoming/active/completed", never substrings of longer
-// identifiers. Shared by build-catalog.mjs (manifest) and
-// build-super-spec.mjs (in-sandbox spec) so the two surfaces cannot drift.
-// ---------------------------------------------------------------------------
+// Deterministic callable-name rewrites for Scout descriptions (shared by build-catalog and
+// build-super-spec). Upstream OpenAPI prose cites raw REST paths and snake_case tool names;
+// sandbox code calls scout.<opId>(args). Only exact spec-declared paths and opIds are rewritten.
 
 import { EXCLUDED_SCOUT_OPS, NON_EXPOSED_SCOUT_OP_NAMES } from "./exposure.mjs";
 
 const SCOUT_HTTP_METHODS = ["get", "post", "put", "patch", "delete"];
 
-// Standalone shorthands the upstream prose uses that are not full spec paths
-// but still name a callable operation. Every alias target must be an EXPOSED
-// op — an alias for an excluded op would mint a callable-looking name for an
-// operation that does not exist to consumers (the ADR-0003 leak that
-// scoutRefRewrites otherwise filters out). Currently empty: the one historical
-// alias ("/assistant" → scout.partnerAssistant) pointed at an excluded op and
-// its prose occurrences are scrubbed instead (SCOUT_DESCRIPTION_SCRUBS).
+// Extra non-path shorthands targeting exposed ops only (excluded ops are scrubbed instead).
 const SCOUT_REF_ALIASES = [];
 
 /** snake_case form of a camelCase operationId (searchProjects -> search_projects). */
@@ -87,26 +56,10 @@ function snakeCase(opId) {
 }
 
 /**
- * Build the ordered [needle, replacement] rewrite pairs from a scout OpenAPI
- * doc. Two needle families, both derived mechanically from the spec — the
- * same uncallable-name defect in two spellings:
- *  - REST references → "scout.<opId>": method-qualified ("POST /api/feedback")
- *    and bare paths ("/api/partners"); longer needles sort first so
- *    "/api/partners/match" wins over "/api/partners" and a verb-qualified
- *    reference resolves before its bare path. Bare-path default prefers GET
- *    (the read/listing intent the prose means when it drops the verb).
- *  - snake_case tool names → the BARE camelCase opId ("use get_leaderboard" →
- *    "use getLeaderboard"): sibling context inside a scout entry's own
- *    description is unambiguous, and the model sees the exact method segment
- *    it calls. Needle only added when the snake form differs from the opId —
- *    an all-lowercase opId would yield a plain-word needle, far too
- *    match-happy for prose.
- *
- * Use bare camelCase for snake rewrites. A service namespace prefix can add
- * unrelated raw-substring matches under the vendor scorer. The surrounding
- * Scout operation already supplies the service context, so the prefix adds no
- * callable information. Path rewrites keep the prefix because they replace an
- * uncallable REST reference with a complete sandbox call target.
+ * Build longest-first [needle, replacement] rewrite pairs from a Scout OpenAPI doc:
+ * - REST paths -> "scout.<opId>" (bare paths prefer GET).
+ * - snake_case opIds -> bare camelCase opId (omits `scout.` prefix so vendor lexical scoring
+ *   does not add spurious namespace substring matches; skips all-lowercase opIds).
  */
 export function scoutRefRewrites(openapi) {
   const pairs = [];
@@ -115,9 +68,7 @@ export function scoutRefRewrites(openapi) {
     for (const method of SCOUT_HTTP_METHODS) {
       const op = item[method];
       if (!op?.operationId) continue;
-      // Never mint a callable name for an excluded op (ADR-0003: it does not
-      // exist to consumers). Prose that references an excluded endpoint is
-      // scrubbed by SCOUT_DESCRIPTION_SCRUBS, not rewritten.
+      // Excluded ops are scrubbed by scrubScoutDescription, never rewritten (ADR-0003).
       if (EXCLUDED_SCOUT_OPS.has(`${method.toUpperCase()} ${path}`)) continue;
       const callable = `scout.${op.operationId}`;
       pairs.push([`${method.toUpperCase()} ${path}`, callable]);
@@ -137,28 +88,9 @@ const completePathRe = (needle) =>
   new RegExp(`(?<![\\w/.-])${regexEscape(needle)}(?![\\w/{}%+~@=:$&-]|\\.[\\w]|;\\S)`, "g");
 
 /**
- * Rewrite raw REST references and snake_case tool names in `text` using the
- * pairs from scoutRefRewrites(openapi).
- *
- * Path-shaped needles (contain "/") match complete paths, never prefixes
- * of a longer segment or a child path. Longest-first ordering still resolves
- * method-qualified references before bare paths. Full URLs stay raw because
- * the host before the path blocks the match. Paths with undeclared segments
- * or trailing slashes stay raw instead of becoming callable names.
- * Token-shaped needles (snake names) match only as standalone tokens: never
- * inside a longer identifier ([\w] boundaries on both sides) and never when
- * preceded by "." (the lookbehind), so a rerun over already-rewritten text
- * never rewrites twice — the camelCase replacement carries no underscore, so
- * no snake needle can match it again anyway.
- *
- * Also drops the query-string "?" from "?type/?sector"-style shorthand — in
- * sandbox vocabulary those are fields on the single args object, never URL
- * query params. The strip requires a token boundary before the "?" (start,
- * whitespace, "(" or "/") so a mid-word "?" in prose is never touched. Scope
- * note: this rewrite only ever processes op-level summary/description text;
- * "?slugs=…"/"?repo=" strings elsewhere in the spec (parameter and
- * response-schema descriptions) are untouched because those fields never
- * pass through here.
+ * Apply scoutRefRewrites to op-level summary/description text.
+ * Path needles match complete paths only (not URLs or undeclared subpaths); snake needles match
+ * standalone tokens not preceded by `.`. Also strips leading `?` from `?param` shorthands.
  */
 export function rewriteScoutRefs(text, pairs) {
   let out = text;
@@ -250,38 +182,16 @@ export function scrubNonExposedScoutSchemaRefs(value) {
   return out;
 }
 
-// ---------------------------------------------------------------------------
-// Excluded-endpoint clause scrubs (ADR-0003).
-//
-// Some upstream scout descriptions cross-reference endpoints that are in
-// EXCLUDED_SCOUT_OPS. Those clauses must be REMOVED, not rewritten: a rewrite
-// would mint a callable name for an op that does not exist to consumers, and
-// leaving the raw REST reference would still advertise a capability the
-// gateway does not expose. Exact-match data, applied to the RAW upstream text
-// BEFORE scoutRefRewrites — with a fail-loud guard: if upstream rephrases and
-// a needle stops matching, the build breaks so a human reconciles (a silently
-// stale scrub = the leak comes back).
-// ---------------------------------------------------------------------------
+// Author-maintained clause scrubs for excluded Scout endpoints (ADR-0003), applied before
+// scoutRefRewrites. Fails loud if a needle disappears so upstream rephrasing cannot re-leak.
 export const SCOUT_DESCRIPTION_SCRUBS = {
   getStatus: [
-    // "Use to check how fresh/large the data is or to discover endpoints." —
-    // the endpoint-enumeration RECOMMENDATION is ours, not upstream's payload,
-    // and it steers models at upstream's raw /api/ namespace, part of which is
-    // deliberately not exposed here. The build works to displace exactly that
-    // vocabulary (scoutRefRewrites turns REST refs into callable scout.<op>
-    // ids), so recommending it back is our own emitted surface undoing that.
-    // The payload's endpoint array itself stays described — this drops the
-    // recommendation, not the fact; SCOUT_DESCRIPTION_NOTES.getStatus carries
-    // the boundary.
+    // Drops the endpoint-enumeration recommendation pointing at raw /api/ paths (some excluded).
     " or to discover endpoints"
   ]
 };
 
-/**
- * Remove authored clauses, then scrub exposure-derived references from prose.
- * Throws when a listed needle is absent (upstream prose drifted — reconcile
- * SCOUT_DESCRIPTION_SCRUBS) so a stale scrub can never silently re-leak.
- */
+/** Remove authored clauses and exposure-derived refs; throws if a listed needle is missing. */
 export function scrubScoutDescription(opId, { summary = "", description = "" }) {
   const needles = SCOUT_DESCRIPTION_SCRUBS[opId] ?? [];
   const fields = { summary, description };
@@ -299,8 +209,7 @@ export function scrubScoutDescription(opId, { summary = "", description = "" }) 
 }
 
 export const SCOUT_DESCRIPTION_NOTES = {
-  // Boundary twin of LUMENLOOP_DESCRIPTION_NOTES.search_directory. Keep the
-  // source distinction aligned across both operation descriptions.
+  // Keep source boundary aligned with LUMENLOOP_DESCRIPTION_NOTES.search_directory.
   searchProjects:
     "Catalog note: results are structured directory facts, not editorial pieces — for articles, AV, interviews, or research summaries about a project, use the lumenloop semantic and directory ops.",
   searchRepos:

@@ -1,40 +1,15 @@
 #!/usr/bin/env node
 /**
- * check-pin-review.mjs — the exposed prompt surface cannot move without a
- * recorded human review.
- *
- * Skill bodies are prompt input and are no longer vendored, so a re-pin commit
- * shows hash changes only: the text a model will start reading never reaches
- * `git diff`. `ecosystem-skills/update.sh` prints the body diff at re-pin time;
- * this makes the review durable by requiring `ecosystem-skills/PIN-REVIEW.md` to
- * name what was reviewed.
- *
- * WHAT IS COMPARED — the whole selection and its location, not just the
- * commit. A source's commit SHA is only one of the fields that decide which
- * bytes get served: the skill names, the file paths, and the per-file blob shas
- * do too. Comparing commits alone let a change retarget an entry to a different
- * markdown file in the same pinned tree, or add/drop a selected skill, with the
- * gate reporting "no skill pin moved". The owner, repo, and path decide WHERE
- * those bytes are fetched from (scripts/lib/skill-mirror.mjs builds the raw URL
- * from them): a location-only change moves every transport URL to a different
- * repository while the served bytes stay hash-verified, so it is a provenance
- * change that needs the same fresh read. So each source is reduced to a
- * canonical projection (id + owner + repo + path + commit + skill names + each
- * file's path and blob sha) and digested; the ledger must name that digest.
- *
- * WHY A DIGEST AND NOT THE COMMIT. The attestation has to be NEW. A bare commit
- * SHA is satisfied by any older line that happens to mention it, so a
- * same-commit selection change could ride in under a previous review. The
- * digest changes whenever the served selection changes, which is exactly the
- * event that needs a fresh human read.
+ * Require a new entry in `ecosystem-skills/PIN-REVIEW.md` whenever a skill source's
+ * served selection or provenance moves (id, owner, repo, path, commit, skill names, or
+ * file paths/blob SHAs). Digests the canonical selection rather than checking commit SHAs
+ * alone so same-commit retargeting or reverts require a fresh review.
  *
  * Usage:
  *   node scripts/check-pin-review.mjs [--base <ref>]   (default origin/main)
  *   node scripts/check-pin-review.mjs --digests        print current digests
  *
- * Exit 1 if the selection moved without a ledger entry. A repo with no reachable
- * base ref exits 0 with a notice — fail-open there is deliberate: this guards a
- * diff, and with no diff there is nothing to guard.
+ * Exits 1 on unrecorded changes; exits 0 when the base ref is unreachable.
  */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -99,24 +74,11 @@ try {
 
 const ledger = readFileSync(join(ROOT, "ecosystem-skills/PIN-REVIEW.md"), "utf8");
 
-/**
- * An attestation must be NEW, and it must be an actual `sel:` token.
- *
- * Newness: reading only the current ledger let a change revert a source to any
- * previously recorded selection — or re-add a source that was removed — and pass
- * on the strength of a review someone did months ago for different reasons. The
- * ledger has to have GAINED the token in this diff.
- *
- * Exactness: a bare `includes(digest)` matched a 12-hex string anywhere in the
- * file, including inside the 40-hex commit SHAs the ledger is full of. Requiring
- * the `sel:` prefix means only a real attestation counts.
- */
+// Require a new `sel:<digest>` token added in this diff (prefix avoids matching 40-hex SHAs).
 const attested = (text, digest) => new RegExp(`sel:\`?${digest}\\b`).test(text);
 const newlyAttested = (digest) => attested(ledger, digest) && !attested(baseLedger, digest);
 
-// Compare the UNION of base and current source ids. Iterating only the current
-// manifest meant deleting a source — which changes every skill it served — moved
-// nothing and needed no attestation at all.
+// Union of base and current ids so deleting a source also requires attestation.
 const allIds = [...new Set([...basePins.keys(), ...nowPins.keys()])].sort();
 const moved = allIds
   .map((id) => ({ id, from: basePins.get(id), to: nowPins.get(id) }))

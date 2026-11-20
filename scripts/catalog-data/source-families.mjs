@@ -1,41 +1,27 @@
 /**
- * Source-family orientation for the `search` description.
- *
- * `FAMILY_LINE` is authored text, emitted by scripts/build-family-text.mjs into
- * src/mcp/family-text.ts and guarded at build time by the ADR-0003 text checks.
- * It carries no operation chains: `search` ranks operations, and a second router
- * written in prose drifts from it.
+ * Source-family orientation emitted into src/mcp/family-text.ts by scripts/build-family-text.mjs.
+ * Keep operation chains out of prose; ADR-0003 text checks guard emitted text at build time.
  */
 
 export const FAMILY_LINE =
   "Families: lumenloop=community/editorial projects, research, content, SCF/funding; use for what's-been-said/editorial/freshness skims; scout=live ecosystem graph: projects, repos, people, hackathon builds, audits, stablecoins, partners; stellarDocs=official protocol/SDK/CLI/contracts/RPC/anchor/wallet docs; stellarOrg=SDF site: strategy, roadmap, programs, provider and audit directories; skills=tested build/integration/security playbooks.";
 
 /**
- * The opening of the `search` description: one line that stands alone where a client lists only the
- * first 117 characters (OpenCode), names every operation family, and ends at a sentence end.
- * `{families}` is replaced by the operation families of the catalog manifest, in manifest order, so
- * a family added to the catalog is named with no edit here. The generator fails when the rendered
- * line passes SEARCH_OPENING_MAX_CHARS or does not end in a full stop, which forces a rewording.
+ * Opening line of the `search` description (must end in `.` and fit in SEARCH_OPENING_MAX_CHARS
+ * for clients that truncate at 117 chars). `{families}` expands from the catalog manifest.
  */
 export const SEARCH_OPENING_TEMPLATE = "Ranked search over {families} operations and skills. Hits are cards, not evidence.";
 export const SEARCH_OPENING_MAX_CHARS = 117;
 
 /**
- * Families whose own text is an official record for audit, incident, governance, and
- * standards-authorship claims. `name` is how the guard sentence names the family; the list is
- * joined in order, so a family added here is named in the sentence and exempt from the
- * standalone guard line with no other edit. Every `family` must be a real catalog service family
- * (checked at build time).
+ * Families whose own text counts as an official record for audit/incident/governance/standards
+ * claims (validated against catalog service families at build time).
  */
 export const CORROBORATING_FAMILIES = [
   { family: "stellarDocs", name: "Stellar Docs" },
   { family: "skills", name: "a skill" }
 ];
 
-/**
- * The corroboration guard. The wording is frozen (tuning loop 2, amendment A2): it names the
- * record, not the party, and requires attribution rather than doubt for everything else.
- * `{families}` is replaced by the names of CORROBORATING_FAMILIES.
- */
+/** Frozen corroboration guard wording (`{families}` expands from CORROBORATING_FAMILIES). */
 export const CORROBORATION_GUARD_TEMPLATE =
   "Audit, incident, governance and standards-authorship claims are fact only when {families} or a primary record a result returned (the audit report itself, the standard's own file, the decision record) states them. Anything else, including a party's statement about itself (its own audit claim, its post-mortem, its marketing), is that source's claim: name the source and date, and do not state it as fact.";

@@ -1,42 +1,25 @@
 /**
- * exposure.mjs — the build-time exposure exclusions, as shared DATA
- * (ADR-0003, research/decisions/0003-build-time-exposure-filtering.md).
- *
- * The manifest IS the exposed surface: an excluded item is simply never
- * emitted, and consumers are never told what the gateway cannot do. That
- * property only holds if EVERY emitter draws from one exclusion dataset —
- * build-catalog.mjs (manifest entries + skill sections), build-super-spec.mjs
- * (in-sandbox spec), description-notes.mjs (callable-name rewrites must not
- * mint names for excluded ops), and src/skills/source.ts (the scrub applied to
- * every skill body served at read time). This module is that dataset; the fail-loud drift guards that pin
- * it to the live inventories stay in build-catalog.mjs, which is the one
- * script that always sees the inventory inputs.
+ * Shared build-time exposure exclusions (ADR-0003).
+ * Used by build-catalog.mjs, build-super-spec.mjs, description-notes.mjs, and
+ * src/skills/source.ts so excluded items are never emitted on Raven surfaces. Drift guards
+ * against live inventories stay in build-catalog.mjs.
  */
 
 /** Lumenloop account-mutation surfaces — excluded if they ever appear in inventory. */
 export const LUMENLOOP_ACCOUNT_OP_RE = /(^|_)(key|keys|webhook|webhooks|topup|top_?up)(_|$)/;
 
-// request_research stays excluded under the AGENTS.md hard rules.
-// Exposure requires approval, elicitation, budget enforcement, partner-detail persistence, and deduplication.
-// Named explicitly (not just via the metered flag) so an upstream re-pricing
-// cannot silently expose it.
-//
-// research_result and list_my_research are the READ half of the same feature
-// and are excluded with it: both are scoped to research the calling account
-// commissioned, and the gateway account never commissions any (the trigger is
-// not exposed) — so they are structurally dead ends, and their upstream
-// descriptions document the paid commissioning flow (an ADR-0003 leak).
-// Re-expose all three together with the budget gate + dedup.
-// list_research is NOT excluded: it lists public published editorial research
-// pieces (a keyless content collection), independent of request_research.
+// Excluded under AGENTS.md hard rules: request_research needs approval, elicitation,
+// budget enforcement, partner-detail persistence, and dedup (named explicitly so
+// upstream re-pricing cannot expose it). research_result and list_my_research read
+// account-commissioned research and are dead ends while the trigger is unexposed
+// (ADR-0003). list_research stays exposed (public editorial research).
 export const EXCLUDED_LUMENLOOP_OPS = new Set([
   "request_research",
   "research_result",
   "list_my_research"
 ]);
 
-/** True when a lumenloop tool must not be emitted: paid/metered, account
- *  mutation, or explicitly excluded by name. */
+/** True when a lumenloop tool must not be emitted: paid/metered, account mutation, or excluded by name. */
 export function lumenloopOpExcluded(tool) {
   return (
     tool.metered === true ||
@@ -45,29 +28,13 @@ export function lumenloopOpExcluded(tool) {
   );
 }
 
-// Scout write/side-effecting endpoints — excluded (exact method+path):
+// Excluded Scout endpoints (exact method+path, defined in src/policy/scout-exposure.ts):
 //  POST /api/feedback                 submits feedback upstream
-//  GET  /api/feedback                 feedback-schema discovery; read-only but
-//                                     a dead end once POST is excluded — its
-//                                     only purpose is to shape a submission the
-//                                     gateway cannot make, and its upstream
-//                                     description names scout.submitFeedback
-//                                     (a non-exposed op, ADR-0003 leak)
-//  POST /api/partners/submit-listing  creates a DRAFT partner account / claim
-//                                     request reviewed by the Stellar Light team
-//  POST /api/partners/assistant       surfaced partners are logged as leads for
-//                                     the weekly partner digest (per upstream
-//                                     OpenAPI); scout.getPartners is the
-//                                     side-effect-free directory alternative
-//  POST /api/partners/onboard         upstream marks the AI interview/extraction
-//                                     helper x-side-effecting as of Scout 1.8.70;
-//                                     Raven has no approval or budget gate for it
-//  POST /api/partners/match           pure AI ranking over published partners
-//                                     (no side effect), but no observed call has
-//                                     succeeded since 2026-10-26;
-//                                     scout.getPartners is the directory path.
-//                                     Re-expose when it returns 200 with
-//                                     `matches` (sls-123).
+//  GET  /api/feedback                 dead end without POST; names scout.submitFeedback (ADR-0003)
+//  POST /api/partners/submit-listing  creates a draft partner account / claim request
+//  POST /api/partners/assistant       logs surfaced partners as leads; use scout.getPartners
+//  POST /api/partners/onboard         upstream x-side-effecting; no approval/budget gate
+//  POST /api/partners/match           no observed call succeeds (sls-123); use scout.getPartners
 export {
   EXCLUDED_SCOUT_OPERATIONS,
   EXCLUDED_SCOUT_OPS,
@@ -78,21 +45,10 @@ export {
   findExcludedScoutPath
 } from "../src/policy/scout-exposure.ts";
 
-// Retired skills — exclusion as DATA (ADR-0003; decision 2026-07-03).
-// The Lumenloop onboarding skills teach RAW HTTP/REST or MCP-connector access
-// (Bearer llmcp_ auth, key minting, rate limits, the REST response envelope).
-// They are redundant AND misleading here: a model calling `execute` reaches
-// Lumenloop only through the wrapped `lumenloop.*` sandbox globals — no
-// network, secrets stay host-side, and the envelope is {ok,data}, not the
-// REST shape those skills describe.
-//
-// Only lumenloop-mcp-connect (from the PUBLIC lumenloop source) still exists
-// in the mirror. The six lumenloop-api-* partner skills were retired here
-// and were removed from the mirror entirely
-// 2026-07-06 (go-public cleanup): their description harvest was complete and
-// partner-tier content must not live in this public repo. Their names live on
-// only in the scrub regex in src/skills/scrub.ts, which removes the public
-// skills' cross-references to them from emitted and served text.
+// Retired onboarding skills (ADR-0003): they teach raw REST/MCP auth and envelopes,
+// which mislead models inside sandbox `execute`. Only lumenloop-mcp-connect remains
+// in the public mirror; the six partner lumenloop-api-* skills are kept solely as
+// scrub targets in src/skills/scrub.ts.
 export const RETIRED_ONBOARDING_SKILLS = new Set(["lumenloop-mcp-connect"]);
 
 export const RETIRED_PARTNER_ONBOARDING_SKILLS = new Set([
@@ -107,17 +63,9 @@ export const RETIRED_PARTNER_ONBOARDING_SKILLS = new Set([
 export const SKILL_EXPOSURE_CLASSIFICATION_VALUES = new Set(["internal-guidance", "removed"]);
 
 /**
- * Review ledger for non-exposed Lumenloop onboarding skills. This is NOT an
- * emitted model surface; it exists so future syncs/revisits have an auditable
- * per-skill decision instead of rediscovering why the raw bodies stay out of
- * catalog exposure.
- *
- * classification:
- * - internal-guidance: raw skill remains non-exposed; safe lessons may be
- *   distilled into Raven-owned notes or code, but never by mirroring the raw
- *   connector/key-management playbook.
- * - removed: raw body is intentionally absent from this public repo and no
- *   current Raven-facing guidance is accepted from it.
+ * Audit ledger for non-exposed Lumenloop onboarding skills (not emitted).
+ * - internal-guidance: raw body stays unexposed; safe lessons may be distilled into Raven-owned text.
+ * - removed: partner-tier body absent from this public repo; retained only as scrub targets.
  */
 export const SKILL_EXPOSURE_CLASSIFICATIONS = [
   {
@@ -142,10 +90,7 @@ export const SKILL_EXPOSURE_CLASSIFICATION_BY_ID = new Map(
   SKILL_EXPOSURE_CLASSIFICATIONS.map((entry) => [entry.id, entry])
 );
 
-// Skill-body exposure scrubs live in src/skills/scrub.ts because they also run
-// at READ time. One implementation removes retired skill references and
-// complete Markdown blocks for excluded Scout paths. The builders import that
-// implementation here.
+// Shared with read-time skill scrubbing in src/skills/scrub.ts.
 export {
   scrubNonExposedRefs,
   scrubRetiredSkillRefs,

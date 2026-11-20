@@ -1,53 +1,19 @@
 #!/usr/bin/env node
-// check-skills-drift.mjs — detect upstream drift for the ecosystem-skills/ mirror.
+// check-skills-drift.mjs — detection-only upstream drift check for ecosystem-skills/.
+// Usage: node scripts/check-skills-drift.mjs [--json]
 //
-//   node scripts/check-skills-drift.mjs [--json]
+// Never auto-syncs: mirrored skills are prompt input requiring human review.
+// Source drift needs a reviewed re-pin (ecosystem-skills/update.sh); directory-only drift
+// (stellarlight-catalog, stellar-community-catalog) needs scripts/refresh-skill-directories.mjs.
+// Keyless (optional GITHUB_TOKEN / GH_TOKEN for rate limits; reads .env + process.env).
 //
-// DETECTION ONLY. This script never modifies ecosystem-skills/ and must never be
-// replaced by an automated sync: mirrored skills are prompt input, so upstream
-// edits go through a human review gate. Source drift needs a reviewed re-pin.
-// Directory-only drift (stellarlight-catalog or stellar-community-catalog) needs
-// only a directory snapshot and index refresh (scripts/refresh-skill-directories.mjs).
+// Checks:
+// - GitHub sources: latest commit at pinned path vs MANIFEST.json SHA, plus unclassified
+//   upstream skill dirs for `mode: "pick"` sources (must be pinned or in groups.json).
+// - stellarlight-catalog / stellar-community-catalog: projected live entries vs snapshots.
 //
-// Node with installed repository dependencies. Like
-// scripts/refresh-inventory.mjs it reads .env at the repo root and overlays
-// process.env on top. No API keys are required: every mirrored source is
-// public (the credentialed lumenloop-api partner source was removed from the
-// mirror 2026-07-06 — go-public cleanup). GITHUB_TOKEN / GH_TOKEN are used for
-// GitHub API rate limits when present; unauthenticated works too. No secret is
-// ever printed.
-//
-// What is checked, per MANIFEST.json source:
-//   - github sources: latest commit touching the source's pinned path
-//     (GET /repos/{owner}/{repo}/commits?sha={ref}&path={path}&per_page=1 — the
-//     exact query update.sh pins from) vs the pinned commit SHA. On drift, each
-//     mirrored skill's subpath is probed to annotate whether the mirrored
-//     content itself moved (openzeppelin-stellar cherry-picks 3 of a multi-chain
-//     skills/ dir, so repo-path drift can be entirely in non-mirrored skills —
-//     still drift, since re-running update.sh would re-pin, but the note says so).
-//     A cherry-picked source also lists the upstream skill dirs it does NOT pin,
-//     using the shared sources.json selection: a newly published sibling
-//     would otherwise never be pinned and nothing would ever mention it.
-//   - stellarlight catalog: GET the live directory and project it through
-//     scripts/lib/stellarlight-catalog.mjs (the same projection update.sh and
-//     scripts/refresh-skill-directories.mjs use), then deep-compare with
-//     ecosystem-skills/catalog.json. Volatile fields never enter the compare by
-//     construction: the local fetched_at is not projected, and live-side
-//     request-scoped meta (generatedAt etc.) is dropped because only
-//     meta.counts, meta.validKinds and the per-skill projected fields are kept.
-//     "Drift" therefore means exactly: refreshing the catalog would change catalog.json.
-//   - stellar/stellar-dev-skill main directory: project the literal ECOSYSTEM_CARDS
-//     names and links from the site source, then compare with community.json.
-//     No bodies are fetched, and upstream code is never executed.
-//
-// Exit codes (three-way, consumed as an enum by .github/workflows/refresh.yml):
-//   0 = every checked source clean;
-//   1 = drift detected (any source DRIFTED);
-//   2 = check error (any source ERRORED, or the script itself crashed) — still
-//       fails the job, fail-closed, but distinguishable from real drift so CI
-//       never pastes the re-pin remediation for a transient upstream outage.
-// Error takes precedence over drift. SKIPPED sources (missing key) do not
-// affect the exit code but are warned about on stderr.
+// Exit codes (consumed by .github/workflows/refresh.yml):
+//   0 = clean, 1 = drift, 2 = error (error beats drift).
 
 import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -66,14 +32,8 @@ export const DIRECTORY_SOURCE_IDS = new Set(["stellarlight-catalog", "stellar-co
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const JSON_MODE = process.argv.includes("--json");
 
-// .env parser + JSON fetch (3 attempts, retry network/5xx, err.cause detail)
-// + deep key sort are shared with scripts/refresh-inventory.mjs — see
-// scripts/lib/shared.mjs.
 const ENV = { ...parseEnvFile(join(ROOT, ".env")), ...process.env };
 
-// ---------------------------------------------------------------------------
-// GitHub sources
-// ---------------------------------------------------------------------------
 function githubHeaders() {
   const headers = {
     Accept: "application/vnd.github+json",
@@ -104,19 +64,9 @@ const short = (sha) => (sha ? String(sha).slice(0, 12) : "?");
 const dirPrefix = (source) => (source.path === "." ? "" : source.path);
 
 /**
- * Upstream skill directories that are neither pinned nor explicitly excluded.
- *
- * Cherry-picked sources use an explicit mode in update.sh's sources.json.
- * Re-running update.sh keeps its fixed pick list. This check surfaces a new
- * sibling even when no exclusion has ever been recorded for that source.
- *
- * Listing every unpinned directory on drift was not enough: it buried the one
- * new name among eight long-standing out-of-scope ones, and it vanished as soon
- * as the operator re-pinned (a current commit takes the clean early-return).
- * So the exclusions are COMMITTED DATA (`groups.json` `unpinnedUpstream`) and
- * this runs on EVERY check, clean or not: an upstream directory that is neither
- * pinned nor recorded is unclassified, and unclassified is a failure until a
- * human pins it or writes down why not.
+ * Upstream skill directories for `mode: "pick"` sources that are neither pinned nor listed in
+ * `groups.json` `unpinnedUpstream`. Runs on every check so newly published siblings fail drift
+ * until explicitly pinned or excluded.
  */
 async function unclassifiedSkillDirs(source, unpinnedUpstream, definition) {
   if (definition.mode !== "pick") return [];
@@ -140,9 +90,7 @@ async function checkGithubSource(source, unpinnedUpstream, definition) {
     unclassifiedSkillDirs(source, unpinnedUpstream, definition),
   ]);
 
-  // An unclassified sibling is drift in its own right, independent of the
-  // commit: it survives a re-pin that keeps omitting it, which is exactly the
-  // silence this check exists to break.
+  // Unclassified siblings are drift even when the commit SHA matches.
   const unclassifiedNote = unclassified.length
     ? `upstream skill dir(s) neither pinned nor excluded: ${unclassified.join(", ")} — ` +
       `add their picks to ecosystem-skills/sources.json, or record why not under ` +
@@ -163,11 +111,7 @@ async function checkGithubSource(source, unpinnedUpstream, definition) {
 
   let note = `pinned ${source.commit_date ?? "?"} → upstream ${latest.date ?? "?"}`;
   if (unclassifiedNote) note += `; ${unclassifiedNote}`;
-  // Annotate which mirrored skill dirs moved since the pin (best-effort; only
-  // meaningful for subdir-mode sources — root-mode means the whole repo is the
-  // skill). Probes stay sequential (they share the GitHub rate budget), and an
-  // annotation failure never flips the drift verdict — but it is surfaced in
-  // the note, never swallowed.
+  // Best-effort sequential per-skill probe for subdir sources (preserves GitHub rate budget).
   if (source.path) {
     try {
       const affected = [];
