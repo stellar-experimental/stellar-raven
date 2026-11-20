@@ -1,13 +1,8 @@
 # inventory/ — service inventory snapshots
 
-This directory holds generated snapshots of the four upstream services. Catalog assembly and
-drift detection use them.
+Generated snapshots of the four upstream services for catalog assembly and drift detection.
 
-`scripts/build-catalog.mjs` reads the Lumenloop and Stellar Light snapshots and the Stellar Docs
-title snapshot. The Mintlify backend snapshot is drift evidence only. The builder also reads the
-authored `specs/stellar-docs.json` and `specs/stellar-org.json`, the skills manifest, the pinned skill files, and the
-runnable-skill registry. It reads pinned skill files through the hash-verified cache, and a cache
-miss fetches the pinned upstream file. See [the scripts guide](../scripts/README.md).
+`scripts/build-catalog.mjs` reads `lumenloop.json`, `stellar-light.json`, and `stellar-docs-titles.json` alongside authored `specs/stellar-docs.json`, `specs/stellar-org.json`, the skills manifest, pinned skill files (via the hash-verified cache), and the runnable-skill registry ([scripts guide](../scripts/README.md)). `stellar-docs.json` and `stellar-org.json` are drift evidence only.
 
 ## Refresh
 
@@ -15,62 +10,35 @@ miss fetches the pinned upstream file. See [the scripts guide](../scripts/README
 node scripts/refresh-inventory.mjs
 ```
 
-The script needs Node 24 (`.nvmrc`) and no dependencies. It reads `LUMENLOOP_API_KEY` and
-`MINTLIFY_ASSISTANT_API_KEY` from `.env` at the repository root or from the environment.
+Requires Node 24 (`.nvmrc`), no dependencies, and `LUMENLOOP_API_KEY` + `MINTLIFY_ASSISTANT_API_KEY` in `.env` or the environment.
 
-- **Idempotent.** The script rewrites a file only when its content changes. It ignores
-  `fetchedAt` in that comparison, so two runs in a row produce no diff.
-- **Deterministic.** It sorts keys recursively and sorts tool and skill arrays by name. A diff is
-  therefore a real upstream contract change.
-- **No secrets in output.** It refuses to write an output that contains a `.env` value.
+- **Idempotent & deterministic:** rewrites a file only when content (ignoring `fetchedAt`) changes, sorting keys and tool/skill arrays so diffs reflect real contract changes.
+- **Secret guard:** refuses to write any output containing a `.env` value.
 
 ### Daily refresh in CI
 
-The daily `refresh.yml` workflow runs the same refresh. It opens, updates (only when a key's report changes), and closes one `drift`-labeled issue per drift kind (keyed by drift class and source) via `scripts/sync-drift-issues.mjs`. It requires these repository secrets: `LUMENLOOP_API_KEY` and `MINTLIFY_ASSISTANT_API_KEY`.
-Missing required secrets fail the workflow in stellar-experimental/stellar-raven. Other repositories
-skip with a notice.
+`refresh.yml` runs the same refresh daily and reconciles one `drift`-labeled issue per `<class>:<source>` key via `scripts/sync-drift-issues.mjs` (opening, updating only when a key's report changes, and closing on clear). Missing `LUMENLOOP_API_KEY` or `MINTLIFY_ASSISTANT_API_KEY` secrets fail in `stellar-experimental/stellar-raven` and skip with a notice on forks.
 
-On a fork, also set two repository variables:
+On a fork, set two repository variables:
 
-- `RAVEN_SERVICE_URL`: the base URL of your deployed Raven. The workflow reads its
-  `/health/skills`. Without it, the refresh skips on a fork.
-- `REFRESH_ISSUE_ASSIGNEE`: the maintainer who gets the drift issues. [The operations
-  guide](../docs/operations.md#scheduled-workflows) lists the workflows and owns the default.
+- `RAVEN_SERVICE_URL`: deployed Raven base URL for `/health/skills` (without it, refresh skips on a fork).
+- `REFRESH_ISSUE_ASSIGNEE`: drift-issue assignee ([operations guide](../docs/operations.md#scheduled-workflows) owns the default).
 
 ## Files
 
-| File | Contents | Drift signal captured |
+| File | Contents | Drift signal |
 | --- | --- | --- |
-| `lumenloop.json` | Lumenloop tool names, skill names, `/v1/me` tier data, and the public OpenAPI spec. See the details below. | `changelogCursor` = latest `GET /v1/changelog` entry (date/title/breaking); `openapiVersion` |
-| `stellar-light.json` | The full keyless `GET /api/openapi.json` spec under `openapi`, plus a `GET /api/status` snapshot with volatile fields (`generatedAt`, `usage`) stripped. The snapshot owns its operation count. | `changelogLatest` = latest `GET /api/changelog` entry; `openapiVersion` |
-| `stellar-docs.json` | The Mintlify backend identity (API base, search and page paths, project subdomain, auth env name), the response shapes of one search and one page probe, and a fingerprint of the keyless `llms.txt` page index (page count, plus the SHA-256 and page count of each index file). Stellar Docs operation definitions are authored separately in `specs/stellar-docs.json`. | `source` (backend identity), `contract` (response shapes), `pageIndex` (page-index content) |
-| `stellar-docs-titles.json` | Deduplicated page titles and paths from `llms.txt` and every nested `/_llms/*.txt` index it links. The catalog builder scopes these titles by each Docs operation's path prefixes and distills them into routing keywords. | page-title/path additions, removals, and rewords |
-| `stellar-org.json` | The stellar.org origin and search path, the response and row keys of one keyless site-search probe, and the status, content type, and `<main>` presence of one page probe. Drift evidence only; the operations are authored in `specs/stellar-org.json`. | `source` (origin, search path), `contract` (row keys, page probe) |
+| `lumenloop.json` | Guest + partner tool names, skill names, `/v1/me` tier/lane/tool counts (no limits), and keyless `GET /v1/openapi.json` (details below). | `changelogCursor`, `openapiVersion` |
+| `stellar-light.json` | Keyless `GET /api/openapi.json` plus `GET /api/status` with volatile fields (`generatedAt`, `usage`) stripped. | `changelogLatest`, `openapiVersion` |
+| `stellar-docs.json` | Mintlify backend identity, search/page probe shapes, and keyless `llms.txt` page-index fingerprint. | `source`, `contract`, `pageIndex` |
+| `stellar-docs-titles.json` | Deduplicated titles and paths from `llms.txt` and nested `/_llms/*.txt`, used by the catalog builder for routing keywords. | Title/path additions, removals, rewords |
+| `stellar-org.json` | Origin, search path, keyless site-search row keys, and page probe status/content-type/`<main>` check. | `source`, `contract` |
 
 ### `lumenloop.json` details
 
-- **Tools.** Every guest and partner tool name. The list endpoint hides partner tools
-  even with a partner key. The refresh therefore joins keyless `GET /v1/tools` with the authored
-  `LUMENLOOP_PARTNER_TOOLS` name list. It checks the joined count against `GET /v1/me`
-  `tools.available`.
-- **Guest tools** carry full detail: description, `when_to_use`/`returns`, input and output JSON
-  Schemas, and the invoke block.
-- **Partner tools** are name-only stubs (`partner_stub: true`). Partner-tier detail is never
-  committed.
-- **Skills.** Every skill name. The public set has metadata and file paths, never contents. The
-  partner set has name, set, and tier stubs only. `/v1/me` exposes no skills count, so no count
-  guard applies.
-- **`/v1/me`.** Tier, lane, and tool counts. Limits are not stored.
-- **`openapi`.** The full keyless `GET /v1/openapi.json` spec (the guest
-  tool-invoke paths plus account and discovery endpoints). Partner tools never appear in the spec,
-  so the `tools` union is the source of truth.
+- **Tools:** `GET /v1/tools` hides partner tools even with a partner key, so refresh joins it with `LUMENLOOP_PARTNER_TOOLS` in `scripts/refresh-inventory.mjs` and checks the count against `/v1/me` `tools.available`. Guest tools carry full schemas and invoke metadata; partner tools are name-only stubs (`partner_stub: true`, never partner detail). `openapi` omits partner tools, so `tools` is the source of truth.
+- **Skills:** public skills carry metadata and paths (never contents); partner skills are name/set/tier stubs only. No count guard applies (`/v1/me` exposes none).
 
 ## Generated — never hand-edited
 
-`scripts/refresh-inventory.mjs` rebuilds every file here. Do not edit them directly
-([`AGENTS.md` “Commands and verification”](../AGENTS.md#commands-and-verification)).
-
-- Stellar Docs and stellar.org operation definitions are not inventory content. Edit the authored
-  `specs/stellar-docs.json` or `specs/stellar-org.json` instead.
-- `scripts/refresh-inventory.mjs` holds the authored `LUMENLOOP_PARTNER_TOOLS` name list. Edit
-  it there and run the refresh again. A count mismatch against `/v1/me` fails the run.
+Rebuild files here with `scripts/refresh-inventory.mjs` ([`AGENTS.md`](../AGENTS.md#commands-and-verification)). Edit Stellar Docs / stellar.org operation definitions in `specs/stellar-docs.json` or `specs/stellar-org.json`, and edit `LUMENLOOP_PARTNER_TOOLS` in `scripts/refresh-inventory.mjs` then re-refresh.

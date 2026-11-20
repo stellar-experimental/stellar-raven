@@ -1,29 +1,13 @@
 # assets/brand/ — brand masters (upload source-of-truth)
 
-These brand assets are for external dashboards. The WorkOS AuthKit sign-in customizer uses them.
-These files keep brand uploads versioned and reproducible.
+Versioned brand uploads for external dashboards (such as the WorkOS AuthKit sign-in customizer).
 
-Files that external listings load by URL live in [`public/`](../../public/) instead. Cloudflare serves
-that directory as Workers static assets (`assets` in `wrangler.jsonc`), with headers from
-`public/_headers`:
+URL-loaded assets for external listings live in [`public/`](../../public/) (served as Workers static assets with `public/_headers`):
 
-- `/raven-icon.svg`, `/raven-logo-dark.svg`, and `/raven-logo-light.svg`. The logos set the
-  wordmark as outlined IBM Plex glyphs, because an `<img>` SVG cannot load web fonts.
-- `/listing/`: the Claude connector directory header logo, carousel images, and pattern.
-  [`research/listing-carousel-evidence-2026-10-07.md`](../../research/listing-carousel-evidence-2026-10-07.md)
-  records the Raven calls behind each carousel frame. [`listing.md`](listing.md) records the
-  design decisions, and `tools/` holds the scripts that rebuild the outlined logos and the pattern.
+- `/raven-icon.svg`, `/raven-logo-dark.svg`, `/raven-logo-light.svg` (outlined IBM Plex glyphs because `<img>` SVGs cannot load web fonts; `test/auth.test.ts` requires the site's mark path).
+- `/listing/`: Claude connector directory header logo, carousel images, and pattern ([`listing.md`](listing.md), [`research/listing-carousel-evidence-2026-10-07.md`](../../research/listing-carousel-evidence-2026-10-07.md), rebuilt by `tools/`).
 
-`test/auth.test.ts` requires the icon and the two site logos to carry the site's mark path.
-
-The live site holds its own assets as generated code:
-
-- `src/site.ts` holds the `FAVICON` data URI and `ravenSvg()`.
-- `src/fonts.ts` holds the fonts.
-- `src/og.ts` holds `/og.png`.
-
-`src/site.ts` is the source of truth for the shape (`RAVEN_PATH`) and the palette (`TOKENS`).
-If those blocks change, regenerate the files here.
+Live site assets are generated code in `src/site.ts` (`FAVICON`, `ravenSvg()`, source of truth for `RAVEN_PATH` and `TOKENS`), `src/fonts.ts`, and `src/og.ts`. Regenerate files here if `RAVEN_PATH` or `TOKENS` change.
 
 ## Files
 

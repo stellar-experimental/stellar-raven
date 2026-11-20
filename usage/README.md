@@ -1,50 +1,23 @@
 # Monthly usage reports
 
-Raven records each top-level `search` and `execute` response, including errors and refusals.
-The count does not assess correctness or prove that the client received every byte.
-Protocol messages, connection checks, internal `codemode.search` calls, and upstream operations do not count.
-Authentication rejections, input validation errors, and failures before a response log do not count.
-Playground tool responses appear separately from MCP responses.
+Raven records each top-level `search` and `execute` response (including errors and refusals; MCP and Playground separately). Protocol messages, connection checks, internal `codemode.search` calls, upstream operations, auth rejections, input validation errors, and pre-log failures do not count. Counts do not measure correctness or client delivery.
 
-A distinct active account has at least one recorded tool response in the selected UTC month.
-The collector uses Raven's existing WorkOS-derived `subjectHash`.
-It does not use an email address, IP address, browser fingerprint, or OAuth client identifier.
-Several clients belonging to one account count as one account.
-API keys have no WorkOS identity and never count as people.
-Internal tests using an API key remain visible in the API-key response count.
-Tests using a real OAuth account cannot be distinguished from that account's other usage.
-Rotating `MCP_SERVER_SECRET` can split an account's hash. Record rotations before comparing user counts.
+A distinct active account has at least one recorded response in the UTC month, keyed by WorkOS-derived `subjectHash` (never email, IP, browser fingerprint, or OAuth client ID). Multiple clients for one account count as one; API keys never count as people (and internal API-key tests remain in API-key counts, while OAuth tests cannot be separated from that account's usage). Record `MCP_SERVER_SECRET` rotations before comparing user counts, as rotation splits hashes.
 
 ## Privacy rules
 
-- Account hashes are pseudonymous personal data. Treat them as personal data.
-- Each user-level dataset has a defined purpose, restricted access, and rules for retention and deletion.
-- Never infer an organization from user, client, network, geographic, TLS, or user-agent data.
+- Treat account hashes as pseudonymous personal data with defined purpose, restricted access, retention, and deletion rules.
+- Never infer organizations from user, client, network, geo, TLS, or user-agent data.
 - Never publish raw query previews or reversible short-query hashes as top-query reports.
 
 ## Storage
 
-`stellar-raven-usage` is a Tail Worker attached to `stellar-raven-codemode`.
-It extracts permitted fields from existing logs after the producer invocation finishes.
-The collector and the separate aggregate report Worker access the usage D1 database.
-The collector exposes no HTTP route or MCP operation.
-The report Worker requires its own bearer secret and runs fixed aggregate SELECT queries.
-It returns no account hashes.
+`stellar-raven-usage` is a Tail Worker attached to `stellar-raven-codemode` (no HTTP route or MCP operation). It extracts permitted fields from producer logs into D1; the separate report Worker requires its own bearer secret, runs fixed aggregate SELECTs, and returns no account hashes.
 
-`usage_responses` stores one row per response with its log timestamp, tool, surface, access mode,
-and optional pseudonymous account hash. An invocation identifier plus log index deduplicates retries.
-`usage_receipts` records response counts, log truncation, and the producer's hourly canary.
-Neither table stores request headers, queries, answers, code, exceptions, or raw account identifiers.
-The collector tries each database write up to three times and reports permanent failures.
-
-The daily cleanup deletes rows older than the retention window: the current UTC month and the previous months that `USAGE_RETENTION_MONTHS` counts.
-The collector imports it from `src/auth/retention.ts`; [the operations guide](../docs/operations.md#data-retention) gives the period.
-An account-data deletion also removes the account's response rows.
-[The operations guide](../docs/operations.md#account-data-deletion) gives the deletion procedure.
-
-Migration 0003 stores historical report snapshots in D1. Each snapshot has an explicit expiry
-timestamp, and the daily cleanup deletes expired snapshots. The report API returns the launch
-snapshot only after bearer authentication.
+- `usage_responses`: one row per response (`timestamp`, `tool`, `surface`, `access_mode`, optional `subjectHash`), deduplicated by invocation ID + log index.
+- `usage_receipts`: response counts, log truncation, and the hourly producer canary.
+- Neither table stores headers, queries, answers, code, exceptions, or raw account IDs. Writes retry up to three times before logging permanent failure.
+- Daily cleanup deletes rows older than the current UTC month plus `USAGE_RETENTION_MONTHS` (`src/auth/retention.ts`; [operations guide](../docs/operations.md#data-retention)) and expired historical snapshots (migration 0003; served only after bearer auth). Account deletion also removes response rows ([deletion procedure](../docs/operations.md#account-data-deletion)).
 
 ## Report
 
@@ -52,115 +25,58 @@ snapshot only after bearer authentication.
 node scripts/usage-report.mjs --from 2026-09 --to 2026-10
 ```
 
-`--to` is exclusive. The command uses the account in `usage/wrangler.jsonc`. Set `WRANGLER_PROFILE` to pick a
-named Wrangler profile; without it, Wrangler uses your default login.
-Add `--local` to query the local test database.
-The JSON output contains MCP, playground, and combined monthly rows.
-The combined account count deduplicates users across both surfaces.
+`--to` is exclusive. Uses `usage/wrangler.jsonc` (set `WRANGLER_PROFILE` for a named profile; add `--local` for the local test DB). Outputs MCP, Playground, and combined monthly rows (combined deduplicates accounts across surfaces).
 
-Before sharing a report:
-
-- State the actual collection dates. Missing months mean unavailable data, not zero usage.
-- Separate API-key response counts from OAuth user activity.
-- Inspect unattributed responses and truncated invocations.
-- Check the producer canary timestamps and collector errors. A missing canary can signal a collection gap.
-- Retain a dated aggregate export when comparing completed months.
+Before sharing a report: state collection dates (missing months are unavailable data, not zero); separate API-key counts from OAuth users; check unattributed responses, truncated invocations, canary freshness, and collector write errors; keep a dated aggregate export for completed-month comparisons.
 
 ## Deploy and verify
 
-Apply migrations before deploying the collector:
+Apply migrations before deploying the collector (add `--profile <name>` if needed):
 
 ```sh
 npx wrangler d1 migrations apply stellar-raven-usage --config usage/wrangler.jsonc --remote
 npx wrangler deploy --config usage/wrangler.jsonc
 ```
 
-Add `--profile <name>` when your Wrangler login for the account is a named profile.
+Attach via `tail_consumers: [{ service: "stellar-raven-usage" }]` in Raven's Wrangler config (preserving other consumers) after publishing matching usage disclosures. Verify a known tool response in logs and D1, confirm hourly canaries arrive, and inspect collector logs for write errors.
 
-Attach the collector with `tail_consumers: [{ service: "stellar-raven-usage" }]` in Raven's Wrangler config.
-Publish the matching usage disclosure before starting collection.
-Verify the live producer settings after deployment. Preserve any other tail consumers.
-Check a known tool response in both the retained logs and D1, then verify the hourly canary arrives.
-Run the monthly report and inspect the collector's logs for failed writes.
-
-Deploy the producer with `npm run deploy`, as [the operations guide](../docs/operations.md#deploy)
-describes. Its `postdeploy` check gets its credential from `wrangler auth token`. Wrangler uses
-`CLOUDFLARE_API_TOKEN` when it is set, then the `WRANGLER_PROFILE` profile, then the profile bound
-to this checkout.
-
-To stop new collection, remove only this tail consumer from the producer settings and config.
-Preserve the database for the agreed retention period.
-
-The hourly `usage-health` workflow skips with a notice when the report token is absent.
-It never fails a fork that has not configured its own archive.
+Deploy the producer with `npm run deploy` ([operations guide](../docs/operations.md#deploy)); its `postdeploy` check authenticates via `wrangler auth token` (`CLOUDFLARE_API_TOKEN`, then `WRANGLER_PROFILE`, then checkout profile). To stop collection, remove only this tail consumer and keep D1 for the retention period. The hourly `usage-health` workflow skips with a notice when `USAGE_REPORT_TOKEN` is unset.
 
 ## Dashboard
 
-The dashboard source is in [`report-site/`](report-site/README.md). It is reviewed in Raven pull
-requests. The owner publishes it as a private Sites project; `report-site/.openai/hosting.json`
-holds its project ID. The Sites deployment adds owner-only access.
-
-After a report change merges, sync the reviewed main branch to the separate Sites publication checkout:
+Source lives in [`report-site/`](report-site/README.md) (reviewed in Raven PRs; CI runs `npm run test:usage-report` and `npm run build:usage-report`). `.openai/hosting.json` holds the owner's private Sites project ID. After merging to `main`, sync to the separate Sites checkout and publish that exact copy (never edit the publication copy directly; `.raven-source.json` records the commit):
 
 ```sh
 node scripts/sync-usage-site.mjs <path to the Sites checkout>
 ```
 
-Build, validate, and publish that exact copy through Sites. Its `.raven-source.json` records the Raven commit.
-Do not edit the publication copy independently. `npm run test:usage-report` and `npm run build:usage-report`
-run in CI alongside the collector checks.
-
 ## Run your own usage archive on a fork
 
-The repository owner operates the public service. A fork gets the full collection and reporting
-stack and needs none of the owner's data. Set it up in this order:
-
-1. Put your Cloudflare `account_id` in `usage/wrangler.jsonc` and `usage/report-site/cloudflare/wrangler.jsonc`.
-   Create a D1 database named `stellar-raven-usage` and put its `database_id` in both files.
-2. Apply the migrations and deploy the collector as shown above. Add `tail_consumers` to your producer config.
-3. Deploy the report Worker: `npx wrangler deploy --config usage/report-site/cloudflare/wrangler.jsonc`.
-   Set its `REPORT_TOKEN` secret to a fresh random value.
-4. Optional dashboard: create your own Sites project and replace `usage/report-site/.openai/hosting.json`
-   with its project id. Configure `USAGE_REPORT_URL` and secret `USAGE_REPORT_TOKEN` in Sites.
-5. Optional monitoring: set the repository secret `USAGE_REPORT_TOKEN` and the variable `USAGE_REPORT_URL`
-   so the hourly health workflow runs. Until then, it skips with a notice.
-6. Historical snapshots are optional. If you import none, the `/launch` page shows 404.
+1. Put your Cloudflare `account_id` and new `stellar-raven-usage` D1 `database_id` in `usage/wrangler.jsonc` and `usage/report-site/cloudflare/wrangler.jsonc`.
+2. Apply migrations, deploy the collector, and add `tail_consumers` to your producer config.
+3. Deploy the report Worker (`npx wrangler deploy --config usage/report-site/cloudflare/wrangler.jsonc`) and set a fresh `REPORT_TOKEN` secret.
+4. Optional dashboard: replace `usage/report-site/.openai/hosting.json` with your Sites project ID and configure `USAGE_REPORT_URL` and secret `USAGE_REPORT_TOKEN` in Sites.
+5. Optional monitoring: set repo secret `USAGE_REPORT_TOKEN` and variable `USAGE_REPORT_URL` to enable `usage-health`. Without imported historical snapshots, `/launch` returns 404.
 
 ## Limits
 
-This is an operational usage measure. Worker logs and tail delivery are not an exactly-once billing ledger.
-Database writes are idempotent, but producer crashes, truncated logs, or undelivered tail events can leave gaps.
-The receipt table helps identify gaps; it cannot prove that no event was lost.
-The archive cannot recreate tool events that expired from Workers Logs before collection started.
+Best-effort operational telemetry, not an exactly-once billing ledger. Producer crashes, truncated logs, or dropped tail events can leave gaps (receipts help spot gaps but cannot prove completeness), and events expired from Workers Logs before collection cannot be recovered.
 
-- Interrupted invocations are informational. They can contain computed responses that did not reach the client.
-- Cancellation receipts can increase storage volume.
-- Receipt presence indicates observed invocations, not complete tool coverage.
-- Missing-identifier and write-failure receipts use random identifiers; redelivery can repeat these diagnostic counts.
-- Producer failure and truncation checks indicate possible missing responses, not necessarily a collector fault.
-- The usage retention window applies to D1 usage records. It does not apply to Workers Logs or AI Gateway metadata.
+- Interrupted invocations may hold computed responses the client never received; cancellation receipts add storage.
+- Missing-ID and write-failure receipts use random IDs and may repeat on redelivery.
+- Producer failure/truncation signals indicate possible gaps, not necessarily collector faults.
+- The usage retention window covers D1 only, not Workers Logs or AI Gateway metadata.
 
 ## Owner data stays outside the repository
 
-This repository is the only source for usage collection and the report. It works without any
-private directory. The owner keeps private directories on their machines. The first two are
-private local Git repositories with no remote, and they sit beside this one:
+This repo works without any private directory. The owner keeps three private local directories outside it:
 
 | Directory | Holds |
 |---|---|
-| `~/Desktop/stellar-raven-aux-priv-report` | The Sites publication copy of `usage/report-site/`. `scripts/sync-usage-site.mjs` writes it from clean `main`; never edit it directly. |
-| `~/Desktop/stellar-raven-aux-priv-evidence` | Production snapshots, dashboard exports, and audits with real figures. Production data lives there and nowhere else. |
-| `/home/tyler/raven-data/qa` (on agentpc) | The pinned judge-stability register and the stored QA results, which contain held-out verdicts. `eval/qa/heldout-read.sh` reads the register from there by default. Never open or commit them. |
+| `~/Desktop/stellar-raven-aux-priv-report` | Sites publication copy of `usage/report-site/`, written by `scripts/sync-usage-site.mjs` from clean `main`; never edit directly. |
+| `~/Desktop/stellar-raven-aux-priv-evidence` | Production snapshots, dashboard exports, and audits with real figures. |
+| `/home/tyler/raven-data/qa` (on agentpc) | Pinned judge-stability register and stored QA results with held-out verdicts (`eval/qa/heldout-read.sh` default). Never open or commit. |
 
-A fork creates its own Sites project and keeps its own evidence outside its repository.
+Never commit production counts, request IDs, or account hashes; tests use synthetic fixtures only. Import historical snapshot JSON into D1 via bound parameters. `scripts/check-private-usage.mjs` (pre-commit and CI) blocks known export shapes, but prose still requires review.
 
-Never commit production counts, request identifiers, or account hashes. Public tests use explicitly
-synthetic fixtures. Import historical snapshot JSON into D1 with a bound parameter through the
-Cloudflare API. `scripts/check-private-usage.mjs` runs in the pre-commit hook and in CI. It refuses
-known snapshot and export shapes, but prose still needs review.
-
-Cloudflare references:
-
-- [Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/)
-- [Tail handler](https://developers.cloudflare.com/workers/runtime-apis/handlers/tail/)
-- [D1 Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/)
+Cloudflare docs: [Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/), [Tail handler](https://developers.cloudflare.com/workers/runtime-apis/handlers/tail/), [D1 Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/).
