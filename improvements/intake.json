@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-11-14",
+  "updated": "2026-11-20",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Verified 2026-11-02 (sd-059 filed as stellar/stellar-docs#2995). developers.stellar.org runs on Mintlify, and the docs team owns both its content and its search; content and search findings file in stellar/stellar-docs."
@@ -282,6 +282,10 @@
     "sd-113": {
       "intake": "unclear",
       "reason": "Net-new content request. No stellar.org or developers.stellar.org page undertakes the topic, and the stellar.org page copy has no public issue tracker (checked 2026-11-17)."
+    },
+    "sk-040": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "stellar/stellar-dev-skill owns skills/smart-contracts/security.md and testing.md."
     }
   }
 }
