@@ -1,30 +1,16 @@
 #!/usr/bin/env node
 /**
- * Golden source sentinels: re-read a golden's own primary source and test one anchor.
+ * Golden source sentinels: re-read primary sources in `eval/qa/source-sentinels.json` and check
+ * one anchor (`present`, `absent`, or `count`, with `guard` required whenever an empty page could pass).
+ * Drift queues a case for golden-truth re-verification and is never evidence by itself.
  *
- * Each sentinel in eval/qa/source-sentinels.json names a battery case, the case's
- * `truth.asOf` when the anchor was written (`caseAsOf`), a primary-source URL, and a check:
- *   present  the pattern still matches (the source still states the golden's value)
- *   absent   the pattern still does not match (a roadmap item has not shipped)
- *   count    the pattern matches exactly `count` times (a roster still has N rows)
- * A check that can hold on an empty page (absent, or a count of 0) also names a `guard`: a
- * pattern that must match before the page counts as read. A failed check is `drift`: a trigger
- * that queues the case for golden-truth re-verification, never evidence for a gospel change.
- * The method and its trial are recorded in
- * research/audits/2026-11-02-golden-freshness-probe/README.md.
+ * Usage:
+ *   node eval/qa/source-sentinels.mjs --check                                   # offline validation
+ *   node eval/qa/source-sentinels.mjs [--ids a,b]                               # live table (includes stale)
+ *   node eval/qa/source-sentinels.mjs --report <file.md> [--previous <body.md>] # CI issue report + $GITHUB_OUTPUT
  *
- *   node eval/qa/source-sentinels.mjs --check                offline: schema, cases, caseAsOf
- *   node eval/qa/source-sentinels.mjs [--ids a,b]            live run; prints a table
- *   node eval/qa/source-sentinels.mjs --report <file.md> [--previous <issue-body.md>]
- *                                                            live run; writes the issue report
- *
- * A live table run also reads stale sentinels, so an author can re-confirm an anchor before
- * updating caseAsOf. Report mode lists a stale sentinel as unread instead: its anchor is not
- * confirmed for the case's current truth. With --previous, a sentinel that drifted in the
- * previous report and is unreadable now stays in the drift set, so a flaky source cannot churn
- * the issue. Report mode prints `drift=<n>`, `errors=<n>`, and `fingerprint=<sha256>` lines for
- * $GITHUB_OUTPUT. The run exits 2 when every fetch fails, so an outage can never close the
- * sentinel issue as clean.
+ * In `--report` mode, stale sentinels are listed unread, `--previous` retains unreadable drifted
+ * sentinels to prevent issue churn, and total fetch failure exits 2 so outages cannot close the issue.
  */
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";

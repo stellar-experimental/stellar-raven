@@ -1,30 +1,11 @@
 #!/usr/bin/env node
 /**
- * analyze-composition.mjs — per-case composition/adoption analysis over a QA
- * results file's tool transcripts. See src/skills/README.md for the runner
- * registry, declared-operation contract, and host call ledger.
+ * Per-case composition and `skill.run` adoption analyzer over a QA results file's transcripts.
+ * Usage: `node eval/qa/analyze-composition.mjs <results-file.json>`
  *
- * Usage:
- *   node eval/qa/analyze-composition.mjs <results-file.json>
- *
- * Per case (from rows[].transcript):
- *   - execute script count (execute tool_use entries)
- *   - ADOPTION: did any execute input call codemode.skill.run / skill_run?
- *   - op-call counts, extracted grade-plan-style (imports extractExecuteOps
- *     from eval/plan/grade-plan.mjs — one extractor, no drift); skill.run
- *     calls are expanded through the runner registry's declared ops
- *     (loadRunnerOps). See src/skills/README.md for those declarations. They
- *     do not prove which host calls ran. An absent registry leaves calls
- *     unexpanded and records a note in the output.
- *   - truncation-footer detection + skill.run `calls`-array ok/error/softEmpty
- *     tallies from execute RESULTS — requires results captured whole (the
- *     run-qa.mjs whole-execute-results patch; older files degrade to "n/a").
- *   - turns + costUsd (rows[].agent)
- *
- * Prints a per-case table, then an aggregate table; writes
- * <results-file>.composition.json next to the input (grade-plan sidecar style).
- * Node-clean: plain Node ≥ 22.6 (registry import relies on native type
- * stripping), zero deps.
+ * Reuses `extractExecuteOps` / `loadRunnerOps` from `eval/plan/grade-plan.mjs` (runner expansion
+ * reflects declared ops, not observed host calls), tallies truncation footers and `calls` ledgers
+ * from whole execute results, prints tables, and writes `<results-file>.composition.json`.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";

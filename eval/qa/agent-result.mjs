@@ -1,49 +1,19 @@
 /**
- * agent-result.mjs — the pure parser between one answering-agent spawn and
- * one structured QA outcome.
- *
- * This module separates stream decoding, answer extraction, transcript
- * assembly, and failure naming from the live provider. Production code and
- * saved fixtures in test/fixtures/qa-agent-streams/ use the same parser.
- *
- * PURITY: no fs, no spawn, no clock, no network. Same input → same output,
- * hashes included.
- *
- * SAFETY: a `provider-safeguard` outcome is never retryable and carries no
- * derived request. Only `transport` may enter a retry policy, and the caller
- * still decides whether to use it — nothing here rewrites or re-issues a
- * blocked request.
+ * Pure parser from one answering-agent spawn (`stream-json`) to a structured QA outcome
+ * (no fs, spawn, clock, or network; shared with `test/fixtures/qa-agent-streams/`).
+ * Only `transport` failures are retryable; `provider-safeguard` is terminal and never retried.
  */
 import { createHash } from "node:crypto";
 import { resolvedModelFromStream } from "./model-identity.mjs";
 
 /**
- * Bump when the STORED outcome shape changes (run-qa stamps it in meta).
- *
- * v4 (2026-08-27): answering agents use settings-free isolation instead of
- * safe mode. Claude Code 2.1.247 drops explicit non-SDK MCP servers in safe
- * mode, so v3 cannot prove usable MCP access under its stated contract.
- *
- * v3 (2026-08-27): rows record the MCP connection status from the Claude
- * system init event. Pre-v3 artifacts cannot prove the required server was
- * connected under safe mode, so stored judging refuses them.
- *
- * v2 (2026-08-26): search calls keep their whole input and gain a bounded
- * `resultProjection` (eval/qa/search-projection.mjs). v1 artifacts recorded a
- * sliced query and no hits at all, so they are not comparable for any routing
- * or coverage read — the readers refuse to mix the two rather than join them.
- *
- * The stored outcome also carries `resolvedModel` (the exact model ID the CLI reported, or null).
- * It is optional: no reader requires it, so adding it is not a shape move and does not bump this
- * string. A bump would strand every stored v4 file.
+ * Stored outcome schema version (stamped in `meta`). Bump only on breaking shape changes
+ * (v4: settings-free isolation + init MCP connection status + projected search results;
+ * optional `resolvedModel` does not bump it).
  */
 export const AGENT_RESULT_SCHEMA = "qa-agent-result-v4";
 
-/**
- * Exclusive failure classes. `unclassified` is the deliberate default: an
- * unrecognized provider outcome must stay unknown rather than be guessed into
- * a class that carries a retry or a root-cause claim.
- */
+/** Exclusive failure classes; `unclassified` is the default for unrecognized provider errors. */
 export const FAILURE_CLASSES = Object.freeze([
   "provider-safeguard",
   "transport",
@@ -57,14 +27,7 @@ export const FAILURE_CLASSES = Object.freeze([
 /** Only transport failures may be retried. Everything else is terminal. */
 const RETRYABLE_CLASSES = new Set(["transport"]);
 
-/**
- * Exclusive outcomes for ONE execute whose source contains an artifact read.
- * They PARTITION `readExecutes`: bounded + truncated + guardFailed + hostDenied
- * + otherFailed === total, always. `otherFailed` exists because the two
- * historical post-read `Cannot read properties of undefined` rows
- * (q-pc-sponsored-reserves, q-protocol-operation-types-list, 2026-08-14) fit no
- * guard marker and no host reason, and so belonged to no bucket at all.
- */
+/** Partition of read-containing executes (`bounded + truncated + guardFailed + hostDenied + otherFailed === total`). */
 export const READ_EXECUTE_OUTCOMES = Object.freeze([
   "bounded",
   "truncated",
@@ -73,12 +36,7 @@ export const READ_EXECUTE_OUTCOMES = Object.freeze([
   "otherFailed"
 ]);
 
-/**
- * State of the LAST read-containing execute — the one whose projection the
- * answer could actually use. `bounded` is the only success: the execute
- * completed AND its own result was not truncated again. `none` means the run
- * never read an artifact.
- */
+/** State of the last read-containing execute (`bounded` is the only success; `none` = no reads). */
 export const FINAL_PROJECTION_STATES = Object.freeze([
   "none",
   "bounded",
@@ -97,21 +55,13 @@ const PROJECTION_STATE_OF = Object.freeze({
   otherFailed: "other-failed"
 });
 
-/**
- * Observed provider-safeguard markers (2026-08-14 canonical round, rows
- * q-n3-ssrf-metadata-endpoint attempt 1 and 2). Both markers come from the
- * same provider notice; either alone is sufficient and neither appears in a
- * model-authored answer.
- */
+/** Provider-safeguard notice markers (either suffices; neither appears in model answers). */
 const PROVIDER_SAFEGUARD_MARKERS = [
   "safeguards flagged this message",
   "real-time-cyber-safeguards-on-claude"
 ];
 
-/**
- * Observed transport markers. Kept narrow on purpose — an unmatched provider
- * error stays `unclassified` rather than becoming a retryable transport blip.
- */
+/** Narrow transport-error patterns; unmatched errors stay `unclassified` (non-retryable). */
 const TRANSPORT_PATTERNS = [
   /API Error: Connection closed/i,
   /API Error:\s*529\s+Overloaded\b/i,
@@ -311,18 +261,9 @@ function classifyFailure({
 }
 
 /**
- * Classify ONE read-containing execute into exactly one READ_EXECUTE_OUTCOMES
- * bucket. Precedence is fixed and load-bearing:
- *
- *   1. guardFailed  — the fail-loud envelope guard fired (it surfaces AS an
- *                     execution failure, so it must outrank otherFailed).
- *   2. hostDenied   — a closed host denial message is present (usually returned
- *                     as data by a script that branched on r.ok).
- *   3. otherFailed  — the execute failed for any other reason (a post-read
- *                     TypeError is the observed case).
- *   4. truncated    — the execute completed but its own result truncated again,
- *                     so the projection was not bounded.
- *   5. bounded      — the only success.
+ * Classify a read-containing execute (precedence is load-bearing):
+ * 1. guardFailed (envelope guard fired) -> 2. hostDenied (host denial / ok:false) ->
+ * 3. otherFailed -> 4. truncated -> 5. bounded.
  */
 function classifyReadExecute(entry, result) {
   if (result.includes(WRONG_ENVELOPE_MARKER)) return { bucket: "guardFailed", reason: null };
@@ -354,33 +295,11 @@ function parseVisibleArtifactEnvelope(result) {
 }
 
 /**
- * Derive artifact-continuation outcomes from the transcript.
- *
- * Three DIFFERENT quantities are named separately, because conflating them was
- * the first cut's defect:
- *
- * - `callSites`   — STATIC TEXTUAL occurrences of `codemode.artifact.info/read(`
- *                   in EXECUTE source. It is not a runtime call count and it
- *                   bounds one in NEITHER direction: a site inside a loop
- *                   undercounts (one occurrence, many calls), and a site inside
- *                   a string or comment overcounts (one occurrence, no call).
- *                   Read it as text that was written, never as work that ran.
- * - `readExecutes` — executes whose source contains at least one read call site,
- *                   partitioned by outcome (see READ_EXECUTE_OUTCOMES).
- * - `readOutcomes` — execute-level evidence for an ok:true read, an observed
- *                   denial, or an indeterminate result. Only the VISIBLE result
- *                   body counts: promise resolution proves nothing (a read
- *                   returns `{ ok: false }` instead of rejecting) and neither
- *                   does anything written in the source (see the rule at the
- *                   `readOutcomes.successful` branch below).
- * - `finalProjection` — the state of the LAST such execute.
- *
- * ALL of it is execute-scoped — call sites, read outcomes, and handle discovery
- * alike. `handlesObserved` counts handles this run was actually issued, which
- * only an execute result can carry.
- *
- * Everything comes from what the MODEL saw. Host-side byte counts are separate
- * evidence, so `readBytes` stays null rather than being estimated.
+ * Derive execute-scoped artifact-continuation metrics from model-visible transcript entries:
+ * - `callSites`: static textual occurrences in execute source (not a runtime call count).
+ * - `readExecutes`: read-containing executes partitioned by `READ_EXECUTE_OUTCOMES`.
+ * - `readOutcomes`: visible-result evidence (`successful` requires bounded + `ok: true`).
+ * - `finalProjection`: state of the last read-containing execute. `readBytes` stays null.
  */
 function artifactOutcomes(transcript) {
   const readExecutes = { total: 0 };
@@ -398,12 +317,7 @@ function artifactOutcomes(transcript) {
   const handles = new Set();
 
   for (const entry of transcript) {
-    // Every field here is execute-scoped. A non-execute tool cannot run an
-    // artifact call and is never issued a handle, so it can add no call site,
-    // no read-containing execute, no projection state, and no handle — however
-    // faithfully its input or its result quotes the API. (Under the
-    // per-operation surface non-execute results ARE stored, so this gate is
-    // load-bearing, not theoretical.)
+    // Execute-scoped: non-execute tools cannot run artifact calls or receive handles.
     if (!isExecuteEntry(entry.tool)) continue;
 
     const result = typeof entry.result === "string" ? entry.result : "";
@@ -422,23 +336,8 @@ function artifactOutcomes(transcript) {
     if (bucket === "hostDenied") {
       readOutcomes.denied += 1;
     } else if (bucket === "bounded" && parseVisibleArtifactEnvelope(result)?.ok === true) {
-      // The ONLY success proof: the execute COMPLETED (bounded) and its own
-      // visible body parses as an object with `ok: true`. Both halves are
-      // load-bearing — an errored execute can still leave an `ok:true` envelope
-      // in its wreckage, which is not a projection any answer could use.
-      //
-      // Nothing about the SOURCE counts, because source is text and text does
-      // not run: a guard and a `.data` use can sit on the failure return, inside
-      // a string, or inside a comment and still read as a successful projection
-      // (see the source-evidence regression tests). A truncated body hides
-      // its own envelope by construction, and `r.data ?? fallback` produces the
-      // same output whether the read returned data or was denied.
-      //
-      // This fails closed by design: a real, correctly guarded read whose
-      // execute projected a small answer instead of the envelope now counts as
-      // `indeterminate`, the real artifact-continuation fixture included. An
-      // instrument that under-claims is repairable; one that invents evidence
-      // is not.
+      // Fail-closed success proof: only a bounded execute whose visible body parses as `{ ok: true }`
+      // counts (never source inspection); projected non-envelope answers stay `indeterminate`.
       readOutcomes.successful += 1;
     } else {
       readOutcomes.indeterminate += 1;

@@ -1,36 +1,13 @@
 #!/usr/bin/env node
 /**
- * compile-routing.mjs — compile the labeled golden QA corpus into routing eval cases.
+ * Compile `eval/corpus/raven-golden-qa/big.json` (override: `argv[2]`) and
+ * `eval/corpus/raven-next/research/golden/compiled/golden.json` into `eval/routing-cases.json`
+ * (`cases` = legacy 338 lane; `extendedCases` = net-new IDs graded separately).
  *
- * Reads:  eval/corpus/raven-golden-qa/big.json (override: argv[2]) — vendored snapshot,
- *         see eval/corpus/PROVENANCE.md (the raven sibling checkouts are retired)
- *         eval/corpus/raven-next/research/golden/compiled/golden.json — the 538-case
- *         compiled corpus, for the EXTENDED lane (the 144 net-new ids big.json predates)
- * Writes: eval/routing-cases.json
- *
- * The whole point of this compile step (vs. raven-next's, which dropped them) is to
- * PRESERVE the routing labels: `expected_service`, `expected_cards`, and
- * `acceptable_cards`. The last field becomes a service-level `expected_any`
- * accept-either set (corpus-authored tolerance; non-empty on 383/395 big.json cases,
- * cross-service on 361). Strict grading is untouched: `expected_any` only feeds the
- * additional any1/any3/any5 fields in lib/grade.mjs, so the legacy 338-case strict
- * aggregate stays byte-identical.
- *
- * Lanes in the output:
- *   cases          — the legacy 338 (big.json labels; the comparable historical numbers)
- *   extendedCases  — net-new 538-corpus ids absent from big.json, same mapping/skips.
- *                    Graded as their own lane by run-routing.mjs, never merged into
- *                    the legacy aggregate.
- *
- * Label → catalog-namespace mapping (corpus label on the left, our namespace on the right):
- *   stellar_light → scout        (Stellar Light / Scout ecosystem analytics API)
- *   stellar_docs  → stellarDocs  (Stellar docs MCP / authored docs search op)
- *   lumenloop     → lumenloop    (Lumenloop partner API)
- *
- * Labels with no corresponding catalog namespace are SKIPPED with a reason and counted:
- *   perplexity, parallel — general-web services not in this catalog
- *   none                 — governance / should-not-fire cases (no expected service)
- * Any other/unknown label is also skipped (reason: unknown-label).
+ * Preserves `expected_service`, `expected_cards`, and `acceptable_cards` (mapped to `expected_any`
+ * for accept-either reporting without affecting strict grading). Maps `stellar_light -> scout`,
+ * `stellar_docs -> stellarDocs`, `lumenloop -> lumenloop`; skips `perplexity`, `parallel`, `none`,
+ * and unknown labels with counts.
  */
 import { readFileSync, mkdirSync } from "node:fs";
 import { dirname, join, resolve, relative } from "node:path";
