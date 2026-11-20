@@ -218,7 +218,7 @@ details.tcard[open]>summary::before{transform:rotate(90deg)}
 }
 `;
 
-// Inline client script (authenticated state only). Dynamic content uses textContent only (no innerHTML).
+// Inline client script (authenticated state only). Dynamic text uses textContent/createTextNode (no innerHTML); Markdown links allow only http(s) or same-origin paths.
 
 export const DEMO_SCRIPT_CORE = `
 function mdCommitIndex(s, from){

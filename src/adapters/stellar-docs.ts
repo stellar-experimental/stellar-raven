@@ -1,8 +1,9 @@
 /**
  * Stellar Docs adapter: Mintlify discovery API client (docs/stellar-docs.md).
  * Request mappings live in `transport.mintlify` (specs/stellar-docs.json).
- * Mintlify search has no facets or scores and always returns nearest sections, so path
- * scoping runs over a fixed candidate window and results with no query term return `soft-empty`.
+ * Mintlify search has no facets or scores and always returns nearest sections, so path scoping
+ * runs over a fixed candidate window and, when surviving topic terms exist, results whose kept
+ * sections contain none return `soft-empty`.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import anchorIndex from "./stellar-docs-anchors.json";

@@ -1,7 +1,7 @@
 /**
  * Cost-control caps, history clamping, and best-effort KV throttling for `/playground`.
- * Workers KV has no atomic increment, so `demoThrottle` can slightly overrun under
- * concurrency; hard per-request caps enforce spend bounds. Pure module (no `cloudflare:workers`).
+ * Workers KV has no atomic increment, so `demoThrottle` can overrun under concurrency
+ * (read-modify-write); hard per-request caps bound each turn (not the hourly bucket). Pure module (no `cloudflare:workers`).
  */
 
 import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";

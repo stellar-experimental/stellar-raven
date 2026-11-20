@@ -2,8 +2,8 @@
  * Stellar Light / Scout adapter: keyless HTTP per manifest transport (ARCHITECTURE.md).
  * Collection responses pass through unchanged because resource keys vary by endpoint and
  * single-item/analytics endpoints have no uniform rows array.
- * 404 and `meta.error` map to `soft-empty`; `meta.partial` or a `"backend read failed"`
- * warning maps to `error` even when partial rows are present.
+ * `meta.partial` or a `"backend read failed"` warning maps to `error` even when partial rows are
+ * present; otherwise 404 and non-empty `meta.error` map to `soft-empty`.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import {

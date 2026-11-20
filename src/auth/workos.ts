@@ -211,8 +211,9 @@ async function completeCallback(
   if (!stored) {
     return text("Invalid or expired state", 400, { "set-cookie": clearCookie(STATE_BINDING_COOKIE) });
   }
-  // Single-use: delete the parked state before validation and the code
-  // exchange, in every branch — even a malformed value is consumed.
+  // Best-effort single-use: delete the parked state before validation and the code
+  // exchange in every branch (even malformed values). KV get+delete is non-atomic
+  // and eventually consistent, so it cannot guarantee exactly-once under races.
   await env.OAUTH_KV.delete(`login:${state}`);
   const parked = parseParkedLogin(stored);
   if (!parked) {

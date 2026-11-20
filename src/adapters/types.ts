@@ -1,7 +1,7 @@
 /**
  * Uniform result envelope across all four service adapters (ARCHITECTURE.md).
- * Adapters never throw toward the sandbox: every outcome is `{ ok: true, data }`
- * or `{ ok: false, error }` with `error.kind` `"error"` or `"soft-empty"`.
+ * Expected adapter contract: return `{ ok: true, data }` or `{ ok: false, error }` envelopes
+ * (`error.kind` `"error"` or `"soft-empty"`) for upstream/validation outcomes rather than throwing.
  * Exposure is filtered at build time (ADR-0003), so there is no `"denied"` kind.
  * Node-testable: no `cloudflare:workers` imports in any adapter.
  */

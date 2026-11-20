@@ -1466,7 +1466,7 @@ export const DOCS_HEADERS: Record<string, string> = {
 };
 
 // Consent omits `form-action`: Chromium can block OAuth consent POST/redirect chains when set.
-// Explicit approval, double-submit CSRF, and browser-bound state protect the POST.
+// Explicit approval and the double-submit CSRF token protect the POST; browser-bound state protects /callback.
 
 export const LANDING_HEADERS: Record<string, string> = {
   "content-type": "text/html; charset=utf-8",

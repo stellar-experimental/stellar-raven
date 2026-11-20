@@ -123,10 +123,10 @@ export function demoOpenAiProviderOptions(model: string, reasoningEffort: DemoRe
 }
 
 /**
- * Claude 5.x models use adaptive thinking + effort (`low|medium|high|xhigh|max`, flooring
- * `none`/`minimal` to `low`). Never send `thinking: { type: "disabled" }` or unified
- * `streamText({ reasoning })`: Claude 5 models reject disabled thinking at high effort and
- * `@ai-sdk/anthropic` does not guard all 5.x models. Matches both dot (Cloudflare) and dash
+ * Claude 5.x models use explicit adaptive thinking + effort (`low|medium|high|xhigh`, flooring
+ * `none`/`minimal` to `low`) instead of `thinking: { type: "disabled" }` or unified
+ * `streamText({ reasoning })`: Claude 5 rejects disabled thinking at high/xhigh effort and we
+ * keep the exact Anthropic payload under our control. Matches both dot (Cloudflare) and dash
  * (Anthropic) spellings; older 4.x ids fall through to `{}` because 5.x config 400s on them.
  */
 export const DEMO_ANTHROPIC_5X_MODEL = /^anthropic\/claude-(?:fable|opus|sonnet|haiku)-5(?:$|[.-])/;
