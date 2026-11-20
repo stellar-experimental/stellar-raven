@@ -1,34 +1,9 @@
 /**
- * skills.lumenloop.stellar-ecosystem-digest — runnable core (src/skills/README.md).
- *
- * Mechanizes the digest playbook's mechanical passes (window math, mode
- * routing, dedup, projection); the judgment passes (quotes, expansion) stay
- * with the model via codemode.skill.read.
- *
- * Two modes over ≤ 2 constituent calls:
- *  - theme  → semantic content search over the window PLUS the upcoming-events
- *    list (both in parallel);
- *  - entity → entity-mention lookup only (a generic upcoming-events list is
- *    off-subject noise for an entity digest).
- *
- * Window math runs on the host clock (UTC, YYYY-MM-DD) and both bounds ride
- * the output so answers carry as-of framing — the live-lane grading
- * expectation. ok: true iff the primary content call succeeded OR
- * soft-emptied (a quiet window is a legitimate answer: softEmpty: true,
- * items: []); ok: false only when it errored. Unexpected upstream shapes are
- * treated as that call erroring — fields are never guessed.
- *
- * Payload shapes this projection matches (fixtures
- * in test/fixtures/skill-runners/): semantic search is adapter-normalized to
- * one `items` list with a canonical `collection` per row; entity mode remains
- * a distinct type-keyed contract and adds proposals/scf_submissions keys,
- * which are NOT digest output types and are dropped. Entity rows carry no
- * summary (projected ""); list_documents rows sit under `items` and may lack
- * start_at (null).
- *
- * The runner never authors `calls` — the host ledger owns the audit trail.
- * Defaults are applied in the first lines of run(); schema `default` is
- * documentation only.
+ * Runnable core for `skills.lumenloop.stellar-ecosystem-digest` (src/skills/README.md).
+ * Theme mode fans out semantic search + upcoming events; entity mode queries entity mentions only
+ * (filtering to digest content types). Soft-empty primary results return `softEmpty: true, items: []`;
+ * unexpected primary payload shapes abort with an error envelope (upcoming events degrade to `null`).
+ * `runSkill` attaches `calls`.
  */
 import type { AdapterResult, SkillRunner } from "./types.ts";
 

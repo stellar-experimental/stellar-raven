@@ -1,32 +1,8 @@
 /**
- * Non-exposed reference scrub — ONE implementation, two consumers.
- *
- * Skill bodies come from the pinned upstream commit (see src/skills/source.ts),
- * so every served body passes through this scrub. The
- * builders (scripts/exposure.mjs re-exports this module) and the Worker read
- * path must agree byte-for-byte: what search advertises and what
- * `codemode.skill.read` returns are derived from the same scrubbed text.
- *
- * The exposed lumenloop playbooks were authored for the upstream
- * MCP-connector context and cross-link retired onboarding skills ("Connect
- * first -> ../lumenloop-mcp-connect/SKILL.md"). Through this gateway those are
- * dead pointers to skills that are never emitted, and the connector-setup
- * advice contradicts the sandbox model (no network; the caller is already
- * connected). Every such reference sits inside a markdown list item, so the
- * scrub drops the WHOLE item (bullet line + indented continuation lines) —
- * never a partial sentence.
- *
- * Scout skill bodies can also describe operations outside Raven's manifest.
- * The scrub removes a complete Markdown section, table row, or blockquote that
- * names any excluded path. In a paragraph or list item it drops a trailing `or`
- * alternative clause when every excluded path sits there; otherwise it drops
- * the sentence (paragraph) or whole item (list). The host exposure policy owns
- * the path set.
- *
- * Fail-loud drift guard: if upstream introduces a non-exposed reference
- * outside a removable Markdown block or sentence (for example, in a code
- * fence), the scrub throws instead of emitting the leak. At build time that fails the build. At read time src/skills/store.ts
- * returns an error envelope. The leak is never served.
+ * Non-exposed reference scrub shared by catalog builders (`scripts/exposure.mjs`) and
+ * runtime skill reads (`src/skills/source.ts`) so advertised sections and served bodies match.
+ * Removes list items referencing retired skills and Markdown blocks/sentences naming excluded
+ * Scout paths; throws fail-closed if a reference survives in an unremovable unit (e.g. a code fence).
  */
 import { findExcludedScoutPath } from "../policy/scout-exposure.ts";
 

@@ -1,32 +1,10 @@
 /**
- * Spec sandbox — the code-shaped `search` machinery, mirroring
- * @cloudflare/codemode@0.5.6's `openApiMcpServer` internals
- * (dist/mcp.js: createOpenApiSandboxCode) as faithfully as our multi-service
- * setup allows. Output shaping is host-side, as upstream's is since 0.5.2:
- * the wrapper returns the script's raw value and `createSpecSearchRunner`
- * (run.ts) truncates it with the package's `truncateResult`.
- *
- * What mirrors upstream EXACTLY:
- *  - the generated sandbox source: spec JSON injected inline (`</` escaped),
- *    `__resolveRefs` with ref cache + structuredClone + `$circular` marker,
- *    lazily resolved `__resolvedSpec`, normalizeCode applied to the LLM code,
- *    wrapper returns the script's raw value.
- *
- * Provider and spec behavior (see ARCHITECTURE.md):
- *  - `includeRequest` is always false — our execute keeps per-operation fns
- *    (lumenloop.* / scout.* / stellarDocs.*) instead of a generic
- *    codemode.request; the search sandbox is read-only over spec data with
- *    NO providers at all, exactly like upstream's search.
- *  - the spec is our unified super spec (specs/super-spec.json), not a single
- *    upstream OpenAPI document, and it is serialized once per isolate.
- *  - `resolveSpecRefs` reimplements the sandbox's `__resolveRefs` host-side
- *    so `execute`'s codemode.spec() can return the same resolved document
- *    across the provider RPC boundary (upstream injects the spec into the
- *    execute sandbox source instead; ours would shadow the codemode provider
- *    global, so the host fn is the faithful-in-result equivalent).
- *
- * Pure module: no cloudflare:workers import — unit-testable under plain Node
- * (test/spec-sandbox.test.ts evals the generated wrapper directly).
+ * Spec sandbox for experimental code-shaped `search` over `specs/super-spec.json`, mirroring
+ * `@cloudflare/codemode` `openApiMcpServer` (`createOpenApiSandboxCode`) with `includeRequest: false`
+ * and no service providers (`run.ts` passes `[]`). Production `execute` exposes per-service globals
+ * (`lumenloop.*`, `scout.*`, `stellarDocs.*`, `stellarOrg.*`) and serves `codemode.spec()` over host
+ * RPC (`resolveSpecRefs`) because injecting `const codemode` in-source would shadow the `codemode`
+ * provider global (`skill.read`, `artifact.*`, etc.). Pure module (no `cloudflare:workers` import).
  */
 import { normalizeCode } from "../catalog/vendor/normalize.ts";
 

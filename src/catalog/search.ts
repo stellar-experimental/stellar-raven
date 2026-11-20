@@ -1,27 +1,9 @@
 /**
- * Host-side catalog search contract:
- *
- *   loadManifest(json: unknown): Catalog
- *   searchCatalog(catalog, { query, kind?, service?, limit? }): SearchHit[]
- *   type SearchHit = { id, service, kind, score, tier, description, signature?, outputKeys? }
- *
- * Pure functions, no I/O — importable from the Worker, vitest, and the eval
- * CLI alike. Everything in the manifest is exposed by construction (ADR-0003:
- * exclusions are filtered at build time). Default limit 10.
- *
- * Filters stay silent here by design: an unknown `kind`/`service` simply
- * matches nothing (the eval runner scores raw routing behavior through this
- * exact contract). Filter validation — "did you mean stellarDocs?" — is the
- * callers' job (src/mcp/tools.ts, src/executor/providers.ts), fed by
- * `catalogServices` below.
- *
- * Scoring is the vendored @cloudflare/codemode ranked-token scorer
- * (src/catalog/vendor/search-scoring.ts); signatures for operation hits are
- * rendered from JSON Schema via the vendored type generator.
+ * Pure host-side catalog search and manifest validation (no I/O; importable from
+ * Worker, vitest, and eval CLI). Unknown `kind`/`service` filters silently return no
+ * matches here; caller adapters validate filter values via `catalogServices`.
+ * Relative imports carry explicit `.ts` extensions for native Node type-stripping.
  */
-// NOTE: relative imports in src/catalog/** carry explicit .ts extensions so
-// the module graph loads under plain `node` (type stripping) — the eval CLI
-// and vitest both import this file directly.
 import { z } from "zod";
 import {
   RETRIEVAL_LANES,
@@ -227,23 +209,9 @@ export function catalogServices(catalog: Catalog): readonly string[] {
 }
 
 /**
- * Structural invariants over the whole entry set — enforced at load so a bad
- * manifest fails loudly at first use, not silently at call time:
- *  (a) globally unique entry ids (the exact-match id is the whole addressing
- *      scheme; a dup would make resolution order-dependent);
- *  (b) unique terminal name segments among kind:"operation" entries WITHIN a
- *      service — those segments become sandbox function names in providers.ts,
- *      so a collision would silently shadow one operation with another;
- *  (c) every kind:"operation" entry's `service` and terminal name segment is a
- *      legal JS identifier (VALID_IDENT) — providers.ts turns them into sandbox
- *      namespace/function names and would otherwise SILENTLY skip an op with a
- *      bad ident, yielding a searchable-but-uncallable operation. Throwing here
- *      makes a builder regression fail loudly at load, not silently at call;
- *  (d) a `runnable` entry is kind:"skill" and carries BOTH schemas
- *      (src/skills/README.md) — the flag advertises a callable
- *      contract, so a runnable entry without schemas (or on a non-skill kind)
- *      is a builder bug that would render a broken signature and validate
- *      nothing at dispatch.
+ * Cross-entry manifest invariants enforced at load: unique ids, unique legal JS identifiers
+ * per service for sandbox function names, runnable skills carry both schemas, every recovery
+ * edge targets a distinct exposed operation, and every `detail` edge has valid join keys.
  */
 const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
   const seenIds = new Set<string>();
@@ -578,21 +546,7 @@ function outputItemKeysOf(entry: CatalogEntry): Record<string, string[]> {
   return out;
 }
 
-/**
- * Stub declaration standing in for an oversized output type block in a
- * search hit. Keeps (a) the type NAME the callable line references, so the
- * signature still reads as one coherent declaration set, and (b) the output
- * schema's TOP-LEVEL property names — field names teach the model payload
- * shape (`r.data.projects[].slug` starts from knowing `projects` exists), so
- * field selection stays possible without a describe round-trip. Non-object
- * output schemas (no top-level properties to list) degrade to a bare
- * `unknown` stub with the same describe pointer. The interpolated text
- * (property names, entry id) rides inside a block comment, so a literal
- * comment-terminator sequence in it would end the comment early and corrupt
- * the stub — a
- * build-generated schema shouldn't contain one, but the stub must not be
- * corruptible by upstream data, hence the escape.
- */
+/** Escape comment terminators before interpolating schema text into a compact output stub. */
 function inBlockComment(text: string): string {
   return text.replace(/\*\//g, "*\\/");
 }
@@ -641,35 +595,11 @@ function withShortFieldDocs(schema: JsonSchema): JsonSchema {
 }
 
 /**
- * Render a TypeScript signature for an operation or runnable-skill entry:
- * input/output type declarations plus the callable line the model can use
- * inside `execute` (e.g. `lumenloop.search_directory(input): Promise<...>`;
- * for a runnable skill, `codemode.skill.run("<id>", input): Promise<...>` —
- * src/skills/README.md: skill.run is a CALL, so its rendered line
- * spells the same service-call envelope union operations do; there is no
- * third shape to teach). Non-runnable skills and sections still render no
- * signature — their affordance is skill.read, not a call.
- *
- * The callable line spells out the full result envelope (adapters/types.ts)
- * rather than a bare Promise<Output>: the signature is what LLM code copies
- * from, and a bare Promise<Output> reads as "payload fields at the top
- * level" — exactly the wrong access (`r.projects` instead of
- * `r.data.projects`) the envelope exists to prevent.
- *
- * `compactOversizedOutput` is the search-hit rendering mode: the
- * input type block and the callable line are always full (they are what the
- * model needs to make the call), but an output type block over
- * COMPACT_OUTPUT_THRESHOLD chars is replaced by a stub that keeps the type
- * name and the top-level field names (compactOutputStub above). Compaction
- * wraps AROUND the vendored renderer — src/catalog/vendor/json-schema-types.ts
- * stays byte-untouched. `codemode.describe` always renders full (default
- * mode): describe is the canonical detail-on-demand step, so it must carry
- * exactly what the search hit elided.
- *
- * `inputOnly` is the public search-card mode: the input type with every field,
- * type, and required mark but short field prose, and a callable line that
- * names the envelope's two arms. The card's `outputKeys` and `outputItemKeys`
- * carry the payload field names instead of an output type.
+ * Render TypeScript input/output types and the envelope-typed callable line for an
+ * operation or runnable skill. `compactOversizedOutput` stubs output blocks over
+ * `COMPACT_OUTPUT_THRESHOLD` (search hits); `inputOnly` omits the output type declaration
+ * while keeping short-doc input types and the two-arm callable line (public cards);
+ * default renders full types (`codemode.describe`).
  */
 export function renderSignature(
   entry: CatalogEntry,
@@ -1212,33 +1142,12 @@ function prioritizeDatedSemanticForFreshness(
 }
 
 /**
- * Ranked catalog search with bounded page membership and pagination facts.
- * Gated candidates establish the first page and its diversity selection.
- * A short page uses the complete ungated pool to fill open slots.
- * A full page admits targeted ungated candidates for replacement rules.
- * Structured intent and vocabulary witnesses can preserve candidates from
- * either tier. Some replacements change service counts.
- *
- * Membership is fixed before tier interleaving and freshness ordering.
- * Interleaving uses the common score scale and TIER_INTERLEAVE_MARGIN.
- * Freshness can move a selected dated-semantic operation before exact lanes.
- * Returned order therefore defines ranking; scores alone do not.
- *
- * A full gated page keeps the gated candidate count as total. Targeted
- * replacements do not expand it. A short page also counts novel candidates
- * from the complete ungated pool. truncated equals total > hits.length.
- * See src/catalog/README.md for the admission and selection rules.
+ * Ranked catalog search with pagination facts (`src/catalog/README.md`).
+ * Fixes page membership (gated + tier-2 backfill / targeted replacements) before
+ * tier interleaving and freshness ordering, so hit order — not raw score — is authoritative.
  */
 export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): SearchPage {
-  // Number.isFinite, not `?? DEFAULT`: `codemode.search` inside the sandbox
-  // admits any `typeof opts.limit === "number"` (src/executor/providers.ts),
-  // and `typeof NaN === "number"`. Model-authored code computing a limit
-  // (`n * 2` over undefined, `+"ten"`, `0/0`) yields NaN, and every comparison
-  // against NaN is false — so the clamp AND the pagination below silently
-  // disappear and the page returns EVERY gated candidate with
-  // `truncated: false`, i.e. the contract claims a complete answer while
-  // having dropped its own bounds. Clamp here, at the one chokepoint every
-  // caller (public tool, demo, codemode.search, eval lanes) routes through.
+  // Use Number.isFinite so NaN cannot bypass Math.min/max (non-finite limits fall back to DEFAULT_SEARCH_LIMIT).
   const requested = opts.limit;
   const limit = Math.max(
     1,

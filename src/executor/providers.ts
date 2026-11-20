@@ -1,64 +1,9 @@
 /**
- * Sandbox surface — the namespaced globals LLM code sees inside `execute`
- * (ARCHITECTURE.md). Pure module: no cloudflare:workers import, fully unit-testable;
- * src/executor/run.ts feeds these providers to codemode's
- * DynamicWorkerExecutor, whose ResolvedProvider type they match structurally.
- *
- * Each service global exposes one
- * async fn PER OPERATION, named exactly by the catalog id's terminal segment —
- * `lumenloop.search_directory(args)`, `scout.getStatus()`,
- * `stellarDocs.search_docs(args)`. Chosen over a generic `call("id", args)`
- * because (a) it is exactly the callable line `search` already renders in
- * every operation hit's signature, so the model copies verbatim instead of
- * translating, and (b) codemode's per-namespace Proxy dispatch makes wrong
- * names fail loudly ("Tool not found") rather than fuzzy-resolving —
- * exact-match ids end to end.
- *
- * Every fn: guard (arg-validation) → adapter → redaction, and
- * ALWAYS returns a value ({ok:...} envelope) — never throws to the sandbox.
- * Calls hold no shared mutable state, so Promise.all fan-out is safe: each
- * dispatch is an independent host RPC. A sandbox-side prelude
- * (envelopeGuardPrelude below) guards the envelope: fail-loud on wrong-level
- * payload reads (`r.projects` throws "use r.data.projects"), warn-once +
- * undefined on failed-envelope data access, and writes are write-through.
- *
- * The `codemode` global adds mid-script discovery + skills:
- *   codemode.spec()                   — the unified super spec
- *     (specs/super-spec.json) with $refs resolved inline — the SAME document
- *     the code-shaped `search` tool queries, so execute mirrors upstream
- *     openApiMcpServer's REQUEST_TYPES (spec + calls in one sandbox). Upstream
- *     injects the spec into the execute sandbox source; ours crosses the
- *     provider RPC instead (a source-injected `const codemode` would shadow
- *     this provider global) — same resolved document either way.
- *   codemode.search(queryOrOpts)      — host-side searchCatalogPage (ranked;
- *     { ok, hits, total, truncated, recovery, widerCandidates, confidence, recoveryMetadata }
- *     — truncated ⇒ retry with a higher limit
- *     or narrower filters). Unknown kind/service filter values are rejected
- *     as error envelopes naming the valid set. The
- *     searchCatalog contract keeps filters silent, so the validation lives
- *     here at the sandbox boundary.
- *   codemode.catalog({ kind?, service?, compact? }) — the catalog as plain
- *     data for arbitrary code-grep discovery (spec-as-data pattern; strict
- *     superset of the fixed scorer). Exact filters slice the exposed surface;
- *     compact omits schemas. Everything returned is callable/readable —
- *     exposure is filtered at build time (ADR-0003). Host-only transport/
- *     provenance detail is stripped.
- *   codemode.describe(id)             — canonical detail-on-demand step
- *     (exact id): operations get the FULL rendered signature (search hits
- *     stub oversized output types) + inputSchema/outputSchema as data;
- *     skills get availableSections; skill sections get parent id + key —
- *     every kind carries a `usage` line naming the exact next call.
- *   codemode.skill.read(name, {sections?}) — pinned skill content, fetched
- *     from upstream at the pinned commit and hash-verified (src/skills/source.ts)
- *   codemode.skill.run(name, input)   — runnable-skill dispatch (src/skills/README.md): exact catalog id, input validated host-side
- *     against the entry's schema, first-party runner executed HOST-side over
- *     the same wrapped op closures the service namespaces expose (policy
- *     identity by construction — buildOpsFns below); returns the service-call
- *     envelope with a host-recorded `data.calls` audit trail.
- * (`skill.read`/`skill.run` need a sandbox-side prelude: nested objects can't
- * cross the Proxy dispatch, so the prelude assigns `codemode.skill` wrapping
- * the flat `skill_read`/`skill_run` dispatch fns — codemode's documented
- * prelude mechanism.)
+ * Sandbox surface globals for `execute` (ARCHITECTURE.md). Pure module (no `cloudflare:workers`).
+ * Each service namespace exposes one async fn per manifest operation (`guard -> callService -> redact`,
+ * returning `{ ok }` envelopes for validation and handled adapter outcomes). `codemode` exposes
+ * mid-script discovery (`spec`, `search`, `catalog`, `describe`) plus nested `skill.*` and `artifact.*`
+ * helpers wired through sandbox-side preludes because nested objects cannot cross Proxy dispatch.
  */
 import {
   CATALOG_KINDS,
@@ -449,39 +394,12 @@ const ARTIFACT_PRELUDE = [
 ].join("\n");
 
 /**
- * Sandbox-side envelope guard: fail-loud on wrong-level payload reads,
- * warn-once + undefined on failed-envelope data access, writes are
- * write-through. The single observed LLM failure mode with the result
- * envelope is reading payload fields one level too shallow (`r.projects`
- * instead of `r.data.projects`), which yields `undefined` and — after a
- * defensive `|| []` — masquerades as a legitimate empty result.
- *
- * The guard wraps every service fn in a prelude (codemode's documented
- * mechanism: preludes run after the per-namespace Proxy inits in the same
- * scope, and property assignment lands on the Proxy target, which the get
- * trap checks first — same trick as SKILL_PRELUDE). Each wrapped result gets
- * NON-ENUMERABLE accessor pairs planted on the envelope:
- *   - ok:true  → one pair per top-level key of `data`: GET throws
- *     "use r.data.projects" instead of returning undefined; SET self-replaces
- *     with a plain data property (write-through — decorating the envelope
- *     before returning it is a legitimate pattern, not a wrong-level read).
- *   - ok:false → a pair on `data`: GET returns undefined and console.logs
- *     ONE deduped `[envelope]` warning naming the actual service error
- *     (kind/message/hint); SET warns once too, then writes through — a model
- *     assigning r.data on a failed envelope without checking r.ok should see
- *     the real error. `r.error` on ok:true stays a plain undefined, so the
- *     `if (r.error)` guard pattern keeps working.
- *
- * Non-enumerable accessors keep every legitimate pattern untouched:
- * Object.keys / spread / JSON / structured clone all read enumerable-only.
- * A payload-prototype Proxy cannot cross the Workers RPC boundary, so this
- * guard intentionally does not diagnose object-payload array reads. A script
- * returning the raw envelope or its payload must serialize successfully.
- * Only direct wrong-level property access trips a trap.
- * The write-through SET is NOT try/caught: on a frozen envelope it must
- * throw loudly at the write, not silently no-op and then throw on read.
- * Service operations, skill helpers, and artifact helpers use this guard.
- * Discovery helpers retain their own shapes (hits/total at the top level).
+ * Sandbox-side envelope guard wrapped around every service, skill, and artifact fn.
+ * Plants non-enumerable accessors so `Object.keys`/spread/JSON/structuredClone stay intact
+ * (a payload Proxy cannot cross Workers RPC):
+ * - `ok: true`: reading a payload key on the envelope (`r.projects`) throws; writing writes through.
+ * - `ok: false`: reading/writing `r.data` logs one deduped `[envelope]` warning with the error.
+ * Discovery helpers keep their top-level shapes unguarded.
  */
 function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
   const wiring = [...opsByService.entries()].map(
@@ -579,15 +497,8 @@ function failedCallReason(entry: CatalogEntry, result: AdapterResult, refused = 
 }
 
 /**
- * The per-op wrapped-closure builder — extracted from buildProviders (design
- * src/skills/README.md) so the SAME closures serve BOTH consumers: the sandbox service
- * namespaces (buildProviders) and the skill-run ops facade (runSkill's
- * sub-facade wraps these for the host call ledger). Policy identity holds by
- * construction: there is exactly one guard → callService → logEvent →
- * redactSecrets path, so a runner cannot reach an op the sandbox couldn't,
- * skip validation the sandbox gets, or leak a secret the sandbox wouldn't.
- * One fn per emitted operation entry — a build-excluded op has no entry,
- * hence no closure, hence nothing to call (ADR-0003, structurally).
+ * Build one `guard -> callService -> logEvent -> redactSecrets` closure per emitted operation.
+ * Shared by both the sandbox service namespaces and the `skill.run` facade so policy is identical.
  */
 export function buildOpsFns(
   catalog: Catalog,
@@ -1123,16 +1034,7 @@ export function buildCodemodeProvider(
             };
           },
 
-          // The canonical detail-on-demand step mirrors upstream
-          // codemode's search → describe → call): a describe result carries
-          // everything DETAIL-shaped a search hit has and more — search hits
-          // stub oversized output types (COMPACT_OUTPUT_THRESHOLD,
-          // src/catalog/search.ts) and point here for the full shape, so this is
-          // the one place the FULL signature is always rendered. (Ranking facts
-          // — score, tier — stay on hits: they describe a hit's place in one
-          // response, not the entry.) Every kind also carries a `usage` line:
-          // the exact next call, so the model never has to reverse-engineer the
-          // read/call pattern from prose.
+          // Canonical detail-on-demand step: always renders the full signature (search hits stub oversized outputs).
           describe: async (id?: unknown) => describeCatalogEntry(catalog, id)
         }
       : {}),
@@ -1171,13 +1073,7 @@ export function buildCodemodeProvider(
       return r;
     },
 
-    // The flat dispatch behind `codemode.skill.run` (SKILL_PRELUDE wraps it
-    // — nested objects can't cross the Proxy dispatch, same mechanism as
-    // skill_read). All semantics live host-side in runSkill (src/skills/
-    // run.ts): exact-id resolution, guard validation, the declared-ops
-    // sub-facade, the host-owned call ledger, deadline, warn belts. The
-    // envelope goes back through __guardEnvelope in the prelude, so
-    // .data-level misuse traps behave identically to every operation call.
+    // Flat dispatch wrapped by SKILL_PRELUDE (`codemode.skill.run`); delegates to src/skills/run.ts.
     skill_run: async (name?: unknown, input?: unknown) => {
       hooks?.onSkillRun?.();
       if (!skillRun) {
@@ -1368,8 +1264,7 @@ function requestedSectionKeys(name: unknown, opts: unknown): string[] {
   return Array.isArray(sections) ? sections.filter((k): k is string => typeof k === "string") : [];
 }
 
-/** Whole skill, `##` sections, companion files, or a mix — the shape question
- *  ideas/skill-discovery-without-bundling.md needs answered. */
+/** Whole skill, `##` sections, companion files, or a mix. */
 function readShape(keys: string[]): "whole" | "sections" | "files" | "mixed" {
   if (keys.length === 0) return "whole";
   const files = keys.filter((k) => k.startsWith("file:")).length;

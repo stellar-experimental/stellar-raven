@@ -1,11 +1,6 @@
 /**
- * Call guard — runs host-side BEFORE any adapter call (ARCHITECTURE.md): validates
- * args against the entry's inputSchema. That is the whole job. Exposure is
- * decided at BUILD time (ADR-0003) — everything in the manifest is callable,
- * so there is no runtime allow/deny to check here.
- *
- * Refusals come back as AdapterResult errors ({kind:"error"} for bad args) —
- * nothing here ever throws to the sandbox.
+ * Host-side call guard before any adapter call (ARCHITECTURE.md). Validates args against
+ * `inputSchema` and returns error envelopes (never throws). Exposure is build-time (ADR-0003).
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import { errResult, type AdapterResult } from "../adapters/types.ts";

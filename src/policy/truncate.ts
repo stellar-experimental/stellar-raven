@@ -1,18 +1,7 @@
 /**
- * Result truncation for model-facing output (configured token budget, default
- * ~6k, with an actionable footer; ARCHITECTURE.md output boundaries).
- *
- * Why not import codemode's `truncateResult`: it IS importable inside the
- * Worker, but the package's main entry imports `cloudflare:workers`, which
- * makes every module that touches it untestable under plain-Node vitest.
- * The semantics are small, so this pure module keeps the policy layer
- * testable under Node. The footer also identifies the clipped bulk by key,
- * array length, or string length.
- *
- * Applied ONLY at the model boundary (the `execute` tool's final result +
- * logs/errors) — results flowing back INTO sandbox code cost no context
- * tokens and are never truncated, so scripts can post-process big payloads
- * freely.
+ * Model-boundary result and log truncation (ARCHITECTURE.md).
+ * Kept pure (no `@cloudflare/codemode` / `cloudflare:workers` import) so the policy layer
+ * stays Node-testable. Applied only at the model boundary — in-sandbox payloads are never truncated.
  */
 
 export const DEFAULT_MAX_TOKENS = 6000;

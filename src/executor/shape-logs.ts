@@ -1,16 +1,8 @@
 /**
- * Log shaping for the `execute` sandbox — structural caps on console output
- * BEFORE it reaches the tool-boundary token budget (src/executor/run.ts).
- *
- * Plain-Node module (no cloudflare:workers import — observability.ts and
- * policy/redact.ts are both plain Node), so it is unit-testable directly,
- * unlike run.ts (worker-only via @cloudflare/codemode).
- *
- * Security ordering: redact each line before clipping it. Clipping
- * before redaction would let a secret straddling the MAX_LOG_LINE_CHARS
- * boundary leak its prefix — the tail (with the redactable substring) gets cut
- * off, so scrubbing no longer matches. Redacting first collapses the whole
- * secret to [REDACTED] regardless of where it sits, then the clip is safe.
+ * Structural caps on `execute` console output before the model-boundary token budget.
+ * Plain-Node module (no `cloudflare:workers` import).
+ * Security ordering: redact BEFORE clipping so a secret straddling `MAX_LOG_LINE_CHARS`
+ * cannot leak its prefix after the tail is cut off.
  */
 import { redactSecrets } from "../policy/redact.ts";
 import { logEvent } from "../observability.ts";

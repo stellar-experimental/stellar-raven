@@ -1,19 +1,7 @@
 /**
- * Documented upstream argument aliases, applied host-side BEFORE validation.
- *
- * An upstream OpenAPI description can promise an input form that the generated
- * single-value schema rejects. Scout 1.9.61 says a comma in `source` on
- * GET /api/research is read like the `sources` array; Raven validates `source`
- * against its enum, so `source: "cap,sep"` would fail before any call while
- * the upstream would accept it. Rather than edit model-facing text (every
- * description word moves the lexical routing gate), honor the documented alias
- * here: the scalar is split into the sibling array, then validated as that
- * array. Cross-parameter aliases use exact operation ids, like exposure
- * (ADR-0003). Same-parameter normalization instead reads the manifest: only
- * array parameters whose descriptions say comma-separated or comma-separable
- * accept a string list. A test pins the exact matched operation/parameter set
- * so an upstream description change requires explicit review. Empty lists
- * remain strings for validation; normalization never bypasses the guard.
+ * Documented upstream argument aliases, normalized host-side BEFORE schema validation.
+ * Cross-parameter aliases are keyed by exact operation id; same-parameter comma lists are
+ * derived from manifest array parameter descriptions and pinned by test. Never bypasses validation.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 

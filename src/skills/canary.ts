@@ -1,33 +1,7 @@
 /**
- * Skill-availability canary — the only detector for a Cloudflare-side failure
- * of the serve-don't-store path.
- *
- * WHY IT CANNOT LIVE IN CI. Skill bodies are fetched from
- * `raw.githubusercontent.com` at request time. The daily `check-mirrors --fetch`
- * proves those pins resolve *from a GitHub Actions runner* — which says nothing
- * about whether the deployed Worker can reach them. Egress blocking, a
- * shared-IP rate limit, or a runtime regression can break serving while every
- * external check stays green. So the check runs from inside the Worker: no
- * inbound request, no auth surface, no secret.
- *
- * WHAT IT DOES NOT PROVE. Cron Triggers run wherever Cloudflare has spare
- * capacity, not across the colos serving user requests — so this samples ONE
- * execution location per run. It catches global and shared-infrastructure
- * failures, which is the realistic case; it cannot rule out a fault confined to
- * some other colo. Real-traffic `skill_read outcome:error` remains the only signal
- * that covers user-selected colos, and neither replaces the other.
- *
- * WHY IT BYPASSES THE CACHES. Pinned URLs are cached `immutable` for a year and
- * memoized per isolate. A canary on the normal read path would answer from a
- * warm colo entry and report "healthy" for months after egress died. It builds
- * its own source with `bypassCaches` for exactly this reason, and that source
- * neither reads nor writes the shared memo, so probing cannot alter what real
- * traffic sees.
- *
- * WHAT IT DOES NOT DO. It does not alert, retry-until-green, or gate anything.
- * It writes a verdict; `refresh.yml` reads it through `/health/skills` and
- * classifies it. Keeping the judgement out of the Worker means a flaky probe
- * cannot page anyone on its own.
+ * Worker-side skill-availability canary. Runs on Cron Triggers with `bypassCaches: true`
+ * to detect Cloudflare-side egress failures that CI runners and warm immutable caches miss.
+ * Writes a single KV verdict read by `GET /health/skills` and classified by `refresh.yml`.
  */
 import type { Catalog } from "../catalog/types.ts";
 import { logEvent } from "../observability.ts";
@@ -50,26 +24,14 @@ export type CanaryVerdict = {
 };
 
 /**
- * Every distinct pinned SERVING IDENTITY in the catalog.
- *
- * Deduped by url + sha + sha256 — the same triple `memoKey` uses — not by url
- * alone. Two entries may share a URL while pinning different digests, and each
- * is separately verified at read time, so a url-only dedup would check one and
- * declare the other healthy without ever fetching it.
- *
- * The whole set, not a sample: a partial outage confined to one upstream repo
- * is precisely what a one-pin probe would miss, and 30-odd GETs once an hour is
- * nothing next to being wrong about it.
+ * Every distinct pinned `(url, sha256, sha)` identity in the catalog (same triple as `memoKey`).
+ * Checks all pins rather than a sample so single-repo outages are not missed.
  */
 export function canaryPins(catalog: Catalog): SkillPin[] {
   const byIdentity = new Map<string, SkillPin>();
   for (const entry of catalog.entries) {
     const t = entry.transport;
     if (t?.type !== "file") continue;
-    // `transportSchema.superRefine` already rejects a file transport missing
-    // any of the three at catalog load, so this narrows a type rather than
-    // guarding a real case — but it stays a skip, not a `!`, because a canary
-    // that throws while enumerating would report an outage that isn't one.
     if (!t.url || !t.sha || !t.sha256) continue;
     const identity = `${t.url}\n${t.sha256}\n${t.sha}`;
     if (!byIdentity.has(identity)) {
@@ -79,13 +41,7 @@ export function canaryPins(catalog: Catalog): SkillPin[] {
   return [...byIdentity.values()];
 }
 
-/**
- * Fetch every pinned file straight from upstream and report a single verdict.
- *
- * Fails on the FIRST error rather than collecting all of them: the question is
- * "is this path working", and one unreachable pin already answers it. The
- * message names which url so the operator is not left guessing.
- */
+/** Fetch every pinned file from upstream, failing on the first error. */
 export async function runSkillCanary(
   catalog: Catalog,
   deps: { fetchImpl?: typeof fetch } = {}
@@ -96,10 +52,7 @@ export async function runSkillCanary(
   let error: string | null = null;
   let checked = 0;
 
-  // Zero pins is not health, it is a canary with nothing to check reporting
-  // success — the vacuous pass that makes a monitor worse than none. It means
-  // the catalog lost its file transports or `canaryPins` broke; either way the
-  // honest answer is "not ok".
+  // Zero pins is a broken catalog/extractor, never a passing sweep.
   if (pins.length === 0) {
     error = "no pinned skill files in the catalog — nothing to verify, so nothing is verified";
   }
@@ -159,12 +112,8 @@ export async function runAndStoreSkillCanary(
 }
 
 /**
- * The stored verdict as an HTTP response, for `GET /health/skills`.
- *
- * Reports; never probes. A request cannot make the Worker fetch anything, so
- * the endpoint is safe to leave unauthenticated and cannot be used to drive
- * traffic at upstream. It exposes a boolean, a timestamp, counts, a duration
- * and an error string — no skill content, no catalog ids, no caller identity.
+ * Stored verdict for `GET /health/skills`. Reports without probing upstream,
+ * so it is safe unauthenticated and projects only coarse error classes (no URLs or digests).
  */
 export async function skillHealthResponse(kv: KVNamespace): Promise<Response> {
   let stored: unknown = null;
@@ -182,34 +131,23 @@ export async function skillHealthResponse(kv: KVNamespace): Promise<Response> {
     (record.error != null && typeof record.error !== "string") ||
     record.ok !== (record.error == null)
   ) {
-    // 503, not 200-with-a-flag: "never ran", "unreadable", and "ran and failed"
-    // are all "do not trust skill retrieval", and a monitor reading only the
-    // status code must not see any of them as healthy. The consumer
-    // distinguishes them by shape — this body has no `checkedAt`, which
-    // `scripts/classify-canary.mjs` maps to `error`, never to an outage claim.
+    // 503 with no `checkedAt`: scripts/classify-canary.mjs maps this to `error`, not an outage claim.
     return Response.json(
       { ok: false, reason: "no usable canary verdict recorded" },
       { status: 503, headers: { "cache-control": "no-store" } }
     );
   }
-  // Project to a fixed shape rather than echoing the stored object. Two
-  // reasons: the raw `error` carries internal wording and, on an integrity
-  // failure, expected/actual digests; and a stable schema is what the classifier
-  // parses, so a future field cannot change what this endpoint promises.
+  // Project to a fixed schema so raw error text/digests never leak and the classifier contract stays stable.
   const body = {
     ok: record.ok,
     checkedAt: record.checkedAt,
     checked: typeof record.checked === "number" ? record.checked : null,
     ms: typeof record.ms === "number" ? record.ms : null,
-    // Enough to tell "upstream unreachable" from "bytes did not verify"
-    // without republishing URLs or hashes.
     error: record.error === null || record.error === undefined ? null : errorClass(record.error)
   };
   return Response.json(body, {
     status: record.ok ? 200 : 503,
-    // Short edge cache: the verdict only changes hourly and the consumer
-    // tolerates 3h, so this costs nothing in freshness while stopping an
-    // unauthenticated route from being an unbounded KV-read meter.
+    // Cache usable verdicts for 60s to reduce KV reads on this unauthenticated route without hurting freshness.
     headers: { "cache-control": "public, max-age=60" }
   });
 }

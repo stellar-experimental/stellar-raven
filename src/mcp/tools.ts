@@ -1,24 +1,7 @@
 /**
- * MCP tool registration for the unified `search` + `execute` server.
- *
- *  - `search`  → host-side ranked search over the generated catalog
- *                (catalog/manifest.json), as defined by ADR-0001. The
- *                `execute` sandbox also provides `codemode.spec()`,
- *                `codemode.search()`, and `codemode.catalog()`. These helpers
- *                keep discovery in one model turn. Hits are compact cards:
- *                a short description, the input type and call line, and the
- *                payload field names. `codemode.describe` has the full types.
- *  - `execute` → runs LLM JavaScript in a Dynamic Worker sandbox via
- *                the injected `runExecute` (src/executor/run.ts, wired
- *                by src/server.ts). The runner is INJECTED because run.ts
- *                imports @cloudflare/codemode (→ cloudflare:workers),
- *                which plain-Node vitest cannot load; without a runner
- *                the tool degrades to an error-as-data explanation.
- *                Errors never cross the tool boundary as throws (ARCHITECTURE.md).
- *
- * The execute description uses the upstream REQUEST_TYPES structure with
- * manifest-backed service helpers. ARCHITECTURE.md defines the spec RPC and
- * output contract; src/skills/README.md defines runnable skill behavior.
+ * MCP tool registration for `search` and `execute` (ARCHITECTURE.md, ADR-0001).
+ * `runExecute` is injected so this module stays plain-Node-testable without importing
+ * `@cloudflare/codemode` (`cloudflare:workers`). Errors never throw across the tool boundary.
  */
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/server";
@@ -111,24 +94,10 @@ export const executeInputSchema = {
     )
 };
 
-// Each model-facing field below is one complete contract inside the 4,096
-// characters that Claude Code keeps of a tool description or of server
-// instructions; test/mcp-instructions.test.ts holds the cap. The descriptions
-// state what a script must know before it runs. What a script can get wrong
-// (an unknown id, a wrong-level read, a missing global, no network) is taught
-// by the host error that follows the mistake (src/executor), not by prefix
-// text. ADR-0003: name only exposed operations and runnable skills here.
-// The Playground uses the same exported tool contract.
-//
-// Clients that show only the start of a description (OpenCode lists 117 characters, then "...";
-// Codex lists the first line of the instructions) must still read a whole thought, so each
-// description opens with one or two complete sentences that end inside 117 characters and a
-// paragraph break after them. The `search` opening names every operation family and is generated
-// (SEARCH_OPENING, scripts/build-family-text.mjs). test/mcp-instructions.test.ts holds both.
-//
-// One official upstream documentation URL per source family rides last on the
-// `search` description, as reference metadata. The `execute` description does
-// not carry it.
+// Model-facing strings stay within the binding client cuts (test/mcp-instructions.test.ts,
+// test/helpers/mcp-tool-metadata.ts: 2,033 chars overall; 117-char first line on descriptions;
+// 200-char first line on server instructions) and name only exposed operations/skills (ADR-0003).
+// Mistake recovery lives on host errors (src/executor), not here. Shared with the Playground.
 export const UPSTREAM_DOC_LINKS = `Upstream docs: Lumenloop https://api.lumenloop.com/v1/docs; Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs.`;
 
 export const SEARCH_DESCRIPTION = `${SEARCH_OPENING}
