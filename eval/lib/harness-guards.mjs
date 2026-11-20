@@ -1,21 +1,9 @@
 /**
- * harness-guards.mjs — pre-spend and pre-aggregate guards shared by every
- * agent-spawning eval lane.
- *
- * Guard requirements:
- *
- * 1. Spawn answering agents outside the repository so project instructions
- *    cannot reveal the measurement contract to the agent under test.
- * 2. Require every selected row before printing an aggregate. Missing rows
- *    must not silently shrink the denominator.
- * 3. Reject unsupported CLI syntax before a paid call so measurement flags
- *    cannot be silently ignored.
- * 4. Refuse a Claude Code run that would bill an API key instead of the
- *    subscription (`assertClaudeSubscription`).
- *
- * PURITY: no fs, no clock, no network. The one process spawn is
- * `assertClaudeSubscription`'s `claude auth status --json`, injectable for
- * tests. Callers create their own temporary directories and pass the path in.
+ * Pre-spend and pre-aggregate guards shared by agent-spawning eval lanes:
+ * 1. Neutral working directory outside the repo (keeps AGENTS.md/CLAUDE.md off the walk).
+ * 2. Complete denominator check before printing aggregates.
+ * 3. Fail-closed CLI flag syntax validation before paid calls.
+ * 4. Claude subscription check (`assertClaudeSubscription`, injectable `spawnSync`).
  */
 import { spawnSync } from "node:child_process";
 import path from "node:path";
@@ -115,26 +103,10 @@ const AUTH_METHOD_REFUSALS = new Map([
 ]);
 
 /**
- * Fail closed unless the Claude Code CLI, probed the way its paid child will run, is on the
- * claude.ai subscription at the first-party endpoint. `claude auth status --json` makes no model
- * call. It also requires `apiProvider` to be exactly `firstParty`. An API key, an auth token, a
- * cloud-provider switch or a stored Console login each change `authMethod`, so a positive check catches what a list of variables would miss. An endpoint
- * override leaves `authMethod` at `claude.ai`, so the environment is checked for those too.
- *
- * The probe must see what the child sees: pass the child's `env`, `cwd` and the root flags it uses
- * that change which settings load (`--setting-sources`, `--disable-slash-commands`, `--safe-mode`,
- * `--strict-mcp-config`). `auth status` accepts them only before the subcommand, so they go first.
- *
- * Messages are fixed text: never a status field, an environment value or the status body (it holds
- * an account email and organization).
- *
- * @param {object} options
- * @param {string} [options.claudePath]  the executable the paid run will spawn
- * @param {object} [options.env]         the environment the paid child will get
- * @param {string} [options.cwd]         the directory the paid child will run in
- * @param {string[]} [options.args]      root flags the paid child uses
- * @param {Function} [options.impl]      spawnSync-compatible, injectable for tests
- * @returns {{authMethod: string, subscriptionType: string}}
+ * Fail closed unless Claude Code (probed with the child's `env`, `cwd`, and root flags before
+ * `auth status --json`) reports `authMethod: "claude.ai"`, `apiProvider: "firstParty"`, and a
+ * non-empty `subscriptionType`, with no endpoint-override or provider-switch env vars set.
+ * Refusal messages stay fixed text (never interpolate status fields or env values).
  */
 export function assertClaudeSubscription({
   claudePath = "claude",

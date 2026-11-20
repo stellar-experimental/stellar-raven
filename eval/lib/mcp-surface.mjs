@@ -1,21 +1,7 @@
 /**
- * mcp-surface.mjs — one definition of the advertised MCP surface fingerprint.
- *
- * A description A/B arm is only comparable when the server that answered the
- * cases is provably the arm it claims to be. This module owns that proof: the
- * same `surfaceMetrics` shape is stamped into every QA results file
- * (`meta.toolSurface`) and printed by the standalone pre-spend report
- * (eval/report-live-surface.mjs), so a fingerprint captured before a run and a
- * fingerprint recorded during it cannot drift apart.
- *
- * PURITY: no fs, no spawn, no clock, no network. Transport lives in the
- * callers; only the shape and the framing parse live here.
- *
- * `surfaceSha256` is the identity. Its input is deliberately frozen as
- * `${instructions}\n${JSON.stringify({ tools })}` — the value predates this
- * module and is carried forward byte-identically so fingerprints recorded by
- * earlier runs still compare. Everything else in the returned object is
- * reporting detail and may grow; MCP_SURFACE_SCHEMA stamps that growth.
+ * Pure MCP surface fingerprint shared by `eval/qa/run-qa.mjs` (`meta.toolSurface`) and
+ * `eval/report-live-surface.mjs`. `surfaceSha256` hashes `${instructions}\n${JSON.stringify({ tools })}`
+ * (frozen input format so fingerprints remain comparable across runs).
  */
 import { createHash } from "node:crypto";
 

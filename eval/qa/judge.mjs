@@ -1,31 +1,11 @@
 #!/usr/bin/env node
 /**
- * judge.mjs — LLM judge for the golden Q→A accuracy eval.
- *
- * Contract: judge(question, goldenAnswer, candidateAnswer)
- * → verdict. Concretely:
- *
- *   judgeCase({ question, golden: { answer, keyFacts, avoid, notes }, tags, candidateAnswer })
- *     → { score: "correct" | "partial" | "wrong" | "error",
- *         coreAnswer: "correct" | "incorrect" | null, avoidMatches: number[],
- *         missingFacts: string[], wrongClaims: string[], rationale: string }
- *
- * Implementation: one headless `claude -p --model sonnet
- * --output-format json` call first (the alias; the verdict reports the exact
- * model ID the call ran on as `resolvedModel`). The tiered path can add two calls when
- * stability history or a boundary verdict requires the three-vote panel.
- * "error" means the judge itself failed (CLI error / unparseable output / a
- * verdict that contradicts itself), never a grade of the candidate — so every
- * "error" verdict carries coreAnswer null.
- *
- * Two sibling modules own the pieces that are not model-facing:
- * verdict-consistency.mjs decides which field/score combinations contradict
- * each other, and evidence-sanitizer.mjs turns raw CLI bytes into bounded,
- * credential-free failure evidence.
- *
- * Self-test (no server needed; seven paid judge calls against hand-written cases):
- *   npm run eval:qa:selftest
- * exits non-zero when a candidate result violates its expected grade.
+ * LLM judge for golden Q→A accuracy eval (`judgeCase` / `judgeCasePanel` / `judgeCaseTiered`).
+ * Runs headless `claude -p --model sonnet --output-format json` (records exact `resolvedModel`);
+ * tiered judging escalates from 1 call to a 3-vote panel on boundary or instability triggers.
+ * `score: "error"` means judge failure (`coreAnswer: null`), never a candidate grade.
+ * Consistency rules live in `verdict-consistency.mjs`; failure evidence redaction in `evidence-sanitizer.mjs`.
+ * Live self-test (paid Claude CLI calls): `npm run eval:qa:selftest`.
  */
 import { spawnSync } from "node:child_process";
 import { isAliasRequest, resolvedModelFromUsage } from "./model-identity.mjs";
@@ -64,18 +44,9 @@ import {
  */
 export const JUDGE_MODEL = "sonnet";
 /**
- * Stall handling for one judge call. A judge CLI that the harness kills prints
- * no cost, and a budgeted method stops on a missing cost. So the CLI handles
- * stalls first and reports its cost in the result envelope.
- *
- * The CLI waits about 180 s for first response headers by default, then
- * retries. JUDGE_CLI_API_TIMEOUT_MS sets its fetch timeout, which also caps
- * that first-header window. It does not cap a response body that keeps
- * streaming. JUDGE_CLI_MAX_RETRIES limits ordinary retries only; fallback and
- * recovery paths can add requests.
- *
- * JUDGE_TIMEOUT_MS is a chosen backstop, not a proven bound on the CLI. A kill
- * at the backstop still stops the method.
+ * Stall handling: let the CLI time out first (`JUDGE_CLI_API_TIMEOUT_MS` caps first-header wait;
+ * `JUDGE_CLI_MAX_RETRIES` bounds ordinary retries) so it still reports cost in the result envelope.
+ * `JUDGE_TIMEOUT_MS` is the outer kill backstop (a kill omits cost and stops budgeted runs).
  */
 export const JUDGE_CLI_API_TIMEOUT_MS = 240_000;
 export const JUDGE_CLI_MAX_RETRIES = 2;
@@ -91,53 +62,12 @@ const PROVIDER_SAFEGUARD_MARKERS = [
 ];
 
 /**
- * Rubric version, stamped into every verdict. Bump whenever the judge prompt
- * changes grading semantics; comparability rules in eval/qa/README.md
- * ("Judging rubric") — re-judge saved answers before any cross-run comparison.
- *   v2   — 2026-07-03 addendum: beyond-golden specifics are unverified, not wrong.
- *   v2.1 — 2026-07-03 avoid-clause scoping: avoid items bind on
- *          concrete content only; support-relative avoid items are advisory.
- *   v2.2 — 2026-07-07 live/freshness cases may include compact execute-result
- *          excerpts so transcript-visible field support is not misgraded.
- *   v2.3 — 2026-07-07 source-basis evidence packs plus claim snippets.
- *   v2.4 — 2026-07-07 integrity counter-pressure: execute-only claim snippets,
- *          numeric-boundary matching, and prompt/pack fingerprint stamping.
- *   v2.5 — 2026-08-19 explicit core-answer and semantic must-avoid fields,
- *          with deterministic score-consistency checks.
- *   v2.6 — 2026-08-20 remove the conflicting omission-as-wrong clause;
- *          omission-only answers with a correct core remain partial.
- *   v2.7 — 2026-08-21 missingFacts/wrongClaims must be string arrays; a
- *          non-array or non-string-element value maps to error with stable
- *          invalid-field violations instead of silent normalization.
- *   v2.8 — 2026-08-24 reject unsupported partial verdicts with no recorded
- *          missing fact, wrong claim, or must-avoid match.
- *   v2.9 — 2026-08-29 give complete trap behavior precedence over topical
- *          coverage, reject bare refusals that omit required useful behavior,
- *          and make every fired must-avoid item unconditionally wrong.
- *   v2.10 — 2026-08-30 require every non-trap partial verdict to name an
- *           answer-visible issue, including the missing corrective distinction
- *           when grader notes cap an accurately supported claim at partial.
- *   v2.11 — 2026-10-09 the freeze clause of a must-avoid item (a permanent,
- *           complete, exhaustive, timeless, or network-wide list) does not fire
- *           on a list the candidate presents as dated, source-scoped, or
- *           non-exhaustive; an omitted list item there is a missing key fact.
- *           Three limits: an explicit permanence claim, an instruction not to
- *           re-check, or a completeness claim beyond its stated source or date
- *           bounds overrides the exemption; other conditions in the same avoid
- *           item bind on their own terms; concrete wrong content still binds.
+ * Rubric version stamped into every verdict. Bump whenever grading semantics change and
+ * re-judge saved answers before cross-run comparisons (see eval/qa/README.md, "Judging rubric").
  */
 export const JUDGE_RUBRIC = "v2.11";
 
-/**
- * Which `score: "error"` verdict is worth another paid judge call.
- *
- * A CLI crash or an unparseable reply says nothing about the candidate: the
- * call itself failed, so re-issuing it can still produce a grade. A
- * consistency error is the opposite. The judge answered, and the answer
- * contradicted itself under a deterministic rule, so the same prompt stays
- * terminal. The explicit failure class also keeps prompt-write failures,
- * provider safeguards, and timeouts terminal.
- */
+/** Only `cli` and `parse` errors may retry; consistency, safeguard, prompt-write, and timeout errors stay terminal. */
 export function isRetryableJudgeError(verdict) {
   return verdict?.score === "error" && ["cli", "parse"].includes(verdict.failureClass);
 }

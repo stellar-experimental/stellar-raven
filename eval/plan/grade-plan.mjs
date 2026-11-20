@@ -1,36 +1,16 @@
 #!/usr/bin/env node
 /**
- * grade-plan.mjs — multi-tool PLAN grader over golden Q→A results.
+ * Multi-tool plan grader over golden Q→A transcripts (`eval/qa/`).
+ * Grades touched service sets against `eval/plan/coverage-rules.json`, broad→detail progression
+ * against `eval/plan/op-classes.json`, and correlation with judge verdicts.
  *
- * The answer eval (eval/qa/) judges WHAT the agent said; this grades HOW it
- * got there, from the stored tool transcript:
- *   1. which SET of services the plan touched, graded against an
- *      acceptable-set from eval/plan/coverage-rules.json (rules derived from
- *      documented service coverage, never from past agent behavior)
- *   2. whether a broad→detail progression appeared where the question class
- *      demands specifics (op classes from generated eval/plan/op-classes.json)
- *   3. how both correlate with the judge verdicts already in the file
+ * Usage: `node eval/plan/grade-plan.mjs <results-file.json> [--rules eval/plan/coverage-rules.json]`
+ * Writes `<results-file>.plan.json` and prints a summary table.
  *
- * Usage:
- *   node eval/plan/grade-plan.mjs <results-file.json> [--rules eval/plan/coverage-rules.json]
- *
- * Writes <results-file>.plan.json next to the input + prints a summary table
- * (same formatting style as eval/qa/lib.mjs formatSummaryTable).
- *
- * Op extraction is regex over each execute input's {code}:
- *   /\b(lumenloop|scout|stellarDocs|stellarOrg)\.(\w+)\s*\(/  → service op
- *   codemode.skill.read / codemode.skill_read      → service "skills"
- *   codemode.skill.run("<id>") / codemode.skill_run → service "skills" op
- *     "skill.run" (skillId captured). The registry at src/skills/runners/index.ts
- *     supplies declared constituent operations; src/skills/README.md defines
- *     that contract. Expansion credits those declarations for coverage and
- *     progression. It does not prove which host calls ran. An absent registry
- *     leaves skill.run calls unexpanded and records a note.
- *   codemode.search|catalog|spec|describe          → service "meta-discovery"
- * meta-discovery (and the top-level MCP search tool) is always on-plan and
- * excluded from the touched-service set. Rows whose execute inputs look
- * legacy-truncated (exactly 600 chars, or unparseable JSON) are flagged —
- * pre-patch run-qa.mjs sliced ALL inputs to 600 chars, so old runs undercount.
+ * Extracts ops via regex from execute `{code}` inputs (`service.op`, `codemode.skill.read/run`,
+ * `codemode.search|catalog|spec|describe`). `skill.run("<id>")` expands via declared ops from
+ * `src/skills/runners/index.ts` (crediting declared coverage/progression, not observed host calls).
+ * Meta-discovery is excluded from touched services; 600-char/unparseable inputs are flagged truncated.
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -46,23 +26,13 @@ export const OP_CLASSES_PATH = path.join(PLAN_DIR, "op-classes.json");
 const PLAN_SERVICES = new Set([...QA_SERVICES].filter((service) => service !== "none"));
 export const PLAN_CATEGORIES = new Set(QA_CATEGORIES);
 
-// One combined regex so op order inside a script is preserved (match.index).
-// skill.run must precede skill.read in the alternation only for readability —
-// the literals cannot shadow each other. The run branch optionally captures the
-// first string argument (the exact runnable-skill id) for registry expansion.
-// NOTE: transcripts store the JSON-stringified {code}, so quotes inside `code`
-// appear escaped (\" ) — the quote class therefore also admits a leading
-// backslash via the (\\?["']) group.
+// Single regex preserves op order inside a script; `\\?["']` handles escaped quotes in stringified JSON.
 const OP_RE =
   /\b(lumenloop|scout|stellarDocs|stellarOrg)\.(\w+)\s*\(|\bcodemode\.skill(?:\.run|_run)\s*\(\s*(?:\\?["']([^\\"']+)\\?["'])?|\bcodemode\.skill(?:\.read|_read)\s*\(|\bcodemode\.(search|catalog|spec|describe)\s*\(/g;
 
 /**
- * Extract service ops (in source order) from one execute tool input string
- * (the JSON-stringified {code} input as stored in the transcript).
- * Returns { ops: [{service, op, skillId?}], truncated } — truncated flags the
- * legacy 600-char slice (length exactly 600, or JSON no longer parseable).
- * skill.run entries carry op "skill.run" plus skillId when the first argument
- * was a string literal (expansion happens later, in expandSkillRuns).
+ * Extract service ops in source order from a JSON-stringified execute `{code}` input.
+ * Flags legacy 600-char slices or unparseable JSON as `truncated`.
  */
 export function extractExecuteOps(inputStr) {
   const raw = String(inputStr ?? "");
@@ -84,13 +54,7 @@ export function extractExecuteOps(inputStr) {
   return { ops, truncated };
 }
 
-/**
- * Load src/skills/runners/index.ts as { runnableId: [declaredOpId, ...] }.
- * See src/skills/README.md for the declared-operation contract.
- * An absent or invalid registry returns null with a note. The grader still
- * counts skill.run calls but does not expand them. The import uses Node's
- * native TypeScript stripping; import failures also return null with a note.
- */
+/** Load `src/skills/runners/index.ts` as `{ runnableId: [declaredOpId, ...] }`, or null with a note if absent/unreadable. */
 export async function loadRunnerOps(repoRoot = path.resolve(PLAN_DIR, "..", "..")) {
   const registryPath = path.join(repoRoot, "src", "skills", "runners", "index.ts");
   if (!existsSync(registryPath)) {
@@ -112,13 +76,7 @@ export async function loadRunnerOps(repoRoot = path.resolve(PLAN_DIR, "..", ".."
   }
 }
 
-/**
- * Keep each skill.run entry and insert its declared constituent operations
- * after it, marked via: <skillId>. See src/skills/README.md for the registry
- * contract. These declarations support coverage and progression grading;
- * they do not establish observed host calls. An absent registry, unknown ID,
- * or missing captured ID leaves the entry unexpanded.
- */
+/** Append declared constituent ops (marked `via: skillId`) after each `skill.run` with a known ID. */
 export function expandSkillRuns(ops, runnerOps) {
   if (!runnerOps) return ops;
   const out = [];

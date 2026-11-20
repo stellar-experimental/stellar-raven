@@ -156,20 +156,9 @@ export function findUnboundRoutingCards(cases, entries, { lane = "routing" } = {
 }
 
 /**
- * Grade one case given its search hits (already limited to 5).
- * Returns { top1, top3, top5, cardHit5 } — cardHit5 is null when the case has
- * no operation-level expected_cards (card metric not applicable).
- *
- * Accept-either: when `expectedAny` is a non-empty array of services,
- * the result ADDITIONALLY carries { any1, any3, any5 } — a hit from ANY listed
- * service counts. The strict top1/top3/top5 fields are always computed against
- * `expectedService` alone and are unaffected, so legacy strict aggregates stay
- * byte-identical whether or not an overlay is applied.
- *
- * Grading rule v3 (ADR-0003): the manifest contains no `lumenloop.skill.*`
- * twins, so a hit's
- * service label is exactly its own. Cross-service tolerance is expressed only
- * via expected_any.
+ * Grade one case against its top-5 hits. Returns `{ top1, top3, top5, cardHit5 }` (strict against
+ * `expectedService`; `cardHit5` is null when no operation-level expected card exists). When
+ * `expectedAny` is non-empty, also adds `{ any1, any3, any5 }` without altering strict fields.
  */
 export function gradeCase(hits, expectedService, expectedCards, expectedAny) {
   const svc = (h) => h.service === expectedService;

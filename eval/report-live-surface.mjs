@@ -1,34 +1,15 @@
 #!/usr/bin/env node
 /**
- * report-live-surface.mjs — fingerprint the surface a BOUND server advertises.
- *
- * This is the pre-spend arm check. `scripts/report-mcp-surface.mjs` measures
- * the source tree in process; this measures the process that will actually
- * answer the cases, over the same Streamable HTTP path an answering agent
- * uses. The two answer different questions: a source-tree report cannot catch
- * "the Wrangler process on this port is serving the other arm".
- *
- * It reuses eval/lib/mcp-surface.mjs, so the fingerprint printed here and the
- * `meta.toolSurface` block stamped by eval/qa/run-qa.mjs are the same numbers
- * and the same `surfaceSha256`.
- *
- * Read-only: initialize + tools/list, nothing else. No model call, no cost.
+ * Pre-spend live MCP surface fingerprinter (read-only: `initialize` + `tools/list`, zero cost).
+ * Measures the bound server over Streamable HTTP using `eval/lib/mcp-surface.mjs` so its
+ * `surfaceSha256` matches `meta.toolSurface` in `eval/qa/run-qa.mjs`.
  *
  * Usage:
- *   node eval/report-live-surface.mjs --port 8788
- *   node eval/report-live-surface.mjs --url http://localhost:8787/mcp --json /tmp/armA.json
- *   node eval/report-live-surface.mjs --port 8788 --expect-sha256 <hex>   # arm pin
+ *   node eval/report-live-surface.mjs [--port 8788 | --url <url>] [--label <name>]
+ *     [--json <path>] [--expect-sha256 <hex>] [--expect-source-revision <sha>]
  *
- * Flags:
- *   --url URL           full server URL (`/mcp` appended when missing)
- *   --port N            shorthand for http://localhost:N/mcp (default 8788)
- *   --label NAME        arm label recorded in the artifact (default "live")
- *   --json PATH         also write the report as JSON
- *   --expect-sha256 HEX refuse (exit 1) unless the live surfaceSha256 matches
- *   --expect-source-revision SHA refuse unless the live Worker reports this commit
- *
- * A non-local target needs a full named credential in RAVEN_MCP_BEARER_TOKEN.
- * The token is sent and never printed.
+ * Non-local targets require `RAVEN_MCP_BEARER_TOKEN` (sent in `Authorization`, not logged directly;
+ * HTTP error paths still print up to 200 chars of the server response body).
  */
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";

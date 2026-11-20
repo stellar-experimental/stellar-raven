@@ -1,22 +1,8 @@
 /**
- * evidence-sanitizer.mjs — bounded, credential-free evidence for judge CLI
- * failures (eval/qa/judge.mjs).
- *
- * A failed `claude -p` run is recorded verbatim into a results file that is
- * committed and shared, so its stdout/stderr may carry whatever the CLI
- * printed: an `ANTHROPIC_API_KEY=…` line, a `Bearer` header, a URL with
- * userinfo, a whole environment dump. This module turns those raw bytes into
- * evidence that is safe to keep: it decodes them without losing the control
- * bytes a credential can hide behind, redacts credentials in plaintext and in
- * structured JSON, and bounds the result to a fixed byte budget while
- * recording the untouched byte count and SHA-256 of the original.
- *
- * Entry points:
- *   buildCliEvidence(stdoutOrStderr) → { excerpt, truncated, totalBytes, sha256 }
- *   buildStructuredEvidence(parsedEnvelope) → the same shape, JSON-structural
- *   sanitizeBoundedText(text, limit) → one bounded sanitized string
- *   sanitizeCliEvidenceText(text) / decodeCliEvidenceText(bytes) → the pieces,
- *     exported for focused regression tests.
+ * Bounded, pattern-redacted evidence sanitizer for judge CLI failures (`eval/qa/judge.mjs`).
+ * Preserves raw C1 control bytes during decoding so escape-split credentials are caught, redacts
+ * known credential patterns and sensitive JSON keys, and bounds excerpts while keeping raw
+ * `totalBytes` and `sha256`.
  */
 import { createHash } from "node:crypto";
 
@@ -88,17 +74,9 @@ function utf8SequenceLength(buffer, index) {
   return length;
 }
 
-// Decode captured CLI bytes without losing raw C1 controls.
-//
-// `Buffer.toString("utf8")` is lossy for them: a lone 0x9b is not valid UTF-8,
-// so it decodes to U+FFFD and the 8-bit CSI introducer is gone before the
-// sanitizer ever runs — a credential split by a raw C1 byte would survive into
-// the excerpt. Sanitizing has to see the byte, so decoding happens here first:
-// every well-formed UTF-8 sequence is decoded verbatim (including sequences
-// whose continuation bytes fall inside 0x80-0x9f, such as `→` = E2 86 92), an
-// invalid byte in 0x80-0x9f becomes its C1 code point, and any other invalid
-// byte becomes U+FFFD as before. This only affects the sanitized excerpt; the
-// recorded byte count and SHA-256 are always taken from the raw buffer.
+// Decode raw CLI bytes without losing lone C1 control bytes (0x80-0x9f): `Buffer.toString("utf8")`
+// turns lone 0x9b into U+FFFD, hiding 8-bit CSI splits from the sanitizer. Valid UTF-8 sequences
+// decode normally; lone 0x80-0x9f map to C1 code points; other invalid bytes become U+FFFD.
 export function decodeCliEvidenceText(value) {
   const buffer = streamBuffer(value);
   let out = "";
@@ -176,55 +154,21 @@ function hasControlCharacter(key) {
   return false;
 }
 
-// A property name is classified on its control-stripped form: an embedded NUL
-// or escape in `API<NUL>_KEY` hides the credential term from the key predicate
-// while a reader still sees API_KEY. Normalization is used for classification
-// only, and never becomes the emitted name.
-//
-// What the emitted object keeps depends on the name. An ordinary name survives
-// unchanged, obfuscating bytes included, because an obfuscated key is itself
-// evidence; classifying it sensitive collapses only its VALUE. A name that
-// CARRIES a credential is a different case: emitKeyName rewrites it, so the
-// emitted name is the scanned form, not the original.
-//
-// `truncated` is carried out with the name. An unterminated control sequence in
-// a name swallows whatever follows it, so `API<ESC>]0;x_KEY` normalizes to a
-// harmless-looking `API` while the sensitive suffix is simply gone. The name
-// cannot be classified at all in that case, so the caller fails closed the same
-// way the text sanitizer does.
-//
-// The fast path is exact: stripCredentialObfuscation changes nothing, and can
-// report no truncation, for a name that holds no C0 or C1 control character.
+// Classify property names on their control-stripped form (normalizing for classification only,
+// never as the emitted name). Unterminated control sequences set `truncated` so callers fail closed.
 function normalizeKeyForClassification(key) {
   if (!hasControlCharacter(key)) return { name: key, truncated: false };
   const normalized = stripCredentialObfuscation(key);
   return { name: normalized.text, truncated: normalized.truncated };
 }
 
-// A property NAME can carry the credential itself: `{"PASSWORD=SECRET": ...}`
-// leaks in key position, and so do a bare secret-prefixed token, a
-// `Bearer <token>` header line, and URL userinfo. The name therefore runs
-// through the same credential scanner as a string leaf. An ordinary name scans
-// clean and is emitted unchanged — `API_KEY` on its own is a name, not an
-// assignment, so it keeps its spelling while the key predicate collapses its
-// VALUE.
-//
-// Two different secret names can scan to the same marker, and the second write
-// would silently drop the first field. A collision therefore takes the next
-// free positional suffix. The suffix counts emitted names and says nothing
-// about the key it replaced — never a digest of it, which would hand back the
-// secret to anyone able to test a guess.
+// Scan property names for embedded credentials (e.g. `PASSWORD=SECRET`, URL userinfo, Bearer).
+// Collisions take sequential positional suffixes (never hashes of the replaced key).
 function emitKeyName(key, keyNames, tally) {
   const scanned = sanitizeStructuredStringLeaf(key, tally.metrics);
   tally.count += scanned.redactions;
   const base = scanned.sanitized;
-  // Resume from this base's next free suffix instead of restarting the search
-  // at 2. Restarting costs a scan per collision — about N^2/2 lookups for N
-  // names that scan to the same marker, which is tens of seconds at 20k keys.
-  // The counter only ever moves forward, so the total stays linear in the
-  // number of keys. The inner loop steps over the rare case where a generated
-  // name is already taken by an unrelated base, and each step advances this
-  // base's counter permanently.
+  // Track per-base next free suffix so mass collisions stay O(n) instead of O(n^2).
   let suffix = keyNames.nextSuffix.get(base) ?? 1;
   let name = suffix === 1 ? base : `${base}-${suffix}`;
   while (keyNames.used.has(name)) {
@@ -711,24 +655,14 @@ function tryParseJson(text) {
   }
 }
 
-// Structural redaction keeps valid JSON valid: sensitive keys collapse to
-// "[redacted]" with an explicit stack (no recursive walk) and every string leaf
-// is redacted before serialization. Nesting past MAX_JSON_DEPTH collapses to
-// "[redacted]". The sanitized tree is serialized exactly once and is never
-// rescanned as plaintext — a second pass would consume the serialized closing
-// quote of a redacted leaf and destroy the remaining fields.
+// Depth-bounded explicit-stack redaction followed by one JSON.stringify pass; never rescan
+// serialized JSON as plaintext (it would consume serialized quotes and corrupt following fields).
 function sanitizeStructuredJson(value, tally = newRedactionTally()) {
   return JSON.stringify(redactSensitiveValues(value, tally));
 }
 
-// Non-JSON text: one bounded linear pass tracks brace depth with a single
-// integer plus the current outer span start — constant auxiliary memory even
-// for a 32 MiB unmatched-brace stream (unmatched openers never trigger a
-// suffix rescan). Braces inside strings are skipped. Each outermost span
-// that parses is redacted structurally — covering JSONL and prefixed
-// multiline objects while preserving the surrounding prefix and suffix
-// text; everything else, including unmatched-brace regions and spans whose
-// JSON fails to parse, goes through the plaintext pass.
+// Single-pass brace-depth scan (O(1) auxiliary memory): parseable outermost `{...}` spans are
+// redacted structurally (covering JSONL/prefixed JSON); all other text runs plaintext redaction.
 function sanitizeNonJsonText(text, tally = newRedactionTally()) {
   let sanitized = "";
   let cursor = 0;
@@ -768,14 +702,8 @@ function sanitizeNonJsonText(text, tally = newRedactionTally()) {
   return sanitized + redactPlaintextAssignments(text.slice(cursor), tally);
 }
 
-// Sanitize `text` twice — as captured, and with terminal escapes stripped — and
-// keep whichever performed MORE redactions, so an escape-split credential is
-// caught without rewriting text that gained nothing. `redact` sanitizes one
-// variant and reports how many redactions it made; the choice never counts
-// "[redacted]" occurrences, because evidence may contain that literal text.
-// An unterminated escape form wins outright: its hidden tail becomes the marker,
-// since leaving it to the un-stripped variant would emit the secret the escape
-// was hiding.
+// Run `redact` on both original and control-stripped text; keep whichever made more redactions
+// (counted at source, not by marker text). Unterminated escapes fail closed by appending REDACTED.
 function chooseSanitizedVariant(text, redact) {
   const original = redact(text);
   const normalized = stripCredentialObfuscation(text);
@@ -787,12 +715,7 @@ function chooseSanitizedVariant(text, redact) {
   return stripped.redactions > original.redactions ? stripped : original;
 }
 
-// One string leaf of a parsed structure. It runs the SAME control-aware choice
-// as CLI text, so an escape- or NUL-split credential name is joined before
-// matching. It deliberately does NOT go through sanitizeCliEvidenceText: that
-// path parses its input as JSON, and a leaf whose text merely looks like JSON
-// would be parsed and re-serialized, rewriting a string nothing was wrong with.
-// Only the plaintext credential scan runs here.
+// Plaintext scan only on JSON string leaves (do not JSON-parse leaf text that happens to look like JSON).
 function sanitizeStructuredStringLeaf(value, metrics = null) {
   return chooseSanitizedVariant(value, (variant) => {
     const tally = newRedactionTally(metrics);

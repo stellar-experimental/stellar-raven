@@ -1,55 +1,16 @@
 #!/usr/bin/env node
 /**
- * run-routing.mjs — grade searchCatalog() routing accuracy against the compiled cases.
+ * Grade `searchCatalog()` routing accuracy against compiled cases (`eval/routing-cases.json`)
+ * plus runtime-loaded lanes (`eval/skills-cases.json`, `eval/holdout-cases.json`,
+ * `eval/build-question-overlay.json`, `eval/protocol-history-cases.json`). See `eval/README.md`.
  *
- * Consumes these frozen search inputs:
- *   - src/catalog/search.ts  → loadManifest(json), searchCatalog(catalog, opts), SearchHit
- *   - catalog/manifest.json
- *   - eval/routing-cases.json (produced by eval/compile-routing.mjs)
+ * Lanes never merge into the legacy 338 strict aggregate. Writes `eval/results/routing-<ts>.json`;
+ * console prints aggregates only (pass `--rows` for holdout/protocol-history rows; `--dump-ranked
+ * <file>` writes top-5 hit IDs per case excluding holdout; `--gate` exits 1 on `eval/gates.json` breach or
+ * denominator drift; `--manifest <path>` grades an alternate manifest).
  *
- * For each case: searchCatalog(catalog, { query: question, limit: 5 }) and record
- * whether any hit's service matches expected_service at top-1 / top-3 / top-5, plus
- * card-level hit@5 when expected_cards is present (tolerant normalizer in lib/grade.mjs).
- *
- * The skills lane and overlay are applied here at load time. Re-running
- * compile-routing.mjs (which regenerates routing-cases.json) never wipes them:
- *   - eval/skills-cases.json          hand-authored supplement; expected_service=skills.
- *     Graded as its own lane ("skills lane"), NEVER mixed into the legacy aggregate.
- *   - eval/build-question-overlay.json hand-reviewed per-case expected_any records
- *     for legacy or extended cases. Those cases are reported BOTH ways:
- *     strict (expected_service only — the legacy numbers, unchanged) and
- *     accept-either (any service in expected_any counts).
- *   - eval/protocol-history-cases.json frozen diagnostic. It stays outside
- *     every routing denominator. Controls forbid target capture at any top-five rank.
- *
- * Accept-either inputs do not affect strict grading:
- *   - compiled cases may carry corpus-derived expected_any (from acceptable_cards);
- *     per case it is unioned with the overlay's, and a legacy accept-either overall
- *     is reported alongside the unchanged strict aggregate.
- *   - compiled.extendedCases (net-new 538-corpus ids) grade as their own
- *     "extended lane", never merged into the legacy aggregate.
- *
- * Outputs eval/results/routing-<timestamp>.json and console tables. With
- * `--dump-ranked <file>` also writes { caseId: [hitId, ...] } (ordered top-5 per
- * case in the legacy, extended, skills, and protocol-history lanes).
- * Compare these IDs to check rank and membership differences between builds.
- * See eval/README.md for the routing contract. The flag does not change grading.
- *
- * Console output prints aggregates only. The holdout and protocol-history per-row tables print
- * under `--rows`; the results file carries every row either way (eval/README.md, "Row output").
- *
- * Gate enforcement (eval/gates.json): every run prints a gate verdict — legacy 338
- * strict within ±bandPct of the baselined top-1/3/5 counts, skills lane top-1 at or
- * above its floor, and holdout floors plus a forbidden-capture ceiling.
- * Advisory by default; `--gate` (what CI passes) exits 1 on breach.
- * A changed denominator always breaches: lanes never merge, so a different n means
- * the gate must be re-baselined explicitly, not silently absorbed.
- *
- * Import strategy for search.ts (zero new deps):
- *   1. Direct `import("../src/catalog/search.ts")` — Node >= 23.6 strips types natively
- *      (works when the TS is erasable and relative imports carry explicit extensions).
- *   2. Fallback: transpile search.ts (+ its relative imports, recursively) to .mjs in
- *      eval/.build/ using the repo's own `typescript` package, then import that.
+ * Imports `src/catalog/search.ts` via native TS type-stripping, falling back to `typescript`
+ * transpilation into `eval/.build/`.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
@@ -82,12 +43,7 @@ const ENFORCE_GATE = process.argv.includes("--gate");
 // The holdout and protocol-history per-row tables stay out of stdout unless asked for: a gate run
 // (CI included) is read by agents, and a printed row is held-out case text in their context.
 const SHOW_ROWS = process.argv.includes("--rows");
-// --dump-ranked <file> writes ordered top-5 hit IDs by case ID for the legacy,
-// extended, skills, and protocol-history lanes. See eval/README.md for the
-// routing contract and eval/gates.json for gate inputs and thresholds.
-// An empty diff between dumps proves rank and membership identity for these
-// lanes. A passing threshold gate alone does not prove that identity.
-// The flag does not change grading or the normal result artifact.
+// Writes top-5 hit IDs per case (legacy/extended/skills/protocol-history) for rank-identity diffs without changing grading.
 const DUMP_RANKED_PATH = (() => {
   const i = process.argv.indexOf("--dump-ranked");
   if (i === -1) return null;

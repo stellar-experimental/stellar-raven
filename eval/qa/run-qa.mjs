@@ -1,101 +1,33 @@
 #!/usr/bin/env node
 /**
- * run-qa.mjs — agentic golden Q→A runner (the A/B referee's driver).
- *
- * Contract: run(question, {searchVariant}) → {answer, transcript};
- * then judge(question, goldenAnswer, answer) → verdict. This script does both
- * per case and writes eval/qa/results/<stamp>.json + a console summary.
- *
- * For each case:
- *   1. drive an answering agent — headless `claude -p --model sonnet`
- *      (the family alias; the artifact records the exact ID that ran)
- *      with a generated temp .mcp.json pointing at the live server
- *      (http://localhost:PORT/mcp), allowed tools = the variant's search tool
- *      + execute (verified working 2026-07-02)
- *   2. collect { answer, toolTranscript } from --output-format stream-json
- *   3. grade with judge.mjs (judgeCase)
- *
- * After a run: file service-level findings in improvements/ per eval/EVALS.md.
+ * Agentic golden Q→A runner: drives headless answering agents (`claude -p`) against the local
+ * MCP server, collects `{ answer, transcript }` from `stream-json`, grades with `judge.mjs`,
+ * and writes `eval/qa/results/<stamp>.json`.
  *
  * Usage:
- *   npm run dev:eval -- --port 8788   # in another terminal
- *   (the launcher requires a clean worktree and compiles its commit into the
- *   Worker's MCP serverInfo)
+ *   npm run dev:eval -- --port 8788   # clean worktree; compiles commit into serverInfo
  *   node eval/qa/run-qa.mjs --variant A --sample 30 [--port 8788]
  *
- * Flags:
- *   --variant A|B      A = host ranked-string search tool `search` — the
- *                      SHIPPED shape per ADR-0001
- *                      (research/decisions/0001-search-tool-shape.md); default A.
- *                      B = code-shaped spec search — no longer live by
- *                      default; running B requires a build that exposes a
- *                      code-shaped tool plus an explicit --search-tool.
- *   --search-tool name explicit search tool name override
- *   --sample N         deterministic stratified subset (same sampler used by
- *                      compile-qa.mjs for the committed sample.json)
- *   --ids a,b,c        run only these case ids (smoke tests)
- *   --port N           wrangler dev port (default 8788)
- *   --upstream-port N  private Wrangler port when --port is the eval-only
- *                      exact-old-runtime adapter listener
- *   --adapter-mode add-missing|verify-native
- *                      add the attested revision only for an old runtime, or
- *                      require and preserve the candidate's native revision
- *   --adapter-revision SHA
- *                      clean runner revision that owns the adapter listener
- *   --expect-adapter-sha256 HEX
- *                      exact adapter implementation bytes
- *   --cases path       battery file (default eval/qa/cases.json). Named
- *                      hand-authored contracts include live-data-canonical-v3
- *                      (corpus/live/live-cases.json) and live-digest-supplement-v2
- *                      (corpus/live/live-digest-supplement-cases.json); run separately.
- *   --model name       answering-agent model: an alias or an exact ID (default
- *                      the alias sonnet). meta.model records the exact ID that ran.
- *   --judge-model name judge model: an alias or an exact ID (default judge.mjs
- *                      JUDGE_MODEL, the alias sonnet). A resumed --judge-stored
- *                      file defaults to the judge it recorded.
- *   --judge-panel N    force a 2- or 3-call judge panel. The default tier
- *                      starts with one call and can escalate to three.
- *   --max-panel-cases N cap boundary-triggered panels. The default is one-
- *                      third of the selected denominator, rounded up, with
- *                      a floor of 10 and a ceiling of 34. This flag or
- *                      QA_MAX_PANEL_CASES overrides that default.
- *                      Stability-triggered panels do not consume this cap.
- *   --stability-register path
- *                      use one frozen judge-stability register without
- *                      regenerating it. Paired runs must share this pin.
- *                      A pinned --judge-stored resume must reuse this path.
- *                      Unpinned resumes can refresh and cannot enter pairing.
- *   --surface name     search-execute (default) | per-operation. The latter
- *                      starts the isolated stdio proxy harness for the
- *                      manifest's 60 operations and still uses the existing
- *                      local Wrangler server for adapter/executor traffic.
- *   --server-revision  git revision of the checkout running the already-bound
- *                      Wrangler process (recorded for reproducibility)
- *   --expect-sha256    required SHA-256 of the bound MCP surface
- *   --expect-agent-binary-sha256
- *                      required SHA-256 of the capped Claude executable
- *   --expect-agent-environment-sha256
- *                      required SHA-256 pin for the inherited Claude
- *                      environment. It must match before any answering-agent
- *                      or judge call.
- *   --remote-identity-probe path
- *                      required executable that prints one exact
- *                      qa-remote-identity-vector-v2 JSON object.
- *   --expect-remote-identity-probe-sha256
- *                      required SHA-256 of the remote identity probe bytes.
- *   --expect-remote-identity-sha256
- *                      required SHA-256 from the stable pre-arm probe vector.
- *   --no-judge         collect answers only (judge later)
- *   --judge-stored F   two-phase mode, phase 2: judge a saved --no-judge
- *                      results file IN PLACE (no server, no agent). Judges
- *                      every row without a verdict, stamps per-row judge cost,
- *                      summary, and meta cost totals into the SAME file.
- *                      Refuses if the case snapshot or judge tuple no longer
- *                      matches the recorded one (re-collect instead; the
- *                      loudly-labeled escape hatch stays re-judge.mjs).
+ * Key flags:
+ *   --variant A|B              A = shipped `search` tool (ADR-0001, default); B requires a
+ *                              code-shaped build + --search-tool.
+ *   --search-tool name         Override search tool name.
+ *   --sample N | --ids a,b,c   Deterministic stratified subset or explicit case IDs.
+ *   --cases path               Battery file (default eval/qa/cases.json).
+ *   --surface name             search-execute (default) | per-operation (manifest operations via stdio proxy).
+ *   --port N                   Wrangler dev port (default 8788); --upstream-port / --adapter-* wrap old runtimes.
+ *   --model / --judge-model    Model alias or exact ID (default sonnet; artifacts record resolved IDs).
+ *   --judge-panel N            Force a 2- or 3-call panel (default: 1 call, escalating to 3 on boundary/instability).
+ *   --max-panel-cases N        Cap boundary-triggered panels (default ceil(n/3), clamped 10..34; or QA_MAX_PANEL_CASES).
+ *   --stability-register path  Frozen judge-stability register (required to share across paired runs).
+ *   --server-revision / --expect-sha256 / --expect-agent-binary-sha256 / --expect-agent-environment-sha256 /
+ *   --remote-identity-probe / --expect-remote-identity-probe-sha256 / --expect-remote-identity-sha256
+ *                              Precondition identity pins for reproducible/paired runs.
+ *   --no-judge                 Collect answers only.
+ *   --judge-stored F           Judge unjudged rows of a saved `--no-judge` file in place (fails on
+ *                              case/judge tuple drift; use `re-judge.mjs` for deliberate re-judging).
  *
- * `re-judge.mjs` does not use stability tiering. Its default remains one
- * judge call, or the fixed panel selected by its own `--judge-panel` flag.
+ * Note: `re-judge.mjs` does not use stability tiering (defaults to 1 call or its `--judge-panel`).
  */
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";

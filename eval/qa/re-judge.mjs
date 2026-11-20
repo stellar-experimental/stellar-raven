@@ -1,22 +1,16 @@
 #!/usr/bin/env node
 /**
- * Re-judge saved QA answers without re-running the answering agent.
+ * Re-judge saved QA answers without re-running answering agents.
  *
  * Usage:
  *   node eval/qa/re-judge.mjs <results.json> --ids id-a,id-b
  *   node eval/qa/re-judge.mjs <results.json> --flips-vs <baseline.json>
  *   node eval/qa/re-judge.mjs <results.json> --ids id-a --cases-ref worktree
  *
- * A saved QA result records the full selected input snapshot. Before spending
- * on a re-judge, this tool reconstructs that snapshot from meta.casesPath and
- * refuses if it no longer hashes to the recorded value. --flips-vs holds its
- * baseline to the same snapshot and judge-tuple contract, and additionally
- * compares case content for every id the two artifacts share, because the
- * baseline decides which rows get paid for. That baseline guard is absolute.
- * --allow-non-identical makes an exceptional SOURCE decision explicit in the
- * output artifact; it never waives a baseline mismatch.
- * --cases-ref worktree selects current compiled cases without a revision pin.
- * The ordinary identity and golden-time guards still apply in that mode.
+ * Reconstructs and verifies the recorded input snapshot hash before spending; `--flips-vs`
+ * enforces the same snapshot/judge-tuple contract plus per-id case equality on the baseline
+ * (never waived by `--allow-non-identical`). `--cases-ref worktree` reads current compiled
+ * cases without a revision pin while keeping identity and golden-time guards active.
  */
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";

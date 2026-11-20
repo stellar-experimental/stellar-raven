@@ -1,19 +1,6 @@
 /**
- * search-projection.mjs — the bounded record of what a `search` call actually
- * showed the answering agent.
- *
- * Why this exists: the transcript writer keeps whole results only for tools
- * whose bodies a downstream analyzer parses (execute, plain operations).
- * Everything else stored a character count and nothing more, so a routing or
- * coverage A/B could not see which hits an arm was offered. The 2026-08-26
- * connectors item-8 round recorded that exact limit: "Search result bodies
- * were not stored, so result-hit differences remain unreviewable."
- *
- * Keeping the whole body instead is the wrong fix. Hits carry large descriptions
- * and signatures. This module keeps ranking facts and a bounded `nextSteps`
- * excerpt. It also keeps the full guidance length and hash.
- *
- * PURITY: no fs, no spawn, no clock, no network.
+ * Pure projection of a `search` tool result into bounded ranking facts plus a capped
+ * `nextSteps` excerpt (with full length/hash), avoiding storing full card prose/signatures.
  */
 import { createHash } from "node:crypto";
 

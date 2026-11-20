@@ -1,28 +1,11 @@
 #!/usr/bin/env node
 /**
- * build-op-classes.mjs — generate eval/plan/op-classes.json from the catalog.
+ * Deterministic generator for `eval/plan/op-classes.json` from `catalog/manifest.json`.
+ * Usage: `node eval/plan/build-op-classes.mjs` (never hand-edit `op-classes.json`).
  *
- * Classifies every `kind: "operation"` entry in catalog/manifest.json as:
- *   "broad"  — returns a collection (search/list/find/match…): the entry point
- *              of a broad→detail progression
- *   "detail" — returns one thing by id/name/slug (get/read/explain…): the
- *              follow-up half of a progression
- *   "meta"   — service self-description or non-reading actions (status,
- *              changelog, schemas/vocabularies, writes, metered compute) —
- *              neither half of a progression
- *
- * Classification is data, not prose: a prefix→class map (over the snake_cased
- * first token of the op name, so scout's camelCase `searchProjects` matches
- * "search") plus explicit per-op overrides for ops whose prefix lies about the
- * return shape (plural `get*` collection endpoints, vocab/enum `get_*`
- * discovery, write/compute POSTs). Anything neither map covers falls to "meta"
- * AND is listed under `unmatched` + warned at build time, so misclassification
- * stays visible instead of silent.
- *
- * Output is deterministic (sorted keys, no timestamp) — rebuild with:
- *   node eval/plan/build-op-classes.mjs
- * Never hand-edit op-classes.json (AGENTS.md "Hard rules": generated artifacts are
- * rebuilt by scripts).
+ * Classifies each `kind: "operation"` entry as `broad` (collection), `detail` (single item),
+ * or `meta` (self-description/non-reading) using first-token snake_case prefix rules plus
+ * explicit per-op overrides. Unmatched ops default to `meta` and are warned under `unmatched`.
  */
 import { readFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";

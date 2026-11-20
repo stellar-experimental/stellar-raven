@@ -1,30 +1,12 @@
 #!/usr/bin/env node
 /**
- * reconcile-capture.mjs — verify agent-transcribed `searchCalls` against the
- * capture-proxy wire log.
+ * Reconcile agent-reported `searchCalls` against the capture-proxy wire log by
+ * `X-Eval-Agent: <caseId>:<effort>` marker (does not affect `primaryService` grading).
  *
- * For every workflow row (caseId × effort) it compares the row's reported
- * searchCalls with the exchanges the proxy captured under that row's
- * `X-Eval-Agent: <caseId>:<effort>` marker:
- *
- *   - a reported call with no matching wire exchange  → fabricated/mistranscribed
- *   - a wire exchange the row never reported          → omitted page
- *
- * FAIL CLOSED (2026-07-30, five-model review): during a proxied run every
- * captured /mcp POST must be attributable to a row. Anything unattributable —
- * a missing or unknown marker, a JSON-RPC batch array, a `tools/call` for a
- * tool other than `search` (an agent can route discovery through `execute`),
- * an unparseable body, a non-200 status — is recorded as an ANOMALY and fails
- * the run. Before this, five bypasses reconciled clean: strip-the-marker plus
- * report nothing, omit `searchCalls` entirely, a stray marker (reported but
- * never in the exit code), a batched search, and execute-routed discovery.
- *
- * What this does NOT do: isolate an adversarial agent. The evaluated agent
- * runs as the same user with shell access, so it could write the capture file
- * or reach the upstream port directly. The guarantee is wire-vs-transcript
- * reconciliation with fail-closed anomaly detection, not tamper-proofing.
- *
- * Grading (`primaryService` vs label) never consults any of this.
+ * Fails closed on unattributable traffic (missing/unknown marker, JSON-RPC batch,
+ * non-`search` tool call, unparseable body, non-200 status, or empty report when search
+ * traffic was captured). Wire-vs-transcript forensics only — not adversarial isolation
+ * (the same-user evaluated process can modify the capture file or call upstream directly).
  *
  * Usage:
  *   node eval/agentic/reconcile-capture.mjs \
