@@ -10,6 +10,8 @@ evidence:
   - Solo scratchpad 575 GT-11 primary process 3231
   - https://github.com/lumenloop/lumenloop-backend/issues/29
 recurrences:
+  - date: 2026-11-20
+    evidence: "POST /v1/tools/search_directory {query: 'real-world assets', limit: 10} still returns agama, archax, borderdollar, centrifuge, dtcc ahead of major live issuers; issue #29 remains open."
   - date: 2026-11-09
     evidence: "2026-11-09 sweep at 2026-11-09T20:31:18.444931+00:00: still-repro. Original real-world assets limit10 returns agama, archax, borderdollar, centrifuge, dtcc, jumpa, legasi, mystic, neko, neovestor; it omits the five named controls, which exact-name calls recover. Broad records lack typed product deployment state. CRDT/CRDYX article title searches are empty; the August14 semantic trigger returns 24 rows without either ticker. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06

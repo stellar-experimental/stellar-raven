@@ -16,8 +16,8 @@ Total findings: 95
 | sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | reported-upstream | 2026-08-19 | 2           |
 | sk-022 | The upgrade-stellar-contracts skill teaches #[derive(Upgradeable)], #[derive(UpgradeableMigratable)], UpgradeableInternal, and…             | reported-upstream | 2026-09-04 | 4           |
 | sk-025 | The beta API skill forbids Authorization: Bearer for requests to https://beta.api.trustlesswork.com. The current Core API documentation…    | reported-upstream | 2026-09-16 | 3           |
-| sk-027 | The Scout skill describes /api/skills as a catalog of seven SDF skills. On 2026-11-20 the live catalog had 84 entries from five sources…    | reported-upstream | 2026-09-30 | 3           |
-| sk-028 | The Scout skill gives the size of the Builders directory as a fixed count. SKILL.md says the directory is "currently in the dozens, not…    | reported-upstream | 2026-09-30 | 2           |
+| sk-027 | The Scout skill describes /api/skills as a catalog of seven SDF skills. On 2026-11-20 the live catalog had 84 entries from five sources…    | reported-upstream | 2026-09-30 | 4           |
+| sk-028 | The Scout skill gives the size of the Builders directory as a fixed count. SKILL.md says the directory is "currently in the dozens, not…    | reported-upstream | 2026-09-30 | 3           |
 | sk-029 | The Core API emits error type URLs of the form …/api-rest/errors/<code-in-kebab-case>. The docs site redirects that ungrouped path to the…  | reported-upstream | 2026-10-27 | 2           |
 | sk-030 | Six Lumenloop skill files still name the wallet Freighter and omit its current name, Varial. SDF announced the rename on 2026-10-29. The…   | reported-upstream | 2026-11-02 | 2           |
 | sk-031 | skills.stellar.org/skills/soroban/SKILL.md still returns the deleted soroban skill with obsolete build guidance. The source repository…     | reported-upstream | 2026-11-02 | 2           |
@@ -42,7 +42,7 @@ Total findings: 95
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | sd-004 | The RPC method reference pages describe pagination limits as "hardcoded in Stellar-RPC for performance reasons" (getTransactions and…       | declined-upstream | 2026-07-03 | 3           |
-| sd-005 | The docs' agentic-payments coverage credits x402 to Coinbase Developer Platform instead of the x402 Foundation under the Linux Foundation,… | reported-upstream | 2026-07-06 | 7           |
+| sd-005 | The docs' agentic-payments coverage credits x402 to Coinbase Developer Platform instead of the x402 Foundation under the Linux Foundation,… | reported-upstream | 2026-07-06 | 8           |
 | sd-009 | The docs omit SEP-6's canonical interactive-component deprecation status                                                                    | declined-upstream | 2026-07-09 | 6           |
 | sd-014 | Official documentation exposes bucketListHash, txSetHash, txSetResultHash, LedgerCloseMeta, SCP envelopes, and archive retrieval in…        | reported-upstream | 2026-07-10 | 4           |
 | sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial pins…                      | reported-upstream | 2026-07-11 | 3           |
@@ -79,10 +79,10 @@ Total findings: 95
 | ll-006 | The 2026-07-03 replay of search_content_semantic ranked old recurring SDF publications above the relevant Q1 2026 report. For the query…    | reported-upstream | 2026-07-03 | 2           |
 | ll-007 | Event summary prose can contradict the structured start_at field. The Bhopal and Jabalpur "Build On Stellar" workshop rows say "July 27"…   | reported-upstream | 2026-07-03 | 7           |
 | ll-008 | Directory records carry misleading region/coverage values, two live instances:                                                              | reported-upstream | 2026-07-03 | 4           |
-| ll-009 | Lumenloop's editorial content misattributes two headline statistics to "Messari's State of Stellar Q1 2026 report":                         | reported-upstream | 2026-07-03 | 3           |
+| ll-009 | Lumenloop's editorial content misattributes two headline statistics to "Messari's State of Stellar Q1 2026 report":                         | reported-upstream | 2026-07-03 | 4           |
 | ll-010 | Lumenloop weekly-roundup research items state headline Stellar RWA totals with no data source and no measurement scope. The Jun 19, 2026…   | reported-upstream | 2026-07-06 | 3           |
 | ll-011 | Lumenloop's YieldBlox incident summaries repeat material unit, identity, and status errors. The current research document 66 calls it a…    | reported-upstream | 2026-07-10 | 5           |
-| ll-012 | Broad Lumenloop RWA discovery mixes planned and live product states and has weak recall for major currently live Stellar products. A live…  | reported-upstream | 2026-07-10 | 5           |
+| ll-012 | Broad Lumenloop RWA discovery mixes planned and live product states and has weak recall for major currently live Stellar products. A live…  | reported-upstream | 2026-07-10 | 6           |
 | ll-013 | lumenloop.get_scf_submissions({slug:"blend"}) links the correct Blend Capital submission and returns round, award_type, and budget:…        | reported-upstream | 2026-07-10 | 9           |
 | ll-014 | Project-content and similarity retrieval do not expose enough match provenance or confidence for a consumer to distinguish exact Soroswap…  | reported-upstream | 2026-07-10 | 3           |
 | ll-015 | Lumenloop's stellar-weekly-roundup-week-jul-3-2026 repeatedly dates Protocol 27 Mainnet activation as July 9. The roundup's own linked…     | reported-upstream | 2026-07-10 | 3           |
@@ -94,12 +94,12 @@ Total findings: 95
 | ll-022 | Lumenloop's CCTP event material lacks explicit milestone provenance. Deployment, technical support, and public-announcement dates can be…   | reported-upstream | 2026-07-11 | 2           |
 | ll-023 | This is a request for optional structured network, maturity, and audit-state metadata on product-news records, not a reproduced false…      | reported-upstream | 2026-07-11 | 2           |
 | ll-024 | This is an event-revision/supersession metadata request. The candidate history contrasts Abu Dhabi/Yas Marina October 21–22 with the later… | reported-upstream | 2026-07-11 | 1           |
-| ll-025 | Lumenloop roadmap summaries do not reliably distinguish planned capabilities from shipped ones. The June 9 post describes ML-DSA host…      | reported-upstream | 2026-07-11 | 4           |
+| ll-025 | Lumenloop roadmap summaries do not reliably distinguish planned capabilities from shipped ones. The June 9 post describes ML-DSA host…      | reported-upstream | 2026-07-11 | 5           |
 | ll-026 | The CME topic cluster lacks separate structured announcement, effective, launch, and first-trade timestamps. On 2026-11-06, article 5416…   | reported-upstream | 2026-07-11 | 3           |
 | ll-027 | Lumenloop's RedStone summary gives an unqualified nine-asset count that cannot be reconciled with Scout's ten-feed wording. Without labels… | reported-upstream | 2026-07-11 | 3           |
 | ll-028 | list_documents accepts an unknown sort value. The call returns ok with a full result page. It returns no error and no warning               | reported-upstream | 2026-08-14 | 3           |
 | ll-029 | Five public Lumenloop tools declare an output object with optional results and text fields. The live payload for each tool uses a…          | reported-upstream | 2026-08-18 | 3           |
-| ll-030 | lumenloop.get_project returns a record for wisdomtree that counts the issuer's tokenized funds without naming any of them. The record…      | reported-upstream | 2026-08-28 | 4           |
+| ll-030 | lumenloop.get_project returns a record for wisdomtree that counts the issuer's tokenized funds without naming any of them. The record…      | reported-upstream | 2026-08-28 | 5           |
 | ll-031 | search_documents returns a string ID that get_document and get_related_projects reject. get_document also returns that ID as a string…      | reported-upstream | 2026-10-09 | 3           |
 | ll-032 | The freighter directory record omits the wallet's current name, Varial, and its current website. Its title is Freighter, its other_names…   | reported-upstream | 2026-11-02 | 2           |
 | ll-033 | The slender directory description incorrectly says users can borrow assets without collateral. Slender's audit describes ordinary loans as… | reported-upstream | 2026-11-02 | 2           |

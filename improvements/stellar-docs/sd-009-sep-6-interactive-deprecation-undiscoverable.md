@@ -48,4 +48,4 @@ deprecated part.
 
 ## Recommendation
 
-Accept the Docs owner's decline on #2575 (adding a six-year-old deprecation notice for undocumented interactive flows would be noise). Do not re-file against `stellar/stellar-docs`. Keep canonical SEP status coverage in `stellar-protocol` retrieval or a concise note in the upstream `stellar-dev-skill` standards reference.
+Accept the Docs owner's decline on #2575 (adding a six-year-old deprecation notice for undocumented interactive flows would be noise). Do not re-file against `stellar/stellar-docs`. Keep canonical SEP status coverage in `stellar-protocol` retrieval or a concise note in the upstream `stellar-dev-skill` standards reference; if neither surface carries it, treat the QA row as a corpus/source-coverage diagnostic rather than an agent-quality failure.

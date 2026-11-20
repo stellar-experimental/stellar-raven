@@ -19,6 +19,8 @@ evidence:
   - 2026-09-30 correction comment posted with the added locations and the revised recommendation, because the correction changes the proposed action: https://github.com/Stellar-Light/stellar-scout/issues/14#issuecomment-5919085549
   - 2026-10-02 recheck: GET https://stellarlight.xyz/api/skills returned 62 entries (sdf 8, stellarlight 15, lumenloop 8, external 12, community 19) at Scout API 1.9.61. Upstream Stellar-Light/stellar-scout main is still 3b587aa9f23d21fc572f6e93cb6d11031dbc24e6, so the pinned skill text is unchanged and the finding still reproduces. Issue 14 is open with one comment.
 recurrences:
+  - date: 2026-11-20
+    evidence: "Stellar-Light/stellar-scout main SKILL.md and README.md still name 7 official SDF skills, soroban, and skills.stellar.org/anchors while live GET /api/skills returns 84 entries (8 sdf, 15 stellarlight, 8 lumenloop, 12 external, 41 community); issue #14 remains open."
   - date: 2026-11-09
     evidence: "2026-11-09T20:30:58Z GET https://stellarlight.xyz/api/skills returned HTTP 200 with 82 entries: sdf8,stellarlight15,lumenloop8,external12,community39. soroban detail remains 404; smart-contracts and stellar-scout details return 200. The four fresh Scout source files at main 0f3040cf still name soroban, seven SDF skills, about30 catalog entries, and a fixed SDF install URL for non-SDF entries; old soroban/anchors site pages remain 404. Canonical skill/reference mirrors agree. Issue 14 is open with only our kalepail correction comment."
   - date: 2026-11-06

@@ -16,6 +16,8 @@ evidence:
   - scope-narrowing reply posted and read back 2026-07-27: https://github.com/stellar/stellar-docs/issues/2565#issuecomment-5091973988
   - "2026-11-20 live check: both agentic-payments overview and x402 page still credit Coinbase Developer Platform; open triage-bot PR https://github.com/stellar/stellar-docs/pull/3142 (Update x402 attribution to the x402 Foundation) is unmerged."
 recurrences:
+  - date: 2026-11-20
+    evidence: "GET agentic-payments.md and x402.md still attribute x402 to Coinbase Developer Platform and omit AP2/ACP; PR https://github.com/stellar/stellar-docs/pull/3142 remains open."
   - date: 2026-11-09
     evidence: "Both agentic-payments overview and x402 page still attribute the protocol to Coinbase Developer Platform. AP2/ACP positioning remains absent on those pages and optional by the accepted maintainer scope decision."
   - date: 2026-11-06

@@ -60,7 +60,8 @@ extends the defect from date prose alone to event identity/location.
 ## Evidence
 
 Live probes (production, free ops):
-`search_content_semantic({query:"Stellar Build Station India builder sprint", types:["events"], date_start:"2026-06-01"})` returns both rows with `start_at: 2026-06-27` and "July 27" in the summary prose. Event `1444` returns title "Stellar Builders Camp - Jaipur Edition" with slug `stellar-builders-camp-goa-edition` and Goa summary prose.
+`search_content_semantic({query: "Bhopal Jabalpur Build On Stellar workshop", types: ["events"], date_start: "2026-06-01", limit: 100})` returns both rows (`1597`, `1598`) with `start_at: 2026-06-27` and "July 27" in the summary prose.
+`search_content_semantic({query: "Stellar Builders Camp Jaipur", types: ["events"]})` returns event `1444` with title "Stellar Builders Camp - Jaipur Edition", slug `stellar-builders-camp-goa-edition`, and Goa summary prose.
 
 ## Recommendation
 

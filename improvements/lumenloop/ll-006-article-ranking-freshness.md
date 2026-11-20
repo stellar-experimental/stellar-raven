@@ -50,6 +50,9 @@ Test recurring-series queries against current and older editions; investigate
 ranking changes only where the intended relevance/recency contract fails.
 Do not infer an implementation fix such as re-sorting from raw similarity alone.
 
-For date-bounded queries, expose or guarantee the selected publication/event
-date field, support explicit date-desc ordering, and exclude or separately bucket
-undated rows. Semantic rank must never be represented as publication chronology.
+For date-bounded queries, `date_field: "publishing_date"` already filters out
+undated rows for `articles`, but the default `COALESCE(publishing_date, created_at)`
+mode still mixes in undated rows (such as article `9054`), non-article collections
+have no date-field selector, and bounded queries still lack explicit chronological
+(`date-desc`) ordering. Separate or exclude undated rows by default and add explicit
+date-desc ordering; semantic rank must never be represented as publication chronology.

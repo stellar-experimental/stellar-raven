@@ -51,7 +51,7 @@ nor similarity establishes an individual row's identity relation or matched span
 
 ## Evidence
 
-- `POST /v1/tools/search_content_semantic` for `"Tyler van der Hoeven"` and the negative control `"Strupey"` both return `_weak_match: true` (top similarity `0.229` vs `0.259` on 2026-11-20) and 30 rows with no per-row exact-match flag, entity link, or matched text span; the negative control scores higher than the real name.
+- `POST /v1/tools/search_content_semantic` (`limit: 10`) for `"Tyler van der Hoeven"` and the negative control `"Strupey"` both return `_weak_match: true` (`_top_similarity` `0.231` vs `0.259`, confirmed 2026-11-20) and 30 rows with no per-row exact-match flag, entity link, or matched text span; the negative control scores higher than the real name.
 - `find_av_passages` for `"Tyler van der Hoeven"` returns topic neighbors without exact-person attribution.
 
 ## Recommendation
