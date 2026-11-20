@@ -1,16 +1,16 @@
 # User-controlled personalization
 
-Personalization remains deferred.
-[The architecture](../ARCHITECTURE.md) describes request attribution.
-[The usage guide](../usage/README.md) describes private aggregate reports and their retention.
+Status: deferred. Reopen only on an owner decision to build personalization.
 
-Operational logs and a personalization store require separate schemas, retention, access, and user controls.
-A personalization identity must remain stable across authentication-secret rotation.
+[`ARCHITECTURE.md`](../ARCHITECTURE.md) owns request attribution;
+[`usage/README.md`](../usage/README.md) owns aggregate usage reports and retention. Operational logs
+and a personalization store must use separate schemas, retention, access, and user controls, and a
+personalization identity must survive authentication-secret rotation.
 
-## Deferred personalization design
+## Deferred design
 
-Future per-user tuning should be a visible product capability backed by a dedicated store, not a
-query over observability logs. A candidate memory record is small, structured, and provenance-bearing:
+Build per-user tuning as a visible, dedicated store — not a query over observability logs. Candidate
+record shape (small, structured, provenance-bearing):
 
 ```json
 {
@@ -24,25 +24,17 @@ query over observability logs. A candidate memory record is small, structured, a
 }
 ```
 
-Potential categories:
+Candidate categories: explicit response preferences, stable self-described context,
+project/workspace context, explicit feedback, lower-confidence/shorter-retention inferred
+tendencies; exclude sensitive data by default.
 
-- explicit response preferences;
-- stable self-described context;
-- project/workspace context;
-- explicit positive/negative feedback;
-- inferred tendencies only with lower confidence and shorter retention;
-- sensitive data excluded by default.
+Required product controls before shipping:
 
-Required product controls before this ships:
+- Clear disclosure or opt-in, plus inspect ("what do you remember about me?"), add, correct, delete,
+  and disable controls.
+- Workspace/project separation per user.
+- Retention/deletion policy, provenance, and last-confirmed timestamps.
+- Durable internal identity surviving auth-secret rotation safely.
 
-- clear disclosure or opt-in;
-- inspect: “what do you remember about me?”;
-- add, correct, delete, and disable controls;
-- workspace/project separation for one person;
-- retention and deletion policy;
-- provenance and last-confirmed timestamps;
-- a durable internal identity that survives auth-secret rotation safely.
-
-When personalization is built, load only a compact relevant profile into the request context. Do
-not replay raw historical prompts or full transcripts by default. Measure whether personalization
-improves answers, and retain a non-personalized path for comparison and user choice.
+Load only a compact relevant profile into request context (never replay raw prompts/transcripts by
+default). Measure answer impact and keep a non-personalized path for comparison and user choice.
