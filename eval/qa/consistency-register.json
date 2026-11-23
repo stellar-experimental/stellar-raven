@@ -88,13 +88,13 @@
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Updated 2026-11-02: members agree that P28/Adapter activated at ledger 64458446 on 2026-09-16 and P29 (no new CAPs) at ledger 64717645 on 2026-10-01; Bell/P30 (CAP-0084/0087/0088) votes are scheduled for 2026-11-03 (Testnet) and 2026-11-23 (Mainnet), not activated. P23 initialized ledgerMaxDependentTxClusters at 1; SLP-0004 set 2 on 2026-01-29 and SLP-0007 set 3 on 2026-10-22. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "2d075e5561877ad8788fb130e202838328cb315f35fea7c02ec0881abde7f6b9",
-          "q-edge-fresh-latest-protocol-version": "8fad94637d65626d83c4312db0fe952180d3b1383cb98dc6edfdc6f425a8adf8",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-hist-soroban-launch-protocol20": "e29d38ca0d15101a5822aeccb800a12e4061fa09256f3661dc49c690a9493ff0",
           "q-passkey-smart-account-architecture": "963e689112f1b349150a007f0c46087fff1217325c9e291de2728709ef042598",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f",
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
           "q-protocol-24-whisk-incident": "a16e850f1158ede13e601524ce8ce7823cac827add5c9a4339e375c116e63974",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12",
           "q-soroban-constructor-lifecycle": "63d5b65dabd7d3578af0c3ba78227cca541258ff345b540a19442f178373c631",
           "q-zk-host-functions-status": "501710297981581824efedaea6cfafd010d54a7dbeb2edac0d43b9d6af2e0886"
         },
@@ -499,8 +499,8 @@
         "memberContentSha256": {
           "q-infra-software-versions-current-protocol": "66372bde786eda3de6af3d448d6741987e27a9a9d5e81fe1292c8931b4bc458f",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -526,11 +526,11 @@
         },
         "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z, and its CAP-0071 authentication delegation/address-bound credentials remain in effect. P28/Adapter (ledger 64458446, 2026-09-16) and P29 (ledger 64717645, 2026-10-01, no new CAPs) followed. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. The edge latest-version case remains behavior-gated rather than number-gated, and the SCP consensus case never carried an activation claim. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "8fad94637d65626d83c4312db0fe952180d3b1383cb98dc6edfdc6f425a8adf8",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f",
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
           "q-protocol-scp-consensus-algorithm": "8dd0158f45d7224e667d732d54c275df1cdde8321e15103b132ac6732e83241f",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -640,7 +640,7 @@
         "note": "P27/Zipper activated from ledger 63386819 at 2026-07-08T17:00:10Z and its CAP-0071 credentials remain in effect; the earlier pending note is historical and explicitly superseded. Re-swept 2026-11-02: P28 (2026-09-16) and P29 (2026-10-01) followed on Mainnet, so P27 is no longer the latest version; Bell/P30 votes are scheduled, not live. A 2026-07-28 re-sweep after reverifyBy-only hash churn changed no substantive claim. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -868,7 +868,7 @@
         "note": "P23 introduced CAP-0063 scheduling support; the dependent-cluster setting was later raised by network-settings votes (2 to 3 by SLP-0007, live 2026-10-22). Parallel scheduling is not sharding.",
         "memberContentSha256": {
           "q-pc-slp-0004-0006-status": "42f150549b7957a978d020593acc4f79a7126103db827eb4877e9c8343bbbabd",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -1106,7 +1106,7 @@
         "note": "CAP specification/acceptance, software implementation, and network activation are distinct; SEPs are ecosystem interoperability standards.",
         "memberContentSha256": {
           "q-protocol-cap-process": "f28b79d58855f6a5ec773391826bdd934c337cb9e4397e620467d20e9944ab59",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -1196,7 +1196,7 @@
         "memberContentSha256": {
           "q-hist-soroban-launch-protocol20": "e29d38ca0d15101a5822aeccb800a12e4061fa09256f3661dc49c690a9493ff0",
           "q-protocol-scp-consensus-algorithm": "8dd0158f45d7224e667d732d54c275df1cdde8321e15103b132ac6732e83241f",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -1242,7 +1242,7 @@
         },
         "note": "Basic/Full validators, nonvalidating watcher configuration, dated Tier-1 topology, and in-band SCP upgrade agreement remain distinct. CAP acceptance does not activate a network upgrade.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f",
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
           "q-protocol-tier1-requirements": "8109b9f4f8d405cc0b6a5bb35553bd18ca073cc9bdc7c20c596827c9afd82059",
           "q-protocol-validator-node-roles": "a015d6f3fbefbdf205e1a8c1a812cf1ceb50c0b616f70790a091a6da6eb19765"
         },
@@ -1586,7 +1586,7 @@
         "note": "P27 live from ledger 63386819 and first-class CAP-0071 delegation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -1675,8 +1675,8 @@
         "note": "stale spans replaced; delegation/V2 mechanics and the CAP-status-versus-network-live distinction retained (P27 activated at ledger 63386819 on 2026-07-08, and as of 2026-11-14 Mainnet runs P29 with CAP-0071 still in effect). Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -1740,7 +1740,7 @@
         "lastChecked": "2026-11-14",
         "note": "CAP status is separate from network activation; activation is scheduled validator agreement through SCP, not a token or majority vote; CAPs change protocol, SEPs are conventions.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f",
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
           "q-protocol-cap-process": "f28b79d58855f6a5ec773391826bdd934c337cb9e4397e620467d20e9944ab59"
         },
         "reSwept": {
@@ -1770,7 +1770,7 @@
         "note": "Address-with-delegates chains and address-bound V2 credentials are P27/CAP-0071; Pubnet activated at ledger 63386819.",
         "memberContentSha256": {
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -1795,10 +1795,10 @@
         },
         "note": "P27 activated on Mainnet at ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features and remain in effect. Mainnet activated P28 (Adapter) at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01. CAP-0071 credentials stayed in effect through both upgrades. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "8fad94637d65626d83c4312db0fe952180d3b1383cb98dc6edfdc6f425a8adf8",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "reopened": {
           "date": "2026-11-23",
@@ -2176,9 +2176,9 @@
           "q-pc-protocol-upgrade-timing"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "8fad94637d65626d83c4312db0fe952180d3b1383cb98dc6edfdc6f425a8adf8",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c"
         },
         "verdict": "reopen",
         "reSwept": {
@@ -2435,11 +2435,11 @@
           "q-infra-software-versions-current-protocol"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "8fad94637d65626d83c4312db0fe952180d3b1383cb98dc6edfdc6f425a8adf8",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-infra-software-versions-current-protocol": "66372bde786eda3de6af3d448d6741987e27a9a9d5e81fe1292c8931b4bc458f",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "80993c049bb982275fc18a6b2387edb41d1cac5bf09eac45e25d1e2ca3fefc6f",
-          "q-protocol-version-history-list": "69e0ff7555949d80f430f59cc95274a084527586c71cf9640d9304e5109351c5"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
         "verdict": "reopen",
         "reSwept": {

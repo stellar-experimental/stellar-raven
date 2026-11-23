@@ -87,3 +87,48 @@ differ). Every other case object is byte-identical after `JSON.stringify`.
    search (recorded in PLAN.md). I ran no search myself.
 5. **Not done:** `sibling-check.mjs` was not re-run (the plan quotes its last line: 0 matches). The
    lead's commit of `briefs/` is left to the lead; I commit PLAN.md, REVIEW.md, `probe-1.json` and this file.
+
+## Re-derivation review reconciliation
+
+Review: [CODEX-REVIEW.md](CODEX-REVIEW.md) (Codex `gpt-6.2-sol`, high). Decisions are the lead's, from
+`briefs/2.1-exec-reconcile.md`.
+
+1. **Adopted (blocker).** The timing case's class B note in the "no next Mainnet vote" row now says
+   CAP-0089 and CAP-0090 are Draft and name Protocol version 31, and a draft CAP is not a scheduled
+   vote. Two class B evidence entries (cap-0089.md and cap-0090.md, observedAt 2026-11-23) carry that
+   quote; both raw files read "Status: Draft" and "Protocol version: 31". `truth.verified.evidence`
+   did not repeat the error. One addition beyond the brief: the same note's earlier sentence now says
+   the CAP index lists no *Accepted or Implemented* Protocol 31 CAP, so it does not contradict the new
+   clause.
+2. **Adopted.** Timing key fact 3, the answer's SDK sentence and `scpValue.upgrades` wording, and the
+   SDK corroboration row's claim text follow the brief. Lint now warns that key fact 3 exceeds 90
+   characters (100); that is the lead's wording, so I left it (a warning, 0 errors).
+3. **Adopted.** Sentinel `next-mainnet-upgrade-vote-absent` pattern is now
+   `"name":\s*"[^"]*(Mainnet|Pubnet|Public Network)[^"]*Upgrade`, guard unchanged. Evaluated with the
+   repo's own `normalize` and `evaluate` (no test logic changed): on the live full feed
+   `scheduled-maintenances.json` it matches 7 rows, all Mainnet votes (the Protocol 30 vote, P28, X-Ray,
+   P24, P23, P22 and the Protocol 21 vote) and no Testnet row; on the live `upcoming.json` it has 0
+   matches and holds.
+4. **Adopted in part.** Dormant `truth.notes`: the "scheduled with Bell" sentence is deleted from the
+   2026-11-02 UPDATE line; the rest of that line and the 2026-11-23 UPDATE line stay. The golden-answer
+   Stage 2 rewording is declined (not freshness drift, outside this run).
+5. **Declined.** The close-time provenance mismatch with an existing `reSwept` reason predates this run,
+   and this run writes no `reSwept`; left for the maintenance lane that closes the reopened entries.
+6. **Declined.** Editing a historical `reSwept.reason` is writing `reSwept`, which the all-or-none
+   closure rule forbids for this run.
+7. **Declined.** PRESTAGE section 6 requires the trap disposition to quote every member case's
+   `reverifyBy`, including the Software Versions case (a dated case of run 2.2a).
+8. **Adopted.** The history case's P30 row now cites the CAP index
+   (`core/README.md`: CAP-0084, CAP-0087 and CAP-0088 each Protocol 30, Implemented) instead of only
+   CAP-0084. Every new (2026-11-23) evidence quote of the Bell guide line now reads "…1700 UTC—Mainnet
+   upgrade vote" with no space before the dash; older rows keep the page spelling they had. (My first
+   pass also touched one 2026-11-14 row in the timing case; I reverted it.)
+
+Gates re-run after the edits, each to exit status: `eval:qa:compile` 0 (247 cases; parsed `cases.json`
+still differs from the committed one in exactly the six ids); `eval:qa:lint -- --since origin/main
+--stale --enforce-floors` 0, 0 errors (99 warnings, one more than before: the key-fact length above);
+`eval:qa:register` 0, up to date, and 17 entries still at `reopen` with no `reSwept` written (the
+compile after these edits re-stamped hashes on 15 of them); `eval:qa:sentinels` with the same five
+ids 0, all `hold`; `eval:selftest` 0; `secrets:scan -- --tree` 0, clean. `npm test`: the first run
+failed 2 tests in `test/playground-transport.test.mjs` (socket-reuse counts, unrelated to this run);
+that file passed alone and the full suite then passed (174 files, 4166 tests, exit 0).

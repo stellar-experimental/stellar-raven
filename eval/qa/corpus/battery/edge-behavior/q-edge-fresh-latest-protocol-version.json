@@ -554,7 +554,7 @@
             "class": "A",
             "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
             "observedAt": "2026-11-23",
-            "note": "Schedule line: 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'; ledger 65633432 closed 6 seconds after that time."
+            "note": "Schedule line: 'November 23, 2026, 1700 UTC—Mainnet upgrade vote'; ledger 65633432 closed 6 seconds after that time."
           }
         ]
       }
@@ -567,7 +567,7 @@
         "Live F 2026-11-23: https://mainnet.sorobanrpc.com getLatestLedger -- 'protocolVersion 30, sequence 65634153'",
         "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633432 -- 'closed_at 2026-11-23T17:00:06Z, protocol_version 30'",
         "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633431 -- 'closed_at 2026-11-23T17:00:01Z, protocol_version 29'",
-        "Live A 2026-11-23: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'"
+        "Live A 2026-11-23: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC—Mainnet upgrade vote'"
       ],
       "rootCause": [
         "freshness-drift"

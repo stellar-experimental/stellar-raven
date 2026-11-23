@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "82cc1607bc2f552f6946ef69a4af2872dac905438e28592e2f5ebe9f0c313091",
+  "corpusContentSha256": "bf761bf76ac4ab914a00630d4f224a698f7b55b3c356bc21387fff98edddc2a8",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -4480,9 +4480,9 @@
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0084.md",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
                 "observedAt": "2026-11-23",
-                "note": "CAP-0084 Muxed Contract Addresses, CAP-0087 Host functions for ML-DSA signature verification and CAP-0088 Millisecond-Resolution Close Times: each 'Status: Implemented', 'Protocol version: 30'."
+                "note": "The CAP index lists CAP-0084 Muxed Contract Addresses, CAP-0087 Host functions for ML-DSA signature verification and CAP-0088 Millisecond-Resolution Close Times, each Protocol 30, Implemented."
               },
               {
                 "class": "A",
@@ -4494,7 +4494,7 @@
                 "class": "A",
                 "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
                 "observedAt": "2026-11-23",
-                "note": "Schedule line: 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'; ledger 65633432 closed 6 seconds after that time."
+                "note": "Schedule line: 'November 23, 2026, 1700 UTC—Mainnet upgrade vote'; ledger 65633432 closed 6 seconds after that time."
               }
             ]
           }
@@ -4507,7 +4507,7 @@
             "Live F 2026-11-23: https://mainnet.sorobanrpc.com getLatestLedger -- 'protocolVersion 30, sequence 65634153'",
             "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633432 -- 'closed_at 2026-11-23T17:00:06Z, protocol_version 30'",
             "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633431 -- 'closed_at 2026-11-23T17:00:01Z, protocol_version 29'",
-            "Live A 2026-11-23: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'",
+            "Live A 2026-11-23: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC—Mainnet upgrade vote'",
             "Live B 2026-11-23: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md -- 'Host functions for ML-DSA signature verification; Status: Implemented; Protocol version: 30'",
             "Live A 2026-11-23: https://stellar.org/protocol-upgrades -- 'It adds muxed contract addresses, post-quantum signature verification in smart contracts, and millisecond ledger close times.'"
           ],

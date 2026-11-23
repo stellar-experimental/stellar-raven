@@ -219,7 +219,7 @@
       "url": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
       "check": {
         "kind": "absent",
-        "pattern": "Upgrade Vote|Mainnet[^\"]*Upgrade",
+        "pattern": "\"name\":\\s*\"[^\"]*(Mainnet|Pubnet|Public Network)[^\"]*Upgrade",
         "guard": "\"scheduled_maintenances\":"
       }
     },
