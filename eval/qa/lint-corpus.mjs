@@ -363,8 +363,7 @@ function claimCovers(claim, expected) {
 export function lintNumericInvariants(cases, register = {}) {
   const findings = [];
   const byId = new Map(cases.map((kase) => [kase.id, kase]));
-  for (const invariant of entriesOf(register.numericInvariants)) {
-    const label = invariantLabel(invariant);
+  for (const [invariantIndex, invariant] of entriesOf(register.numericInvariants).entries()) {
     const forbidden = [
       ...(invariant.contradictions ?? []),
       ...(invariant.forbiddenValues ?? []),
@@ -376,17 +375,17 @@ export function lintNumericInvariants(cases, register = {}) {
     for (const id of invariantIds(invariant)) {
       const kase = byId.get(id);
       if (!kase) {
-        findings.push(finding("error", "numeric", id, `numeric invariant references missing case: ${label}`));
+        findings.push(finding("error", "numeric", id, `numeric invariant #${invariantIndex} references missing case`));
         continue;
       }
       const text = caseText(kase);
       for (const [index, value] of forbidden.entries()) {
         if (text.includes(value)) {
-          findings.push(finding("error", "numeric", id, `exact contradiction to ${label}: forbidden value ${index} of the register entry is present`));
+          findings.push(finding("error", "numeric", id, `exact contradiction to numeric invariant #${invariantIndex}: forbidden value ${index} of the register entry is present`));
         }
       }
       if (accepted.length > 0 && !accepted.some((value) => text.includes(value))) {
-        findings.push(finding("warn", "numeric", id, `fuzzy review: no authoritative spelling for ${label} found (${accepted.join(" | ")})`));
+        findings.push(finding("warn", "numeric", id, `fuzzy review: no authoritative spelling for numeric invariant #${invariantIndex} found (${accepted.length} accepted spelling(s) in register)`));
       }
     }
   }
@@ -396,19 +395,19 @@ export function lintNumericInvariants(cases, register = {}) {
 export function lintDateContingentTraps(cases, register = {}) {
   const findings = [];
   const byId = new Map(cases.map((kase) => [kase.id, kase]));
-  for (const trap of entriesOf(register.dateContingentTraps)) {
+  for (const [trapIndex, trap] of entriesOf(register.dateContingentTraps).entries()) {
     for (const id of trap.caseIds ?? []) {
       if (!byId.has(id)) findings.push(finding("error", "date-trap", id, "date-contingent trap references missing case"));
     }
-    for (const [field, value] of Object.entries(trap)) {
+    for (const [fieldIndex, [, value]] of Object.entries(trap).entries()) {
       if (typeof value !== "string") continue;
       for (const match of value.matchAll(REVERIFY_BY_REFERENCE_RE)) {
         const [, id, quotedDate] = match;
         const kase = byId.get(id);
         if (!kase) {
-          findings.push(finding("error", "date-trap", id, `${field} reverifyBy reference names missing case`));
+          findings.push(finding("error", "date-trap", id, `date-contingent trap #${trapIndex} field[${fieldIndex}] reverifyBy reference names missing case`));
         } else if (kase.truth?.reverifyBy !== quotedDate) {
-          findings.push(finding("error", "date-trap", id, `${field} reverifyBy ${quotedDate} does not match truth.reverifyBy ${kase.truth?.reverifyBy ?? "(missing)"}`));
+          findings.push(finding("error", "date-trap", id, `date-contingent trap #${trapIndex} field[${fieldIndex}] reverifyBy date does not match truth.reverifyBy`));
         }
       }
     }
@@ -625,10 +624,10 @@ function numericFragments(text) {
 export function lintCorroboration(cases, register = {}) {
   const findings = [];
   const invariantsByCase = new Map();
-  for (const invariant of entriesOf(register.numericInvariants)) {
+  for (const [index, invariant] of entriesOf(register.numericInvariants).entries()) {
     for (const id of invariantIds(invariant)) {
       const list = invariantsByCase.get(id) ?? [];
-      list.push(invariant);
+      list.push({ index, invariant });
       invariantsByCase.set(id, list);
     }
   }
@@ -637,9 +636,9 @@ export function lintCorroboration(cases, register = {}) {
     if (["disputed", "unverifiable"].includes(kase.truth?.status) && rows.length === 0) {
       findings.push(finding("error", "corroboration", kase.id, `${kase.truth.status} truth requires corroboration`));
     }
-    for (const invariant of invariantsByCase.get(kase.id) ?? []) {
+    for (const { index, invariant } of invariantsByCase.get(kase.id) ?? []) {
       if (!rows.some((row) => claimCovers(row.claim, invariantLabel(invariant)))) {
-        findings.push(finding("error", "corroboration", kase.id, `no corroboration row covers numeric invariant: ${invariantLabel(invariant)}`));
+        findings.push(finding("error", "corroboration", kase.id, `no corroboration row covers numeric invariant #${index}`));
       }
     }
     if (kase.truth?.domain === "real-world") {
