@@ -15,7 +15,7 @@
 # origin/main yet, or an undelivered alert before `hc run` on a non-cutoff failure); the unit
 # retries every 20 minutes with no rate limit, so this script bounds the retries itself: past or on
 # an invalid/missing cutoff it always ends with exit 75 regardless of alert delivery (watchdog-dated.sh
-# at 16:00 UTC on the due date is the backstop, retrying every 15 minutes until the merge deadline).
+# at 16:00 UTC on the due date is the backstop, retrying alert delivery every 15 minutes).
 # Exit 75: final (the worktree or branch exists, hc run failed, the lead did not take its task, or
 # the cutoff passed/failed); the unit does not retry. The first failure of a key alerts the owner on
 # both channels, and so does every final failure. The FAILED marker is written only after an alert
@@ -51,14 +51,14 @@ notify() { timeout 60 hc send "$ORCH" "$1" >/dev/null 2>&1 || log "orchestrator 
 alert() {
   local title="Dated golden run $KEY: ${1:0:100}" body accepted=1 number
   body="Run $KEY: $1"$'\n\n'"Log on agentpc: $LOG"
-  if timeout 60 hc send "$ORCH" "$1 (log: agentpc $LOG)" >/dev/null 2>&1; then accepted=0; else log "alert: hc channel did not accept"; fi
+  if timeout 60 hc send "$ORCH" "$1 (log: agentpc $LOG)" >/dev/null 2>&1; then accepted=0; else log "alert: hc channel did not accept" || true; fi
   number=$(timeout 60 gh issue list -R "$GH_REPO" --state open --search "\"$title\" in:title" --json number,title 2>/dev/null |
     jq -r --arg t "$title" '[.[] | select(.title == $t)][0].number // empty' 2>/dev/null) || number=""
   if [[ -n "$number" ]]; then
-    timeout 60 gh issue comment "$number" -R "$GH_REPO" --body "$body" >/dev/null 2>&1 && accepted=0 || log "alert: issue comment failed"
+    timeout 60 gh issue comment "$number" -R "$GH_REPO" --body "$body" >/dev/null 2>&1 && accepted=0 || log "alert: issue comment failed" || true
   elif timeout 60 gh issue create -R "$GH_REPO" --title "$title" --body "$body" --label dated-golden >/dev/null 2>&1 ||
     timeout 60 gh issue create -R "$GH_REPO" --title "$title" --body "$body" >/dev/null 2>&1; then accepted=0
-  else log "alert: gh channel did not accept"; fi
+  else log "alert: gh channel did not accept" || true; fi
   return "$accepted"
 }
 
@@ -71,13 +71,13 @@ FINAL_ONLY=""
 # is the backstop on the due date.
 fail() {
   local code="$1"; shift
-  log "FAILED ($code): $*"
-  if [[ -n "$DRY" ]]; then log "dry run: would alert"; exit "$code"; fi
+  log "FAILED ($code): $*" || true
+  if [[ -n "$DRY" ]]; then log "dry run: would alert" || true; exit "$code"; fi
   if [[ "$code" == 75 || ! -e "$STATE/FAILED-$KEY.txt" ]]; then
     if alert "did not start: $*"; then
-      printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >"$STATE/FAILED-$KEY.txt" || log "warning: could not write $STATE/FAILED-$KEY.txt"
+      printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >"$STATE/FAILED-$KEY.txt" || log "warning: could not write $STATE/FAILED-$KEY.txt" || true
     else
-      log "alert delivery failed on every channel"
+      log "alert delivery failed on every channel" || true
       [[ -n "$LAUNCHED" || -n "$FINAL_ONLY" ]] || code=1
     fi
   fi
@@ -121,12 +121,15 @@ else
   else
     git -C "$REPO" fetch origin --prune || fail 1 "git fetch failed"
   fi
-  git -C "$REPO" cat-file -e "origin/main:$BRIEF_REL" 2>/dev/null || fail 1 "brief missing on origin/main: $BRIEF_REL"
-  ENTRY=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null | jq -ce --arg i "$ITEM" '.[$i] // empty') ||
+  RAW_ENTRY=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null | jq -ce --arg i "$ITEM" '.[$i] // empty') ||
     fail 1 "items.json, or item $ITEM in it, missing on origin/main"
-  DUE="${4:-$(jq -r .due <<<"$ENTRY")}"
-  if [[ -z "$RUN" ]]; then CUTOFF=$(jq -r '.cutoff // empty' <<<"$ENTRY"); fi
+  ENTRY=$(jq -ce 'objects' <<<"$RAW_ENTRY" 2>/dev/null) ||
+    fail_cutoff "invalid non-object items.json entry for $ITEM"
+  if [[ -z "$RUN" ]]; then CUTOFF=$(jq -r '.cutoff // empty' <<<"$ENTRY" 2>/dev/null) || CUTOFF=""; fi
   check_cutoff require
+  git -C "$REPO" cat-file -e "origin/main:$BRIEF_REL" 2>/dev/null || fail 1 "brief missing on origin/main: $BRIEF_REL"
+  DUE="${4:-$(jq -r '.due // empty' <<<"$ENTRY" 2>/dev/null)}"
+  [[ -n "$DUE" ]] || fail_cutoff "missing due date for $ITEM"
   # Already done: every case of the item has a reverifyBy later than the due date. An item with no
   # cases (the rehearsal) is never done.
   if git -C "$REPO" show origin/main:eval/qa/cases.json |

@@ -23,9 +23,11 @@ function writeExecutable(file, body) {
 
 function makeFixture({
   itemsJson = { "2.2a": { due: "2026-11-30", cutoff: "2026-11-30T20:00:00Z", cases: ["q-fixture"] } },
+  includeBrief = true,
   caseReverifyBy = "2026-11-30",
   nowEpoch = Math.floor(Date.parse("2026-11-30T06:00:00Z") / 1000),
   clockSteps = null,
+  failFormatDateAfter = null,
   hcAlertOk = false,
   ghAlertOk = false,
   fetchFails = false,
@@ -56,7 +58,9 @@ function makeFixture({
   const datedRel = ".agents/rounds/2026-11-16-next-phase/items/1.4/dated";
   mkdirSync(join(seed, datedRel), { recursive: true });
   mkdirSync(join(seed, "eval/qa"), { recursive: true });
-  writeFileSync(join(seed, datedRel, "2.2a-LEAD.md"), "# Fixture 2.2a brief\n");
+  if (includeBrief) {
+    writeFileSync(join(seed, datedRel, "2.2a-LEAD.md"), "# Fixture 2.2a brief\n");
+  }
   writeFileSync(join(seed, datedRel, "items.json"), `${JSON.stringify(itemsJson, null, 2)}\n`);
   writeFileSync(
     join(seed, "eval/qa/cases.json"),
@@ -77,8 +81,11 @@ function makeFixture({
 
   // GNU-compatible `date` stub (handles `-u -d <iso> +%s` and `+%s` on macOS & Linux) with optional clock steps.
   const clockFile = join(home, "clock-step.txt");
+  const fmtCountFile = join(home, "fmt-count.txt");
   writeFileSync(clockFile, "0\n");
+  writeFileSync(fmtCountFile, "0\n");
   const stepsJson = JSON.stringify(clockSteps ?? []);
+  const failFmtAfter = failFormatDateAfter === null ? "null" : String(failFormatDateAfter);
   writeExecutable(
     join(bin, "date"),
     `#!${process.execPath}
@@ -102,6 +109,12 @@ if (args.includes("+%s") && !args.includes("-u") && steps.length > 0) {
 if (args.includes("+%s")) {
   process.stdout.write(String(epoch) + "\\n");
 } else {
+  const failAfter = ${failFmtAfter};
+  if (failAfter !== null) {
+    const c = Number(fs.readFileSync(${JSON.stringify(fmtCountFile)}, "utf8").trim()) || 0;
+    fs.writeFileSync(${JSON.stringify(fmtCountFile)}, String(c + 1) + "\\n");
+    if (c >= failAfter) process.exit(1);
+  }
   process.stdout.write(new Date(epoch * 1000).toISOString().replace(/\\.\\d{3}Z$/, "Z") + "\\n");
 }
 `
@@ -202,10 +215,12 @@ describe("dated launcher script", () => {
     expect(existsSync(join(state, "FAILED-2.2a.txt"))).toBe(false);
   });
 
-  it("stays exit 75 on expired cutoff even if writing FAILED marker fails under set -e", () => {
+  it("stays exit 75 on expired cutoff even if writing FAILED marker and failure diagnostics both fail under set -e", () => {
     const { home, state } = makeFixture({
       nowEpoch: Math.floor(Date.parse("2026-11-30T21:00:00Z") / 1000),
-      ghAlertOk: true
+      ghAlertOk: true,
+      // Fail `log()` timestamp calls starting inside `fail()` so diagnostic writes fail under `set -e`.
+      failFormatDateAfter: 1
     });
     // A directory at the marker path makes shell redirection fail under `set -e`.
     mkdirSync(join(state, "FAILED-2.2a.txt"));
@@ -213,22 +228,30 @@ describe("dated launcher script", () => {
     expect(res.status).toBe(75);
   });
 
-  it("exits 75 on malformed or missing cutoff even when alert channels fail", () => {
+  it("exits 75 on malformed, missing, or non-object items.json entry (even if brief is also missing)", () => {
     const bad = makeFixture({
       itemsJson: { "2.2a": { due: "2026-11-30", cutoff: "not-a-date", cases: ["q-fixture"] } }
     });
     expect(runLauncher(bad.home).status).toBe(75);
 
     const missing = makeFixture({
-      itemsJson: { "2.2a": { due: "2026-11-30", cases: ["q-fixture"] } }
+      itemsJson: { "2.2a": { due: "2026-11-30", cases: ["q-fixture"] } },
+      includeBrief: false
     });
     expect(runLauncher(missing.home).status).toBe(75);
+
+    const wrongShape = makeFixture({
+      itemsJson: { "2.2a": "oops" }
+    });
+    expect(runLauncher(wrongShape.home).status).toBe(75);
   });
 
-  it("keeps pre-cutoff transient failures retryable (exit 1) when alerts fail", () => {
-    const { home } = makeFixture({ fetchFails: true, hcAlertOk: false, ghAlertOk: false });
+  it("downgrades pre-cutoff non-cutoff final failure (existing branch) to retryable exit 1 when alerts fail", () => {
+    const { home, state, repo, git } = makeFixture({ hcAlertOk: false, ghAlertOk: false });
+    git(repo, ["branch", "np/2.2a-software-versions", "origin/main"]);
     const res = runLauncher(home);
     expect(res.status).toBe(1);
+    expect(existsSync(join(state, "FAILED-2.2a.txt"))).toBe(false);
   });
 
   it("preserves FAILED marker and remote-tracking refs in RAVEN_DATED_DRY=1 already-done mode", () => {
