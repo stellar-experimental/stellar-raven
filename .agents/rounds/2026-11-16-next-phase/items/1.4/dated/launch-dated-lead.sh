@@ -121,9 +121,13 @@ else
   else
     git -C "$REPO" fetch origin --prune || fail 1 "git fetch failed"
   fi
-  RAW_ENTRY=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null | jq -ce --arg i "$ITEM" '.[$i] // empty') ||
-    fail 1 "items.json, or item $ITEM in it, missing on origin/main"
-  ENTRY=$(jq -ce 'objects' <<<"$RAW_ENTRY" 2>/dev/null) ||
+  ITEMS_JSON=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null) ||
+    fail 1 "items.json missing on origin/main"
+  jq -e 'type == "object"' <<<"$ITEMS_JSON" >/dev/null 2>&1 ||
+    fail_cutoff "invalid items.json on origin/main"
+  jq -e --arg i "$ITEM" 'has($i)' <<<"$ITEMS_JSON" >/dev/null 2>&1 ||
+    fail 1 "item $ITEM missing in items.json on origin/main"
+  ENTRY=$(jq -ce --arg i "$ITEM" '.[$i] | objects' <<<"$ITEMS_JSON" 2>/dev/null) ||
     fail_cutoff "invalid non-object items.json entry for $ITEM"
   if [[ -z "$RUN" ]]; then CUTOFF=$(jq -r '.cutoff // empty' <<<"$ENTRY" 2>/dev/null) || CUTOFF=""; fi
   check_cutoff require

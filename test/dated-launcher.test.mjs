@@ -27,9 +27,9 @@ function makeFixture({
   caseReverifyBy = "2026-11-30",
   nowEpoch = Math.floor(Date.parse("2026-11-30T06:00:00Z") / 1000),
   clockSteps = null,
-  failFormatDateAfter = null,
   hcAlertOk = false,
   ghAlertOk = false,
+  fillLogOnGhAlert = false,
   fetchFails = false,
   hcGetStates = ["working"]
 } = {}) {
@@ -81,11 +81,8 @@ function makeFixture({
 
   // GNU-compatible `date` stub (handles `-u -d <iso> +%s` and `+%s` on macOS & Linux) with optional clock steps.
   const clockFile = join(home, "clock-step.txt");
-  const fmtCountFile = join(home, "fmt-count.txt");
   writeFileSync(clockFile, "0\n");
-  writeFileSync(fmtCountFile, "0\n");
   const stepsJson = JSON.stringify(clockSteps ?? []);
-  const failFmtAfter = failFormatDateAfter === null ? "null" : String(failFormatDateAfter);
   writeExecutable(
     join(bin, "date"),
     `#!${process.execPath}
@@ -109,12 +106,6 @@ if (args.includes("+%s") && !args.includes("-u") && steps.length > 0) {
 if (args.includes("+%s")) {
   process.stdout.write(String(epoch) + "\\n");
 } else {
-  const failAfter = ${failFmtAfter};
-  if (failAfter !== null) {
-    const c = Number(fs.readFileSync(${JSON.stringify(fmtCountFile)}, "utf8").trim()) || 0;
-    fs.writeFileSync(${JSON.stringify(fmtCountFile)}, String(c + 1) + "\\n");
-    if (c >= failAfter) process.exit(1);
-  }
   process.stdout.write(new Date(epoch * 1000).toISOString().replace(/\\.\\d{3}Z$/, "Z") + "\\n");
 }
 `
@@ -165,12 +156,16 @@ process.exit(1);
   );
 
   // Stub `gh` supporting `issue list`, `issue create`, `issue comment`.
+  const logPath = join(state, "2.2a.log");
   writeExecutable(
     join(bin, "gh"),
     `#!/usr/bin/env bash
 if [[ "$1" == "issue" && "$2" == "list" ]]; then
   echo "[]"
   exit 0
+fi
+if [[ "${fillLogOnGhAlert ? "1" : ""}" == "1" ]]; then
+  dd if=/dev/zero bs=1 count=512 >> "${logPath}" 2>/dev/null || true
 fi
 exit ${ghAlertOk ? 0 : 1}
 `
@@ -219,31 +214,27 @@ describe("dated launcher script", () => {
     const { home, state } = makeFixture({
       nowEpoch: Math.floor(Date.parse("2026-11-30T21:00:00Z") / 1000),
       ghAlertOk: true,
-      // Fail `log()` timestamp calls starting inside `fail()` so diagnostic writes fail under `set -e`.
-      failFormatDateAfter: 1
+      fillLogOnGhAlert: true
     });
-    // A directory at the marker path makes shell redirection fail under `set -e`.
+    // A directory at the marker path makes marker redirection fail, while `ulimit -f 1` (512 bytes)
+    // with SIGXFSZ ignored causes `log "warning: ..."` to hit EFBIG right after `gh` pads the log.
     mkdirSync(join(state, "FAILED-2.2a.txt"));
-    const res = runLauncher(home);
+    const res = spawnSync("bash", ["-c", `trap '' XFSZ; ulimit -f 1; exec bash "${LAUNCHER}" 2.2a software-versions`], {
+      env: { HOME: home },
+      encoding: "utf8"
+    });
     expect(res.status).toBe(75);
   });
 
-  it("exits 75 on malformed, missing, or non-object items.json entry (even if brief is also missing)", () => {
-    const bad = makeFixture({
-      itemsJson: { "2.2a": { due: "2026-11-30", cutoff: "not-a-date", cases: ["q-fixture"] } }
-    });
-    expect(runLauncher(bad.home).status).toBe(75);
-
-    const missing = makeFixture({
-      itemsJson: { "2.2a": { due: "2026-11-30", cases: ["q-fixture"] } },
-      includeBrief: false
-    });
-    expect(runLauncher(missing.home).status).toBe(75);
-
-    const wrongShape = makeFixture({
-      itemsJson: { "2.2a": "oops" }
-    });
-    expect(runLauncher(wrongShape.home).status).toBe(75);
+  it.each([
+    { label: "bad cutoff", itemsJson: { "2.2a": { due: "2026-11-30", cutoff: "not-a-date", cases: ["q-fixture"] } }, includeBrief: true },
+    { label: "missing cutoff + missing brief", itemsJson: { "2.2a": { due: "2026-11-30", cases: ["q-fixture"] } }, includeBrief: false },
+    { label: "string entry", itemsJson: { "2.2a": "oops" }, includeBrief: false },
+    { label: "null entry", itemsJson: { "2.2a": null }, includeBrief: false },
+    { label: "false entry", itemsJson: { "2.2a": false }, includeBrief: false }
+  ])("exits 75 on invalid items.json/cutoff: $label", ({ itemsJson, includeBrief }) => {
+    const { home } = makeFixture({ itemsJson, includeBrief });
+    expect(runLauncher(home).status).toBe(75);
   });
 
   it("downgrades pre-cutoff non-cutoff final failure (existing branch) to retryable exit 1 when alerts fail", () => {
