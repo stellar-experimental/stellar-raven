@@ -1,0 +1,246 @@
+{
+  "probedAt": "2026-11-23T18:00:14.605Z",
+  "sections": {
+    "protocol": {
+      "ok": true,
+      "horizon": {
+        "mainnet": {
+          "ok": true,
+          "current_protocol_version": 30,
+          "core_supported_protocol_version": 30,
+          "core_latest_ledger": 65634153,
+          "history_latest_ledger": 65634153,
+          "network_passphrase": "Public Global Stellar Network ; September 2015",
+          "latestLedger": {
+            "sequence": 65634153,
+            "closed_at": "2026-11-23T18:00:11Z",
+            "protocol_version": 30
+          }
+        },
+        "testnet": {
+          "ok": true,
+          "current_protocol_version": 30,
+          "core_supported_protocol_version": 30,
+          "core_latest_ledger": 5886634,
+          "history_latest_ledger": 5886634,
+          "network_passphrase": "Test SDF Network ; September 2015",
+          "latestLedger": {
+            "sequence": 5886634,
+            "closed_at": "2026-11-23T18:00:12Z",
+            "protocol_version": 30
+          }
+        }
+      },
+      "rpc": {
+        "mainnet": {
+          "ok": true,
+          "protocolVersion": 30,
+          "sequence": 65634153,
+          "closeTime": "1795456811"
+        },
+        "testnet": {
+          "ok": true,
+          "protocolVersion": 30,
+          "sequence": 5886634,
+          "closeTime": "1795456812"
+        }
+      },
+      "activation": {
+        "ok": true,
+        "found": true,
+        "steps": 20,
+        "L": {
+          "sequence": 65633432,
+          "closed_at": "2026-11-23T17:00:06Z",
+          "protocol_version": 30
+        },
+        "Lminus1": {
+          "sequence": 65633431,
+          "closed_at": "2026-11-23T17:00:01Z",
+          "protocol_version": 29
+        }
+      },
+      "status": {
+        "ok": true,
+        "scheduledMaintenances": [
+          {
+            "name": "Stellar Public Network Protocol Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2026-11-23T17:00:00.000Z",
+            "scheduled_until": "2026-11-23T17:05:00.000Z",
+            "resolved_at": "2026-11-23T17:05:07.336Z"
+          },
+          {
+            "name": "Bell, Protocol 30 Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2026-11-03T17:00:00.000Z",
+            "scheduled_until": "2026-11-03T17:05:00.000Z",
+            "resolved_at": "2026-11-03T17:05:18.991Z"
+          },
+          {
+            "name": "Mainnet Adapter, Protocol 28 Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2026-09-16T17:00:00.000Z",
+            "scheduled_until": "2026-09-16T17:05:00.000Z",
+            "resolved_at": "2026-09-16T17:05:07.357Z"
+          },
+          {
+            "name": "Testnet Adapter, Protocol 28 Upgrade",
+            "status": "completed",
+            "scheduled_for": "2026-08-27T17:00:00.000Z",
+            "scheduled_until": "2026-08-27T17:05:00.000Z",
+            "resolved_at": "2026-08-27T17:05:08.478Z"
+          },
+          {
+            "name": "X-Ray Mainnet Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2026-01-22T17:00:00.000Z",
+            "scheduled_until": "2026-01-22T18:00:00.000Z",
+            "resolved_at": "2026-01-22T18:00:21.160Z"
+          },
+          {
+            "name": "X-Ray Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2026-01-07T17:00:00.000Z",
+            "scheduled_until": "2026-01-07T18:00:00.000Z",
+            "resolved_at": "2026-01-07T18:00:22.930Z"
+          },
+          {
+            "name": "Mainnet Protocol 24 Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2025-10-22T17:00:00.000Z",
+            "scheduled_until": "2025-10-22T18:00:00.000Z",
+            "resolved_at": "2025-10-22T18:00:21.543Z"
+          },
+          {
+            "name": "Protocol 24 Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2025-10-21T21:00:00.000Z",
+            "scheduled_until": "2025-10-21T22:00:00.000Z",
+            "resolved_at": "2025-10-21T22:00:28.275Z"
+          },
+          {
+            "name": "Protocol 23 Mainnet Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2025-09-03T17:00:00.000Z",
+            "scheduled_until": "2025-09-03T18:00:00.000Z",
+            "resolved_at": "2025-09-03T18:00:21.199Z"
+          },
+          {
+            "name": "Protocol 23 Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2025-07-17T17:00:00.000Z",
+            "scheduled_until": "2025-07-17T18:00:00.000Z",
+            "resolved_at": "2025-07-17T18:00:21.163Z"
+          },
+          {
+            "name": "Protocol 22 Mainnet Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2024-12-05T17:00:00.000Z",
+            "scheduled_until": "2024-12-05T17:05:00.000Z",
+            "resolved_at": "2024-12-05T17:05:21.133Z"
+          },
+          {
+            "name": "Protocol 22 Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2024-11-12T17:00:00.000Z",
+            "scheduled_until": "2024-11-12T17:05:00.000Z",
+            "resolved_at": "2024-11-12T17:05:21.141Z"
+          },
+          {
+            "name": "Mainnet Protocol Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2024-06-18T17:00:00.000Z",
+            "scheduled_until": "2024-06-18T17:01:00.000Z",
+            "resolved_at": "2024-06-18T17:01:02.168Z"
+          },
+          {
+            "name": "Testnet Protocol 21 Upgrade",
+            "status": "completed",
+            "scheduled_for": "2024-05-14T17:00:00.000Z",
+            "scheduled_until": "2024-05-14T17:01:00.000Z",
+            "resolved_at": "2024-05-14T17:01:02.522Z"
+          },
+          {
+            "name": "Testnet Protocol 20 Upgrade",
+            "status": "completed",
+            "scheduled_for": "2023-09-20T15:00:00.000Z",
+            "scheduled_until": "2023-09-20T15:01:00.000Z",
+            "resolved_at": "2023-09-20T15:01:02.631Z"
+          }
+        ],
+        "upcoming": [],
+        "note": "status is resolved by the clock; a completed row proves nothing"
+      },
+      "coreReleases": {
+        "ok": true,
+        "rows": [
+          {
+            "tag_name": "v30.0.0",
+            "prerelease": false,
+            "published_at": "2026-10-16T21:09:15Z"
+          },
+          {
+            "tag_name": "v29.0.0",
+            "prerelease": false,
+            "published_at": "2026-10-05T19:19:08Z"
+          },
+          {
+            "tag_name": "v29.0.0-internal",
+            "prerelease": false,
+            "published_at": "2026-10-01T17:22:41Z"
+          },
+          {
+            "tag_name": "v28.0.1",
+            "prerelease": false,
+            "published_at": "2026-09-01T07:01:54Z"
+          },
+          {
+            "tag_name": "v28.0.0",
+            "prerelease": false,
+            "published_at": "2026-08-13T20:05:30Z"
+          },
+          {
+            "tag_name": "v27.1.0",
+            "prerelease": false,
+            "published_at": "2026-06-25T19:16:20Z"
+          },
+          {
+            "tag_name": "v27.0.0",
+            "prerelease": false,
+            "published_at": "2026-06-05T19:51:25Z"
+          },
+          {
+            "tag_name": "v26.1.0",
+            "prerelease": false,
+            "published_at": "2026-05-15T18:03:49Z"
+          },
+          {
+            "tag_name": "v26.0.1",
+            "prerelease": false,
+            "published_at": "2026-04-13T19:13:45Z"
+          },
+          {
+            "tag_name": "v26.0.0",
+            "prerelease": false,
+            "published_at": "2026-03-31T23:35:24Z"
+          }
+        ]
+      },
+      "bellGuide": {
+        "ok": true,
+        "url": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+        "scheduleLines": [
+          "November 3, 2026, 1700 UTC —Testnet upgrade vote",
+          "November 23, 2026, 1700 UTC —Mainnet upgrade vote"
+        ]
+      }
+    },
+    "quantum": {
+      "ok": true,
+      "cap": "CAP-0087",
+      "status": "Status: Implemented",
+      "protocolVersion": "Protocol version: 30"
+    }
+  }
+}

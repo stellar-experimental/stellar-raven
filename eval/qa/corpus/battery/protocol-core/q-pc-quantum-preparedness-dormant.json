@@ -5,7 +5,7 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "Not today: a sufficiently powerful quantum computer could break Ed25519, and SDF's Quantum Preparedness Plan stages the response. Stage 1 (2026) adds post-quantum signature verification to Soroban (CAP-0087 ML-DSA, in Bell/Protocol 30, not yet on Mainnet as of 2026-11-14); Stage 2 (2027) adds quantum-safe signers for classic accounts; Stage 3 deprecates Ed25519 when the threat requires. No primary source defines a final, mechanical dormant-account eligibility rule as of 2026-11-14.",
+    "answer": "Not today: a sufficiently powerful quantum computer could break Ed25519, and SDF's Quantum Preparedness Plan stages the response. Stage 1 (2026) adds post-quantum signature verification to Soroban (CAP-0087 ML-DSA, in Bell/Protocol 30, active on Mainnet since 2026-11-23); Stage 2 (2027) adds quantum-safe signers for classic accounts; Stage 3 deprecates Ed25519 when the threat requires. No primary source defines a final, mechanical dormant-account eligibility rule as of 2026-11-14.",
     "keyFacts": [
       "Stellar is not quantum-resistant today; Ed25519 is the exposed primitive.",
       "QPP stages: Soroban PQ verification (2026), classic PQ signers (2027), then deprecation.",
@@ -28,7 +28,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-14",
+    "asOf": "2026-11-23",
     "sources": [
       {
         "class": "A",
@@ -200,28 +200,53 @@
             "note": "dormant accounts that have never authorized a transaction … no deterministic eligibility test appears on the page"
           }
         ]
+      },
+      {
+        "claim": "CAP-0087 ML-DSA verification is active on Mainnet since 2026-11-23 (Bell/Protocol 30, ledger 65633432)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65633432",
+            "observedAt": "2026-11-23",
+            "note": "sequence 65633432, closed_at 2026-11-23T17:00:06Z, protocol_version 30"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65633431",
+            "observedAt": "2026-11-23",
+            "note": "sequence 65633431, closed_at 2026-11-23T17:00:01Z, protocol_version 29"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-23",
+            "note": "current_protocol_version 30, core_supported_protocol_version 30, core_version stellar-core 30.0.0, Pubnet passphrase (read 2026-11-23T18:01Z)"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+            "observedAt": "2026-11-23",
+            "note": "CAP-0087 Host functions for ML-DSA signature verification: 'Status: Implemented', 'Protocol version: 30'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "date": "2026-11-23",
+      "by": "Dated run 2.1 (2026-11-23), .agents/rounds/2026-11-16-next-phase/items/2.1/",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-quantum-preparedness-dormant",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-quantum-preparedness-dormant",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-quantum-preparedness-dormant",
-        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan -- 'Stage 1—Building blocks and contract accounts (2026). … Stage 2—Protocol-level enshrinement and opt-in migration (2027). … Stage 3—Deprecation (timing determined by the threat).'",
-        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md -- 'Title: Host functions for ML-DSA signature verification / Status: Implemented / Protocol version: 30 (ML-DSA-44, -65, -87 named)'",
-        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote.'",
-        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan -- 'dormant accounts that have never authorized a transaction … no deterministic eligibility test appears on the page'",
-        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/README.md -- '| [CAP-0087](cap-0087.md) | 30 | Host functions for ML-DSA signature verification | Jay Geng | Implemented |'",
-        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"protocol_version\": 29'"
+        "Live F 2026-11-23: https://horizon.stellar.org/ -- 'current_protocol_version 30, core_supported_protocol_version 30, core_version stellar-core 30.0.0'",
+        "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633432 -- 'closed_at 2026-11-23T17:00:06Z, protocol_version 30'",
+        "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633431 -- 'closed_at 2026-11-23T17:00:01Z, protocol_version 29'",
+        "Live B 2026-11-23: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md -- 'Host functions for ML-DSA signature verification; Status: Implemented; Protocol version: 30'"
       ],
       "rootCause": [
-        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-pc-quantum-preparedness-dormant",
-    "notes": "QPP is a dated SDF plan, not yet a final CAP with dormant-account thresholds. The blog describes dormant accounts qualitatively as holders unreachable for migration; it does not publish a deterministic eligibility test.\nAlso good if the answer: Notes the distinction between future migration planning and current user action requirements.\nGolden cites: Primary Stellar/CAP source required for the Quantum Preparedness Plan and dormant-account criteria.\nGrader caution 2026-08-24: the 'no mechanical eligibility rule' fact is a NEGATIVE claim, verified by absence from primary records plus a dated web sweep, not by a source that states it. Accept it only when the answer keeps it source-relative and dated ('per the QPP and the CAP record as of <date>'). Do not penalize an answer that says a later CAP or implementation could define criteria, and do not penalize an answer that reports the QPP's qualitative description (dormant holders are unreachable; a forced cutoff would require freeze-with-recovery or permanent lock). Penalize an absolute, undated 'there is no rule' framing and any invented threshold, deadline, or balance test.\nUPDATE 2026-11-02: the dormant-account negative claim was re-checked against the QPP page, CAPs through cap-0090, and a dated web sweep; no eligibility rule exists. CAP-0087 is scheduled with Bell; accept a dated report that it activated after 2026-11-23.",
+    "notes": "QPP is a dated SDF plan, not yet a final CAP with dormant-account thresholds. The blog describes dormant accounts qualitatively as holders unreachable for migration; it does not publish a deterministic eligibility test.\nAlso good if the answer: Notes the distinction between future migration planning and current user action requirements.\nGolden cites: Primary Stellar/CAP source required for the Quantum Preparedness Plan and dormant-account criteria.\nGrader caution 2026-08-24: the 'no mechanical eligibility rule' fact is a NEGATIVE claim, verified by absence from primary records plus a dated web sweep, not by a source that states it. Accept it only when the answer keeps it source-relative and dated ('per the QPP and the CAP record as of <date>'). Do not penalize an answer that says a later CAP or implementation could define criteria, and do not penalize an answer that reports the QPP's qualitative description (dormant holders are unreachable; a forced cutoff would require freeze-with-recovery or permanent lock). Penalize an absolute, undated 'there is no rule' framing and any invented threshold, deadline, or balance test.\nUPDATE 2026-11-02: the dormant-account negative claim was re-checked against the QPP page, CAPs through cap-0090, and a dated web sweep; no eligibility rule exists.\nUPDATE 2026-11-23: Bell activated on Mainnet at ledger 65633432; CAP-0087 is live. The dormant-rule negative was not re-swept and stays dated 2026-11-14.",
     "leaf": "behavior.no-info-honesty",
     "secondaryLeaf": "security.quantum-preparedness"
   }

@@ -78,25 +78,29 @@
           "q-protocol-version-history-list",
           "q-soroban-constructor-lifecycle"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The protocol-to-feature and activation mappings stay consistent.",
           "verdict": "consistent"
         },
-        "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Updated 2026-11-02: members agree that P28/Adapter activated at ledger 64458446 on 2026-09-16 and P29 (no new CAPs) at ledger 64717645 on 2026-10-01; Bell/P30 (CAP-0084/0087/0088) votes are scheduled for 2026-11-03 (Testnet) and 2026-11-23 (Mainnet), not activated. P23 initialized ledgerMaxDependentTxClusters at 1; SLP-0004 set 2 on 2026-01-29 and SLP-0007 set 3 on 2026-10-22.",
+        "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Updated 2026-11-02: members agree that P28/Adapter activated at ledger 64458446 on 2026-09-16 and P29 (no new CAPs) at ledger 64717645 on 2026-10-01; Bell/P30 (CAP-0084/0087/0088) votes are scheduled for 2026-11-03 (Testnet) and 2026-11-23 (Mainnet), not activated. P23 initialized ledgerMaxDependentTxClusters at 1; SLP-0004 set 2 on 2026-01-29 and SLP-0007 set 3 on 2026-10-22. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "2d075e5561877ad8788fb130e202838328cb315f35fea7c02ec0881abde7f6b9",
-          "q-edge-fresh-latest-protocol-version": "c4881a4361b797ddedef477f1dd520d00e5399ae5b73f6409a3d0e51486c5164",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-hist-soroban-launch-protocol20": "e29d38ca0d15101a5822aeccb800a12e4061fa09256f3661dc49c690a9493ff0",
           "q-passkey-smart-account-architecture": "963e689112f1b349150a007f0c46087fff1217325c9e291de2728709ef042598",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9",
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
           "q-protocol-24-whisk-incident": "a16e850f1158ede13e601524ce8ce7823cac827add5c9a4339e375c116e63974",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12",
           "q-soroban-constructor-lifecycle": "63d5b65dabd7d3578af0c3ba78227cca541258ff345b540a19442f178373c631",
           "q-zk-host-functions-status": "501710297981581824efedaea6cfafd010d54a7dbeb2edac0d43b9d6af2e0886"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -292,7 +296,7 @@
           "q-soroban-simulate-resource-fee",
           "q-token-initial-supply-distribution"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -309,10 +313,14 @@
           "q-pc-practical-fee-setting": "6449c7baf85a24e8c7aa9e6e4558badac1f6b92be70340f677737ea54cff60ea",
           "q-pc-sponsored-reserves": "1acaf66823e8351dcb5f40b85e791d8f71b6377d61ab4439add2e5cecdcaf31a",
           "q-protocol-base-reserve-min-balance": "dd96ba90f9c1a59d204e034a2049630641ae9921deb2a2201a81f1d56ab551b3",
-          "q-protocol-ledger-close-time": "a615ff5c2abbafeb101f1e7c9742116bfb782581407c0a772e4d02015b217fe2",
+          "q-protocol-ledger-close-time": "228151b89c4ec090c50b524cc37501fd644a0fd6a9f117502b8d4af66b359e93",
           "q-raph-xlm-staking": "b19f6318aae61688981883724a136c373eaccce853a712fd9071c913c39e193a",
           "q-soroban-simulate-resource-fee": "eea6941df0de2ea935035409606046eabb8d490bde203b595c1e2cd90235f37a",
           "q-token-initial-supply-distribution": "e91d20b6cdf6570ea18077bfaa7f1513105e614b450cc6c1bc2924b0cab4100a"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -480,7 +488,7 @@
           "q-protocol-version-history-list",
           "q-infra-software-versions-current-protocol"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -491,8 +499,12 @@
         "memberContentSha256": {
           "q-infra-software-versions-current-protocol": "66372bde786eda3de6af3d448d6741987e27a9a9d5e81fe1292c8931b4bc458f",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -505,20 +517,24 @@
           "q-protocol-scp-consensus-algorithm",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The note agrees with this entry: CAP-0071 credentials remain in effect after P28 and P29.",
           "verdict": "consistent"
         },
-        "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z, and its CAP-0071 authentication delegation/address-bound credentials remain in effect. P28/Adapter (ledger 64458446, 2026-09-16) and P29 (ledger 64717645, 2026-10-01, no new CAPs) followed. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. The edge latest-version case remains behavior-gated rather than number-gated, and the SCP consensus case never carried an activation claim.",
+        "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z, and its CAP-0071 authentication delegation/address-bound credentials remain in effect. P28/Adapter (ledger 64458446, 2026-09-16) and P29 (ledger 64717645, 2026-10-01, no new CAPs) followed. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. The edge latest-version case remains behavior-gated rather than number-gated, and the SCP consensus case never carried an activation claim. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "c4881a4361b797ddedef477f1dd520d00e5399ae5b73f6409a3d0e51486c5164",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9",
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
           "q-protocol-scp-consensus-algorithm": "8dd0158f45d7224e667d732d54c275df1cdde8321e15103b132ac6732e83241f",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -614,17 +630,21 @@
           "q-pc-protocol-27-zipper",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The note agrees that CAP-0071 credentials remain in effect.",
           "verdict": "consistent"
         },
-        "note": "P27/Zipper activated from ledger 63386819 at 2026-07-08T17:00:10Z and its CAP-0071 credentials remain in effect; the earlier pending note is historical and explicitly superseded. Re-swept 2026-11-02: P28 (2026-09-16) and P29 (2026-10-01) followed on Mainnet, so P27 is no longer the latest version; Bell/P30 votes are scheduled, not live. A 2026-07-28 re-sweep after reverifyBy-only hash churn changed no substantive claim.",
+        "note": "P27/Zipper activated from ledger 63386819 at 2026-07-08T17:00:10Z and its CAP-0071 credentials remain in effect; the earlier pending note is historical and explicitly superseded. Re-swept 2026-11-02: P28 (2026-09-16) and P29 (2026-10-01) followed on Mainnet, so P27 is no longer the latest version; Bell/P30 votes are scheduled, not live. A 2026-07-28 re-sweep after reverifyBy-only hash churn changed no substantive claim. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -838,7 +858,7 @@
           "q-protocol-version-history-list",
           "q-pc-slp-0004-0006-status"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -848,7 +868,11 @@
         "note": "P23 introduced CAP-0063 scheduling support; the dependent-cluster setting was later raised by network-settings votes (2 to 3 by SLP-0007, live 2026-10-22). Parallel scheduling is not sharding.",
         "memberContentSha256": {
           "q-pc-slp-0004-0006-status": "42f150549b7957a978d020593acc4f79a7126103db827eb4877e9c8343bbbabd",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1072,7 +1096,7 @@
           "q-protocol-cap-process",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -1082,7 +1106,11 @@
         "note": "CAP specification/acceptance, software implementation, and network activation are distinct; SEPs are ecosystem interoperability standards.",
         "memberContentSha256": {
           "q-protocol-cap-process": "f28b79d58855f6a5ec773391826bdd934c337cb9e4397e620467d20e9944ab59",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1112,17 +1140,21 @@
           "q-protocol-ledger-close-time",
           "q-protocol-max-tx-set-size"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "note": "Mainnet closes a ledger about every 5 seconds (target 5000 ms; five sampled closes on 2026-11-14 were 5 seconds apart, and the pre-Protocol-28 cadence before 2026-09-16 was about 5 to 7 seconds); since 2026-11-09 the official Docs say about 5 seconds; the earlier 5–7-second wording matched samples before Protocol 28. As observed 2026-08-21, current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
-          "q-protocol-ledger-close-time": "a615ff5c2abbafeb101f1e7c9742116bfb782581407c0a772e4d02015b217fe2",
+          "q-protocol-ledger-close-time": "228151b89c4ec090c50b524cc37501fd644a0fd6a9f117502b8d4af66b359e93",
           "q-protocol-max-tx-set-size": "003ba6c5a743b3cd82dbc515973912f4267e0bfae0f374b1a9318637ab32c76a"
         },
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-protocol-ledger-close-time (about 5 s as of 2026-11-14, 5000 ms target, 5 to 7 s only pre-Protocol-28) and q-protocol-max-tx-set-size (1,000 classic operations and 2,000 smart-contract transactions as of 2026-11-14). The figures match the note's 2026-08-21 observations, the close-time case makes no limits claim and the tx-set case makes no cadence claim. Re-checked by the instrument lane after the finalize edits: q-protocol-ledger-close-time now states five 5-second sampled closes on 2026-11-14 instead of a mean since Protocol 28, and the cluster-065 note was updated to match. Members remain consistent.",
           "verdict": "consistent"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1153,18 +1185,22 @@
           "q-protocol-scp-consensus-algorithm",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 3 members. P20/Soroban 2024-02-20 agrees between q-hist-soroban-launch-protocol20 (Phase 0 2024-02-20, Phase 1 2024-02-27, GA 2024-03-19) and q-protocol-version-history-list; P27, P28 and P29 dates and the Bell Testnet/Mainnet-vote tail are stated only in history-list and match the note; q-protocol-scp-consensus-algorithm carries no activation claim. history-list reverifyBy is 2026-11-24 as the note says. Re-checked by the instrument lane after the finalize edits: q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
           "verdict": "consistent"
         },
-        "note": "P20 activated Soroban on 2024-02-20; the March milestone raised capacity. Software major versions indicate protocol support but do not by themselves prove live activation. P27 activated at ledger 63386819 on 2026-07-08. P28/Adapter activated on Mainnet at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. q-protocol-version-history-list reverifyBy 2026-11-24. Duplicate version-history override keys were consolidated and stale pending-P27 grader notes replaced.",
+        "note": "P20 activated Soroban on 2024-02-20; the March milestone raised capacity. Software major versions indicate protocol support but do not by themselves prove live activation. P27 activated at ledger 63386819 on 2026-07-08. P28/Adapter activated on Mainnet at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. q-protocol-version-history-list reverifyBy 2027-03-01. Duplicate version-history override keys were consolidated and stale pending-P27 grader notes replaced. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
           "q-hist-soroban-launch-protocol20": "e29d38ca0d15101a5822aeccb800a12e4061fa09256f3661dc49c690a9493ff0",
           "q-protocol-scp-consensus-algorithm": "8dd0158f45d7224e667d732d54c275df1cdde8321e15103b132ac6732e83241f",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1197,7 +1233,7 @@
           "q-protocol-validator-node-roles",
           "q-pc-protocol-upgrade-timing"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -1206,9 +1242,13 @@
         },
         "note": "Basic/Full validators, nonvalidating watcher configuration, dated Tier-1 topology, and in-band SCP upgrade agreement remain distinct. CAP acceptance does not activate a network upgrade.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9",
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
           "q-protocol-tier1-requirements": "8109b9f4f8d405cc0b6a5bb35553bd18ca073cc9bdc7c20c596827c9afd82059",
           "q-protocol-validator-node-roles": "a015d6f3fbefbdf205e1a8c1a812cf1ceb50c0b616f70790a091a6da6eb19765"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1536,7 +1576,7 @@
           "q-pc-protocol-27-zipper",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -1546,7 +1586,11 @@
         "note": "P27 live from ledger 63386819 and first-class CAP-0071 delegation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1621,18 +1665,22 @@
           "q-pc-protocol-27-zipper",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The CAP-status-versus-network-live distinction is unchanged.",
           "verdict": "consistent"
         },
-        "note": "stale spans replaced; delegation/V2 mechanics and the CAP-status-versus-network-live distinction retained (P27 activated at ledger 63386819 on 2026-07-08, and as of 2026-11-14 Mainnet runs P29 with CAP-0071 still in effect). Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+        "note": "stale spans replaced; delegation/V2 mechanics and the CAP-status-versus-network-live distinction retained (P27 activated at ledger 63386819 on 2026-07-08, and as of 2026-11-14 Mainnet runs P29 with CAP-0071 still in effect). Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1688,17 +1736,21 @@
           "q-protocol-cap-process",
           "q-pc-protocol-upgrade-timing"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "note": "CAP status is separate from network activation; activation is scheduled validator agreement through SCP, not a token or majority vote; CAPs change protocol, SEPs are conventions.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9",
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
           "q-protocol-cap-process": "f28b79d58855f6a5ec773391826bdd934c337cb9e4397e620467d20e9944ab59"
         },
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-protocol-cap-process (activation is validator agreement through SCP quorum sets on a scheduled upgrade, not a token or majority vote; CAPs vs SEPs) with q-pc-protocol-upgrade-timing (validators arm a scheduled upgrade, SCP applies it in-band, not a token-holder vote). They agree. The label still names retired q-protocol-cap-vs-sep and q-protocol-validator-upgrade-vote, and the note says they are \"retained siblings\"; the CAP-vs-SEP point now lives in q-protocol-cap-process and the validator-vote point in q-pc-protocol-upgrade-timing. Applied text-edit: Relabel cluster-115 to \"q-protocol-cap-process + q-pc-protocol-upgrade-timing\" and set the note to \"CAP status is separate from network activation; activation is scheduled validator agreement through SCP, not a token or majority vote; CAPs change protocol, SEPs are conventions.\" Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
           "verdict": "consistent"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1708,7 +1760,7 @@
           "q-pc-protocol-27-zipper",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -1718,7 +1770,11 @@
         "note": "Address-with-delegates chains and address-bound V2 credentials are P27/CAP-0071; Pubnet activated at ledger 63386819.",
         "memberContentSha256": {
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1730,19 +1786,23 @@
           "q-pc-protocol-upgrade-timing",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The note agrees that CAP-0071 credentials stayed in effect through P28 and P29.",
           "verdict": "consistent"
         },
-        "note": "P27 activated on Mainnet at ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features and remain in effect. Mainnet activated P28 (Adapter) at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01. CAP-0071 credentials stayed in effect through both upgrades. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+        "note": "P27 activated on Mainnet at ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features and remain in effect. Mainnet activated P28 (Adapter) at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01. CAP-0071 credentials stayed in effect through both upgrades. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Bell/P30 activated on Mainnet at ledger 65633432 on 2026-11-23.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "c4881a4361b797ddedef477f1dd520d00e5399ae5b73f6409a3d0e51486c5164",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
+        },
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1996,8 +2056,8 @@
       },
       {
         "label": "Mainnet protocol activation history",
-        "authoritativeValue": "Protocol 27 (Zipper) from ledger 63386819 (2026-07-08); Protocol 28 (Adapter) from ledger 64458446 (2026-09-16); Protocol 29 from ledger 64717645 (2026-10-01)",
-        "rule": "P27, P28 and P29 activation dates and ledger numbers are fixed history. On 2026-11-10 Horizon reported Pubnet at Protocol 29. Bell is live on Testnet after the November 3 upgrade. The Mainnet vote remains scheduled for November 23 at 17:00 UTC. Establish Mainnet activation from dated live network evidence. A dated later answer that reports P30 as current is correct.",
+        "authoritativeValue": "Protocol 27 (Zipper) from ledger 63386819 (2026-07-08); Protocol 28 (Adapter) from ledger 64458446 (2026-09-16); Protocol 29 from ledger 64717645 (2026-10-01); Protocol 30 (Bell) from ledger 65633432 (2026-11-23)",
+        "rule": "P27, P28, P29 and P30 activation dates and ledger numbers are fixed history. Protocol 30 (Bell) is the current Mainnet protocol as of 2026-11-23: Horizon and RPC report Protocol 30, and ledger 65633432 is the first Protocol 30 ledger. Establish Mainnet activation from dated live network evidence. A dated later answer that reports a later protocol as current is correct.",
         "acceptedSpellings": [
           "Protocol 27",
           "P27",
@@ -2006,7 +2066,11 @@
           "Protocol 28",
           "64458446",
           "Protocol 29",
-          "64717645"
+          "64717645",
+          "Protocol 30",
+          "P30",
+          "Bell",
+          "65633432"
         ],
         "evidence": [
           {
@@ -2071,12 +2135,40 @@
             "observedAt": "2026-11-10",
             "httpStatus": 200,
             "note": "The Mainnet vote remains scheduled for November 23 at 17:00 UTC."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65633432",
+            "observedAt": "2026-11-23",
+            "httpStatus": 200,
+            "note": "protocol_version 30, closed_at 2026-11-23T17:00:06Z (first Protocol 30 ledger)."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65633431",
+            "observedAt": "2026-11-23",
+            "httpStatus": 200,
+            "note": "protocol_version 29, closed_at 2026-11-23T17:00:01Z."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-23",
+            "httpStatus": 200,
+            "note": "current_protocol_version 30; core_supported_protocol_version 30; core_version stellar-core 30.0.0."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+            "observedAt": "2026-11-23",
+            "httpStatus": 200,
+            "note": "'November 23, 2026, 1700 UTC —Mainnet upgrade vote.'"
           }
         ],
         "datePolicy": {
           "mode": "as-of",
-          "asOf": "2026-11-10",
-          "recheckOn": "Protocol 30 (Bell) Mainnet vote on 2026-11-23 or any later Mainnet protocol activation"
+          "asOf": "2026-11-23",
+          "recheckOn": "the next Mainnet protocol vote or any later Mainnet protocol activation"
         },
         "affectedCaseIds": [
           "q-edge-fresh-latest-protocol-version",
@@ -2084,17 +2176,21 @@
           "q-pc-protocol-upgrade-timing"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "c4881a4361b797ddedef477f1dd520d00e5399ae5b73f6409a3d0e51486c5164",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c"
         },
-        "verdict": "consistent",
+        "verdict": "reopen",
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. Activation dates and ledger numbers are unchanged; Horizon reported protocol_version 29 on 2026-11-14.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-14"
+        "lastChecked": "2026-11-14",
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
+        }
       },
       {
         "label": "CCTP Stellar dates",
@@ -2328,9 +2424,9 @@
     "$comment": "Known time-bombs paired with case truth.reverifyBy schedules or explicit event-triggered rechecks.",
     "entries": [
       {
-        "triggerDateEvent": "Protocol 30 (Bell) Mainnet vote on 2026-11-23, any later Mainnet protocol activation, or any AddressV2 successor change",
+        "triggerDateEvent": "the next Mainnet protocol vote, any later Mainnet protocol activation, or any AddressV2 successor change",
         "requiredRecheck": "Re-probe Mainnet current_protocol_version on Horizon or RPC and re-verify every case that names the current or next protocol, or AddressV2 status; update the 'Mainnet protocol activation history' invariant and hashes.",
-        "disposition": "2026-11-10 author sweep: the November 3 Testnet upgrade completed and Testnet runs Protocol 30. Mainnet remains on Protocol 29 at ledger 65413007. The Mainnet vote remains scheduled for November 23 at 17:00 UTC. Keep the event-triggered post-vote recheck and re-probe both networks if the schedule changes. q-protocol-version-history-list reverifyBy 2026-11-24, q-pc-protocol-upgrade-timing reverifyBy 2026-11-24, and q-edge-fresh-latest-protocol-version reverifyBy 2026-11-24. q-infra-software-versions-current-protocol reverifyBy 2026-11-30 re-reads the Software Versions page after the vote.",
+        "disposition": "2026-11-23 dated run 2.1: Protocol 30 (Bell) activated on Mainnet at ledger 65633432 (closed 2026-11-23T17:00:06Z; ledger 65633431 is Protocol 29), read on Horizon and RPC. No next Mainnet protocol vote is announced as of 2026-11-23. q-edge-fresh-latest-protocol-version reverifyBy 2027-02-15, q-pc-protocol-upgrade-timing reverifyBy 2027-02-22, and q-protocol-version-history-list reverifyBy 2027-03-01. q-infra-software-versions-current-protocol reverifyBy 2026-11-30 re-reads the Software Versions page after the vote.",
         "caseIds": [
           "q-edge-fresh-latest-protocol-version",
           "q-pc-protocol-27-zipper",
@@ -2339,19 +2435,23 @@
           "q-infra-software-versions-current-protocol"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "c4881a4361b797ddedef477f1dd520d00e5399ae5b73f6409a3d0e51486c5164",
+          "q-edge-fresh-latest-protocol-version": "80b2e60971206741d87fa085de3c79db94ec459a8a4d28bcb12dcce570b2cdc3",
           "q-infra-software-versions-current-protocol": "66372bde786eda3de6af3d448d6741987e27a9a9d5e81fe1292c8931b4bc458f",
           "q-pc-protocol-27-zipper": "fee29e1c7c06e529b2eca58485ab9aa431d63cd2af1239e2109d4cf7b4d7198e",
-          "q-pc-protocol-upgrade-timing": "261c0980805cba790422d5c2ca91ffb864f3320d12deebe1bd524eb001b62bc9",
-          "q-protocol-version-history-list": "21004cc01dd250f16e1be97612dbfa6052abb079adafa3e44fd632d847621b91"
+          "q-pc-protocol-upgrade-timing": "9bee95f3caf14547d50e2492d46f1ac395e0314872605388d4e2385c3c122f0c",
+          "q-protocol-version-history-list": "ee7ca69d4bc6c71e5a42332e551db64ce8c1400e7a40a6ff5486fd7f7270fc12"
         },
-        "verdict": "consistent",
+        "verdict": "reopen",
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. reverifyBy and the Bell vote facts are unchanged, and the note anticipates no AddressV2 successor change. The disposition holds.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-14"
+        "lastChecked": "2026-11-14",
+        "reopened": {
+          "date": "2026-11-23",
+          "reason": "member-content-changed"
+        }
       },
       {
         "triggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",
