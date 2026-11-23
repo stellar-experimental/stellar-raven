@@ -1,6 +1,6 @@
 /**
- * Server-rendered `/playground` page in two states: locked (script-free preview with static
- * sample trace and WorkOS sign-in) and authenticated (vanilla SSE chat client).
+ * Server-rendered `/playground` page in two states: locked (static sample trace with WorkOS
+ * sign-in and hash-pinned pending-navigation script) and authenticated (vanilla SSE chat client).
  * Unresolved `tool-start` frames are marked STALLED on turn end, never silently dropped.
  */
 import {
@@ -153,8 +153,6 @@ details.tcard[open]>summary::before{transform:rotate(90deg)}
   border-radius:999px;background:rgba(9,15,9,.96);color:var(--orange-2);font-family:var(--mono);
   font-size:11.5px;cursor:pointer;box-shadow:0 8px 24px -14px rgba(0,0,0,.95)}
 .jump[hidden]{display:none}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
-  clip-path:inset(50%);white-space:nowrap;border:0}
 .composer form{display:flex;gap:10px;align-items:flex-end;padding:10px;border-radius:14px;
   border:1px solid rgba(255,255,255,.14);background:linear-gradient(180deg,rgba(9,15,9,.96),rgba(5,9,5,.98));
   box-shadow:0 18px 52px -42px rgba(0,0,0,.95),0 18px 62px -52px rgba(255,85,0,.58)}
@@ -163,8 +161,9 @@ details.tcard[open]>summary::before{transform:rotate(90deg)}
   border:0;outline:none;resize:vertical;color:var(--fog);font-family:var(--sans);
   font-size:14.5px;line-height:1.55}
 .composer textarea::placeholder{color:var(--ash)}
-.composer .btn-primary{padding:12px 18px}
+.composer .btn-primary{padding:12px 18px;min-width:124px;justify-content:center}
 .composer .btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.composer .btn-primary.is-loading:disabled{opacity:.85;cursor:progress}
 .composer-count{min-height:18px;margin:8px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--ash)}
 .composer-count.over{color:#ff8b66}
 .sysnote{min-height:18px;margin-top:8px;font-family:var(--mono);font-size:11.5px;color:var(--ash)}
@@ -194,10 +193,13 @@ details.tcard[open]>summary::before{transform:rotate(90deg)}
 .gate .consent-row span{min-width:0;max-width:68ch;text-wrap:balance}
 .gate .consent-row a{color:var(--dim);text-decoration:underline;text-underline-offset:2px}
 .gate .consent-row a:hover{color:var(--orange)}
-/* CSS-only consent gate — no script on the locked page. The sign-in button is
-   disabled until #tos-agree is checked; pointer-events:none blocks the click. */
+/* CSS consent gate works without JS (progressive enhancement); the hash-pinned
+   locked script mirrors aria-disabled, blocks keyboard bypass, and adds pending
+   navigation feedback on click. */
 .gate:not(:has(#tos-agree:checked)) #signin{opacity:.45;cursor:not-allowed;
   pointer-events:none;box-shadow:none;transform:none}
+.gate #signin.is-loading{pointer-events:none}
+.gate.is-busy .consent-row{opacity:.65;pointer-events:none}
 .example{margin-top:54px}
 .example .exhead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
 .example .exnote{font-family:var(--mono);font-size:11.5px;color:var(--ash)}
@@ -207,7 +209,7 @@ details.tcard[open]>summary::before{transform:rotate(90deg)}
   .msg{max-width:90%}
   .tcard .tlabel{display:none}
   .composer textarea{font-size:16px}
-  .composer .btn-primary{padding:12px 14px}
+  .composer .btn-primary{padding:12px 14px;min-width:114px}
   .site-foot{padding:8px 16px 24px}
 }
 @media (max-width:400px){
@@ -346,6 +348,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
   var form = document.getElementById("composer-form");
   var input = document.getElementById("composer-input");
   var sendBtn = document.getElementById("send");
+  var sendLabel = sendBtn ? sendBtn.querySelector(".btn-label") : null;
   var composerCount = document.getElementById("composer-count");
   var note = document.getElementById("sysnote");
   var composer = document.querySelector(".composer");
@@ -390,7 +393,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
     if (pulse && pulse.parentNode) pulse.parentNode.removeChild(pulse);
     pulse = null;
   }
-  var turnDone = false;
+  var turnSeq = 0;
   var current = null;
   var acc = "";
   var thinkTail = "";
@@ -440,6 +443,16 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
   }
   function announce(s){ sr.textContent = s; }
   function setNote(msg, kind){ note.textContent = msg || ""; note.className = "sysnote" + (kind ? " " + kind : ""); }
+  var sendState = "";
+  function setSendBusy(active, label){
+    var next = active ? (label || "Sending\\u2026") : "";
+    if (next === sendState) return;
+    sendState = next;
+    sendBtn.classList.toggle("is-loading", active);
+    if (active) sendBtn.setAttribute("aria-busy", "true");
+    else sendBtn.removeAttribute("aria-busy");
+    if (sendLabel) sendLabel.textContent = next || "Send";
+  }
   var userMessageLimit = ${DEMO_CAPS.maxUserMessageChars};
   var wasOverLimit = false;
   function updateComposerLimit(){
@@ -699,6 +712,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
     committed = 0;
     acc = "";
     busy = false;
+    setSendBusy(false);
     updateComposerLimit();
     updateJump();
     if (follow && (document.activeElement === document.body || document.activeElement === sendBtn)) {
@@ -709,12 +723,15 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
   function handleFrame(f){
     if (!f || typeof f.type !== "string") return;
     if (f.type === "ready") {
+      setSendBusy(true, "Working\\u2026");
       announce("Raven is working");
       showPulse("model reasoning");
     } else if (f.type === "thinking") {
+      setSendBusy(true, "Working\\u2026");
       thinkTail = (thinkTail + String(f.text == null ? "" : f.text)).slice(-90).replace(/\\s+/g, " ");
       showPulse("thinking \\u00b7 " + thinkTail);
     } else if (f.type === "token") {
+      setSendBusy(true, "Working\\u2026");
       hidePulse();
       if (!current) {
         current = addBubble("assistant", "");
@@ -730,14 +747,15 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
       acc += String(f.text == null ? "" : f.text);
       scheduleRender();
     } else if (f.type === "tool-start") {
+      setSendBusy(true, "Working\\u2026");
       hidePulse();
       announce(f.tool === "search" ? "Raven is searching" : "Raven is running code");
       startCard(f);
     } else if (f.type === "tool-result") {
+      setSendBusy(true, "Working\\u2026");
       fillCard(f);
       showPulse("model reasoning over the result");
     } else if (f.type === "done") {
-      turnDone = true;
       hidePulse();
       stallOpenCards();
       if (f.reason === "length") {
@@ -755,7 +773,6 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
       announce("Reply finished");
       finishTurn();
     } else if (f.type === "error") {
-      turnDone = true;
       hidePulse();
       stallOpenCards();
       setNote(String(f.message || "stream error"), "err");
@@ -764,10 +781,12 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
   }
 
   async function send(msg){
+    var myTurn = ++turnSeq;
+    var myDone = false;
     busy = true;
-    turnDone = false;
     thinkTail = "";
     sendBtn.disabled = true;
+    setSendBusy(true, "Sending\\u2026");
     setNote("");
     history.push({ role: "user", content: msg });
     if (turnEl) turnEl.style.minHeight = "";
@@ -787,17 +806,19 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
         body: JSON.stringify({ messages: history })
       });
     } catch (e) {
+      if (myTurn !== turnSeq) return;
       hidePulse();
       setNote("Network error \\u2014 the message stays in your history; send again to retry.", "err");
-      busy = false; updateComposerLimit(); updateJump();
+      busy = false; setSendBusy(false); updateComposerLimit(); updateJump();
       return;
     }
+    if (myTurn !== turnSeq) return;
     if (!res.ok || !res.body) {
       hidePulse();
       setNote(res.status === 401 ? "Session expired \\u2014 reload this page to sign in again."
         : res.status === 429 ? "Hourly chat limit reached \\u2014 try again in a bit."
         : "Request failed (" + res.status + ").", "err");
-      busy = false; updateComposerLimit(); updateJump();
+      busy = false; setSendBusy(false); updateComposerLimit(); updateJump();
       return;
     }
     var reader = res.body.getReader();
@@ -806,6 +827,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
     try {
       for (;;) {
         var r = await reader.read();
+        if (myTurn !== turnSeq || myDone) break;
         if (r.done) break;
         buf += dec.decode(r.value, { stream: true });
         var idx;
@@ -816,12 +838,20 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
             if (lines[i].slice(0, 5) !== "data:") continue;
             var frame = null;
             try { frame = JSON.parse(lines[i].slice(5)); } catch (e) { continue; }
+            if (myTurn !== turnSeq || myDone) break;
+            if (frame && (frame.type === "done" || frame.type === "error")) myDone = true;
             handleFrame(frame);
+            if (myDone) {
+              try { var cp = reader.cancel(); if (cp && cp.catch) cp.catch(function(){}); } catch (e) {}
+              break;
+            }
           }
+          if (myTurn !== turnSeq || myDone) break;
         }
+        if (myTurn !== turnSeq || myDone) break;
       }
     } catch (e) { /* fall through to the no-done check */ }
-    if (!turnDone) {
+    if (myTurn === turnSeq && !myDone) {
       stallOpenCards();
       setNote("The stream ended without a done frame \\u2014 this turn may be incomplete.", "err");
       finishTurn();
@@ -876,12 +906,66 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE
 })();
 `;
 
-// CSP script allowance: the sha256 hash of DEMO_SCRIPT exactly as it appears
-// inside the single inline <script> element — no 'unsafe-inline'. The hash is
-// hard-coded (Web Crypto is async, and these headers are a sync module const);
-// test/demo-page.test.ts recomputes it from the rendered page, so an edit to
-// DEMO_SCRIPT fails the suite with the new value to paste here.
-const DEMO_SCRIPT_SHA256 = "sha256-ZB8MB5SKhRnJx0CaegzHU7J/JhdbqAhUdhGgxaO8z+o=";
+// Static, zero-interpolation pending-navigation script for the locked /playground gate.
+// Pinned by SHA-256 in DEMO_LOCKED_PAGE_HEADERS (no 'unsafe-inline').
+const DEMO_LOCKED_SCRIPT = `
+(function(){
+  "use strict";
+  var gate = document.querySelector(".gate");
+  var link = document.getElementById("signin");
+  var tos = document.getElementById("tos-agree");
+  var status = document.getElementById("signin-status");
+  if (!gate || !link || !tos || !status) return;
+  var label = link.querySelector(".btn-label");
+  var defaultLabel = label ? label.textContent : "";
+  var pendingLabel = link.getAttribute("data-pending-label") || "Signing in\\u2026";
+  var busy = false;
+  function syncGate(){
+    if (busy) return;
+    if (tos.checked) link.removeAttribute("aria-disabled");
+    else link.setAttribute("aria-disabled", "true");
+  }
+  function setBusy(){
+    busy = true;
+    gate.classList.add("is-busy");
+    link.classList.add("is-loading");
+    link.setAttribute("aria-busy", "true");
+    link.setAttribute("aria-disabled", "true");
+    tos.setAttribute("aria-disabled", "true");
+    if (label) label.textContent = pendingLabel;
+    status.textContent = "Continuing to WorkOS\\u2026";
+  }
+  function reset(){
+    busy = false;
+    gate.classList.remove("is-busy");
+    link.classList.remove("is-loading");
+    link.removeAttribute("aria-busy");
+    tos.removeAttribute("aria-disabled");
+    if (label) label.textContent = defaultLabel;
+    status.textContent = "";
+    syncGate();
+  }
+  link.addEventListener("click", function(e){
+    if (!tos.checked) { e.preventDefault(); tos.focus(); return; }
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    if (busy) { e.preventDefault(); return; }
+    setBusy();
+  });
+  tos.addEventListener("click", function(e){
+    if (busy) e.preventDefault();
+  });
+  tos.addEventListener("change", syncGate);
+  window.addEventListener("pageshow", reset);
+  syncGate();
+})();
+`;
+
+// CSP script allowances: sha256 hashes of the exact inline <script> contents —
+// no 'unsafe-inline'. Hard-coded (Web Crypto is async, and these headers are
+// sync module consts); test/demo-page.test.ts recomputes both from the rendered
+// pages, so any edit fails the suite with the new value to paste here.
+const DEMO_SCRIPT_SHA256 = "sha256-89emSiC9RFRllpJa+pA1AXD5B7rHVF9d9yVlU/cB9jc=";
+const DEMO_LOCKED_SCRIPT_SHA256 = "sha256-IOawomdujhN35ds/KG8uPFr2eQyXylQh//yqbn956DI=";
 
 export const DEMO_PAGE_HEADERS: Record<string, string> = {
   "content-type": "text/html; charset=utf-8",
@@ -894,6 +978,14 @@ export const DEMO_PAGE_HEADERS: Record<string, string> = {
   "x-frame-options": "DENY",
   "x-content-type-options": "nosniff",
   "referrer-policy": "no-referrer"
+};
+
+export const DEMO_LOCKED_PAGE_HEADERS: Record<string, string> = {
+  ...DEMO_PAGE_HEADERS,
+  "content-security-policy":
+    `default-src 'none'; script-src '${DEMO_LOCKED_SCRIPT_SHA256}'; style-src 'unsafe-inline'; ` +
+    "font-src data:; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; " +
+    "base-uri 'none'; form-action 'none'"
 };
 
 // ---------------------------------------------------------------------------
@@ -1022,15 +1114,16 @@ function topBar(): string {
 }
 
 function lockedBody(): string {
-  // CSS-only consent gate: the locked page ships zero script (CSP pins a single
-  // hash for the chat script), so `.gate:has(#tos-agree:checked)` toggles the
-  // button's enabled state — pointer-events:none blocks the click until checked.
+  // CSS :has(#tos-agree:checked) gates pointer clicks without JS; the
+  // hash-pinned DEMO_LOCKED_SCRIPT mirrors aria-disabled, blocks keyboard
+  // bypass, and shows a pending loader while redirecting to WorkOS.
   return html`<main class="play pwrap"><section class="gate">\
 <p class="eyebrow">Agent playground <span class="live"><span class="dot"></span>live tools</span></p>\
 <h1>Test drive <span class="r">Raven</span></h1>\
 <p class="lede">${EXPLAINER}</p>\
-<div class="cta"><a id="signin" class="btn btn-primary" href="/playground/login">Sign in to try it</a>\
+<div class="cta"><a id="signin" class="btn btn-primary" href="/playground/login" data-pending-label="Signing in…"><span class="btn-spin" aria-hidden="true"></span><span class="btn-label">Sign in to try it</span></a>\
 <span class="hint">WorkOS sign-in &middot; no service API keys &middot; rate-limited</span></div>\
+<div id="signin-status" class="sr-only" role="status" aria-live="polite"></div>\
 <div class="consent"><label class="consent-row"><input type="checkbox" id="tos-agree"/>\
 <span>By using Stellar Raven you acknowledge you have read and agreed to the \
 <a href="/terms" target="_blank" rel="noopener">Terms of Service</a> \
@@ -1056,7 +1149,7 @@ function chatBody(): string {
     `<textarea id="composer-input" rows="1" aria-describedby="composer-count" ` +
     `placeholder="Ask about the Stellar ecosystem…" ` +
     `aria-label="Message the playground agent"></textarea>` +
-    `<button id="send" class="btn btn-primary" type="submit">Send</button>` +
+    `<button id="send" class="btn btn-primary" type="submit"><span class="btn-spin" aria-hidden="true"></span><span class="btn-label">Send</span></button>` +
     `</form><div id="composer-count" class="composer-count"></div>` +
     `<div id="sysnote" class="sysnote" role="status"></div></div>` +
     `</main>${demoFooter()}` +
@@ -1065,7 +1158,14 @@ function chatBody(): string {
 }
 
 export function demoPage(opts: { authenticated: boolean }): string {
-  return demoHead() + topBar() + (opts.authenticated ? chatBody() : lockedBody() + demoFooter()) + `</body></html>`;
+  return (
+    demoHead() +
+    topBar() +
+    (opts.authenticated
+      ? chatBody()
+      : `${lockedBody()}${demoFooter()}<script>${DEMO_LOCKED_SCRIPT}</script>`) +
+    `</body></html>`
+  );
 }
 
 function demoFooter(): string {

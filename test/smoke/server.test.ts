@@ -262,13 +262,13 @@ describe("/mcp auth dispatch", () => {
 });
 
 describe("/playground routes", () => {
-  it("GET /playground serves the locked playground page with the demo header set", async () => {
+  it("GET /playground serves the locked playground page with the locked demo header set", async () => {
     const res = await SELF.fetch(`${PUBLIC}/playground`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("text/html");
     expect(res.headers.get("cache-control")).toBe("no-store");
     expect(res.headers.get("x-robots-tag")).toBe("noindex");
-    expect(res.headers.get("content-security-policy")).toContain("connect-src 'self'");
+    expect(res.headers.get("content-security-policy")).toContain("connect-src 'none'");
     // No demo cookie on the public hostname → locked state.
     expect(await res.text()).toContain("/playground/login");
   });
@@ -286,6 +286,7 @@ describe("/playground routes", () => {
   it("GET /playground on localhost takes the dev bypass → authenticated chat UI", async () => {
     const res = await SELF.fetch(`${LOCAL}/playground`);
     expect(res.status).toBe(200);
+    expect(res.headers.get("content-security-policy")).toContain("connect-src 'self'");
     expect(await res.text()).toContain("composer-form");
   });
 

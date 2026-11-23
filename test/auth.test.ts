@@ -1237,9 +1237,17 @@ describe("login-state union on /callback", () => {
     // the SameSite=Strict cookie on navigation to /playground.
     expect(response.status).toBe(200);
     expect(response.headers.get("content-type")).toContain("text/html");
+    expect(response.headers.get("content-security-policy")).toContain("default-src 'none'");
+    expect(response.headers.get("content-security-policy")).toContain("frame-ancestors 'none'");
+    expect(response.headers.get("content-security-policy")).not.toContain("script-src");
+    expect(response.headers.get("x-frame-options")).toBe("DENY");
+    expect(response.headers.get("x-content-type-options")).toBe("nosniff");
     const body = await response.text();
     expect(body).toContain('content="0;url=/playground"');
     expect(body).toContain('href="/playground"');
+    expect(body).toContain('role="status"');
+    expect(body).toContain("Opening the playground…");
+    expect(body).not.toContain("<script");
     expect(workosFetch).toHaveBeenCalledTimes(1);
     expect(helpers.completeAuthorization).not.toHaveBeenCalled();
     expect(kv.store.has("login:stX")).toBe(false);

@@ -23,7 +23,7 @@ import {
 import { authenticateApiKey } from "./auth/api-keys";
 import { demoLoginRedirect } from "./auth/workos";
 import { verifyDemoCookie } from "./demo/auth";
-import { DEMO_PAGE_HEADERS, demoPage } from "./demo/page";
+import { DEMO_LOCKED_PAGE_HEADERS, DEMO_PAGE_HEADERS, demoPage } from "./demo/page";
 import { logEvent } from "./observability";
 import { getCatalog } from "./catalog/load";
 import { runAndStoreSkillCanary } from "./skills/canary";
@@ -204,7 +204,9 @@ async function handlePlaygroundRoute(
     // No cookie present → verify returns null without needing the secret.
     const subject = await verifyDemoCookie(env.MCP_SERVER_SECRET, request.headers.get("cookie"));
     const authenticated = subject !== null || allowDevUnauthenticated(env, url.hostname);
-    return new Response(demoPage({ authenticated }), { headers: DEMO_PAGE_HEADERS });
+    return new Response(demoPage({ authenticated }), {
+      headers: authenticated ? DEMO_PAGE_HEADERS : DEMO_LOCKED_PAGE_HEADERS
+    });
   }
 
   if (url.pathname === "/playground/login") {
