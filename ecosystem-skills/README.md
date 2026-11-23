@@ -60,6 +60,8 @@ node ecosystem-skills/build-index.mjs        # rebuild the index only (after edi
 
 `update.sh` resolves each source's commit, records file paths/sizes/blob hashes, drops deleted skills, refreshes directory snapshots, builds `INDEX.md`, and swaps `MANIFEST.json`, `catalog.json`, `community.json`, and `INDEX.md` into place together (renaming sequentially with rollback on failure). It aborts before swapping on unresolved sources, fetch/truncation errors, missing `SKILL.md`, diff-print failures, or index build errors.
 
+For `mode: "root"` sources, optional `excludeFiles` in `sources.json` omits upstream companion files that document non-exposed or write-only operations so Raven never pins, canaries, or serves them. If an upstream re-pin renames or removes a listed file, selection fails loudly (`excludeFiles matched no selected file`) and aborts `update.sh` before swapping any source until `sources.json` is updated. Document the reason for each `excludeFiles` entry in `PIN-REVIEW.md`.
+
 After a re-pin:
 
 1. **Read the skill diffs.** Skills are prompt input.
