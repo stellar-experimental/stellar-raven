@@ -12,12 +12,14 @@
 # dated/<item>-LEAD.md and items.json (both on origin/main) names the item's cases and due date.
 #
 # Exit 0: started, or already done. Exit 1: retryable (fetch failed, brief or items.json not on
-# origin/main yet, or an alert that no channel accepted before `hc run`); the unit retries every 20
-# minutes with no rate limit, so this script bounds the retries itself: past the run's cutoff it ends
-# with exit 75. Exit 75: final (the worktree or branch exists, hc run failed, the lead did not take
-# its task, or the cutoff passed); the unit does not retry. The first failure of a key alerts the
-# owner on both channels, and so does every final failure. The FAILED marker is written only after
-# an alert was accepted.
+# origin/main yet, or an undelivered alert before `hc run` on a non-cutoff failure); the unit
+# retries every 20 minutes with no rate limit, so this script bounds the retries itself: past or on
+# an invalid/missing cutoff it always ends with exit 75 regardless of alert delivery (watchdog-dated.sh
+# at 16:00 UTC on the due date is the backstop, retrying alert delivery every 15 minutes).
+# Exit 75: final (the worktree or branch exists, hc run failed, the lead did not take its task, or
+# the cutoff passed/failed); the unit does not retry. The first failure of a key alerts the owner on
+# both channels, and so does every final failure. The FAILED marker is written only after an alert
+# was accepted.
 set -euo pipefail
 export PATH="$HOME/.local/bin:$HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin"
 unset HC_TERMINAL_ID
@@ -49,45 +51,60 @@ notify() { timeout 60 hc send "$ORCH" "$1" >/dev/null 2>&1 || log "orchestrator 
 alert() {
   local title="Dated golden run $KEY: ${1:0:100}" body accepted=1 number
   body="Run $KEY: $1"$'\n\n'"Log on agentpc: $LOG"
-  if timeout 60 hc send "$ORCH" "$1 (log: agentpc $LOG)" >/dev/null 2>&1; then accepted=0; else log "alert: hc channel did not accept"; fi
+  if timeout 60 hc send "$ORCH" "$1 (log: agentpc $LOG)" >/dev/null 2>&1; then accepted=0; else log "alert: hc channel did not accept" || true; fi
   number=$(timeout 60 gh issue list -R "$GH_REPO" --state open --search "\"$title\" in:title" --json number,title 2>/dev/null |
     jq -r --arg t "$title" '[.[] | select(.title == $t)][0].number // empty' 2>/dev/null) || number=""
   if [[ -n "$number" ]]; then
-    timeout 60 gh issue comment "$number" -R "$GH_REPO" --body "$body" >/dev/null 2>&1 && accepted=0 || log "alert: issue comment failed"
+    timeout 60 gh issue comment "$number" -R "$GH_REPO" --body "$body" >/dev/null 2>&1 && accepted=0 || log "alert: issue comment failed" || true
   elif timeout 60 gh issue create -R "$GH_REPO" --title "$title" --body "$body" --label dated-golden >/dev/null 2>&1 ||
     timeout 60 gh issue create -R "$GH_REPO" --title "$title" --body "$body" >/dev/null 2>&1; then accepted=0
-  else log "alert: gh channel did not accept"; fi
+  else log "alert: gh channel did not accept" || true; fi
   return "$accepted"
 }
 
 LAUNCHED=""
+FINAL_ONLY=""
 # fail <exit code> <message>. An alert that no channel accepted leaves no marker. Before `hc run` it
-# turns a final failure into a retryable one, so a later attempt can deliver it; after `hc run` the
-# exit stays final and the delivery failure is only logged.
+# turns a non-cutoff final failure into a retryable one (exit 1), so a later attempt can deliver it.
+# After `hc run` (LAUNCHED=1) or on an expired/invalid/missing cutoff (FINAL_ONLY=1), exit 75 stays
+# unconditionally final even if alert delivery or writing the FAILED marker fails; watchdog-dated.sh
+# is the backstop on the due date.
 fail() {
   local code="$1"; shift
-  log "FAILED ($code): $*"
-  if [[ -n "$DRY" ]]; then log "dry run: would alert"; exit "$code"; fi
+  log "FAILED ($code): $*" || true
+  if [[ -n "$DRY" ]]; then log "dry run: would alert" || true; exit "$code"; fi
   if [[ "$code" == 75 || ! -e "$STATE/FAILED-$KEY.txt" ]]; then
     if alert "did not start: $*"; then
-      printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >"$STATE/FAILED-$KEY.txt"
+      printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >"$STATE/FAILED-$KEY.txt" || log "warning: could not write $STATE/FAILED-$KEY.txt" || true
     else
-      log "alert delivery failed on every channel"
-      [[ -n "$LAUNCHED" ]] || code=1
+      log "alert delivery failed on every channel" || true
+      [[ -n "$LAUNCHED" || -n "$FINAL_ONLY" ]] || code=1
     fi
   fi
   exit "$code"
 }
 
+fail_cutoff() {
+  FINAL_ONLY=1
+  fail 75 "$@"
+}
+
 # The retry bound: a plain key uses the cutoff in items.json, a follow-up its due date at 20:00 UTC.
+# Pass "require" once items.json has been fetched so a missing cutoff cannot bypass the bound.
 check_cutoff() {
-  [[ -n "${CUTOFF:-}" && -z "${RAVEN_DATED_TEST:-}" ]] || return 0
-  local limit now; limit=$(date -u -d "$CUTOFF" +%s) || fail 75 "bad cutoff $CUTOFF"; now=$(date -u +%s)
-  if (( now > limit )); then fail 75 "missed cutoff $CUTOFF"; fi
+  [[ -z "${RAVEN_DATED_TEST:-}" ]] || return 0
+  if [[ -z "${CUTOFF:-}" ]]; then
+    if [[ "${1:-}" == "require" ]]; then fail_cutoff "missing cutoff for $ITEM"; fi
+    return 0
+  fi
+  local limit now
+  limit=$(date -u -d "$CUTOFF" +%s) || fail_cutoff "bad cutoff $CUTOFF"
+  now=$(date -u +%s)
+  if (( now > limit )); then fail_cutoff "missed cutoff $CUTOFF"; fi
 }
 log "start key=$KEY item=$ITEM slug=$SLUG dry=${DRY:-no}"
 if [[ -n "$RUN" ]]; then
-  [[ "${4:-}" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || fail 75 "follow-up $KEY needs a due date argument"
+  [[ "${4:-}" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || fail_cutoff "follow-up $KEY needs a due date argument"
   CUTOFF="${4}T20:00:00Z"
 else
   CUTOFF=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null | jq -r --arg i "$ITEM" '.[$i].cutoff // empty' 2>/dev/null) || CUTOFF=""
@@ -99,12 +116,24 @@ if [[ "${RAVEN_DATED_TEST:-}" == 1 ]]; then
   DUE="test"
   [[ -f "$BRIEF" ]] || fail 75 "test brief $BRIEF missing"
 else
-  git -C "$REPO" fetch origin --prune || fail 1 "git fetch failed"
+  if [[ -n "$DRY" ]]; then
+    git -C "$REPO" fetch --no-prune origin main || fail 1 "git fetch failed"
+  else
+    git -C "$REPO" fetch origin --prune || fail 1 "git fetch failed"
+  fi
+  ITEMS_JSON=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null) ||
+    fail 1 "items.json missing on origin/main"
+  jq -e 'type == "object"' <<<"$ITEMS_JSON" >/dev/null 2>&1 ||
+    fail_cutoff "invalid items.json on origin/main"
+  jq -e --arg i "$ITEM" 'has($i)' <<<"$ITEMS_JSON" >/dev/null 2>&1 ||
+    fail 1 "item $ITEM missing in items.json on origin/main"
+  ENTRY=$(jq -ce --arg i "$ITEM" '.[$i] | objects' <<<"$ITEMS_JSON" 2>/dev/null) ||
+    fail_cutoff "invalid non-object items.json entry for $ITEM"
+  if [[ -z "$RUN" ]]; then CUTOFF=$(jq -r '.cutoff // empty' <<<"$ENTRY" 2>/dev/null) || CUTOFF=""; fi
+  check_cutoff require
   git -C "$REPO" cat-file -e "origin/main:$BRIEF_REL" 2>/dev/null || fail 1 "brief missing on origin/main: $BRIEF_REL"
-  ENTRY=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null | jq -ce --arg i "$ITEM" '.[$i] // empty') ||
-    fail 1 "items.json, or item $ITEM in it, missing on origin/main"
-  DUE="${4:-$(jq -r .due <<<"$ENTRY")}"
-  [[ -n "$CUTOFF" ]] || { CUTOFF=$(jq -r '.cutoff // empty' <<<"$ENTRY"); check_cutoff; }
+  DUE="${4:-$(jq -r '.due // empty' <<<"$ENTRY" 2>/dev/null)}"
+  [[ -n "$DUE" ]] || fail_cutoff "missing due date for $ITEM"
   # Already done: every case of the item has a reverifyBy later than the due date. An item with no
   # cases (the rehearsal) is never done.
   if git -C "$REPO" show origin/main:eval/qa/cases.json |
@@ -113,7 +142,7 @@ else
       | ($d | length) == ($ids | length) and ($ids | length) > 0 and all($d[]; . != null and . > $due)' >/dev/null; then
     log "already done: every case of $ITEM has a reverifyBy later than $DUE on origin/main"
     [[ -n "$DRY" ]] || notify "Dated run $KEY not needed: every case of $ITEM is already past $DUE on main."
-    rm -f "$STATE/FAILED-$KEY.txt"
+    [[ -n "$DRY" ]] || rm -f "$STATE/FAILED-$KEY.txt"
     exit 0
   fi
   if [[ -e "$WT" ]]; then fail 75 "worktree $WT already exists; not touching it"; fi
@@ -142,7 +171,9 @@ T=$(jq -r '.address // .id // empty' <<<"$OUT" 2>/dev/null) || T=""
 # Use a wall-clock deadline with sleep instead of `hc wait`: `hc run` launches `systemd-run` with
 # no hc launch task, so `hc wait` returns immediately while the terminal is still `live` or `idle`
 # during boot. Every command in the loop is bounded with `timeout 15` and may fail on its own; a
-# transient failure only costs one turn of the loop.
+# transient failure only costs one turn of the loop. The 120s deadline bounds the waiting loop
+# approximately (a final turn may overrun by its per-call timeouts), and a `working` read is
+# accepted whenever it arrives so a healthy live lead is never falsely failed.
 SENT=false
 DEADLINE=$(( $(date +%s) + 120 ))
 attempt=0
