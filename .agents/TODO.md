@@ -18,9 +18,9 @@ the linked ledger. Every item follows the spend rules in
 2. One Workers Logs session on the Mac on 2026-11-25: "Watch sign-in rejects after the
    oauth-provider 1.x deploy", "Decide the `execute` timeout from one more Workers Logs read" (with
    its `recoveryHint`, `skipped`, `errorName` and user-agent questions), "Read the `skill_read`
-   shape distribution", "Confirm `npm run mcp-key` on wrangler 4.164.0", and inspect the single
-   pre-deploy `exception` usage receipt (`2026-11-23T10:41:23Z`; zero post-deploy failures observed
-   on `33a5315e`/`3820c36c`; confirm `Usage archive health` returns green after `2026-11-24T11:26Z`).
+   shape distribution", "Confirm `npm run mcp-key` on wrangler 4.164.0", and inspect the isolated
+   pre-deploy `exception` usage receipt (`2026-11-23T10:41:23Z`; none after deploy; confirm
+   `Usage archive health` returns green after `2026-11-24T11:26Z`).
 3. Owner decisions (the list at the end).
 4. Free own-repo fixes that need no paid measurement: the case-file move once every dated run and follow-up has merged and `systemctl --user list-timers`
    on agentpc shows no `raven-dated` or `raven-watchdog` unit.
@@ -247,8 +247,9 @@ run becomes necessary sooner, advance this isolated review first).
 Related QA hygiene items:
 - **Run 2.1 exposure split amendment:** Run 2.1 logged one pre-redaction lint exposure in
   `agentpc:~/.local/state/raven-dated/2.1-EXPOSURE.txt` (before #561 redacted `lint-corpus.mjs`).
-  Apply the split amendment on `agentpc` via `split-amend.mjs` (IDs unseen) and record the new split
-  SHA-256 without naming case IDs.
+  Runs with the post-2.2c maintenance lane via `split-amend.mjs` on `agentpc` (IDs unseen; record
+  the new split SHA-256 without naming case IDs); if run earlier, also update the three armed dated
+  briefs that currently pin `gca-2026-11-14-split-v12.json`.
 - **`register-helper.mjs` label fallback:** `entryLabel()` (`eval/qa/register-helper.mjs:59-62`)
   falls back to register `label` / `triggerDateEvent` in WARN/REOPEN output (`:210`, `:212`); switch
   to register entry indexes on the next edit to that file.
@@ -420,9 +421,10 @@ Held by this item:
 - **`ROUTING_PHRASE_TOKEN_CAP` whole-phrase eviction (`src/catalog/extract-routing-phrases.ts`):**
   when an upstream `x-routing` phrase grows past the remaining 256-token budget, `extractRoutingPhrases`
   drops it whole (in Scout 1.9.157, `scout.searchResearch` `useWhen[4]` for `sdf-org` grew 33→41
-  tokens and was evicted, dropping `SDF board roster`, `SDF quarterly reports index`, and the
-  natural-language probe `Where can I find SDF quarterly reports?` from top-5 while admitting
-  `useWhen[5]`; [review](rounds/2026-11-23-upstream-handoffs/review-drift-fable.md) S1).
+  tokens and was evicted, dropping `SDF board roster` (rank 2→absent) and `SDF quarterly reports index`
+  (rank 1→absent) from top-5 while admitting `useWhen[5]`; [review](rounds/2026-11-23-upstream-handoffs/review-drift-fable.md) S1;
+  a 2026-11-23 post-deploy assurance probe also observed natural-language `Where can I find SDF quarterly reports?`
+  drop from rank 2 to absent).
   Address generally with this repair, never with a per-query patch.
 - **`SKILL_DESCRIPTION_OVERRIDES`** holds `skills.stellar-dev.dapp`'s search text.
 - **Known test/selector traps from prior rounds:** `test/search.test.ts` (`rfp` case) relies on
@@ -1133,9 +1135,12 @@ delete it here.
 6. **Dated-run `hc` notification target (`RAVEN_DATED_NOTIFY`).** `launch-dated-lead.sh` and
    `watchdog-dated.sh` default `ORCH` to dead terminal `kalepail-c3614nvxph-mbp/t40j`; failure
    alerts still reach GitHub via `gh`, while success / "already done" notices are logged on agentpc
-   only. Safe default: accept GitHub-only failure alerts and agentpc logs (keep tracked script
-   defaults untouched; check `gh auth status` on agentpc on 2026-11-29), or set
-   `RAVEN_DATED_NOTIFY` in a systemd drop-in for a live terminal.
+   only. Note also that `2.2a/2.2b/2.2c-LEAD.md` and `PRESTAGE.md` hardcode `t40j` for lead
+   questions, so a `RAVEN_DATED_NOTIFY` drop-in does not restore that question channel and an
+   unanswered lead question falls back to outcome X (dated extension) after 10 minutes. Safe
+   default: accept GitHub-only failure alerts and agentpc logs (keep tracked script defaults
+   untouched; check `gh auth status` on agentpc on 2026-11-29), or set `RAVEN_DATED_NOTIFY` in a
+   systemd drop-in for a live terminal.
 7. **Named terminal exception for `agentpc/t245` (`np-2-1-lead`).** Run 2.1 (#553) completed, but
    timer-started `--no-parent` terminal `agentpc/t245` (`done`) and its worktree
    `/home/tyler/code/raven-wt/np-2.1` (branch `np/2.1-bell-goldens`) cannot be closed/removed
