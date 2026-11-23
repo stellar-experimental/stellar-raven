@@ -519,9 +519,8 @@ const SURFACE_CASE = markerCase("q-marker-surface", {
   answer: `Use scout.${MARK} here.`,
   keyFacts: [`${MARK} is documented.`, `${MARK} calls ${EXCLUDED_PATH} directly.`]
 });
-const NUMERIC_CASE = markerCase("q-marker-numeric", {
-  reverifyBy: "2026-08-01"
-});
+const NUMERIC_CASE = markerCase("q-marker-numeric");
+NUMERIC_CASE.truth.reverifyBy = "2026-08-01";
 const MISSING_NUMERIC_ID = "q-marker-numeric-missing";
 const MISSING_TRAP_ID = "q-marker-trap-missing";
 const ACCEPTED_MARK = `${MARK}_ACCEPTED`;

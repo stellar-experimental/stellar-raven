@@ -97,6 +97,14 @@ describe("GitHub skill source selection", () => {
       selectGitHubSkillFiles(tree, { sourcePath: ".", picks: ["skill-a"], excludeFiles: ["reference.md"] })
     ).toThrow(/only supported for repo-root single-skill sources/);
     const cli = resolve(process.cwd(), "scripts/lib/skill-source-selection.mjs");
+    const emptyCliOut = JSON.parse(
+      execFileSync(
+        process.execPath,
+        [cli, "--source-path", ".", "--picks-json", '["skill-a"]', "--exclude-files-json", "[]"],
+        { input: JSON.stringify(tree), encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }
+      )
+    );
+    expect(emptyCliOut.map((file) => file.src)).toEqual(["skill-a/reference.md", "skill-a/SKILL.md"]);
     expect(() =>
       execFileSync(
         process.execPath,
