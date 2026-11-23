@@ -324,13 +324,13 @@ describe("QA corpus lint lanes", () => {
     };
     const direct = lintDateContingentTraps([kase], register);
     expect(direct).toEqual(expect.arrayContaining([
-      expect.objectContaining({ lane: "date-trap", id: kase.id, message: expect.stringContaining("requiredRecheck") }),
-      expect.objectContaining({ lane: "date-trap", id: kase.id, message: expect.stringContaining("note") })
+      expect.objectContaining({ lane: "date-trap", id: kase.id, message: "date-contingent trap #0 field[1] reverifyBy date does not match truth.reverifyBy" }),
+      expect.objectContaining({ lane: "date-trap", id: kase.id, message: "date-contingent trap #0 field[2] reverifyBy date does not match truth.reverifyBy" })
     ]));
     const throughRunLint = runLint({ cases: [kase], manifest: load("manifest.json"), register });
     expect(throughRunLint).toEqual(expect.arrayContaining([
-      expect.objectContaining({ lane: "date-trap", id: kase.id, message: expect.stringContaining("requiredRecheck") }),
-      expect.objectContaining({ lane: "date-trap", id: kase.id, message: expect.stringContaining("note") })
+      expect.objectContaining({ lane: "date-trap", id: kase.id, message: "date-contingent trap #0 field[1] reverifyBy date does not match truth.reverifyBy" }),
+      expect.objectContaining({ lane: "date-trap", id: kase.id, message: "date-contingent trap #0 field[2] reverifyBy date does not match truth.reverifyBy" })
     ]));
   });
 
@@ -520,8 +520,27 @@ const SURFACE_CASE = markerCase("q-marker-surface", {
   keyFacts: [`${MARK} is documented.`, `${MARK} calls ${EXCLUDED_PATH} directly.`]
 });
 const NUMERIC_CASE = markerCase("q-marker-numeric");
+NUMERIC_CASE.truth.reverifyBy = "2026-08-01";
+const MISSING_NUMERIC_ID = "q-marker-numeric-missing";
+const MISSING_TRAP_ID = "q-marker-trap-missing";
+const ACCEPTED_MARK = `${MARK}_ACCEPTED`;
+const SPELLING_MARK = `${MARK}_SPELLING`;
 const NUMERIC_REGISTER = {
-  numericInvariants: { entries: [{ label: "fixture-invariant", affectedCaseIds: [NUMERIC_CASE.id], contradictions: [MARK] }] }
+  numericInvariants: {
+    entries: [{
+      label: `fixture-invariant-${MARK}`,
+      affectedCaseIds: [NUMERIC_CASE.id, MISSING_NUMERIC_ID],
+      contradictions: [MARK],
+      authoritativeValue: ACCEPTED_MARK,
+      acceptedSpellings: [SPELLING_MARK]
+    }]
+  },
+  dateContingentTraps: {
+    entries: [{
+      caseIds: [NUMERIC_CASE.id],
+      [`note_${MARK}`]: `${NUMERIC_CASE.id} reverifyBy 2026-08-02; ${MISSING_TRAP_ID} reverifyBy 2026-08-03`
+    }]
+  }
 };
 const MARKER_CASES = [AVOID_CASE, KEY_FACT_CASE, CAP_SINGLE_CASE, CAP_JOINED_CASE, SURFACE_CASE, NUMERIC_CASE];
 const messagesOf = (findings, id) => findings.filter((item) => item.id === id).map((item) => item.message);
@@ -582,10 +601,27 @@ describe("QA lint never prints judge-facing text", () => {
     ]);
   });
 
-  it("names the register entry and value index, not the forbidden value", () => {
-    expect(messagesOf(lintNumericInvariants([NUMERIC_CASE], NUMERIC_REGISTER), NUMERIC_CASE.id)).toEqual([
-      "exact contradiction to fixture-invariant: forbidden value 0 of the register entry is present"
+  it("names register entries by index and count, never label, forbidden value, accepted spelling, or trap field/date", () => {
+    const numericFindings = lintNumericInvariants([NUMERIC_CASE], NUMERIC_REGISTER);
+    expect(messagesOf(numericFindings, NUMERIC_CASE.id)).toEqual([
+      "exact contradiction to numeric invariant #0: forbidden value 0 of the register entry is present",
+      "fuzzy review: no authoritative spelling for numeric invariant #0 found (2 accepted spelling(s) in register)"
     ]);
+    expect(messagesOf(numericFindings, MISSING_NUMERIC_ID)).toEqual([
+      "numeric invariant #0 references missing case"
+    ]);
+    const corroborationFindings = lintCorroboration([NUMERIC_CASE], NUMERIC_REGISTER);
+    expect(messagesOf(corroborationFindings, NUMERIC_CASE.id)).toEqual(expect.arrayContaining([
+      "no corroboration row covers numeric invariant #0"
+    ]));
+    const trapFindings = lintDateContingentTraps([NUMERIC_CASE], NUMERIC_REGISTER);
+    expect(messagesOf(trapFindings, NUMERIC_CASE.id)).toEqual([
+      "date-contingent trap #0 field[1] reverifyBy date does not match truth.reverifyBy"
+    ]);
+    expect(messagesOf(trapFindings, MISSING_TRAP_ID)).toEqual([
+      "date-contingent trap #0 field[1] reverifyBy reference names missing case"
+    ]);
+    expect(clean([...numericFindings, ...corroborationFindings, ...trapFindings])).toEqual([]);
   });
 
   it("keeps the marker out of every runLint finding while each targeted check still fires", () => {
@@ -596,7 +632,7 @@ describe("QA lint never prints judge-facing text", () => {
       findingStatuses: new Map()
     });
     const lanes = new Set(findings.map((item) => item.lane));
-    for (const lane of ["avoid", "key-fact", "snapshot-date", "corroboration", "cap-finding", "surface", "numeric"]) {
+    for (const lane of ["avoid", "key-fact", "snapshot-date", "corroboration", "cap-finding", "surface", "numeric", "date-trap"]) {
       expect(lanes.has(lane), lane).toBe(true);
     }
     expect(clean(findings)).toEqual([]);

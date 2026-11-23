@@ -1,3 +1,5 @@
+import { execFileSync } from "node:child_process";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { selectGitHubSkillFiles } from "../scripts/lib/skill-source-selection.mjs";
 
@@ -79,5 +81,36 @@ describe("GitHub skill source selection", () => {
     expect(() =>
       selectGitHubSkillFiles(tree, { sourcePath: "", picks: ["root-skill"], excludeFiles: ["SKILL.md"] })
     ).toThrow(/cannot exclude SKILL\.md/);
+  });
+
+  it("allows an empty excludeFiles list on directory sources and rejects non-empty exclusions there", () => {
+    expect(
+      selectGitHubSkillFiles(tree, { sourcePath: "skills", picks: [], excludeFiles: [] }).map((file) => file.src)
+    ).toEqual(["skills/skill-c/SKILL.md"]);
+    expect(
+      selectGitHubSkillFiles(tree, { sourcePath: ".", picks: ["skill-a"], excludeFiles: [] }).map((file) => file.src)
+    ).toEqual(["skill-a/reference.md", "skill-a/SKILL.md"]);
+    expect(() =>
+      selectGitHubSkillFiles(tree, { sourcePath: "skills", picks: [], excludeFiles: ["SKILL.md"] })
+    ).toThrow(/cannot exclude SKILL\.md/);
+    expect(() =>
+      selectGitHubSkillFiles(tree, { sourcePath: ".", picks: ["skill-a"], excludeFiles: ["reference.md"] })
+    ).toThrow(/only supported for repo-root single-skill sources/);
+    const cli = resolve(process.cwd(), "scripts/lib/skill-source-selection.mjs");
+    const emptyCliOut = JSON.parse(
+      execFileSync(
+        process.execPath,
+        [cli, "--source-path", ".", "--picks-json", '["skill-a"]', "--exclude-files-json", "[]"],
+        { input: JSON.stringify(tree), encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }
+      )
+    );
+    expect(emptyCliOut.map((file) => file.src)).toEqual(["skill-a/reference.md", "skill-a/SKILL.md"]);
+    expect(() =>
+      execFileSync(
+        process.execPath,
+        [cli, "--source-path", ".", "--picks-json", '["skill-a"]', "--exclude-files-json", '["reference.md"]'],
+        { input: JSON.stringify(tree), encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }
+      )
+    ).toThrow(/only supported for repo-root single-skill sources/);
   });
 });

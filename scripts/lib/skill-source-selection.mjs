@@ -52,25 +52,27 @@ export function selectGitHubSkillFiles(treeResponse, { sourcePath, picks = [], e
     return files;
   }
 
+  if (excluded.size > 0) {
+    throw new Error("excludeFiles is only supported for repo-root single-skill sources");
+  }
+
   const prefix = sourcePath === "." ? "" : `${sourcePath}/`;
-  const files = applyExclusions(
-    tree
-      .filter((entry) => entry.type === "blob" && entry.path.startsWith(prefix) && entry.path.endsWith(".md"))
-      .map((entry) => ({ entry, rel: entry.path.slice(prefix.length) }))
-      .filter(({ rel }) => rel.includes("/"))
-      .map(({ entry, rel }) => {
-        const slash = rel.indexOf("/");
-        return {
-          skill: rel.slice(0, slash),
-          relpath: rel.slice(slash + 1),
-          size: entry.size,
-          sha: entry.sha,
-          src: entry.path
-        };
-      })
-      .filter((file) => selected.size === 0 || selected.has(file.skill))
-      .sort((a, b) => `${a.skill}/${a.relpath}`.localeCompare(`${b.skill}/${b.relpath}`))
-  );
+  const files = tree
+    .filter((entry) => entry.type === "blob" && entry.path.startsWith(prefix) && entry.path.endsWith(".md"))
+    .map((entry) => ({ entry, rel: entry.path.slice(prefix.length) }))
+    .filter(({ rel }) => rel.includes("/"))
+    .map(({ entry, rel }) => {
+      const slash = rel.indexOf("/");
+      return {
+        skill: rel.slice(0, slash),
+        relpath: rel.slice(slash + 1),
+        size: entry.size,
+        sha: entry.sha,
+        src: entry.path
+      };
+    })
+    .filter((file) => selected.size === 0 || selected.has(file.skill))
+    .sort((a, b) => `${a.skill}/${a.relpath}`.localeCompare(`${b.skill}/${b.relpath}`));
   if (files.length === 0) throw new Error(`no skill files selected under "${sourcePath}"`);
   for (const pick of selected) {
     if (!files.some((file) => file.skill === pick && file.relpath === "SKILL.md")) {
