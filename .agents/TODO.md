@@ -1132,20 +1132,6 @@ delete it here.
    and the responses returned", "for 30 days, after which it is deleted", with opt-out and account
    deletion on request; production keeps ≤7 days in Workers Logs (AI Gateway on row-count policy)
    and logs no query text. Safe default: not started (stay at 7 days, no query/response capture).
-6. **Dated-run `hc` notification target (`RAVEN_DATED_NOTIFY`).** `launch-dated-lead.sh` and
-   `watchdog-dated.sh` default `ORCH` to dead terminal `kalepail-c3614nvxph-mbp/t40j`; failure
-   alerts still reach GitHub via `gh`, while success / "already done" notices are logged on agentpc
-   only. Note also that `2.2a/2.2b/2.2c-LEAD.md` and `PRESTAGE.md` hardcode `t40j` for lead
-   questions, so a `RAVEN_DATED_NOTIFY` drop-in does not restore that question channel and an
-   unanswered lead question falls back to outcome X (dated extension) after 10 minutes. Safe
-   default: accept GitHub-only failure alerts and agentpc logs (keep tracked script defaults
-   untouched; check `gh auth status` on agentpc on 2026-11-29), or set `RAVEN_DATED_NOTIFY` in a
-   systemd drop-in for a live terminal.
-7. **Named terminal exception for `agentpc/t245` (`np-2-1-lead`).** Run 2.1 (#553) completed, but
-   timer-started `--no-parent` terminal `agentpc/t245` (`done`) and its worktree
-   `/home/tyler/code/raven-wt/np-2.1` (branch `np/2.1-bell-goldens`) cannot be closed/removed
-   without an explicit owner named exception (`AGENTS.md`). Safe default: leave untouched until
-   named exception is granted.
 
 Owner-blocked actions that already have an item (no decision needed here):
 
