@@ -2021,6 +2021,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/9e277702fd5f70a18cdc7c4d5f9bda0127461644/improvements/skills/sk-018-stellar-scout-api-reference-composite-endpoint-drift.md"
     },
     {
+      "id": "sk-019",
+      "title": "The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference…",
+      "service": "skills",
+      "discovered": "2026-08-19",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellar-scout",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellar-scout/issues/13"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1995",
+        "https://github.com/stellar-experimental/stellar-raven/issues/554"
+      ],
+      "liveRecheck": "2026-11-23T20:51Z (Stellar-Light/stellar-scout@a07d00c45623): SKILL.md, references/api-reference.md, references/examples.md, README.md, and https://stellarlight.xyz/skills/stellar-scout.md all have 0 /api/feedback references. Both feedback operations moved to opt-in companion references/feedback.md (opt-in: true, read-only: false, side-effects: Writes).",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z–20:58Z (hc t48b): independently verified all 4 default files, served skill, /api/skills/stellar-scout, and references/feedback.md SHA-256 parity; verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellar-scout/issues/13#issuecomment-7113958398",
+      "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/skills/sk-019-scout-skill-feedback-workflow-exposure.md"
+    },
+    {
       "id": "sk-020",
       "title": "The standards skill told agents that the Stellar Developers Discord is https://discord.gg/stellar. That vanity code does not belong to…",
       "service": "skills",
@@ -2117,6 +2136,44 @@
       "reviewEvidence": "Claude Fable 5.1 high distinct review 2026-10-27 (round ledger .agents/rounds/2026-10-27-issue-batch.md, PR #301 review https://github.com/stellar-experimental/stellar-raven/pull/301#issuecomment-6431210571); author Claude Opus 5.5; trigger repeated live; resolution comment https://github.com/Trustless-Work/trustlesswork-skill/issues/16#issuecomment-6431221485",
       "sourceCommit": "6d796128a6918be6371204ede0d2828bba6ae9d1",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6d796128a6918be6371204ede0d2828bba6ae9d1/improvements/skills/sk-026-core-api-error-documentation-links.md"
+    },
+    {
+      "id": "sk-027",
+      "title": "The Scout skill describes /api/skills as a catalog of seven SDF skills. On 2026-11-20 the live catalog had 84 entries from five sources…",
+      "service": "skills",
+      "discovered": "2026-09-30",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellar-scout",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellar-scout/issues/14"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1995",
+        "https://github.com/stellar-experimental/stellar-raven/issues/555"
+      ],
+      "liveRecheck": "2026-11-23T20:51Z (Stellar-Light/stellar-scout@a07d00c45623): SKILL.md, references/api-reference.md, references/examples.md, and README.md have 0 stale SDF list/count/soroban/anchors/fixed-install phrases. All 8 GET /api/skills?source=sdf homepages end in /SKILL.md and return HTTP 200; /api/skills/soroban 404, /api/skills/smart-contracts 200.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z–20:58Z (hc t48b): independently verified all 4 files, all 8 SDF homepages, /api/skills counts (84), and README links; verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellar-scout/issues/14#issuecomment-7113958765",
+      "sourceCommit": "2e0119d1cf7161d512cce926874d0963a6fa8b85",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/2e0119d1cf7161d512cce926874d0963a6fa8b85/improvements/skills/sk-027-scout-skill-stale-skills-catalog.md"
+    },
+    {
+      "id": "sk-028",
+      "title": "The Scout skill gives the size of the Builders directory as a fixed count. SKILL.md says the directory is \"currently in the dozens, not…",
+      "service": "skills",
+      "discovered": "2026-09-30",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellar-scout",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellar-scout/issues/15"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1995",
+        "https://github.com/stellar-experimental/stellar-raven/issues/556"
+      ],
+      "liveRecheck": "2026-11-23T20:51Z (Stellar-Light/stellar-scout@a07d00c45623): SKILL.md, references/api-reference.md, references/examples.md, and README.md have 0 fixed Builders size phrases and point to GET /api/status sources[] builders entry (live count 419).",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z–20:56Z (hc t48b): independently verified all 4 files, GET /api/status (419), and /api/builders?q=zzzzqqq advisory (419); verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellar-scout/issues/15#issuecomment-7113959126",
+      "sourceCommit": "2e0119d1cf7161d512cce926874d0963a6fa8b85",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/2e0119d1cf7161d512cce926874d0963a6fa8b85/improvements/skills/sk-028-scout-skill-stale-builder-count.md"
     },
     {
       "id": "sk-032",
@@ -4395,6 +4452,120 @@
       "reviewEvidence": "Distinct review by Codex frontier gpt-6-astra (high), research/audits/2026-11-12-truth-maintenance/review-retire-astra.md; author lane Codex gpt-6.1-sol. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1933#issuecomment-6827174175, https://github.com/Stellar-Light/stellarlight/pull/1942#issuecomment-6827174551",
       "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-light-scout/sls-115-horizon-ceiling-note-scan-drift.md"
+    },
+    {
+      "id": "sls-117",
+      "title": "The sdf-org source of the Scout research corpus holds nine SDF pages. It does not hold four pages that answer common questions about SDF",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-14",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1969"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1989",
+        "https://github.com/stellar-experimental/stellar-raven/issues/546"
+      ],
+      "liveRecheck": "2026-11-23T20:50Z (Scout 1.9.157): GET /api/research?source=sdf-org&limit=25 now returns stellar.org/foundation/strategy (2026 strategy), stellar.org/foundation/roadmap (2025 roadmap), stellar.org/ecosystem/service-providers, and stellar.org/community (SDF cannot recover funds) with observedAt 2026-11-23.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z–20:57Z (hc t48b): independently verified all four sdf-org pages and strategy target chunks; verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1969#issuecomment-7113957199",
+      "sourceCommit": "2e0119d1cf7161d512cce926874d0963a6fa8b85",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/2e0119d1cf7161d512cce926874d0963a6fa8b85/improvements/stellar-light-scout/sls-117-sdf-org-source-missing-strategy-service-provider-pages.md"
+    },
+    {
+      "id": "sls-118",
+      "title": "The Scout research corpus indexes CAPs and SEPs from stellar/stellar-protocol. It does not index the Stellar Limits Proposals (SLPs) in…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-14",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1970"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1988",
+        "https://github.com/stellar-experimental/stellar-raven/issues/545"
+      ],
+      "liveRecheck": "2026-11-23T20:50Z (Scout 1.9.157): GET /api/research?q=SLP-0006+freeze+YieldBlox+exploit+accounts&limit=25 returns limits/slp-0006.md (source slp, Status Final, publishedAt 2026-05-07) and limits/slp-0008.md (2026-11-02); q=CAP-0077+SLP-0006 ranks cap-0077, slp-0006, slp-0008 top 3; source=slp exposes all 8 proposals (55 chunks).",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z–20:58Z (hc t48b): independently verified SLP-0006/0008/0004 exact lookups, quorum-freeze query, all 8 proposals, and OpenAPI exactKeys scope; verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1970#issuecomment-7113956847",
+      "sourceCommit": "2e0119d1cf7161d512cce926874d0963a6fa8b85",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/2e0119d1cf7161d512cce926874d0963a6fa8b85/improvements/stellar-light-scout/sls-118-research-corpus-omits-limits-proposals.md"
+    },
+    {
+      "id": "sls-119",
+      "title": "GET /api/stablecoins gives Circle's EURC on Stellar an issuerOfRecord of \"Circle Internet Financial, LLC\". Circle's own EURC terms name a…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-14",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1971"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1991",
+        "https://github.com/stellar-experimental/stellar-raven/issues/547"
+      ],
+      "liveRecheck": "2026-11-23T20:50Z (Scout 1.9.157): GET /api/stablecoins?peg=EUR&limit=50 EURC-GDHU6WRG keeps issuerOfRecord Circle Internet Financial, LLC (toml ORG_NAME) and adds issuerOfRecordNote quoting https://www.circle.com/legal/eurc-terms (Circle Internet Financial Europe SAS as issuer; LLC as reseller). GET /api/verify?type=issued returns supported for Circle Internet Financial Europe SAS and contradicted for Circle Internet Financial, LLC.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z–20:57Z (hc t48b): independently verified EURC/USDC/MyKobo rows, Circle toml and legal terms, verifyClaim verdicts, and OpenAPI schema doc; verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1971#issuecomment-7113957628",
+      "sourceCommit": "ada75c0dc34d5325733d8ed3193411e73b018996",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ada75c0dc34d5325733d8ed3193411e73b018996/improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md"
+    },
+    {
+      "id": "sls-120",
+      "title": "GET /api/stablecoins returns the BRLT row of Settle Network with all five issuer-of-record fields null. The fields are issuerOfRecord,…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-17",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1973"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1991",
+        "https://github.com/stellar-experimental/stellar-raven/issues/548"
+      ],
+      "liveRecheck": "2026-11-23T20:50Z (Scout 1.9.157): GET /api/stablecoins?limit=100 BRLT-GCHQ3F2B returns issuerOfRecord null, issuerOfRecordCheck could-not-read, issuerOfRecordAsOf 2026-11-23T07:52:50.145Z, and issuerOfRecordNote noting sep.stablex.cloud ENOTFOUND and the one-sided latamex toml (Relay Tech Services Ltd). All 37 rows now carry non-null issuerOfRecordCheck.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z–20:56Z (hc t48b): independently verified all 37 stablecoin rows (35 named, 1 could-not-read BRLT, 1 not-named USDT0), Horizon account, DNS NXDOMAIN, and Latamex toml; verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1973#issuecomment-7113958007",
+      "sourceCommit": "ada75c0dc34d5325733d8ed3193411e73b018996",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ada75c0dc34d5325733d8ed3193411e73b018996/improvements/stellar-light-scout/sls-120-brlt-issuer-of-record-null-with-readable-toml.md"
+    },
+    {
+      "id": "sls-121",
+      "title": "Scout serves five Wallet rows with status: \"Live\" while the availabilityCheck on the same row says the operator is gone or the product is…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-17",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1974"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1990",
+        "https://github.com/stellar-experimental/stellar-raven/issues/544"
+      ],
+      "liveRecheck": "2026-11-23T20:50Z (Scout 1.9.157): GET /api/projects/search?type=Wallet&limit=100 returns all 6 Live none-found wallets (spatium, sentit, freelii, elsa, ben-wallet, bebop) with availability-check hit (asOf 2026-11-11), halved statusConfidence (0.2/0.3/0.13), and non-null statusCaveat; /api/projects/resolve and /api/verify?type=live carry the caveat.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z–20:56Z (hc t48b): independently verified all 6 hits plus blaze control across search, resolve, and verify; verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1974#issuecomment-7113956411",
+      "sourceCommit": "d596b36f510969f7ed426689238ce80527f18819",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d596b36f510969f7ed426689238ce80527f18819/improvements/stellar-light-scout/sls-121-wallet-live-status-contradicts-availability-check.md"
+    },
+    {
+      "id": "sls-122",
+      "title": "GET /api/projects/search?q=wallet returns the project Coca twice in its ranked list, once at rank 47 and once at rank 104.…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-17",
+      "resolved": "2026-11-23",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1975"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1985",
+        "https://github.com/stellar-experimental/stellar-raven/issues/543"
+      ],
+      "liveRecheck": "2026-11-23T20:51Z (Scout 1.9.157): GET /api/projects/search?q=wallet at limit=100, 50, and 25 each walk 195 rows / 195 distinct slugs matching meta.counts.total=195 with coca once (index 46, confidence 0.97). Controls q=stablecoin (207/207) and q=defi (199/199) clean.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6.2-astra (high effort) on 2026-11-23T20:55Z (hc t48b): independently re-ran q=wallet at limit 100/50/25 plus stablecoin/defi/type=Wallet controls; verdict RETIRE. Record: .agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md. Resolution comments posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1975#issuecomment-7113956053",
+      "sourceCommit": "d596b36f510969f7ed426689238ce80527f18819",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d596b36f510969f7ed426689238ce80527f18819/improvements/stellar-light-scout/sls-122-project-search-repeats-a-row-across-pages.md"
     }
   ]
 }

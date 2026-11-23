@@ -300,16 +300,14 @@ is authored or declined with a reason.
 Recheck only when the named trigger fires (full per-finding tables in the
 [2026-11-05 ledger](rounds/2026-11-05-truth-maintenance.md)).
 
-- **sls-116** (stellarlight#1952; inbound handoff #427 closed 2026-11-19, item 8.12b): all three
-  items reproduced on 2026-11-17 (Scout 1.9.150) with no reply. Trigger: Scout release touching SCF
-  data or reply on #1952. Check: (1) `GET /api/projects/search?scfAwarded=true&limit=100` (offsets
-  0–700) names `soroban-contract-source-verification-service-bax` (official page shows
-  `lastAwardedRound` 44); (2) a public endpoint serves the 27-award baseline; (3) `peer` carries
-  non-null `scfSourceUrl` and `scfAsOf`. Retire only when all three are sourced or declared out of
-  scope; comment upstream only on a change.
-- **sls-121, sls-122** (Scout wallet findings, 2026-11-17): 5 `Live` wallet rows with gone
-  operators (`sls-121`); `q=wallet` repeats `coca` (196 rows for `total` 195, `sls-122`). Trigger:
-  Scout release touching wallet rows or project search.
+- **sls-116** (stellarlight#1952; inbound handoffs #427 closed 2026-11-19 and #549 closed 2026-11-23):
+  item (3) (`peer` null `scfSourceUrl`/`scfAsOf`) is fixed as of 2026-11-23 (Scout 1.9.157, PR #1992;
+  0/711 awarded rows have null source or date). Trigger: Scout release or operator update on #1952.
+  Check: (1) `GET /api/projects/search?scfAwarded=true&limit=100` (offsets 0–700) carries
+  `soroban-contract-source-verification-service-bax` (SCF #44); (2) the 27 earlier-round awards
+  awaiting operator decisions (866/893 served) are sourced or declared out of scope; (3) the shared
+  `peer`/`honey-coin` (`peer-by-honeycoin-inz`) award attribution is reconciled. Retire only when
+  resolved or declared out of scope; comment upstream only on a change.
 - **Docs pull requests:** unmerged PRs, blockers, and triggers (including draft2752, generated-skill
   PR3069, and author-owned protocol PR2059) live in the
   [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) and
