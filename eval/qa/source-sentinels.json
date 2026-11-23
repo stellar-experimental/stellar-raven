@@ -107,13 +107,13 @@
       }
     },
     {
-      "id": "mainnet-protocol-29",
+      "id": "mainnet-protocol-30",
       "caseId": "q-hist-quantum-preparedness-plan",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-23",
       "url": "https://horizon.stellar.org/",
       "check": {
         "kind": "present",
-        "pattern": "\"current_protocol_version\": ?29\\b",
+        "pattern": "\"current_protocol_version\": ?30\\b",
         "guard": "\"network_passphrase\": ?\"Public Global Stellar Network ; September 2015\""
       }
     },
@@ -191,35 +191,47 @@
       }
     },
     {
-      "id": "mainnet-protocol-29-latest",
+      "id": "mainnet-protocol-30-latest",
       "caseId": "q-edge-fresh-latest-protocol-version",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-23",
       "url": "https://horizon.stellar.org/",
       "check": {
         "kind": "present",
-        "pattern": "\"current_protocol_version\": ?29\\b",
+        "pattern": "\"current_protocol_version\": ?30\\b",
         "guard": "\"network_passphrase\": ?\"Public Global Stellar Network ; September 2015\""
       }
     },
     {
-      "id": "mainnet-protocol-29-history",
+      "id": "mainnet-protocol-30-history",
       "caseId": "q-protocol-version-history-list",
-      "caseAsOf": "2026-11-14",
+      "caseAsOf": "2026-11-23",
       "url": "https://horizon.stellar.org/",
       "check": {
         "kind": "present",
-        "pattern": "\"current_protocol_version\": ?29\\b",
+        "pattern": "\"current_protocol_version\": ?30\\b",
         "guard": "\"network_passphrase\": ?\"Public Global Stellar Network ; September 2015\""
       }
     },
     {
-      "id": "bell-mainnet-vote-scheduled",
+      "id": "next-mainnet-upgrade-vote-absent",
       "caseId": "q-pc-protocol-upgrade-timing",
-      "caseAsOf": "2026-11-14",
+      "caseAsOf": "2026-11-23",
       "url": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
       "check": {
-        "kind": "present",
-        "pattern": "\"name\":\\s*\"Stellar Public Network Protocol Upgrade Vote\".{0,7000}?\"scheduled_for\":\\s*\"2026-11-23T17:00:00\\.000Z\""
+        "kind": "absent",
+        "pattern": "Upgrade Vote|Mainnet[^\"]*Upgrade",
+        "guard": "\"scheduled_maintenances\":"
+      }
+    },
+    {
+      "id": "protocol-upgrades-no-protocol-31",
+      "caseId": "q-pc-protocol-upgrade-timing",
+      "caseAsOf": "2026-11-23",
+      "url": "https://stellar.org/protocol-upgrades",
+      "check": {
+        "kind": "absent",
+        "pattern": "Protocol 31\\b",
+        "guard": "Protocol 30\\b"
       }
     }
   ]

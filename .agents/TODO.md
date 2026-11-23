@@ -197,12 +197,13 @@ date passes. Six cases keep dates before 2027 because each depends on a known ev
 - **SCF.** `q-scf-current-round` is due 2026-12-04. The RFP Scout-lag check is done: the audit
   retired five of the six RFP cases, and the survivor (due 2027-01-28) records that Scout and the
   official page both listed the two Q4 briefs on 2026-11-14.
-- **Bell/P30 Mainnet vote, 2026-11-23 17:00 UTC.** `q-pc-protocol-upgrade-timing`,
-  `q-protocol-version-history-list`, and `q-edge-fresh-latest-protocol-version` are due 11-24.
-  `q-hist-quantum-preparedness-plan` is due 12-01. `q-infra-software-versions-current-protocol`,
-  which states the Protocol 29 release set, is due 11-30; `--stale` lists it. The
-  `mainnet-protocol-29` source sentinel fires when Mainnet activates Protocol 30. Update the
-  register's Bell date trap in the same change.
+- **Bell/P30 Mainnet vote, 2026-11-23 17:00 UTC.** Run 2.1 recorded the activation: Mainnet
+  moved to Protocol 30 at ledger 65633432 (closed 2026-11-23T17:00:06Z). `q-edge-fresh-latest-protocol-version`
+  is now due 2027-02-15, `q-pc-protocol-upgrade-timing` 2027-02-22, `q-protocol-version-history-list`
+  2027-03-01 and `q-hist-quantum-preparedness-plan` 2027-03-08. The source sentinels now check
+  Protocol 30, and the register's Bell trap carries the dated disposition. Still open:
+  `q-infra-software-versions-current-protocol` states the Protocol 29 release set and is due
+  11-30 (run 2.2a; the Software Versions page still headed Protocol 29 on 2026-11-23).
 
 Round items carry the work. Item 1.4 staged it as timer-started dated runs
 ([PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md)): 2.1 on 2026-11-23
@@ -224,7 +225,7 @@ The owner adopted the maintenance exception (2026-11-17; rule in
 dated runs keep their narrow scope: a run closes its reopened register entries all or none, and
 closes none when it could not read every member (orchestrator's answer 2 (1) in
 [`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md)). Such an entry stays at
-`reopen`. Count left open so far: none recorded yet. Each dated run adds its count here.
+`reopen`. Count left open so far: 17 (run 2.1, all at `reopen` with no `reSwept` written). Each dated run adds its count here.
 
 Next, after round item 2.2c: one maintenance lane under the exception reads every member of each
 left-open entry and closes or accepts it. Its brief must claim the exception and name the trigger

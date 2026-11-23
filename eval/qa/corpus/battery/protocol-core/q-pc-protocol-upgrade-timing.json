@@ -7,11 +7,11 @@
     "stellarDocs.search_sdk_cli_tools_docs"
   ],
   "golden": {
-    "answer": "As of 2026-11-14 Mainnet runs Protocol 29 and Bell (Protocol 30) is live on Testnet; the announced Mainnet vote is 2026-11-23 17:00 UTC. Validators install the matching stellar-core release and arm the upgrade for a fixed UTC time; SCP agreement then applies it in-band through the ledger header's upgrades field. It is not a token-holder vote. SDKs must be upgraded before 2026-11-23 for Mainnet integrations because CAP-0088 changes the ledger-header encoding.",
+    "answer": "As of 2026-11-23 Mainnet runs Protocol 30 (Bell), activated 2026-11-23 at ledger 65633432, and no next Mainnet protocol vote is announced in the status calendar, SDF upgrade pages or stellar-core releases. Validators install the matching stellar-core release and arm the upgrade for a fixed UTC time; SCP agreement then applies it in-band through the ledger header's upgrades field. It is not a token-holder vote. SDK upgrade deadlines are set per network by each upgrade's SDF guide, before that network's vote; none is pending now.",
     "keyFacts": [
       "Reports the next announced Mainnet vote, or its absence, with an as-of date.",
       "Validators arm a scheduled upgrade and SCP activates it in-band, not by token vote.",
-      "Gives the SDK upgrade deadline for the network and why (CAP-0088 encoding)."
+      "SDK upgrades are due before the target network's vote, per that upgrade's SDF guide."
     ],
     "avoid": [
       "Do NOT present a completed upgrade as upcoming or invent a vote date without a dated primary source."
@@ -30,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-14",
+    "asOf": "2026-11-23",
     "sources": [
       {
         "class": "C",
@@ -420,31 +420,112 @@
             "note": "http-command 'upgrades?mode=set&upgradetime=…&protocolversion=9'"
           }
         ]
+      },
+      {
+        "claim": "Mainnet runs Protocol 30 (Bell), activated 2026-11-23 at ledger 65633432",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-23",
+            "note": "current_protocol_version 30, core_supported_protocol_version 30, core_version stellar-core 30.0.0, Pubnet passphrase (read 2026-11-23T18:01Z)"
+          },
+          {
+            "class": "F",
+            "ref": "https://mainnet.sorobanrpc.com",
+            "observedAt": "2026-11-23",
+            "note": "getLatestLedger protocolVersion 30 at ledger 65634153 (read 2026-11-23T18:00Z)"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65633432",
+            "observedAt": "2026-11-23",
+            "note": "sequence 65633432, closed_at 2026-11-23T17:00:06Z, protocol_version 30"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65633431",
+            "observedAt": "2026-11-23",
+            "note": "sequence 65633431, closed_at 2026-11-23T17:00:01Z, protocol_version 29"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+            "observedAt": "2026-11-23",
+            "note": "Schedule line: 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'; ledger 65633432 closed 6 seconds after that time."
+          }
+        ]
+      },
+      {
+        "claim": "No next Mainnet protocol vote is announced as of 2026-11-23",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+            "observedAt": "2026-11-23",
+            "note": "'\"scheduled_maintenances\":[]'. Weak on its own: the status calendar listed no row for the 2026 Protocol 26, 27 and 29 votes."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/protocol-upgrades",
+            "observedAt": "2026-11-23",
+            "note": "The upgrades page names Bell (Protocol 30) only and no Protocol 31."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+            "observedAt": "2026-11-23",
+            "note": "Newest stellar-core release and tag is v30.0.0; no v31 tag or release. The CAP index (core/README.md) lists no Protocol 31 CAP; CAP-0089 and CAP-0090 are Draft with no protocol version."
+          },
+          {
+            "class": "D",
+            "ref": "Web sweep 2026-11-23, built-in web search: 'Stellar Protocol 31 Mainnet upgrade vote date announced'",
+            "observedAt": "2026-11-23",
+            "note": "No announced Protocol 31 Mainnet vote found. Absence of evidence across the records above plus one dated sweep, so confirmed-as-of 2026-11-23, never absolute."
+          }
+        ]
+      },
+      {
+        "claim": "SDK upgrade deadlines are set per network by each upgrade's SDF guide, before that network's vote",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+            "observedAt": "2026-11-23",
+            "note": "The Bell guide gives separate Testnet and Mainnet deadlines, each before that network's vote; both votes are now past."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/protocol-upgrades",
+            "observedAt": "2026-11-23",
+            "note": "'Upgrade to the latest Stellar SDK before the votes'."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "date": "2026-11-23",
+      "by": "Dated run 2.1 (2026-11-23), .agents/rounds/2026-11-16-next-phase/items/2.1/",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-protocol-upgrade-timing",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-protocol-upgrade-timing",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-protocol-upgrade-timing",
-        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote.'",
-        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'For your Mainnet integration, upgrade before November 23, 2026. … an older SDK may fail to decode Protocol 30 ledgers.'",
-        "Live F 2026-11-14: https://horizon.stellar.org/ -- 'current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65467697'",
-        "Live F 2026-11-14: https://horizon-testnet.stellar.org/ -- 'current_protocol_version 30, core_supported_protocol_version 30'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades -- 'http-command 'upgrades?mode=set&upgradetime=…&protocolversion=9''",
-        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC—Mainnet upgrade vote. ... Protocol 30 changes the ledger header format (CAP-88), and an older SDK may fail to decode'",
-        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"protocol_version\": 29 (Mainnet ledger 65467844); horizon-testnet latest ledger \"protocol_version\": 30'",
-        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids bell-mainnet-vote-scheduled): hold"
+        "Live F 2026-11-23: https://horizon.stellar.org/ -- 'current_protocol_version 30, core_supported_protocol_version 30, core_version stellar-core 30.0.0'",
+        "Live F 2026-11-23: https://mainnet.sorobanrpc.com getLatestLedger -- 'protocolVersion 30, sequence 65634153'",
+        "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633432 -- 'closed_at 2026-11-23T17:00:06Z, protocol_version 30'",
+        "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633431 -- 'closed_at 2026-11-23T17:00:01Z, protocol_version 29'",
+        "Live A 2026-11-23: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC —Mainnet upgrade vote'",
+        "Live A 2026-11-23: https://stellar.org/protocol-upgrades -- names Bell only; 'Upgrade to the latest Stellar SDK before the votes'",
+        "Live C 2026-11-23: https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json -- '\"scheduled_maintenances\":[]'",
+        "Live B 2026-11-23: https://github.com/stellar/stellar-core/releases -- newest release v30.0.0 (2026-10-16); no v31"
       ],
       "rootCause": [
-        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-pc-protocol-upgrade-timing",
-    "reverifyBy": "2026-11-24",
-    "notes": "Check the latest official upgrade guide and operational status. Report the target network for each vote and SDK deadline. Bell’s Testnet deadline is historical as of 2026-11-10. Accept a later dated status or reschedule. CAP-0088 changes nested StellarValue encoding in scpValue while the direct LedgerHeader fields stay the same.",
+    "reverifyBy": "2027-02-22",
+    "notes": "Check the latest official upgrade guide and operational status. Report the target network for each vote and SDK deadline. Bell activated on Testnet 2026-11-03 and on Mainnet 2026-11-23 (ledger 65633432); its deadlines are historical. Accept a later dated status or reschedule. CAP-0088 changes nested StellarValue encoding in scpValue while the direct LedgerHeader fields stay the same.",
     "leaf": "network.current-protocol",
     "secondaryLeaf": "network.upgrade-process"
   }

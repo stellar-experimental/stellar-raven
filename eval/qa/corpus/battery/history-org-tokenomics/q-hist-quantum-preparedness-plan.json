@@ -31,8 +31,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-10",
-    "reverifyBy": "2026-12-01",
+    "asOf": "2026-11-23",
+    "reverifyBy": "2027-03-08",
     "sources": [
       {
         "class": "A",
@@ -317,27 +317,60 @@
             "note": "The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026."
           }
         ]
+      },
+      {
+        "claim": "Bell/P30 with CAP-0087 ML-DSA verification activated on Mainnet 2026-11-23 at ledger 65633432; the classic-account quantum-safe signer is still future",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65633432",
+            "observedAt": "2026-11-23",
+            "note": "sequence 65633432, closed_at 2026-11-23T17:00:06Z, protocol_version 30"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/65633431",
+            "observedAt": "2026-11-23",
+            "note": "sequence 65633431, closed_at 2026-11-23T17:00:01Z, protocol_version 29"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-23",
+            "note": "current_protocol_version 30, core_supported_protocol_version 30, core_version stellar-core 30.0.0, Pubnet passphrase (read 2026-11-23T18:01Z)"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+            "observedAt": "2026-11-23",
+            "note": "CAP-0087 Host functions for ML-DSA signature verification: 'Status: Implemented', 'Protocol version: 30'."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+            "observedAt": "2026-11-23",
+            "note": "The CAP index lists CAP-0087 as the only ML-DSA CAP; no implemented CAP adds a quantum-safe signer to classic accounts."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "date": "2026-11-23",
+      "by": "Dated run 2.1 (2026-11-23), .agents/rounds/2026-11-16-next-phase/items/2.1/",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-quantum-preparedness-plan",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-quantum-preparedness-plan",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-quantum-preparedness-plan",
-        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan -- 'every Stellar account is expected to be able to add a quantum-safe signer through a native protocol upgrade'",
-        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan -- 'the three-stage roadmap to quantum-safe cryptography'",
-        "Live C 2026-11-14: https://horizon.stellar.org/ -- 'current_protocol_version=29; core_supported_protocol_version=30 (ledger closed 2026-11-14T03:13:12Z)'",
-        "Live C 2026-11-14: https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json -- 'Stellar Public Network Protocol Upgrade Vote, scheduled_for 2026-11-23T17:00:00.000Z'",
-        "Live A 2026-11-14: https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar -- 'The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026.'"
+        "Live F 2026-11-23: https://horizon.stellar.org/ -- 'current_protocol_version 30, core_supported_protocol_version 30, core_version stellar-core 30.0.0'",
+        "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633432 -- 'closed_at 2026-11-23T17:00:06Z, protocol_version 30'",
+        "Live F 2026-11-23: https://horizon.stellar.org/ledgers/65633431 -- 'closed_at 2026-11-23T17:00:01Z, protocol_version 29'",
+        "Live B 2026-11-23: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md -- 'Host functions for ML-DSA signature verification; Status: Implemented; Protocol version: 30'",
+        "Live B 2026-11-23: https://github.com/stellar/stellar-protocol/blob/master/core/README.md -- CAP-0087 is the only ML-DSA CAP; no implemented CAP adds a quantum-safe signer to classic accounts"
       ],
       "rootCause": [
-        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+        "freshness-drift"
       ]
     },
     "origin": "authored 2026-07 (2026-events)",
-    "notes": "Grade what the June 2026 plan said at publication. Later developments are optional. As of 2026-11-10, Bell/P30 is live on Testnet with CAP-0087 ML-DSA-44/65/87 contract verification. Pubnet still runs P29 and the Bell Mainnet vote is scheduled for 2026-11-23. SDF still describes a native post-quantum signer for classic accounts as a future change. The June roadmap also leaves deprecation timing dependent on the threat. Accept a later sourced Mainnet activation.",
+    "notes": "Grade what the June 2026 plan said at publication. Later developments are optional. Bell/P30, with CAP-0087 ML-DSA-44/65/87 contract verification, activated on Testnet 2026-11-03 and on Mainnet 2026-11-23 at ledger 65633432. SDF still describes a native post-quantum signer for classic accounts as a future change. The June roadmap also leaves deprecation timing dependent on the threat. Accept a later sourced Mainnet activation.",
     "leaf": "security.quantum-preparedness"
   }
 }
