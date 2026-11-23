@@ -139,25 +139,38 @@ T=$(jq -r '.address // .id // empty' <<<"$OUT" 2>/dev/null) || T=""
 # The task is claude's argv prompt, so it is delivered unless a start-up dialog (folder trust, the
 # bypass-permissions warning) blocks it. Confirm that the agent took it: status working. A real
 # lead that is already done inside the window refused, hit a limit or asked a question: that fails.
-# Every command in the loop may fail on its own; a transient failure only costs one turn of the loop.
+# Use a wall-clock deadline with sleep instead of `hc wait`: `hc run` launches `systemd-run` with
+# no hc launch task, so `hc wait` returns immediately while the terminal is still `live` or `idle`
+# during boot. Every command in the loop is bounded with `timeout 15` and may fail on its own; a
+# transient failure only costs one turn of the loop.
 SENT=false
-for attempt in $(seq 1 12); do
-  STATE_NOW=$(hc get "$T" --json 2>/dev/null | jq -r '.status.state // .state // empty' 2>/dev/null) || STATE_NOW=""
+DEADLINE=$(( $(date +%s) + 120 ))
+attempt=0
+while true; do
+  attempt=$((attempt + 1))
+  STATE_NOW=$(timeout 15 hc get "$T" --json 2>/dev/null | jq -r '.status.state // .state // empty' 2>/dev/null) || STATE_NOW=""
   log "check $attempt: status ${STATE_NOW:-unreadable}"
   case "$STATE_NOW" in
     working) SENT=true; break ;;
     done)
       if [[ "${RAVEN_DATED_TEST:-}" == 1 ]]; then SENT=true; break; fi
-      log "lead is done inside the start window; screen:"; { hc read --lines 0 "$T" 2>&1 | tail -25; } || true
+      log "lead is done inside the start window; screen:"; { timeout 15 hc read --lines 0 "$T" 2>&1 | tail -25; } || true
       fail 75 "lead $T finished inside the start window (refused, hit a limit or asked a question); see the log" ;;
+    finished|exited)
+      log "lead exited inside the start window; screen:"; { timeout 15 hc read --lines 0 "$T" 2>&1 | tail -25; } || true
+      fail 75 "lead $T exited inside the start window; see the log" ;;
+    error)
+      log "lead hit error inside the start window; screen:"; { timeout 15 hc read --lines 0 "$T" 2>&1 | tail -25; } || true
+      fail 75 "lead $T reported error inside the start window; see the log" ;;
     blocked)
-      SCREEN=$(hc read --lines 0 "$T" 2>&1) || SCREEN=""
+      SCREEN=$(timeout 15 hc read --lines 0 "$T" 2>&1) || SCREEN=""
       log "blocked; screen:"; printf '%s\n' "$SCREEN" | tail -25 || true
-      if grep -q "Yes, I accept" <<<"$SCREEN"; then hc keys "$T" down enter || log "hc keys failed"
-      elif grep -qi "trust" <<<"$SCREEN"; then hc keys "$T" enter || log "hc keys failed"
+      if grep -q "Yes, I accept" <<<"$SCREEN"; then timeout 15 hc keys "$T" down enter || log "hc keys failed"
+      elif grep -qi "trust" <<<"$SCREEN"; then timeout 15 hc keys "$T" enter || log "hc keys failed"
       fi ;;
   esac
-  hc wait "$T" --timeout 10 >/dev/null 2>&1 || true
+  if (( $(date +%s) >= DEADLINE )); then break; fi
+  sleep 5
 done
 [[ "$SENT" == true ]] || fail 75 "lead $T started but readiness could not be established within about 2 minutes; see the log"
 
