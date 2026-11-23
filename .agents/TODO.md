@@ -396,6 +396,12 @@ Held by this item:
 - **Zero holdout headroom (`eval/gates.json`; #223 closed):** `top1` is at floor 12, `top3` at
   floor 26, and `forbiddenCaptures` at ceiling 11 (`top5` is 30 vs. floor 29). Any single-row loss
   or extra capture fails the gate.
+- **`ROUTING_PHRASE_TOKEN_CAP` whole-phrase eviction (`src/catalog/extract-routing-phrases.ts`):**
+  when an upstream `x-routing` phrase grows past the remaining 256-token budget, `extractRoutingPhrases`
+  drops it whole (in Scout 1.9.157, `scout.searchResearch` `useWhen[4]` for `sdf-org` grew 33→41
+  tokens and was evicted, dropping `SDF board roster` and `SDF quarterly reports index` from top-5
+  while admitting `useWhen[5]`; [review](rounds/2026-11-23-upstream-handoffs/review-drift-fable.md) S1).
+  Address generally with this repair, never with a per-query patch.
 - **`SKILL_DESCRIPTION_OVERRIDES`** holds `skills.stellar-dev.dapp`'s search text.
 - **Known test/selector traps from prior rounds:** `test/search.test.ts` (`rfp` case) relies on
   schema-only `scout.getRfps` admission; check 11 is a selector gap in `src/catalog/search.ts`

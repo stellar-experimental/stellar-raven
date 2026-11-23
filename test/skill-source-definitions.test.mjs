@@ -22,6 +22,14 @@ describe("shared skill source definitions", () => {
     for (const source of manifest.sources) {
       const definition = sourceDefinition(source, definitions);
       if (definition.mode !== "all") expect([...definition.picks].sort()).toEqual(source.skills.map((skill) => skill.name).sort());
+      const excluded = new Set(definition.excludeFiles ?? []);
+      if (excluded.size > 0) {
+        for (const skill of source.skills) {
+          for (const file of skill.files) {
+            expect(excluded.has(file.path), `${source.id}/${skill.name}/${file.path} is excluded in sources.json`).toBe(false);
+          }
+        }
+      }
     }
   });
 
@@ -30,16 +38,35 @@ describe("shared skill source definitions", () => {
     const script = readFileSync(join(REPO, "ecosystem-skills", "update.sh"), "utf8");
     const loop = script.slice(script.indexOf('node "$SCRIPT_DIR/../scripts/lib/skill-source-definitions.mjs"'), script.indexOf('\nfetch_catalog\n'));
     const harness = join(dir, "harness.sh");
-    writeFileSync(harness, `set -euo pipefail\nSCRIPT_DIR=$1\nWORK=$2\npin_github() { printf '%s\\0' "$@"; printf '\\n'; }\n${loop}\n`);
+    writeFileSync(harness, `set -euo pipefail\nSCRIPT_DIR=$1\nWORK=$2\npin_github() { printf '%s\\0' "\${EXCLUDE_FILES_JSON-UNSET}" "$@"; printf '\\n'; }\n${loop}\n`);
     const result = spawnSync("/bin/bash", [harness, join(REPO, "ecosystem-skills"), dir], { encoding: "utf8" });
     expect(result.status, result.stderr).toBe(0);
     const argumentsBySource = result.stdout.trimEnd().split("\n").map((line) => line.split("\0").slice(0, -1));
-    expect(argumentsBySource).toEqual(readSourceDefinitions(definitionsPath).map((source) => [source.id, source.owner, source.repo, source.path, source.ref, ...source.picks]));
+    expect(argumentsBySource).toEqual(
+      readSourceDefinitions(definitionsPath).map((source) => [
+        JSON.stringify(source.excludeFiles ?? []),
+        source.id,
+        source.owner,
+        source.repo,
+        source.path,
+        source.ref,
+        ...source.picks
+      ])
+    );
   });
 
   it.each([
     { mode: "pick", picks: [] }, { mode: "all", picks: ["one"] }, { mode: "root", path: "skills" },
-    { mode: "unknown" }, { picks: ["one two"] }
+    { mode: "unknown" }, { picks: ["one two"] },
+    { excludeFiles: ["references/feedback.md"] },
+    { mode: "root", path: "", excludeFiles: "references/feedback.md" },
+    { mode: "root", path: "", excludeFiles: ["SKILL.md"] },
+    { mode: "root", path: "", excludeFiles: ["../escape.md"] },
+    { mode: "root", path: "", excludeFiles: ["./references/feedback.md"] },
+    { mode: "root", path: "", excludeFiles: ["references//feedback.md"] },
+    { mode: "root", path: "", excludeFiles: ["references/./feedback.md"] },
+    { mode: "root", path: "", excludeFiles: ["/abs.md"] },
+    { mode: "root", path: "", excludeFiles: ["references/not-md.txt"] }
   ])("rejects inconsistent source definitions: %j", (changes) => {
     dir = mkdtempSync(join(tmpdir(), "skill-definitions-"));
     const path = join(dir, "sources.json");

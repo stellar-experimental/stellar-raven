@@ -48,6 +48,23 @@ reference survived the scrub and will fail the catalog build until the scrub is 
 
 ## Entries
 
+### 2026-11-23 — stellar-dev byte-safety and oracle/aggregator refs; Scout 1.9.157 read-only skill fixes (#540, #550, #551)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `f954e6a0f35c7a26d688dc1a24f66af068cd0f02` | `sel:675d38dc772a` | author (Gemini 4 Neon, high) read complete diff of all 3 changed files; independent Claude Fable 5.2 (`claude-fable-5-2`, high, `hc t48c`, PASS WITH FINDINGS — all reconciled) re-read upstream diffs |
+| `stellar-light` | `a07d00c456237501ca9470d4470617823c88708e` | `sel:b1c79b04755e` | author (Gemini 4 Neon, high) read complete diff of all 4 changed files plus excluded opt-in companion; independent Claude Fable 5.2 (`claude-fable-5-2`, high, `hc t48c`, PASS WITH FINDINGS — all reconciled) re-read upstream diffs |
+
+The author read the full body diff printed by `ecosystem-skills/update.sh` for all 7 changed files (the `lumenloop`, `openzeppelin-stellar`, and `trustless-work` selections are unchanged).
+
+- `stellar-dev` (3 files): `smart-contracts/security.md` adds section 12 on malformed/short byte inputs (`Bytes::slice`, `copy_into_slice`, `FromXdr::from_xdr`, `BytesN<N>`) with a Rust example and checklist item; `smart-contracts/testing.md` adds short/malformed byte inputs to its edge-cases checklist; `standards/ecosystem.md` adds XOXNO Swap Aggregator and RedStone oracle entries (public contract addresses, docs/API/SDK links, no signing keys or API keys).
+- `stellar-light` (4 files): `README.md`, `SKILL.md`, `references/api-reference.md`, and `references/examples.md` remove all `/api/feedback` write/schema instructions (`sk-019`), remove fixed SDF skill lists/counts/`soroban`/`anchors` dead links (`sk-027`), remove fixed Builders counts (`sk-028`), update `.onchain` readings for Scout 1.9.151+, document the `slp` research source (`sls-118`) and expanded `sdf-org` pages (`sls-117`), document `availability-check` caveats (`sls-121`), and document `issuerOfRecordNote` legal-issuer overrides (`sls-119`) and `issuerOfRecordCheck: "could-not-read"` (`sls-120`).
+- **Excluded opt-in write companion (`references/feedback.md`):** Upstream moved `POST /api/feedback` and `GET /api/feedback` into a separate companion file marked `side-effects: Writes`, `read-only: false`, `opt-in: true`. `ecosystem-skills/sources.json` excludes `references/feedback.md` via `excludeFiles` so Raven never pins, fetches, canaries, or emits a write-only companion for excluded operations (ADR-0003). `SKILL.md` and `README.md` keep one sentence naming the companion without any `/api/feedback` path, explicitly gated to hosts that allow writes.
+
+The changed text contains no instruction override, literal credential, unsafe signing instruction, new Raven capability claim, or reference to an excluded operation or retired skill. Cache-bypassed mirror verification passed for all 67 selected files (`node scripts/check-mirrors.mjs --fetch`), and `catalog/manifest.json` stays at 285 entries (20 skills, 204 sections). The `stellarlight-catalog` snapshot updates the 8 SDF `homepage` URLs to `/SKILL.md` (84 entries unchanged). Serving these pins grants no new callable operation.
+
+Routing across all 544 rows vs. `origin/main`: zero corpus losses, legacy `cardHit5` rises 114 to 115 (`q-scf-growth-hack`), 4 legacy and 3 extended top-five list changes, 3 legacy and 1 skills score-only moves, and zero changes across all 49 holdout and 12 protocol-history rows. Independent review: `.agents/rounds/2026-11-23-upstream-handoffs/review-drift-fable.md`. Ledger: `.agents/rounds/2026-11-23-upstream-handoffs.md`.
+
 ### 2026-11-16 — stellar-dev oracle guidance, Scout SDK-status and evidence rules, OpenZeppelin commit move (#223)
 
 | Source | Pinned commit | Selection | Reviewed |

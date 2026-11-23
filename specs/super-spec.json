@@ -220,7 +220,7 @@
     "description": "One spec covering every operation this MCP server can execute, across five services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), stellarOrg (the stellar.org website), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-17T19:49:58.447Z"
+    "x-generatedAt": "2026-11-23T20:59:26Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4653,7 +4653,7 @@
             }
           },
           {
-            "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags). Several sources in one call: see `sources` (a comma here is read the same way).",
+            "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index, strategy, roadmap, service-provider directory, community FAQ), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'slp' for Stellar Limits Proposals, the network configuration votes (Soroban resource limit changes, and the Quorum Freeze of exploit accounts in SLP-0006 and SLP-0008; each row opens with the proposal's number, status and creation date), 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags). Several sources in one call: see `sources` (a comma here is read the same way).",
             "in": "query",
             "name": "source",
             "schema": {
@@ -4662,6 +4662,7 @@
                 "scf-handbook",
                 "sep",
                 "cap",
+                "slp",
                 "dev-docs",
                 "paper",
                 "scf-proposal",
@@ -4733,6 +4734,7 @@
                   "scf-handbook",
                   "sep",
                   "cap",
+                  "slp",
                   "dev-docs",
                   "paper",
                   "scf-proposal",
@@ -7406,7 +7408,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 285,
-    "generatedAt": "2026-11-17T19:49:58.447Z"
+    "generatedAt": "2026-11-23T20:59:26Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7418,7 +7420,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-11-16T22:24:00.455Z",
+      "fetchedAt": "2026-11-23T20:53:47.556Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -7449,7 +7451,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-11-16T22:24:20Z"
+      "syncedAt": "2026-11-23T20:59:26Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-11-02T00:00:00Z",

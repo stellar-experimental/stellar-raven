@@ -20,7 +20,7 @@ that `skill.read` can read but search does not return
 | File | Role |
 | --- | --- |
 | `MANIFEST.json` | The artifact: each source's pinned commit, and each file's path, size, and blob hash. It is the provenance record and the runtime integrity contract. |
-| `sources.json` | Each source's selection mode (`all`, `root`, `pick`) and pick list |
+| `sources.json` | Each source's selection mode (`all`, `root`, `pick`), pick list, and optional `excludeFiles` (`mode: "root"` only) |
 | `PIN-REVIEW.md` | Review ledger: one `sel:` digest per reviewed pin selection (CI-gated) |
 | `groups.json` | Theme-to-skill mapping for `INDEX.md`; `unpinnedUpstream` records each skipped sibling with a reason |
 | `catalog.json` | Snapshot of the [stellarlight.xyz](https://stellarlight.xyz/api/skills) directory. It also lists SDKs, MCP servers, and CLIs, which Raven does not download or serve. |
