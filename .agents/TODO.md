@@ -14,14 +14,13 @@ the linked ledger. Every item follows the spend rules in
 [plan](rounds/2026-11-16-next-phase/PLAN.md) proposes; the
 [owner decisions](rounds/2026-11-16-next-phase/DECISIONS.md) bind.
 
-1. Dated truth maintenance, started by timers on agentpc. Run 2.1 on 2026-11-23 18:00 UTC must
-   merge before 2026-11-25 00:00 UTC. Runs 2.2a, 2.2b and 2.2c follow on 2026-11-30, 2026-12-01 and
-   2026-12-04. After them comes the register maintenance lane ("Close the register entries the
-   dated runs leave open").
+1. Dated truth maintenance, started by timers on agentpc. Run 2.1 merged in #553 (`bdf810ef`; false-alarm issue #552 fixed and closed in #558). Runs 2.2a, 2.2b and 2.2c follow on 2026-11-30, 2026-12-01 and 2026-12-04 (verify `gh auth status` read-only on agentpc on 2026-11-29 while `gh` is the sole live alert channel). After them comes the register maintenance lane ("Close the register entries the dated runs leave open", also carrying the four retired-finding golden checks).
 2. One Workers Logs session on the Mac on 2026-11-25: "Watch sign-in rejects after the
    oauth-provider 1.x deploy", "Decide the `execute` timeout from one more Workers Logs read" (with
    its `recoveryHint`, `skipped`, `errorName` and user-agent questions), "Read the `skill_read`
-   shape distribution", and "Confirm `npm run mcp-key` on wrangler 4.164.0".
+   shape distribution", "Confirm `npm run mcp-key` on wrangler 4.164.0", and inspect the single
+   pre-deploy `exception` usage receipt (`2026-11-23T10:41:23Z`; zero post-deploy failures observed
+   on `33a5315e`/`3820c36c`; confirm `Usage archive health` returns green after `2026-11-24T11:26Z`).
 3. Owner decisions (the list at the end).
 4. Free own-repo fixes that need no paid measurement: the case-file move once every dated run and follow-up has merged and `systemctl --user list-timers`
    on agentpc shows no `raven-dated` or `raven-watchdog` unit.
@@ -192,25 +191,26 @@ evidence. Keep both operations. The diagnostic measured source use on the shippe
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
 `npm run eval:qa:lint -- --stale --enforce-floors` fails every pull request once a `reverifyBy`
-date passes. Six cases keep dates before 2027 because each depends on a known event:
+date passes. Two cases still keep dates before 2027 (Run 2.1 moved four Bell/quantum cases into 2027):
 
 - **SCF.** `q-scf-current-round` is due 2026-12-04. The RFP Scout-lag check is done: the audit
   retired five of the six RFP cases, and the survivor (due 2027-01-28) records that Scout and the
   official page both listed the two Q4 briefs on 2026-11-14.
-- **Bell/P30 Mainnet vote, 2026-11-23 17:00 UTC.** Run 2.1 recorded the activation: Mainnet
+- **Bell/P30 Mainnet vote, 2026-11-23 17:00 UTC.** Run 2.1 (#553, `bdf810ef`) recorded the activation: Mainnet
   moved to Protocol 30 at ledger 65633432 (closed 2026-11-23T17:00:06Z). `q-edge-fresh-latest-protocol-version`
   is now due 2027-02-15, `q-pc-protocol-upgrade-timing` 2027-02-22, `q-protocol-version-history-list`
-  2027-03-01 and `q-hist-quantum-preparedness-plan` 2027-03-08. The source sentinels now check
-  Protocol 30, and the register's Bell trap carries the dated disposition. Still open:
-  `q-infra-software-versions-current-protocol` states the Protocol 29 release set and is due
-  11-30 (run 2.2a; the Software Versions page still headed Protocol 29 on 2026-11-23).
+  2027-03-01 and `q-hist-quantum-preparedness-plan` 2027-03-08 (so 2.2b on 2026-12-01 will exit
+  "already done" if that date holds). The source sentinels now check Protocol 30, and the register's
+  Bell trap carries the dated disposition. Still open: `q-infra-software-versions-current-protocol`
+  states the Protocol 29 release set and is due 11-30 (run 2.2a). As of 2026-11-23 the live Software
+  Versions page lists `Protocol 30 (Mainnet, November 23, 2026)` and `Protocol 30 (Testnet, November 3, 2026)`
+  (`stellar/stellar-docs#3189` updates the Mainnet SDK row); run 2.2a re-verifies the release rows
+  after `#3189` settles, and no QA headline run should include this case before 2.2a merges.
 
 Round items carry the work. Item 1.4 staged it as timer-started dated runs
-([PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md)): 2.1 on 2026-11-23
-18:00 UTC edits the three cases due 11-24 and the quantum case, and merges before 2026-11-25 00:00
-UTC, when the stale lint starts failing every pull request on them; 2.2a, 2.2b and 2.2c take the
-rest on 2026-11-30, 2026-12-01 and 2026-12-04. A run that cannot show the event extends the dates
-and schedules its own follow-up. Each run updates its own bullet here.
+([PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md)): 2.1 merged in #553;
+2.2a, 2.2b and 2.2c follow on 2026-11-30, 2026-12-01 and 2026-12-04. A run that cannot show the
+event extends the dates and schedules its own follow-up. Each run updates its own bullet here.
 
 Use the `golden-truth` skill, then `npm run eval:qa:register`.
 [Ledger](rounds/2026-11-12-truth-maintenance.md).
@@ -227,10 +227,31 @@ closes none when it could not read every member (orchestrator's answer 2 (1) in
 [`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md)). Such an entry stays at
 `reopen`. Count left open so far: 17 (run 2.1, all at `reopen` with no `reSwept` written). Each dated run adds its count here.
 
-Next, after round item 2.2c: one maintenance lane under the exception reads every member of each
-left-open entry and closes or accepts it. Its brief must claim the exception and name the trigger
-(a register entry that an earlier edit reopened). It must also override the "Never open a held-out
-or reserve QA case" rule in `ITEM-LEAD.md`.
+Next, after round item 2.2c (starts with the 2.2c close-out, no later than 2026-12-11): one
+maintenance lane under the exception reads every member of each left-open entry and closes or
+accepts it. Its brief must claim the exception and name the trigger (a register entry that an earlier
+edit reopened). It must also override the "Never open a held-out or reserve QA case" rule in
+`ITEM-LEAD.md`.
+
+Folded retired-finding golden handoff (`improvements-pipeline` step 7; deferred from #557 with Astra
+and Fable plan-review approval): the post-2.2c maintenance lead also owns checking the corpus cases
+linked by the four retired findings `sls-117`, `sls-118`, `sls-119`, and `sk-027` (derive the exact
+case paths from the archived records `git show 392c0276^:improvements/...` and receipts in
+`improvements/resolved.json`; do not copy case IDs here). The brief must name both triggers
+(reopened register entries and the deployed primary-source upstream fixes `stellarlight#1988`,
+`#1989`, `#1991`, `#1995`) or run the four-finding check as a second session and PR under the same
+maintenance exception, repointing any `truth.verified.rootCause` pointers to `resolved.json` and
+re-deriving via `golden-truth`. **Hold:** run no QA headline eval until this merges (if a headline
+run becomes necessary sooner, advance this isolated review first).
+
+Related QA hygiene items:
+- **Run 2.1 exposure split amendment:** Run 2.1 logged one pre-redaction lint exposure in
+  `agentpc:~/.local/state/raven-dated/2.1-EXPOSURE.txt` (before #561 redacted `lint-corpus.mjs`).
+  Apply the split amendment on `agentpc` via `split-amend.mjs` (IDs unseen) and record the new split
+  SHA-256 without naming case IDs.
+- **`register-helper.mjs` label fallback:** `entryLabel()` (`eval/qa/register-helper.mjs:59-62`)
+  falls back to register `label` / `triggerDateEvent` in WARN/REOPEN output (`:210`, `:212`); switch
+  to register entry indexes on the next edit to that file.
 
 Folded corpus-guide audit (deferred from item 8.2, which could not open `.ignore`d corpus paths):
 also audit `eval/qa/corpus/README.md` and `eval/corpus/PROVENANCE.md` against the code and fix
@@ -241,9 +262,10 @@ as a separate post-2.2c session and PR (not inside a maintenance-exception sessi
 dated runs leave zero open register entries), with a brief authorizing only those two guide paths,
 or have the owner accept both guides as unaudited.
 
-Done when: the left-open register count is zero (or the owner accepts the entries still open), and
-both corpus guides are checked and corrected in that separate post-2.2c pass (or the owner accepts
-them as unaudited).
+Done when: the left-open register count is zero (or the owner accepts the entries still open), the
+four retired-finding golden checks (`sls-117`, `sls-118`, `sls-119`, `sk-027`) are reconciled, the
+Run 2.1 exposure split amendment is recorded, and both corpus guides are checked and corrected in
+that separate post-2.2c pass (or the owner accepts them as unaudited).
 
 ### Golden follow-ups from the sls-024 and sls-029 cap review
 
@@ -308,19 +330,18 @@ Recheck only when the named trigger fires (full per-finding tables in the
   awaiting operator decisions (866/893 served) are sourced or declared out of scope; (3) the shared
   `peer`/`honey-coin` (`peer-by-honeycoin-inz`) award attribution is reconciled. Retire only when
   resolved or declared out of scope; comment upstream only on a change.
-- **Docs pull requests:** unmerged PRs, blockers, and triggers (including draft2752, generated-skill
-  PR3069, and author-owned protocol PR2059) live in the
+- **Docs pull requests:** unmerged PRs, blockers, and triggers (including draft2752 and
+  author-owned protocol PR2059; generated-skill PR3069 merged 2026-11-06) live in the
   [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) and
   [continuation table](rounds/2026-11-06-remaining-sweep/docs.md). Recheck pages after deployment
   (green checks close nothing); answer substantive review on PR2059 without keepalive rebases.
-- **Software Versions (not filed).** Protocol 30 is live on Testnet, but
-  https://developers.stellar.org/docs/networks/software-versions.md lists nothing above
-  Protocol 29. Upstream normally adds a version around Mainnet activation. The dated run 2.2a
-  (2026-11-30, merge before 2026-12-01 00:00 UTC) owns the recheck: if Mainnet runs Protocol 30
-  and the page still lacks it, it files the finding as the class of resolved sd-008
-  ([ledger](rounds/2026-11-10-truth-maintenance.md)) and
-  [PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md) says how. The
-  orchestrator's deadline overrides the earlier "on or after 2026-12-01".
+- **Software Versions (not filed).** As of 2026-11-23,
+  https://developers.stellar.org/docs/networks/software-versions.md lists both
+  `Protocol 30 (Mainnet, November 23, 2026)` and `Protocol 30 (Testnet, November 3, 2026)`, so no
+  upstream finding is needed unless the page regresses (upstream `stellar/stellar-docs#3189`
+  updates the Mainnet SDK row). The dated run 2.2a (2026-11-30, merge before 2026-12-01 00:00 UTC)
+  owns the release-row recheck and case update once `#3189` settles, keeping the contingency in
+  [PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md) if the page lags.
 - **ll-022, ll-023, ll-024:** original records lack reproducible errors; obtain original/corrected
   records or an owner explanation before closure or renewal
   ([table](rounds/2026-11-05-truth-maintenance/other.md)).
@@ -399,8 +420,9 @@ Held by this item:
 - **`ROUTING_PHRASE_TOKEN_CAP` whole-phrase eviction (`src/catalog/extract-routing-phrases.ts`):**
   when an upstream `x-routing` phrase grows past the remaining 256-token budget, `extractRoutingPhrases`
   drops it whole (in Scout 1.9.157, `scout.searchResearch` `useWhen[4]` for `sdf-org` grew 33→41
-  tokens and was evicted, dropping `SDF board roster` and `SDF quarterly reports index` from top-5
-  while admitting `useWhen[5]`; [review](rounds/2026-11-23-upstream-handoffs/review-drift-fable.md) S1).
+  tokens and was evicted, dropping `SDF board roster`, `SDF quarterly reports index`, and the
+  natural-language probe `Where can I find SDF quarterly reports?` from top-5 while admitting
+  `useWhen[5]`; [review](rounds/2026-11-23-upstream-handoffs/review-drift-fable.md) S1).
   Address generally with this repair, never with a per-query patch.
 - **`SKILL_DESCRIPTION_OVERRIDES`** holds `skills.stellar-dev.dapp`'s search text.
 - **Known test/selector traps from prior rounds:** `test/search.test.ts` (`rfp` case) relies on
@@ -582,7 +604,8 @@ while `stellarDocs.search_docs` ranks the page in its top 5 (re-probe 2026-11-20
   both exclude `/docs/build/guides/transactions/*`.
 
 The Custom Account example now passes on both paths. The contract-id derivation miss is Mintlify
-ranking, filed as `sd-114` ([stellar-docs#3170](https://github.com/stellar/stellar-docs/issues/3170)).
+ranking, filed as `sd-114` ([stellar-docs#3170](https://github.com/stellar/stellar-docs/issues/3170),
+open fix PR [#3171](https://github.com/stellar/stellar-docs/pull/3171)).
 
 Held: holdout top1, top3 and forbidden captures sit on their gate limits, and per-query exceptions
 are banned. Trigger: the general routing repair ("Preserve structured routing intent across
@@ -1107,6 +1130,17 @@ delete it here.
    and the responses returned", "for 30 days, after which it is deleted", with opt-out and account
    deletion on request; production keeps ≤7 days in Workers Logs (AI Gateway on row-count policy)
    and logs no query text. Safe default: not started (stay at 7 days, no query/response capture).
+6. **Dated-run `hc` notification target (`RAVEN_DATED_NOTIFY`).** `launch-dated-lead.sh` and
+   `watchdog-dated.sh` default `ORCH` to dead terminal `kalepail-c3614nvxph-mbp/t40j`; failure
+   alerts still reach GitHub via `gh`, while success / "already done" notices are logged on agentpc
+   only. Safe default: accept GitHub-only failure alerts and agentpc logs (keep tracked script
+   defaults untouched; check `gh auth status` on agentpc on 2026-11-29), or set
+   `RAVEN_DATED_NOTIFY` in a systemd drop-in for a live terminal.
+7. **Named terminal exception for `agentpc/t245` (`np-2-1-lead`).** Run 2.1 (#553) completed, but
+   timer-started `--no-parent` terminal `agentpc/t245` (`done`) and its worktree
+   `/home/tyler/code/raven-wt/np-2.1` (branch `np/2.1-bell-goldens`) cannot be closed/removed
+   without an explicit owner named exception (`AGENTS.md`). Safe default: leave untouched until
+   named exception is granted.
 
 Owner-blocked actions that already have an item (no decision needed here):
 

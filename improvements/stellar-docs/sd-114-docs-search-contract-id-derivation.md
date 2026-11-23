@@ -13,6 +13,7 @@ evidence:
   - "2026-11-20 GET https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction.md returned HTTP 200. Under ### InvokeHostFunctionOp -> #### Function -> item 3 (HOST_FUNCTION_TYPE_CREATE_CONTRACT), it defines ContractIDPreimage (CONTRACT_ID_PREIMAGE_FROM_ADDRESS and CONTRACT_ID_PREIMAGE_FROM_ASSET). It also states the SHA-256 formula over HashIDPreimage (ENVELOPE_TYPE_CONTRACT_ID) with networkID. That block has no dedicated heading."
   - "All queries also ran through Raven stellarDocs.search_docs (hitsPerPage 20). All five natural derivation queries omit both pages from the top 10. Both bare XDR symbol queries rank stellar-transaction 1st. Raven path scoping does not hide the page."
   - upstream issue filed 2026-11-20: https://github.com/stellar/stellar-docs/issues/3170
+  - "2026-11-23 upstream state check: open fix PR https://github.com/stellar/stellar-docs/pull/3171 (linked 2026-11-20, 8/8 checks passing, review required); keep active until deployed and Discovery ranking is re-verified."
 ---
 
 ## Finding

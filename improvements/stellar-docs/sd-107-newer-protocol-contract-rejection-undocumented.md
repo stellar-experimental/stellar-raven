@@ -24,6 +24,8 @@ evidence:
   - "Affected golden case: eval/qa/corpus/battery/tooling-infra/q-infra-version-lag-errors.json, key fact 4. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3145
 recurrences:
+  - date: 2026-11-23
+    evidence: "npm run improvements:probes: GET https://developers.stellar.org/docs/learn/fundamentals/contract-development/overview.md HTTP 200 still reproduces. Upstream fix PR https://github.com/stellar/stellar-docs/pull/3149 received two approvals on 2026-11-23 (19:42Z, 20:30Z) with 8/8 checks passing and is mergeable; keep active until deployed and live-verified."
   - date: 2026-11-20
     evidence: "npm run improvements:probes: GET https://developers.stellar.org/docs/learn/fundamentals/contract-development/overview.md HTTP 200 still contains 'should match the version of the host functions supported' and excludes 'newer'; PR https://github.com/stellar/stellar-docs/pull/3149 remains open."
   - date: 2026-11-17
