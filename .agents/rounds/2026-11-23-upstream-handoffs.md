@@ -18,7 +18,7 @@ Stop rule: all 14 open issues resolved and closed with verified live/production/
 | --- | --- | --- | --- | --- |
 | coordinator / author | Gemini 4 Neon (high) | `t489` | Repo branches, PRs, upstream comments, deploy | active |
 | `ho-review` | Codex frontier (`gpt-6.2-astra`, high) | `t48b` (removed) | `.agents/rounds/2026-11-23-upstream-handoffs/review-handoffs-astra.md` | complete (9 RETIRE, 1 KEEP ACTIVE) |
-| `drift-review` | Claude Fable (`fable`, high) | `t48c` | `/private/tmp/raven-wt/drift-2026-11-23/tmp/review-drift-fable.md` | in progress |
+| `drift-review` | Claude Fable 5.2 (`claude-fable-5-2`, high) | `t48c` (removed) | `.agents/rounds/2026-11-23-upstream-handoffs/review-drift-fable.md` | complete (PASS WITH FINDINGS — all reconciled) |
 
 Reviewer selection: coordinator/author is Gemini 4 Neon (high). `ho-review` uses Codex frontier (`gpt-6.2-astra`, high) for dense live verification and reference auditing; `drift-review` uses Claude Fable (`fable`, high) for vendor-diverse skill-pin prompt-safety, exposure-boundary, and catalog/routing review.
 
@@ -50,3 +50,22 @@ Independent re-derivation record: [review-handoffs-astra.md](2026-11-23-upstream
 
 Untouched open upstream PRs checked and kept silent per `improvements-pipeline` step 6: `stellar/stellar-protocol#2059` (`sd-048`, open, 0 comments, 5/5 checks passing), `stellar/stellar-docs#3149` (`sd-107`, open), `stellar/stellar-docs#3153` (`sd-110`, open), `cloudflare/agents#2898` (`cs-012`, open).
 
+### Drift & dated launcher review (`live-drift-resolution` + `#552`)
+
+Independent review record: [review-drift-fable.md](2026-11-23-upstream-handoffs/review-drift-fable.md) (Claude Fable 5.2 `claude-fable-5-2`, high effort, `hc t48c`, 2026-11-23).
+
+- **Part 1 — Live drift (`#540`, `#550`, `#551`):** `PASS WITH FINDINGS` (3 Should-fix, 5 Low). Every finding reconciled:
+  - `S1`: updated `eval/gates.json` `evidence.notes` and `test/drift-141-routing.test.ts` to document the exact `useWhen[4]` (33→41 tokens) eviction from `ROUTING_PHRASE_TOKEN_CAP` and `useWhen[5]` + 3 keyword-phrase admission, including the off-corpus trade (`SDF board roster`, `SDF quarterly reports index`), and logged a `.agents/TODO.md` bullet under the held general routing repair.
+  - `S2`: replaced the weak-evidence probe in `test/drift-141-routing.test.ts` with `"SCF handbook funding for existing products"`, which exercises `scout.searchResearch` `notFor[0]`.
+  - `S3` + `L2`: restricted `excludeFiles` to `mode: "root"`, tightened path segment validation (`//`, `.`, `..`, leading `/`, `SKILL.md`), documented it in `ecosystem-skills/README.md` and `ecosystem-skills/update.sh`, and added wiring + manifest-exclusion assertions in `test/skill-source-definitions.test.mjs`.
+  - `L1`: accepted as recorded in `PIN-REVIEW.md`.
+  - `L3`–`L5`: updated `eval/gates.json` to the actual run stamp (`2026-11-23T21:00:53.650Z` / `routing-2026-11-23T21-00-53-650Z.json`), completed the schema-change list (`searchRepos`, `scfPitch`, `vetIdea`), merged `origin/main` (`#557`), and updated `PIN-REVIEW.md` with `claude-fable-5-2` and the saved review path.
+- **Part 2 — Dated launcher readiness fix (`#552`):** `PASS WITH FINDINGS` (1 Should-fix `P2-S1`, 3 Low `P2-L1`–`L3`). All four reconciled in `launch-dated-lead.sh`: matched `finished|exited)` and `error)` fail-fast with screen dumps, bounded per-iteration `hc` calls with `timeout 15`, and corrected the boot-state comment (`live` or `idle`).
+
+## Outcome
+
+- **Upstream handoffs (`#557`, merged `392c0276`):** 9 verified findings retired to `improvements/resolved.json` (`sls-117`–`sls-122`, `sk-019`, `sk-027`, `sk-028`) with upstream resolution comments posted and read back; `sls-116` kept active (`reported-upstream`) with partial verification reply on `stellarlight#1952`; all 10 inbound issues (`#543`–`#549`, `#554`–`#556`) closed; no Worker bytes changed.
+- **Live drift (`drift/2026-11-23-scout-and-skills`, Refs `#540`, `#550`, `#551`):** Scout 1.9.157 inventory, `stellar-dev@f954e6a0f35c`, `stellar-light@a07d00c45623` (excluding opt-in write companion `references/feedback.md`), `stellarlight-catalog` snapshot, and Protocol 30 Docs anchors absorbed with zero corpus losses, +1 legacy `cardHit5`, 0 holdout diffs, all gates green, and Claude Fable 5.2 review reconciled. Production deploy + post-deploy verification + issue closure follow merge.
+- **Dated launcher fix (`fix/2026-11-23-dated-launcher-readiness`, Refs `#552`):** Wall-clock readiness poll + fast-fail states reviewed by Claude Fable 5.2 and reconciled. Installation to `agentpc:~/.local/share/raven-dated/launch-dated-lead.sh` + `#552` closure follow merge.
+- **Spend:** USD 0 API (subscription CLIs and free read-only live HTTP/GitHub probes only).
+- **Retained evidence:** `review-handoffs-astra.md` (referenced by 9 receipts in `improvements/resolved.json`), `review-drift-fable.md` (referenced by `ecosystem-skills/PIN-REVIEW.md`, `eval/gates.json`, and `.agents/TODO.md`).

@@ -22,6 +22,24 @@ export function readSourceDefinitions(path) {
     if (!Array.isArray(source.picks) || source.picks.some((pick) => typeof pick !== "string" || !/^[\w.-]+$/.test(pick))) {
       throw new Error(`invalid skill picks for "${source.id}"`);
     }
+    if (source.excludeFiles !== undefined) {
+      if (source.mode !== "root") {
+        throw new Error(`skill excludeFiles is only supported for mode "root" ("${source.id}")`);
+      }
+      if (
+        !Array.isArray(source.excludeFiles) ||
+        source.excludeFiles.some(
+          (file) =>
+            typeof file !== "string" ||
+            !/^[\w./-]+\.md$/.test(file) ||
+            file.startsWith("/") ||
+            file.split("/").some((seg) => seg === "" || seg === "." || seg === "..") ||
+            file === "SKILL.md"
+        )
+      ) {
+        throw new Error(`invalid skill excludeFiles for "${source.id}"`);
+      }
+    }
     if (!(source.mode === "root" && source.path === "" && source.picks.length === 1) &&
         !(source.mode === "all" && source.path !== "" && source.picks.length === 0) &&
         !(source.mode === "pick" && source.path !== "" && source.picks.length > 0)) {

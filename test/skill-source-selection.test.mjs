@@ -64,4 +64,20 @@ describe("GitHub skill source selection", () => {
     const rootless = { tree: tree.tree.filter((entry) => entry.path !== "SKILL.md") };
     expect(() => selectGitHubSkillFiles(rootless, { sourcePath: "", picks: ["root-skill"] })).toThrow(/no SKILL\.md/);
   });
+
+  it("excludes explicitly listed non-SKILL files and fails loud on stale exclusions", () => {
+    const selected = selectGitHubSkillFiles(tree, {
+      sourcePath: "",
+      picks: ["root-skill"],
+      excludeFiles: ["LICENSE.md"]
+    });
+    expect(selected.some((file) => file.relpath === "LICENSE.md")).toBe(false);
+    expect(selected.some((file) => file.relpath === "SKILL.md")).toBe(true);
+    expect(() =>
+      selectGitHubSkillFiles(tree, { sourcePath: "", picks: ["root-skill"], excludeFiles: ["missing.md"] })
+    ).toThrow(/matched no selected file/);
+    expect(() =>
+      selectGitHubSkillFiles(tree, { sourcePath: "", picks: ["root-skill"], excludeFiles: ["SKILL.md"] })
+    ).toThrow(/cannot exclude SKILL\.md/);
+  });
 });

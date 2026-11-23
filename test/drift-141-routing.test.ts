@@ -92,8 +92,14 @@ describe("issue #141 routing acceptance", () => {
     expect(ids(query)).toContain("scout.searchResearch");
   });
 
+  // "SCF community funding" left this list in Scout 1.9.157: expanding the sdf-org
+  // useWhen entry (33 -> 41 tokens) evicted it from the 256-token phrase budget and
+  // admitted the "funding & governance / SCF program mechanics" useWhen phrase, where
+  // all three tokens match one coherent searchResearch phrase. "SCF handbook funding
+  // for existing products" exercises the product/funding notFor exclusion instead
+  // (removing notFor[0] admits scout.searchResearch at rank 2).
   it.each([
-    "SCF community funding",
+    "SCF handbook funding for existing products",
     "How do I deploy a Soroban contract?",
     "Rank GitHub source code projects by quality."
   ])("does not admit broad research from weak or excluded evidence: %s", (query) => {

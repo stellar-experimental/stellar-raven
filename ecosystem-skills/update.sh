@@ -37,7 +37,7 @@
 # entry across sources/kinds; the count is in INDEX.md) into catalog.json — the "what exists in the
 # ecosystem" map, NOT downloaded as skills.
 # It snapshots the skills.stellar.org Community Built names and links into community.json.
-# sources.json defines the pin coordinates, modes, and pick lists for both sync and drift checks.
+# sources.json defines the pin coordinates, modes, pick lists, and optional root-mode excludeFiles for sync and drift checks.
 #
 # Each source pins its own commit/ref + synced_at in MANIFEST.json. INDEX.md is
 # regenerated via build-index.mjs.
@@ -88,7 +88,8 @@ NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 #             "skills" etc. -> each child dir under it is a skill
 #   skill...  optional allow-list of skill names to cherry-pick (subdir/"." mode)
 #             OR, when src_path is "", the single skill name for the repo root.
-# Records every *.md blob under the selected skill(s) at the pinned commit.
+# Records every *.md blob under the selected skill(s) at the pinned commit,
+# omitting any relative paths passed in EXCLUDE_FILES_JSON (root mode).
 # ---------------------------------------------------------------------------
 pin_github() {
   local id=$1 owner=$2 repo=$3 src_path=$4 ref=$5; shift 5
@@ -110,7 +111,8 @@ pin_github() {
   # Directory-source modes accept Markdown only below a child skill directory.
   # Root README/LICENSE files never become skills, including without an allow-list.
   files="$(printf '%s' "$tree" | node "$SCRIPT_DIR/../scripts/lib/skill-source-selection.mjs" \
-    --source-path "$src_path" --picks-json "$pick_json")"
+    --source-path "$src_path" --picks-json "$pick_json" \
+    --exclude-files-json "${EXCLUDE_FILES_JSON:-[]}")"
 
   # Record which upstream LICENSE/NOTICE files exist at the pinned commit.
   # Names only — nothing is downloaded (THIRD-PARTY-NOTICES.md maps each source
@@ -169,9 +171,10 @@ node "$SCRIPT_DIR/../scripts/lib/skill-source-definitions.mjs" "$SCRIPT_DIR/sour
 while IFS= read -r source; do
   picks=()
   read -r -a picks <<< "$(jq -r '.picks | join(" ")' <<< "$source")"
-  pin_github "$(jq -r '.id' <<< "$source")" "$(jq -r '.owner' <<< "$source")" \
-    "$(jq -r '.repo' <<< "$source")" "$(jq -r '.path' <<< "$source")" \
-    "$(jq -r '.ref' <<< "$source")" ${picks[@]+"${picks[@]}"}
+  EXCLUDE_FILES_JSON="$(jq -c '.excludeFiles // []' <<< "$source")" \
+    pin_github "$(jq -r '.id' <<< "$source")" "$(jq -r '.owner' <<< "$source")" \
+      "$(jq -r '.repo' <<< "$source")" "$(jq -r '.path' <<< "$source")" \
+      "$(jq -r '.ref' <<< "$source")" ${picks[@]+"${picks[@]}"}
 done < "$WORK/sources.jsonl"
 
 fetch_catalog
