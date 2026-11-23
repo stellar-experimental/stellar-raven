@@ -22,6 +22,7 @@ import {
   termsPage
 } from "../site";
 import { OG_PNG_BASE64 } from "../og";
+import { escapeHtml } from "../html";
 import { logEvent } from "../observability.ts";
 import { hasAllowedRedirectTransport, redirectSchemeToken } from "./redirects";
 import { skillHealthResponse } from "../skills/canary.ts";
@@ -261,7 +262,10 @@ async function completeCallback(
       "content-type": "text/html; charset=utf-8",
       "cache-control": "no-store",
       "referrer-policy": "no-referrer",
-      "content-security-policy": "default-src 'none'; base-uri 'none'"
+      "content-security-policy":
+        "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'",
+      "x-frame-options": "DENY",
+      "x-content-type-options": "nosniff"
     });
     headers.append("set-cookie", await mintDemoCookie(env.MCP_SERVER_SECRET, subject));
     headers.append("set-cookie", clearCookie(STATE_BINDING_COOKIE));
@@ -307,13 +311,39 @@ function parseParkedLogin(raw: string): ParkedLogin | null {
   return null;
 }
 
-/** Unstyled on purpose: CSP is `default-src 'none'`; meta-refresh and link are navigations. */
+/** Script-free loading interstitial while the SameSite=Strict cookie hop opens /playground. */
 function demoSignedInInterstitial(returnTo: string): string {
+  const safeReturnTo = escapeHtml(returnTo);
   return (
-    "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">" +
-    `<meta http-equiv="refresh" content="0;url=${returnTo}">` +
-    "<title>Signed in</title></head><body>" +
-    `<p>Signed in — <a href="${returnTo}">continue to the playground</a>.</p>` +
+    "<!doctype html><html lang=\"en\"><head>" +
+    "<meta charset=\"utf-8\"/>" +
+    "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/>" +
+    "<meta name=\"theme-color\" content=\"#0e150d\"/>" +
+    "<meta name=\"color-scheme\" content=\"dark\"/>" +
+    `<meta http-equiv="refresh" content="0;url=${safeReturnTo}"/>` +
+    "<title>Signed in · Stellar Raven</title>" +
+    "<style>" +
+    "*{box-sizing:border-box}" +
+    "body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;" +
+    "background:#0e150d;color:#eef0e2;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;" +
+    "font-size:15px;line-height:1.6}" +
+    ".box{width:100%;max-width:360px;padding:28px 26px;border-radius:18px;text-align:center;" +
+    "background:#182617;border:1px solid rgba(238,240,226,.22);" +
+    "box-shadow:0 30px 70px -34px rgba(0,0,0,.85)}" +
+    ".spin{display:inline-block;width:24px;height:24px;border-radius:50%;margin-bottom:14px;" +
+    "border:2.5px solid #ff5500;border-right-color:transparent;animation:spin .75s linear infinite}" +
+    "@keyframes spin{to{transform:rotate(360deg)}}" +
+    "h1{margin:0 0 8px;font-size:20px;font-weight:600;letter-spacing:-.01em}" +
+    "p{margin:0;color:#9aa890;font-size:14px}" +
+    "a{color:#ff7a33;text-decoration:underline;text-underline-offset:2px}" +
+    "@media (prefers-reduced-motion:reduce){.spin{animation:none;width:10px;height:10px;border:0;background:#ff5500}}" +
+    "</style>" +
+    "</head><body>" +
+    "<main class=\"box\" role=\"status\" aria-live=\"polite\">" +
+    "<div class=\"spin\" aria-hidden=\"true\"></div>" +
+    "<h1>Signed in</h1>" +
+    `<p>Opening the playground… <a href="${safeReturnTo}">Continue now</a>.</p>` +
+    "</main>" +
     "</body></html>"
   );
 }

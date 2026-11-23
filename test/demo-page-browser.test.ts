@@ -1,5 +1,5 @@
 import { expect, it, vi } from "vitest";
-import { Window, type HTMLButtonElement } from "happy-dom";
+import { Window, type HTMLAnchorElement, type HTMLButtonElement, type HTMLInputElement } from "happy-dom";
 import { demoPage } from "../src/demo/page";
 import { DEMO_CAPS } from "../src/demo/budget";
 
@@ -61,6 +61,9 @@ it("runs the Playground page through submit, streaming, copy, and length refusal
     });
     expect(input.value).toBe("");
     expect(send.disabled).toBe(true);
+    expect(send.classList.contains("is-loading")).toBe(true);
+    expect(send.getAttribute("aria-busy")).toBe("true");
+    expect(send.querySelector(".btn-label")?.textContent).toBe("Sending…");
     expect(document.querySelector(".msg.user")?.textContent).toBe("Explain Stellar assets.");
     // A second submit while busy must not start another request.
     submit();
@@ -84,12 +87,17 @@ it("runs the Playground page through submit, streaming, copy, and length refusal
       expect(document.querySelector(".msg.assistant.streaming")?.textContent).toContain("Stellar assets 🌟");
     });
     expect(send.disabled).toBe(true);
+    expect(send.classList.contains("is-loading")).toBe(true);
+    expect(send.querySelector(".btn-label")?.textContent).toBe("Working…");
     expect(document.querySelector(".answer-actions")).toBeNull();
 
     controller.enqueue(frame({ type: "token", text: last }));
     controller.enqueue(frame({ type: "done", reason: "stop" }));
     controller.close();
     await vi.waitFor(() => expect(send.disabled).toBe(false));
+    expect(send.classList.contains("is-loading")).toBe(false);
+    expect(send.getAttribute("aria-busy")).toBeNull();
+    expect(send.querySelector(".btn-label")?.textContent).toBe("Send");
     const answer = document.querySelector(".msg.assistant")!;
     expect(answer.classList.contains("streaming")).toBe(false);
     expect(answer.querySelector("strong")?.textContent).toBe("Stellar assets");
@@ -136,7 +144,11 @@ it("shows a stream error, stalls the open tool card, and enables Send again", as
   const window = createOfflineWindow();
   const encoder = new TextEncoder();
   let controller!: ReadableStreamDefaultController<Uint8Array>;
-  const stream = new ReadableStream<Uint8Array>({ start(value) { controller = value; } });
+  let cancelled = false;
+  const stream = new ReadableStream<Uint8Array>({
+    start(value) { controller = value; },
+    cancel() { cancelled = true; }
+  });
   const fetch = vi.fn(async () => new Response(stream, {
     headers: { "content-type": "text/event-stream" }
   }));
@@ -157,14 +169,174 @@ it("shows a stream error, stalls the open tool card, and enables Send again", as
     controller.enqueue(frame({ type: "tool-start", id: "search-error", tool: "search", input: { query: "assets" } }));
     await vi.waitFor(() => expect(document.querySelector(".tcard .st")?.textContent).toBe("running"));
     controller.enqueue(frame({ type: "error", message: "The test stream failed." }));
-    // Keep the stream open until the assertions pass. The error frame itself
-    // must finish the turn, without relying on the end-of-stream fallback.
+    // The error frame itself finishes the turn and cancels the reader without waiting for EOF.
     await vi.waitFor(() => {
       expect(document.querySelector("#sysnote")?.textContent).toBe("The test stream failed.");
       expect(document.querySelector(".tcard .st")?.textContent).toBe("stalled");
       expect(send.disabled).toBe(false);
+      expect(send.classList.contains("is-loading")).toBe(false);
+      expect(send.querySelector(".btn-label")?.textContent).toBe("Send");
+      expect(cancelled).toBe(true);
     });
-    controller.close();
+  } finally {
+    await window.happyDOM.close();
+  }
+});
+
+it("stops reading on a terminal frame so a previous turn cannot clear the next turn's loader", async () => {
+  const window = createOfflineWindow();
+  const encoder = new TextEncoder();
+  const frame = (value: object) => encoder.encode(`data: ${JSON.stringify(value)}\n\n`);
+
+  let turnACancelled = false;
+  let turnAReads = 0;
+  let turnBController!: ReadableStreamDefaultController<Uint8Array>;
+  let callIndex = 0;
+  const fetch = vi.fn(async () => {
+    if (callIndex++ === 0) {
+      return {
+        ok: true,
+        status: 200,
+        body: {
+          getReader() {
+            return {
+              read() {
+                turnAReads++;
+                if (turnAReads === 1) {
+                  return Promise.resolve({
+                    done: false,
+                    value: new Uint8Array([
+                      ...frame({ type: "token", text: "First answer." }),
+                      ...frame({ type: "done", reason: "stop" })
+                    ])
+                  });
+                }
+                return Promise.resolve({ done: true });
+              },
+              cancel() {
+                turnACancelled = true;
+                return Promise.resolve();
+              }
+            };
+          }
+        }
+      } as unknown as Response;
+    }
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) { turnBController = controller; }
+    });
+    return new Response(stream, { headers: { "content-type": "text/event-stream" } });
+  });
+  Object.defineProperty(window, "fetch", { value: fetch });
+
+  try {
+    window.document.write(demoPage({ authenticated: true }));
+    const document = window.document;
+    const input = document.querySelector("textarea")!;
+    const send = document.querySelector<HTMLButtonElement>("#send")!;
+    const submitText = (value: string) => {
+      input.value = value;
+      input.dispatchEvent(new window.Event("input", { bubbles: true }));
+      send.click();
+    };
+
+    // Turn A finishes on its done frame, cancels its reader, and makes no further reads.
+    submitText("First question");
+    await vi.waitFor(() => {
+      expect(send.disabled).toBe(false);
+      expect(turnACancelled).toBe(true);
+    });
+    expect(turnAReads).toBe(1);
+
+    // User immediately sends Turn B; Turn B stays busy with no spurious warning.
+    submitText("Second question");
+    await vi.waitFor(() => expect(turnBController).toBeDefined());
+    turnBController.enqueue(frame({ type: "ready" }));
+    await vi.waitFor(() => {
+      expect(send.disabled).toBe(true);
+      expect(send.classList.contains("is-loading")).toBe(true);
+      expect(send.querySelector(".btn-label")?.textContent).toBe("Working…");
+    });
+    expect(turnAReads).toBe(1);
+    expect(document.querySelector("#sysnote")?.textContent).toBe("");
+
+    // Turn B finishes normally on its own done frame.
+    turnBController.enqueue(frame({ type: "token", text: "Second answer." }));
+    turnBController.enqueue(frame({ type: "done", reason: "stop" }));
+    await vi.waitFor(() => {
+      expect(send.disabled).toBe(false);
+      expect(send.classList.contains("is-loading")).toBe(false);
+      expect(send.querySelector(".btn-label")?.textContent).toBe("Send");
+    });
+    expect(document.querySelector("#sysnote")?.textContent).toBe("");
+    expect([...document.querySelectorAll(".msg.assistant")].map((n) => n.textContent)).toEqual([
+      "First answer.",
+      "Second answer."
+    ]);
+  } finally {
+    await window.happyDOM.close();
+  }
+});
+
+it("runs the locked Playground gate through ToS gating, pending loader, modifier clicks, and pageshow reset", async () => {
+  const window = createOfflineWindow();
+  try {
+    window.document.write(demoPage({ authenticated: false }));
+    const document = window.document;
+    const gate = document.querySelector(".gate")!;
+    const signin = document.querySelector<HTMLAnchorElement>("#signin")!;
+    const tos = document.querySelector<HTMLInputElement>("#tos-agree")!;
+    const status = document.querySelector("#signin-status")!;
+
+    expect(signin.getAttribute("aria-disabled")).toBe("true");
+    expect(signin.classList.contains("is-loading")).toBe(false);
+
+    // Clicking while ToS is unchecked is blocked and stays idle.
+    const blocked = new window.MouseEvent("click", { bubbles: true, cancelable: true, button: 0 });
+    signin.dispatchEvent(blocked);
+    expect(blocked.defaultPrevented).toBe(true);
+    expect(signin.classList.contains("is-loading")).toBe(false);
+
+    // Checking ToS enables sign-in; modifier-click (new tab) does not lock the current tab.
+    tos.checked = true;
+    tos.dispatchEvent(new window.Event("change", { bubbles: true }));
+    expect(signin.getAttribute("aria-disabled")).toBeNull();
+
+    const modClick = new window.MouseEvent("click", { bubbles: true, cancelable: true, button: 0, metaKey: true });
+    signin.dispatchEvent(modClick);
+    expect(modClick.defaultPrevented).toBe(false);
+    expect(signin.classList.contains("is-loading")).toBe(false);
+
+    // Prevent happy-dom from navigating on normal click while observing our listener's decision.
+    const seen: boolean[] = [];
+    signin.addEventListener("click", (event) => {
+      seen.push(event.defaultPrevented);
+      event.preventDefault();
+    });
+
+    const first = new window.MouseEvent("click", { bubbles: true, cancelable: true, button: 0 });
+    signin.dispatchEvent(first);
+    expect(seen).toEqual([false]);
+    expect(gate.classList.contains("is-busy")).toBe(true);
+    expect(signin.classList.contains("is-loading")).toBe(true);
+    expect(signin.getAttribute("aria-busy")).toBe("true");
+    expect(signin.getAttribute("aria-disabled")).toBe("true");
+    expect(signin.querySelector(".btn-label")?.textContent).toBe("Signing in…");
+    expect(status.textContent).toBe("Continuing to WorkOS…");
+
+    // Duplicate click while navigating is prevented.
+    const second = new window.MouseEvent("click", { bubbles: true, cancelable: true, button: 0 });
+    signin.dispatchEvent(second);
+    expect(seen).toEqual([false, true]);
+
+    // Browser Back (bfcache pageshow) resets the gate cleanly.
+    window.dispatchEvent(new window.Event("pageshow"));
+    expect(gate.classList.contains("is-busy")).toBe(false);
+    expect(signin.classList.contains("is-loading")).toBe(false);
+    expect(signin.getAttribute("aria-busy")).toBeNull();
+    expect(signin.getAttribute("aria-disabled")).toBeNull();
+    expect(signin.querySelector(".btn-label")?.textContent).toBe("Sign in to try it");
+    expect(status.textContent).toBe("");
   } finally {
     await window.happyDOM.close();
   }

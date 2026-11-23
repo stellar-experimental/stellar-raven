@@ -7,7 +7,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { demoPage, DEMO_PAGE_HEADERS } from "../src/demo/page";
+import { DEMO_LOCKED_PAGE_HEADERS, DEMO_PAGE_HEADERS, demoPage } from "../src/demo/page";
 import { loadManifest, searchCatalogPage } from "../src/catalog/search";
 import { renderPublicHeadMetadata } from "../src/site";
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
@@ -15,22 +15,31 @@ import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs"
 const lockedHtml = demoPage({ authenticated: false });
 const chatHtml = demoPage({ authenticated: true });
 
+function extractSingleScript(html: string): string {
+  const lowerHtml = html.toLowerCase();
+  const scriptStart = lowerHtml.indexOf("<script");
+  expect(scriptStart).toBeGreaterThanOrEqual(0);
+  const openingTagEnd = lowerHtml.indexOf(">", scriptStart);
+  expect(openingTagEnd).toBeGreaterThan(scriptStart);
+  const closingTagStart = lowerHtml.indexOf("</script>", openingTagEnd + 1);
+  expect(closingTagStart).toBeGreaterThan(openingTagEnd);
+  expect(lowerHtml.indexOf("<script", closingTagStart + "</script>".length)).toBe(-1);
+  return html.slice(openingTagEnd + 1, closingTagStart);
+}
+
 describe("demo page CSP", () => {
-  it("pins the exact inline script by sha256 (no unsafe-inline for script)", () => {
-    const lowerHtml = chatHtml.toLowerCase();
-    const scriptStart = lowerHtml.indexOf("<script");
-    expect(scriptStart).toBeGreaterThanOrEqual(0);
-    const openingTagEnd = lowerHtml.indexOf(">", scriptStart);
-    expect(openingTagEnd).toBeGreaterThan(scriptStart);
-    const closingTagStart = lowerHtml.indexOf("</script>", openingTagEnd + 1);
-    expect(closingTagStart).toBeGreaterThan(openingTagEnd);
-    expect(lowerHtml.indexOf("<script", closingTagStart + "</script>".length)).toBe(-1);
-    const script = chatHtml.slice(openingTagEnd + 1, closingTagStart);
-    const hash = createHash("sha256").update(script, "utf8").digest("base64");
-    const csp = DEMO_PAGE_HEADERS["content-security-policy"] ?? "";
-    expect(csp).toContain(`script-src 'sha256-${hash}'`);
-    expect(csp).not.toContain("unsafe-eval");
-    expect(csp.includes("script-src 'unsafe-inline'")).toBe(false);
+  it("pins the exact inline script by sha256 for both states (no unsafe-inline for script)", () => {
+    for (const [label, html, headers] of [
+      ["authenticated", chatHtml, DEMO_PAGE_HEADERS],
+      ["locked", lockedHtml, DEMO_LOCKED_PAGE_HEADERS]
+    ] as const) {
+      const script = extractSingleScript(html);
+      const hash = createHash("sha256").update(script, "utf8").digest("base64");
+      const csp = headers["content-security-policy"] ?? "";
+      expect(csp, label).toContain(`script-src 'sha256-${hash}'`);
+      expect(csp, label).not.toContain("unsafe-eval");
+      expect(csp.includes("script-src 'unsafe-inline'"), label).toBe(false);
+    }
   });
 
   it("keeps the contract-required directives and headers", () => {
@@ -41,6 +50,14 @@ describe("demo page CSP", () => {
     expect(csp).toContain("img-src 'self' data:");
     expect(DEMO_PAGE_HEADERS["cache-control"]).toBe("no-store");
     expect(DEMO_PAGE_HEADERS["x-robots-tag"]).toBe("noindex");
+
+    const lockedCsp = DEMO_LOCKED_PAGE_HEADERS["content-security-policy"] ?? "";
+    expect(lockedCsp).toContain("default-src 'none'");
+    expect(lockedCsp).toContain("connect-src 'none'");
+    expect(lockedCsp).toContain("style-src 'unsafe-inline'");
+    expect(lockedCsp).toContain("img-src 'self' data:");
+    expect(DEMO_LOCKED_PAGE_HEADERS["cache-control"]).toBe("no-store");
+    expect(DEMO_LOCKED_PAGE_HEADERS["x-robots-tag"]).toBe("noindex");
   });
 });
 
@@ -82,8 +99,10 @@ describe("demo page states", () => {
     expect(lockedHtml).toContain('<link rel="canonical" href="https://raven.stellar.org/playground"/>');
   });
 
-  it("locked: sign-in link, static example trace, zero script", () => {
+  it("locked: sign-in link with pending loader, static example trace, single hash-pinned script", () => {
     expect(lockedHtml).toContain('href="/playground/login"');
+    expect(lockedHtml).toContain('data-pending-label="Signing in…"');
+    expect(lockedHtml).toContain('id="signin-status" class="sr-only" role="status" aria-live="polite"');
     expect(lockedHtml).toContain("Test drive <span class=\"r\">Raven</span>");
     expect(lockedHtml).toContain("Example session");
     expect(lockedHtml).toContain("soroban smart contract deploy");
@@ -94,7 +113,6 @@ describe("demo page states", () => {
     expect(lockedHtml).not.toContain("skill-section");
     expect(lockedHtml).toContain("The playground shows the live trace");
     expect(lockedHtml).toContain("connect an MCP client to <code>/mcp</code>");
-    expect(lockedHtml).not.toContain("<script>");
     expect(lockedHtml).not.toContain("Watch an agent");
     expect(lockedHtml).not.toContain('class="flow"');
     // Free-form tool loop: no numbered step dividers.

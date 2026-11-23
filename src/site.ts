@@ -1,7 +1,8 @@
 /**
  * Server-rendered public pages: `/` (landing), `/authorize` (OAuth consent), `/terms`, and `/docs`.
- * Self-contained for strict CSP (`font-src data:`, `img-src data:`). Only `/` runs inline JS;
- * consent, terms, and docs stay script-free.
+ * Self-contained for strict CSP (`font-src data:`, `img-src data:`). `/` runs inline JS;
+ * `/authorize` runs only a SHA-256 hash-pinned static submit-feedback script (no `'unsafe-inline'`);
+ * `/terms` and `/docs` stay script-free.
  */
 import {
   PLEX_SERIF_600_WOFF2,
@@ -119,6 +120,17 @@ body.no-gl .stage{background:
 .btn-outline{background:transparent;color:var(--fog);border-color:var(--line-2)}
 .btn-outline:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px)}
 .btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn-spin{display:none;width:14px;height:14px;flex:none;border-radius:50%;
+  border:2px solid currentColor;border-right-color:transparent;
+  animation:spin .75s linear infinite}
+.btn.is-loading{cursor:progress}
+.btn.is-loading .btn-spin{display:inline-block}
+.btn.is-loading .btn-icon{display:none}
+.btn.is-loading:hover,.btn.is-loading:active{transform:none}
+.btn-primary.is-loading:hover{background:var(--orange);box-shadow:0 12px 36px -12px rgba(255,85,0,.8)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap;border:0}
 
 /* ---- hero: copy in a right-aligned column, clear of the globe ---- */
 .hero{position:relative;min-height:calc(100vh - 92px);display:flex;flex-direction:column;
@@ -306,7 +318,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:26px
   .top-nav{gap:7px}
   .top-nav .btn-ghost{padding:9px 11px}
 }
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.btn.is-loading .btn-spin{display:none}}
 `;
 
 // ---------------------------------------------------------------------------
@@ -624,9 +636,8 @@ export function renderSiteHeader(args: {
   );
 }
 
-// JSON-LD structured data — landing page only (the consent page stays
-// script-free). `<` / `>` / `&` are unicode-escaped so the serialized JSON can
-// never break out of the <script> element.
+// JSON-LD structured data — landing page only. `<` / `>` / `&` are unicode-escaped
+// so the serialized JSON can never break out of the <script> element.
 const JSONLD =
   `<script type="application/ld+json">` +
   JSON.stringify({
@@ -821,15 +832,15 @@ function siteFooter(): string {
 }
 
 // ---------------------------------------------------------------------------
-// Consent page (OAuth /authorize) — same system, script-free + hardened.
+// Consent page (OAuth /authorize) — same system, hash-pinned script + hardened.
 // ---------------------------------------------------------------------------
 
 const CONSENT_CSS = `
 body{display:flex;flex-direction:column}
-/* Same baked dither-globe as the playground (script-free page: a data: PNG
-   background is fine under img-src data:, no WebGL/canvas needed). The approve
-   screen is an INVITING surface, so this variant is a LIGHT OLIVE lifted above
-   the field — the inverse of the playground's darker, recessed sphere. */
+/* Same baked dither-globe as the playground (a data: PNG background is fine
+   under img-src data:, no WebGL/canvas needed). The approve screen is an
+   INVITING surface, so this variant is a LIGHT OLIVE lifted above the field —
+   the inverse of the playground's darker, recessed sphere. */
 .stage{background:var(--green)}
 /* Match the homepage WebGL globe exactly (see the demo page for the derivation):
    same sphere size (840px frame = 240vmin), centred on 50vw − 61.92vmin rather than left-pinned. */
@@ -885,6 +896,15 @@ main.auth{flex:1;display:flex;align-items:center;justify-content:center;padding:
 .act .btn-cancel{width:100%;justify-content:center;min-height:46px;margin-top:10px;padding:10px;
   color:var(--fog);background:transparent;border:1px solid var(--line-2);box-shadow:none}
 .act .btn-cancel:hover{background:rgba(238,240,226,.06);border-color:var(--dim)}
+.act .btn-primary.is-loading:hover{box-shadow:none}
+.act .btn-cancel.is-loading:hover{background:transparent;border-color:var(--line-2)}
+.act form.is-busy .btn:not(.is-loading){opacity:.45;pointer-events:none}
+.act form.is-busy .btn.is-loading{pointer-events:none}
+.act form.is-busy .consent-row{opacity:.65;pointer-events:none}
+.act .handoff{margin:14px 0 0;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;
+  background:rgba(6,10,6,.36);font-size:13px;color:var(--fog);line-height:1.5}
+.act .handoff[hidden]{display:none}
+.act .handoff a{color:var(--orange-2);text-decoration:underline;text-underline-offset:2px}
 .act :is(button,input,a):focus-visible{outline:2px solid var(--fog);outline-offset:4px}
 .consent-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:12.5px;
   color:var(--dim);line-height:1.5;margin:0 0 16px}
@@ -924,6 +944,113 @@ const SHIELD =
 const SCOPE_GLOSS: Record<string, string> = {
   mcp: "Search Stellar resources and retrieve data on your behalf."
 };
+
+// Static, zero-interpolation submit-feedback script for /authorize.
+// Pinned by SHA-256 in CONSENT_HEADERS (no script-src 'unsafe-inline'). Never
+// disables form controls synchronously on submit so `tos_agree` and
+// `decision=deny` stay in the native POST body; bounds the Cancel spinner in
+// case a native-app scheme handoff keeps this tab open without a `pageshow`,
+// and resets cleanly on bfcache `pageshow`.
+const CONSENT_SCRIPT = `
+(function(){
+  "use strict";
+  var form = document.getElementById("consent-form");
+  var approve = document.getElementById("consent-approve");
+  var cancel = document.getElementById("consent-cancel");
+  var tos = document.getElementById("tos-agree");
+  var status = document.getElementById("consent-status");
+  var handoff = document.getElementById("consent-handoff");
+  if (!form || !approve || !cancel || !status) return;
+  var buttons = [approve, cancel];
+  var defaults = buttons.map(function(b){
+    var l = b.querySelector(".btn-label");
+    return l ? l.textContent : "";
+  });
+  var busy = false;
+  var clicked = null;
+  var cancelTimer = null;
+  function clearCancelTimer(){
+    if (cancelTimer !== null) {
+      clearTimeout(cancelTimer);
+      cancelTimer = null;
+    }
+  }
+  function settleCancel(){
+    cancelTimer = null;
+    if (!busy) return;
+    form.removeAttribute("aria-busy");
+    cancel.classList.remove("is-loading");
+    var l = cancel.querySelector(".btn-label");
+    if (l) l.textContent = "Cancellation requested";
+    if (handoff) handoff.hidden = false;
+    status.textContent = "Cancellation requested. If your app opened, you can close this tab \\u2014 or start a new request.";
+  }
+  function setBusy(active){
+    busy = true;
+    clearCancelTimer();
+    if (handoff) handoff.hidden = true;
+    form.classList.add("is-busy");
+    form.setAttribute("aria-busy", "true");
+    for (var i = 0; i < buttons.length; i++) {
+      var b = buttons[i];
+      b.setAttribute("aria-disabled", "true");
+      if (b === active) {
+        b.classList.add("is-loading");
+        var l = b.querySelector(".btn-label");
+        var pending = b.getAttribute("data-pending-label");
+        if (l && pending) l.textContent = pending;
+      }
+    }
+    if (tos) tos.setAttribute("aria-disabled", "true");
+    status.textContent = active === cancel
+      ? "Cancelling authorization\\u2026"
+      : "Continuing to WorkOS\\u2026";
+    if (active === cancel) cancelTimer = setTimeout(settleCancel, 4000);
+  }
+  function reset(){
+    clearCancelTimer();
+    busy = false;
+    clicked = null;
+    form.classList.remove("is-busy");
+    form.removeAttribute("aria-busy");
+    if (handoff) handoff.hidden = true;
+    for (var i = 0; i < buttons.length; i++) {
+      var b = buttons[i];
+      b.classList.remove("is-loading");
+      b.removeAttribute("aria-disabled");
+      var l = b.querySelector(".btn-label");
+      if (l) l.textContent = defaults[i];
+    }
+    if (tos) tos.removeAttribute("aria-disabled");
+    status.textContent = "";
+  }
+  approve.addEventListener("click", function(e){
+    if (busy) { e.preventDefault(); return; }
+    clicked = approve;
+  });
+  cancel.addEventListener("click", function(e){
+    if (busy) { e.preventDefault(); return; }
+    clicked = cancel;
+  });
+  if (tos) {
+    tos.addEventListener("click", function(e){
+      if (busy) e.preventDefault();
+    });
+  }
+  form.addEventListener("submit", function(e){
+    if (busy) { e.preventDefault(); return; }
+    var active = e.submitter === cancel ? cancel
+      : e.submitter === approve ? approve
+      : clicked === cancel ? cancel
+      : approve;
+    setBusy(active);
+  });
+  window.addEventListener("pageshow", reset);
+})();
+`;
+
+// Exact sha256 of CONSENT_SCRIPT inside <script> (verified by test/consent-page.test.ts).
+const CONSENT_SCRIPT_SHA256 = "sha256-Y2o7Je3OnXaAlr2Sc95R03bOODsFc9Z4a9NIGZiQET0=";
 
 /** Render untrusted client metadata as text. The auth handler owns validation and cookies. */
 export function consentPage(args: {
@@ -968,20 +1095,22 @@ export function consentPage(args: {
   <h2 class="panel-h">This connection grants</h2>
   ${scopeItems ? `<ul class="scopes">${scopeItems}</ul>` : `<p class="scope-empty">No scopes requested.</p>`}
   <div class="act">
-    <form method="post" action="${escapeHtml(args.formAction)}">
+    <form id="consent-form" method="post" action="${escapeHtml(args.formAction)}">
       <input type="hidden" name="csrf_token" value="${escapeHtml(args.csrfToken)}"/>
       <label class="consent-row"><input type="checkbox" name="tos_agree" id="tos-agree" required/>
         <span>I have read and agree to the
         <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>
         and the <a href="https://stellar.org/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
-      <button class="btn btn-primary" type="submit">Sign in and connect ${ARROW}</button>
-      <button class="btn btn-cancel" type="submit" name="decision" value="deny" formnovalidate>Cancel</button>
+      <button class="btn btn-primary" type="submit" id="consent-approve" data-pending-label="Continuing to WorkOS…"><span class="btn-spin" aria-hidden="true"></span><span class="btn-label">Sign in and connect</span><span class="btn-icon" aria-hidden="true">${ARROW}</span></button>
+      <button class="btn btn-cancel" type="submit" id="consent-cancel" name="decision" value="deny" formnovalidate data-pending-label="Cancelling…"><span class="btn-spin" aria-hidden="true"></span><span class="btn-label">Cancel</span></button>
     </form>
+    <div id="consent-status" class="sr-only" role="status" aria-live="polite"></div>
+    <p id="consent-handoff" class="handoff" hidden>Cancellation requested. If your app opened, you can close this tab — or <a href="${escapeHtml(args.formAction)}">start a new request</a>.</p>
     <p class="note">${SHIELD}<span>Continue only if you recognize this app and started this connection.
       You will sign in with WorkOS. Raven never receives your password.</span></p>
   </div>
 </div></main>` +
-    `</body></html>`
+    `<script>${CONSENT_SCRIPT}</script></body></html>`
   );
 }
 
@@ -1489,8 +1618,8 @@ export const CONSENT_HEADERS: Record<string, string> = {
   // send no referrer at all. Matches the /callback interstitial.
   "referrer-policy": "no-referrer",
   "content-security-policy":
-    "default-src 'none'; style-src 'unsafe-inline'; font-src data:; img-src data:; " +
-    "frame-ancestors 'none'; base-uri 'none'",
+    `default-src 'none'; script-src '${CONSENT_SCRIPT_SHA256}'; style-src 'unsafe-inline'; ` +
+    "font-src data:; img-src data:; frame-ancestors 'none'; base-uri 'none'",
   "x-frame-options": "DENY",
   "x-content-type-options": "nosniff"
 };
