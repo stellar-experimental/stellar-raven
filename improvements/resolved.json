@@ -1775,6 +1775,69 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1991573350ef43fb49763f9d9cb1443622b72d8f/improvements/stellar-docs/sd-104-webauthn-tutorial-admin-count-allows-last-admin-removal.md"
     },
     {
+      "id": "sd-105",
+      "title": "The Lumens page contradicts itself about how lumens were created",
+      "service": "stellar-docs",
+      "discovered": "2026-11-14",
+      "resolved": "2026-11-27",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/568",
+        "https://github.com/stellar/stellar-docs/issues/3143",
+        "https://github.com/stellar/stellar-docs/pull/3147"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/568",
+        "https://github.com/stellar/stellar-docs/pull/3147"
+      ],
+      "liveRecheck": "2026-11-27T22:07:11Z GET https://developers.stellar.org/docs/learn/fundamentals/lumens.md returned HTTP 200 (12,082 bytes, sha256 ff9475dde917...). \"will ever exist\" absent; line 49 agrees with Definitions lines 74-76 (5,443,902,087.3472865 inflation lumens). Resolved by stellar/stellar-docs#3147 (d2a945bcf99c2a981ad6644dec3b018b1709b74e).",
+      "reviewEvidence": "Author Claude Fable 5.2 (claude-fable-5-2, high, hc t2p2) and distinct reviewer Codex frontier (gpt-6.2-astra, high, hc t2p6) independently rechecked lumens.md and removed the lifted sd-105 partial cap on q-token-xlm-supply-total-circulating under the maintenance exception; verdict RETIRE. Record: .agents/rounds/2026-11-27-issue-pr-triage/review-handoffs-astra.md. Resolution comment posted and read back: https://github.com/stellar/stellar-docs/issues/3143#issuecomment-7229314417",
+      "sourceCommit": "2e0119d1cf7161d512cce926874d0963a6fa8b85",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/2e0119d1cf7161d512cce926874d0963a6fa8b85/improvements/stellar-docs/sd-105-lumens-page-genesis-supply-contradiction.md"
+    },
+    {
+      "id": "sd-106",
+      "title": "The Tier 1 Organizations page explains the role, the cost, and the path to join. It does not say which organizations are Tier 1 today",
+      "service": "stellar-docs",
+      "discovered": "2026-11-14",
+      "resolved": "2026-11-27",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/569",
+        "https://github.com/stellar/stellar-docs/issues/3144",
+        "https://github.com/stellar/stellar-docs/pull/3148"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/569",
+        "https://github.com/stellar/stellar-docs/pull/3148"
+      ],
+      "liveRecheck": "2026-11-27T22:07:11Z GET https://developers.stellar.org/docs/validators/tier-1-orgs.md returned HTTP 200 (16,590 bytes, sha256 48368474d68a...). Line 25 \"## Current Tier 1 Organizations\" and line 27 point to stellar/packages pubnet-validator-full/stellar-core.cfg (10 HOME_DOMAIN values) and Obsrvr Radar (30 transitive quorum validators, 3 per domain, verified live 22:02Z-22:12Z), satisfying Recommendation option 2. Resolved by stellar/stellar-docs#3148 (3ce1ed865a5efd5730ab827cc08a0bff05077de8).",
+      "reviewEvidence": "Author Claude Fable 5.2 (claude-fable-5-2, high, hc t2p2) and distinct reviewer Codex frontier (gpt-6.2-astra, high, hc t2p6) independently rechecked tier-1-orgs.md, stellar-core.cfg, and Obsrvr Radar API, and verified q-net-tier1-roster-current needs no edit under the maintenance exception; verdict RETIRE. Record: .agents/rounds/2026-11-27-issue-pr-triage/review-handoffs-astra.md. Resolution comment posted and read back: https://github.com/stellar/stellar-docs/issues/3144#issuecomment-7229314887",
+      "sourceCommit": "2e0119d1cf7161d512cce926874d0963a6fa8b85",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/2e0119d1cf7161d512cce926874d0963a6fa8b85/improvements/stellar-docs/sd-106-tier-1-page-names-no-organizations.md"
+    },
+    {
+      "id": "sd-109",
+      "title": "The passkeys prerequisites page says that Friendbot cannot fund a contract address. That is not true. The Testnet and Futurenet Friendbots…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-14",
+      "resolved": "2026-11-27",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/570",
+        "https://github.com/stellar/stellar-docs/issues/3150",
+        "https://github.com/stellar/stellar-docs/pull/3152"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/570",
+        "https://github.com/stellar/stellar-docs/pull/3152"
+      ],
+      "liveRecheck": "2026-11-27T22:07:11Z GET https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md returned HTTP 200 (7,166 bytes, sha256 dbd792a90f3f...). \"only funds classic\" and \"can't top up\" absent; line 49 states Friendbot can also fund C... contract addresses directly on Testnet and Futurenet, matching networks.md line 38 and faucet.md line 11. Resolved by stellar/stellar-docs#3152 (b99af983750650c2e6d9d8fff601dc762876d401).",
+      "reviewEvidence": "Author Claude Fable 5.2 (claude-fable-5-2, high, hc t2p2) and distinct reviewer Codex frontier (gpt-6.2-astra, high, hc t2p6) independently rechecked passkeys-prerequisites.md, networks.md, and faucet.md, and removed the lifted sd-109 partial cap on q-infra-testnet-vs-futurenet under the maintenance exception; verdict RETIRE. Record: .agents/rounds/2026-11-27-issue-pr-triage/review-handoffs-astra.md. Resolution comment posted and read back: https://github.com/stellar/stellar-docs/issues/3150#issuecomment-7229315188",
+      "sourceCommit": "2e0119d1cf7161d512cce926874d0963a6fa8b85",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/2e0119d1cf7161d512cce926874d0963a6fa8b85/improvements/stellar-docs/sd-109-passkeys-page-says-friendbot-cannot-fund-contracts.md"
+    },
+    {
       "id": "sk-001",
       "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145,…",
       "service": "skills",

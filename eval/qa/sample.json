@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "bf761bf76ac4ab914a00630d4f224a698f7b55b3c356bc21387fff98edddc2a8",
+  "corpusContentSha256": "44fddab34f9391ebe84426c0b688992063090ed4da5b9a5b10b31c709d6501a8",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -2762,7 +2762,7 @@
           "Do NOT swap the two roles, equate either with Mainnet, or claim real-value assets.",
           "Do NOT freeze a protocol version or provider count without a date."
         ],
-        "notes": "Futurenet need not run a higher protocol than Testnet on a given day; a dated answer showing them equal is correct. The canonical Stellar Docs passkeys prerequisites page says Friendbot only funds classic G accounts; quoting it is not a wrong claim while sd-109 stands, and unless the answer reconciles it with Friendbot's actual behavior (it funds C addresses on Testnet and Futurenet), grade caps at partial."
+        "notes": "Futurenet need not run a higher protocol than Testnet on a given day; a dated answer showing them equal is correct."
       },
       "tags": {
         "category": "tooling-infra",
@@ -2839,9 +2839,9 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md",
-            "observedAt": "2026-11-14",
-            "quote": "Friendbot only funds classic `G...` accounts, so it can't top up a `C...` contract address directly.",
-            "note": "Conflicting page; contradicted by the live Friendbots, the Friendbot source, and the Networks and faucet pages. Filed locally as sd-109."
+            "observedAt": "2026-11-27",
+            "quote": "Outside the kit, Friendbot can also fund a `C...` contract address directly on Testnet and Futurenet.",
+            "note": "Formerly the conflicting page (sd-109). stellar/stellar-docs#3152, merged 2026-11-24, replaced the sentence that said Friendbot funds only G accounts; the page now agrees with the Networks and faucet pages."
           }
         ],
         "corroboration": [
@@ -2959,27 +2959,29 @@
                 "note": "\"Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet.\""
               }
             ],
-            "note": "Docs conflict disclosed: https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md says Friendbot \"only funds classic `G...` accounts\". Live execution on both networks, the Friendbot source, and two other Docs pages contradict it; improvements/stellar-docs/sd-109-passkeys-page-says-friendbot-cannot-fund-contracts.md."
+            "note": "Docs conflict resolved upstream: until stellar/stellar-docs#3152 merged on 2026-11-24, https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md said Friendbot \"only funds classic `G...` accounts\" (sd-109). On 2026-11-27 the page says \"Friendbot can also fund a `C...` contract address directly on Testnet and Futurenet\" and agrees with the Networks and faucet pages."
           }
         ],
         "verified": {
-          "date": "2026-11-14",
-          "by": "Baseline case-defects lane 2026-11-14 (Claude Opus 5.5; .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)",
+          "date": "2026-11-27",
+          "by": "Claude Fable 5.2 (claude-fable-5-2), docs-handoffs lane under the eval/qa/README.md maintenance exception, 2026-11-27",
           "evidence": [
-            "Defect: .agents/rounds/2026-11-14-baseline-tuning/BASELINE.md ('Case defects'). The baseline review found the live passkeys prerequisites page contradicting key fact 4. Re-verified from primary sources: key fact 4 is confirmed; the page is wrong. Added a canonical-page grading caution tied to sd-109; answer and key facts unchanged. Independent review (B1) reworded the lifting condition to name Friendbot's behavior instead of the Networks page.",
-            "Live F 2026-11-14T20:26:23Z: GET https://friendbot.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB -- '\"successful\": true', hash 191ea1c8b23cf887bbe9d49db8c5e4efae1f81bd7a11e3116e7eecb62a8e8e51; soroban-testnet getTransaction SUCCESS ledger 5732868.",
-            "Live F 2026-11-14: GET https://friendbot-futurenet.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB -- '\"successful\": true', hash d2a93391edfb847f646f40c6d6a8ec57e0733a621af26415b61eb3378d1958a1; rpc-futurenet getTransaction SUCCESS ledger 1613141.",
-            "Live B 2026-11-14: https://github.com/stellar/friendbot/blob/main/internal/friendbot_handler.go lines 108-111 -- 'Check if it's a valid C address (contract)' gated by SupportsContractAddresses().",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/networks.md -- 'Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet.'",
-            "Live A 2026-11-14 (conflicting): https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md -- 'Friendbot only funds classic `G...` accounts, so it can't top up a `C...` contract address directly.'",
-            ".agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md"
+            "Trigger: an upstream fix shown by a primary source. stellar/stellar-docs#3152 (merge commit b99af983750650c2e6d9d8fff601dc762876d401, merged 2026-11-24T16:59:04Z) closed stellar/stellar-docs#3150 and replaced the passkeys prerequisites sentence that sd-109 reported. Edit: the sd-109 canonical-page grading caution is removed from golden.notes, because ADR-0008 ends a cap when its finding reaches fixed-upstream and the live source no longer carries the wording. Answer, key facts and avoid items are unchanged. This event did not re-run Friendbot or the protocol-version probes; truth.asOf stands and the 2026-11-14 class F and class B rows remain the witnesses for key fact 4.",
+            "Live A 2026-11-27T22:07:11Z: GET https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md -- HTTP 200, 7,166 bytes, sha256 dbd792a90f3f75d53902ae68094a190219b6741721b1fd823cacf713d8142c39. 'only funds classic' and \"can't top up\" are absent (grep -c prints 0 for each). Line 49 ends: 'Outside the kit, Friendbot can also fund a `C...` contract address directly on Testnet and Futurenet.'",
+            "Live A 2026-11-27T22:07:11Z: GET https://developers.stellar.org/docs/networks.md -- HTTP 200, 11,451 bytes. Line 38: 'Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet.' The two pages agree.",
+            "Live A 2026-11-27T22:07:11Z: GET https://developers.stellar.org/docs/tools/quickstart/faucet.md -- HTTP 200. Line 11: 'Friendbot is available on `:8000/friendbot` and can be used to fund accounts and contracts.'",
+            "2026-11-27T22:08:18Z npm run improvements:probes -- --service stellar-docs: 'sd-109: fixed-candidate (status 200 == 200; contains \"only funds classic\": false)'.",
+            "https://github.com/stellar/stellar-docs/pull/3152",
+            "https://github.com/stellar/stellar-docs/issues/3150",
+            "Sibling sweep: no fact changed, so no sibling can now contradict this case. Any other golden.notes cap that names sd-109 is caught by the cap-finding lane of npm run eval:qa:lint -- --stale --enforce-floors, which reported none on 2026-11-27."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-109-passkeys-page-says-friendbot-cannot-fund-contracts.md"
+            "freshness-drift",
+            "improvements/resolved.json — sd-109: the canonical page changed upstream (stellar/stellar-docs#3152). The finding is fixed-upstream from 2026-11-27; its receipt lands in this ledger when a distinct reviewer retires it."
           ]
         },
         "origin": "raven-next q-infra-testnet-vs-futurenet",
-        "notes": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries. RECHECK 2026-11-02: live RPC getNetwork reported protocol 29 on both Testnet and Futurenet (Mainnet Horizon also 29); status.stellar.org schedules the Protocol 30 Testnet upgrade for 2026-11-03 and the Mainnet vote for 2026-11-23. Futurenet's documented preview role does not guarantee a higher live protocol at every moment: a dated answer whose live probe shows Futurenet equal to or behind Testnet is correct and does not contradict that role. RECHECK 2026-11-14 (baseline case defects): the passkeys prerequisites page says Friendbot funds only G accounts; live Friendbot funded a C address on Testnet and Futurenet, so key fact 4 stands and the page conflict is sd-109.",
+        "notes": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries. RECHECK 2026-11-02: live RPC getNetwork reported protocol 29 on both Testnet and Futurenet (Mainnet Horizon also 29); status.stellar.org schedules the Protocol 30 Testnet upgrade for 2026-11-03 and the Mainnet vote for 2026-11-23. Futurenet's documented preview role does not guarantee a higher live protocol at every moment: a dated answer whose live probe shows Futurenet equal to or behind Testnet is correct and does not contradict that role. RECHECK 2026-11-14 (baseline case defects): the passkeys prerequisites page says Friendbot funds only G accounts; live Friendbot funded a C address on Testnet and Futurenet, so key fact 4 stands and the page conflict is sd-109. RECHECK 2026-11-27 (upstream fix): stellar/stellar-docs#3152 merged on 2026-11-24 and the live passkeys prerequisites page now says Friendbot can fund a C address directly on Testnet and Futurenet; the sd-109 grading caution was removed and no fact changed.",
         "leaf": "protocol.networks-passphrases"
       }
     },
@@ -6190,7 +6192,7 @@
           "Do NOT give 100 billion or 105 billion XLM as the supply that exists today.",
           "Do NOT say XLM is mined or still inflates by 1% a year."
         ],
-        "notes": "Accept a later dated circulating figure; it rises as SDF distributes lumens. Explaining why the ledger header's total_coins still reads about 105.44 billion (the 55.44 billion lumens burned in November 2019 sit in a signerless account) is optional; its absence is not a missing fact. A future protocol change could alter issuance; saying so is not wrong. Quoting the canonical Stellar Docs Lumens page sentence that all XLM that will ever exist was created at launch is not a wrong claim while sd-105 stands; unless the answer flags that the sentence conflicts with the inflation history, grade caps at partial."
+        "notes": "Accept a later dated circulating figure; it rises as SDF distributes lumens. Explaining why the ledger header's total_coins still reads about 105.44 billion (the 55.44 billion lumens burned in November 2019 sit in a signerless account) is optional; its absence is not a missing fact. A future protocol change could alter issuance; saying so is not wrong."
       },
       "tags": {
         "category": "history-org-tokenomics",
@@ -6221,8 +6223,8 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
-            "observedAt": "2026-11-14",
-            "quote": "all XLM that has ever existed and will ever exist was created when the Stellar network went live"
+            "observedAt": "2026-11-27",
+            "quote": "Unlike many other blockchains, lumens are not created through mining. One hundred billion lumens were created when the Stellar network went live. Network inflation added more until validators disabled it with Protocol 12 on October 28, 2019, and no mechanism has created new lumens since."
           },
           {
             "class": "A",
@@ -6335,8 +6337,8 @@
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
-                "observedAt": "2026-11-14",
-                "note": "\"network inflation was ended by validator vote on October 28, 2019\"; \"the native network currency is not created through mining\"."
+                "observedAt": "2026-11-27",
+                "note": "\"This “network inflation” was ended by validator vote on October 28, 2019\"; \"lumens are not created through mining\"; \"no mechanism has created new lumens since\"."
               },
               {
                 "class": "A",
@@ -6401,8 +6403,8 @@
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
-                "observedAt": "2026-11-14",
-                "note": "\"the native network currency is not created through mining\"."
+                "observedAt": "2026-11-27",
+                "note": "\"lumens are not created through mining\"."
               }
             ]
           },
@@ -6420,18 +6422,19 @@
           }
         ],
         "verified": {
-          "date": "2026-11-14",
-          "by": "Baseline case-defects lane 2026-11-14 (Claude Opus 5.5; .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)",
+          "date": "2026-11-27",
+          "by": "Claude Fable 5.2 (claude-fable-5-2), docs-handoffs lane under the eval/qa/README.md maintenance exception, 2026-11-27",
           "evidence": [
-            "Defect: .agents/rounds/2026-11-14-baseline-tuning/BASELINE.md ('Case defects'). The grader note's sentence 'An answer that explains this is correct.' after the total_coins explanation was read as a requirement; the 2026-11-14 baseline verdict listed the total_coins caveat as the only missing fact although it is not a key fact. The note now says the explanation is optional and names what lifts the sd-105 cap (flagging the conflict with the inflation history), per the golden-truth canonical-page rule. Facts unchanged.",
-            "Live A 2026-11-14T20:28Z: https://developers.stellar.org/docs/learn/fundamentals/lumens.md -- 'all XLM that has ever existed and will ever exist was created when the Stellar network went live' and 'The total number of lumens generated by inflation was 5,443,902,087.3472865.' (sd-105 still reproduces; status reported-upstream).",
-            "Live C 2026-11-14T20:28Z: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- sequence 65480409, total_coins 105443902087.3472865.",
-            "Live C 2026-11-14T20:28Z: https://dashboard.stellar.org/api/v3/lumens -- updatedAt 2026-11-14T20:24:57.926Z, totalSupply 50001786837.3970712, circulatingSupply 35407565525.1138526.",
-            ".agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md"
+            "Trigger: an upstream fix shown by a primary source. stellar/stellar-docs#3147 (merge commit d2a945bcf99c2a981ad6644dec3b018b1709b74e, merged 2026-11-24T16:58:18Z) closed stellar/stellar-docs#3143 and rewrote the Lumen Supply Metrics intro sentence that sd-105 reported. Edit: the sd-105 canonical-page grading caution is removed from golden.notes, because ADR-0008 ends a cap when its finding reaches fixed-upstream and the live source no longer carries the wording. Answer, key facts and avoid items are unchanged. This event did not re-derive the supply figures; truth.asOf and truth.reverifyBy stand.",
+            "Live A 2026-11-27T22:07:11Z: GET https://developers.stellar.org/docs/learn/fundamentals/lumens.md -- HTTP 200, 12,082 bytes, sha256 ff9475dde91770fc3ddf8dc4039be9aaa65ffc13f185f4c4df1c38d6436b97a9. 'will ever exist' is absent (grep -c prints 0). Line 49: 'One hundred billion lumens were created when the Stellar network went live. Network inflation added more until validators disabled it with Protocol 12 on October 28, 2019, and no mechanism has created new lumens since.' Line 76 still reads 'The total number of lumens generated by inflation was 5,443,902,087.3472865.' The two passages agree.",
+            "2026-11-27T22:08:18Z npm run improvements:probes -- --service stellar-docs: 'sd-105: fixed-candidate (status 200 == 200; contains \"will ever exist was created when the Stellar network went live\": false)'.",
+            "https://github.com/stellar/stellar-docs/pull/3147",
+            "https://github.com/stellar/stellar-docs/issues/3143",
+            "Sibling sweep: no fact changed, so no sibling can now contradict this case. Any other golden.notes cap that names sd-105 is caught by the cap-finding lane of npm run eval:qa:lint -- --stale --enforce-floors, which reported none on 2026-11-27."
           ],
           "rootCause": [
-            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
-            "improvements/stellar-docs/sd-105-lumens-page-genesis-supply-contradiction.md"
+            "freshness-drift",
+            "improvements/resolved.json — sd-105: the canonical page changed upstream (stellar/stellar-docs#3147). The finding is fixed-upstream from 2026-11-27; its receipt lands in this ledger when a distinct reviewer retires it."
           ]
         },
         "origin": "authored golden-coverage-audit 2026-11-14"
