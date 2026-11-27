@@ -462,7 +462,7 @@
           "q-tool-lab-what-is",
           "q-ti-testnet-usdc-faucet"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -473,10 +473,14 @@
         "memberContentSha256": {
           "q-edge-jailbreak-generate-secret-keys": "70c26b320545ac4c743d3c7657873c04f68b770bc290a95be7122f8b7beb376d",
           "q-edge-send-me-free-xlm": "801119bbc5abb3e161453e7da8aaec4f0d2a16b1866f6910abbea52cd85c090f",
-          "q-infra-testnet-vs-futurenet": "085ac946d136c560c9a9a611f3464e41532b8ea37a8ba6947e01a6339eb3f11a",
+          "q-infra-testnet-vs-futurenet": "17a05bc87ffb8e4d7915c5d579f4e10983e8f58201ed94881d604fa9f5085e65",
           "q-ti-custodial-account-generation-c-address": "5e91cfd37d2c6d0dcda21fdb7a30858576eab09a99d7d1dda0361567dfb86dac",
           "q-ti-testnet-usdc-faucet": "ff4dfef56212dae80778ac866f692d44ea37b7a202a49be9479376f6783ba109",
           "q-tool-lab-what-is": "a161440b168901b98041429dcbd0e6d80269cbb8415576ec74b67af6aa8defd7"
+        },
+        "reopened": {
+          "date": "2026-11-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -945,18 +949,22 @@
           "q-token-initial-supply-distribution",
           "q-token-xlm-supply-total-circulating"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "note": "Genesis created 100B without mining; the historical allocation plan was 50/25/20/5 and does not prove full launch-day distribution. Stripe's 2B was later repayment of a $3m loan, not a launch bucket. Protocol-12/CAP-0026 inflation removal and the subsequent SDF treasury burn were separate events. q-token-xlm-supply-total-circulating states the same 100 billion genesis figure, the about 5.44 billion added by inflation before Protocol 12 ended it in October 2019, and a dated total near 50 billion after the burn.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "a67c97d33c209ae063ef668739dd327b0539f3f746750f06da12040b0f371451",
           "q-token-initial-supply-distribution": "e91d20b6cdf6570ea18077bfaa7f1513105e614b450cc6c1bc2924b0cab4100a",
-          "q-token-xlm-supply-total-circulating": "938fc0b07a935a70491b94dddce1d25560a0b080a2edc978a4f8ecfa4390d3c3"
+          "q-token-xlm-supply-total-circulating": "43d76f36e9a54255c99c706b42bf7ebb064d441e5981211399193d63b3c89995"
         },
         "reSwept": {
           "date": "2026-11-14",
           "reason": "Baseline case-defects re-sweep 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md): q-token-xlm-supply-total-circulating changed only its grading note (the total_coins explanation is optional; the sd-105 cap lifts when the answer flags the conflict with the inflation history). Its facts (100 billion at genesis, about 5.44 billion from inflation before Protocol 12, a dated total near 50 billion) are unchanged and agree with the other members and the note.",
           "verdict": "consistent"
+        },
+        "reopened": {
+          "date": "2026-11-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1164,7 +1172,7 @@
           "q-infra-testnet-vs-futurenet",
           "q-protocol-network-passphrases-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -1173,8 +1181,12 @@
         },
         "note": "Exact passphrases are stable; Testnet/Futurenet/Mainnet version alignment is stage-sensitive and live-verified.",
         "memberContentSha256": {
-          "q-infra-testnet-vs-futurenet": "085ac946d136c560c9a9a611f3464e41532b8ea37a8ba6947e01a6339eb3f11a",
+          "q-infra-testnet-vs-futurenet": "17a05bc87ffb8e4d7915c5d579f4e10983e8f58201ed94881d604fa9f5085e65",
           "q-protocol-network-passphrases-list": "3d7b33bcf16bcb7c0495d3d87564f0a026b77b936c94cc21ba8cea8ff8986c7c"
+        },
+        "reopened": {
+          "date": "2026-11-27",
+          "reason": "member-content-changed"
         }
       },
       {
