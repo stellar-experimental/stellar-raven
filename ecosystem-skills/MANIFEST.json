@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-11-23T20:59:26Z",
+  "synced_at": "2026-11-27T22:04:23Z",
   "status": "complete",
   "missing_sources": [],
   "skill_count": 21,
@@ -189,9 +189,9 @@
       "repo": "stellar-dev-skill",
       "path": "skills",
       "ref": "main",
-      "commit": "f954e6a0f35c7a26d688dc1a24f66af068cd0f02",
-      "commit_date": "2026-11-23T19:07:34Z",
-      "url": "https://github.com/stellar/stellar-dev-skill/tree/f954e6a0f35c7a26d688dc1a24f66af068cd0f02/skills",
+      "commit": "9098e8ba24de3299cda24b21bb5cb80aa1cb5d2b",
+      "commit_date": "2026-11-25T14:51:47Z",
+      "url": "https://github.com/stellar/stellar-dev-skill/tree/9098e8ba24de3299cda24b21bb5cb80aa1cb5d2b/skills",
       "license_files": [
         "LICENSE"
       ],
@@ -261,8 +261,8 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 19507,
-              "sha": "159a8cbc5cc78b8d7e28245f433fd4276d0c6f9b"
+              "size": 19830,
+              "sha": "76475978b10644b2dfa164c7f92d3be39d768590"
             },
             {
               "path": "data-fetching.md",
@@ -278,6 +278,11 @@
               "path": "smart-accounts.md",
               "size": 4064,
               "sha": "d3e815f8d0be06d76948568d336e8c4f55413b8c"
+            },
+            {
+              "path": "walletconnect.md",
+              "size": 6035,
+              "sha": "51495be50e77220f95896189d5bd55af0db72285"
             }
           ]
         },
@@ -331,8 +336,8 @@
             },
             {
               "path": "ecosystem.md",
-              "size": 37373,
-              "sha": "affa9c9fb97658df84302c14f68d85fef840b7a4"
+              "size": 40279,
+              "sha": "0defe7ebdce20dbecd59b38408c2c40331a2376e"
             },
             {
               "path": "resources.md",
@@ -360,9 +365,9 @@
       "repo": "stellar-scout",
       "path": "",
       "ref": "main",
-      "commit": "a07d00c456237501ca9470d4470617823c88708e",
-      "commit_date": "2026-11-23T19:19:23Z",
-      "url": "https://github.com/Stellar-Light/stellar-scout/tree/a07d00c456237501ca9470d4470617823c88708e",
+      "commit": "2527e7b2ff19a03857d7cf066cf68d1d9c33cc06",
+      "commit_date": "2026-11-24T19:17:25Z",
+      "url": "https://github.com/Stellar-Light/stellar-scout/tree/2527e7b2ff19a03857d7cf066cf68d1d9c33cc06",
       "license_files": [
         "LICENSE"
       ],
@@ -377,13 +382,13 @@
             },
             {
               "path": "SKILL.md",
-              "size": 35968,
-              "sha": "7a0f11361e7af3a0cc39d948e84360880f440db3"
+              "size": 36274,
+              "sha": "87bf6c671b0684342bc2686b4227a4e7f415bc74"
             },
             {
               "path": "references/api-reference.md",
-              "size": 84288,
-              "sha": "f8f132a5e679c2aa7785b7c02e09efefb6022d7c"
+              "size": 97169,
+              "sha": "f745588ad92c03b943328bf08de03dda26f31ff5"
             },
             {
               "path": "references/examples.md",

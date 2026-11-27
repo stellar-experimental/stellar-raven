@@ -378,9 +378,9 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter((e) => e.service === "lumenloop" && e.kind === "skill-section")
     ).toHaveLength(0);
 
-    // Scout: 29 of 42 OpenAPI ops (write/side-effecting endpoints, getFeedbackSchema, matchPartners,
+    // Scout: 31 of 44 OpenAPI ops (write/side-effecting endpoints, getFeedbackSchema, matchPartners,
     // getQualityReport, and verifyClaim are excluded; see scripts/exposure.mjs).
-    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(29);
+    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(31);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);
     expect(count((e) => e.id === "scout.submitPartnerListing")).toBe(0);
@@ -394,8 +394,10 @@ describe("build-catalog.mjs", () => {
     for (const id of [
       "scout.listAudits",
       "scout.searchHackathonBuilds",
+      "scout.getAwardRoundCoverage",
       "scout.getPeople",
       "scout.getStablecoins",
+      "scout.getTokenIntegrations",
       "scout.getChanges",
       "scout.listContracts",
       "scout.getRepoTrust",
@@ -428,7 +430,7 @@ describe("build-catalog.mjs", () => {
     // API-onboarding skills are never emitted, skill or sections (see
     // build-catalog.mjs RETIRED_ONBOARDING_SKILLS + the rename-guard).
     expect(count((e) => e.service === "skills" && e.kind === "skill")).toBe(20);
-    expect(count((e) => e.service === "skills" && e.kind === "skill-section")).toBe(204);
+    expect(count((e) => e.service === "skills" && e.kind === "skill-section")).toBe(205);
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
@@ -439,8 +441,8 @@ describe("build-catalog.mjs", () => {
       ["stellarOrg.search_site", "search"]
     ]);
 
-    // Grand total: 61 operations + 20 whole skills + 204 skill sections.
-    expect(catalog.entries).toHaveLength(285);
+    // Grand total: 63 operations + 20 whole skills + 205 skill sections.
+    expect(catalog.entries).toHaveLength(288);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {
@@ -582,6 +584,7 @@ describe("x-routing ingestion — routingKeywords and routingPhrases fields", ()
     "scout.analyzeEcosystem",
     "scout.compareHackathons",
     "scout.explainRepo",
+    "scout.getAwardRoundCoverage",
     "scout.getBuilders",
     "scout.getChangelog",
     "scout.getChanges",
@@ -597,6 +600,7 @@ describe("x-routing ingestion — routingKeywords and routingPhrases fields", ()
     "scout.getSkill",
     "scout.getStablecoins",
     "scout.getStatus",
+    "scout.getTokenIntegrations",
     "scout.hackathonBrief",
     "scout.listAudits",
     "scout.listContracts",

@@ -49,6 +49,7 @@ const PREFIX_CLASSES = {
  */
 const OP_OVERRIDES = {
   // collections behind singular-looking prefixes → broad
+  "scout.getAwardRoundCoverage": "broad",
   "scout.getChanges": "broad",
   "scout.getHackathons": "broad",
   "scout.getPartners": "broad",
@@ -58,6 +59,7 @@ const OP_OVERRIDES = {
   "scout.getLeaderboard": "broad",
   "scout.getPeople": "broad",
   "scout.getStablecoins": "broad",
+  "scout.getTokenIntegrations": "broad",
   "scout.analyzeEcosystem": "broad",
   "scout.hackathonBrief": "broad",
   "scout.scfPitch": "broad",

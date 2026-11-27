@@ -1,6 +1,6 @@
 {
   "source": "https://developers.stellar.org/sitemap.xml",
-  "capturedAt": "2026-11-23T20:53:46.961Z",
+  "capturedAt": "2026-11-27T22:03:37.644Z",
   "pages": {
     "/docs/build": {
       "Applications": [
@@ -1427,6 +1427,9 @@
       "Get involved": [
         "get-involved"
       ],
+      "ML-DSA on Stellar": [
+        "ml-dsa-on-stellar"
+      ],
       "Passkeys": [
         "passkeys"
       ],
@@ -2624,6 +2627,9 @@
       ],
       "Sending payments to Contract Accounts (G to C)": [
         "sending-payments-to-contract-accounts-g-to-c"
+      ],
+      "Sending to a muxed contract address": [
+        "sending-to-a-muxed-contract-address"
       ]
     },
     "/docs/build/guides/transactions/send-and-receive-payments": {
@@ -4905,6 +4911,9 @@
       "Async Transaction Submission": [
         "async-transaction-submission"
       ],
+      "Before Rebuilding a Transaction": [
+        "before-rebuilding-a-transaction"
+      ],
       "Error Handling for Queries": [
         "error-handling-for-queries"
       ],
@@ -5205,6 +5214,9 @@
     "/docs/data/apis/rpc/admin-guide/prerequisites": {
       "Minimum Hardware Requirements": [
         "minimum-hardware-requirements"
+      ],
+      "Network Access": [
+        "network-access"
       ]
     },
     "/docs/data/apis/rpc/admin-guide/running": {
@@ -5998,6 +6010,9 @@
       "Matching Authorized Invocation Trees": [
         "matching-authorized-invocation-trees"
       ],
+      "ML-DSA and post-quantum signatures": [
+        "ml-dsa"
+      ],
       "require_auth implementation details": [
         "require_auth-implementation-details"
       ],
@@ -6030,6 +6045,9 @@
     "/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction": {
       "Authorization Data": [
         "authorization-data"
+      ],
+      "Contract ID derivation": [
+        "contract-id-derivation"
       ],
       "Example SDK Usage": [
         "example-sdk-usage"
@@ -12466,6 +12484,9 @@
       ]
     },
     "/docs/validators/tier-1-orgs": {
+      "Current Tier 1 Organizations": [
+        "current-tier-1-organizations"
+      ],
       "Estimated Costs": [
         "estimated-costs"
       ],
@@ -13379,6 +13400,41 @@
       ],
       "Wasms": [
         "wasms"
+      ]
+    },
+    "/meetings/2026/11/19": {
+      "Architecture": [
+        "architecture"
+      ],
+      "Closing": [
+        "closing"
+      ],
+      "ISO 20022 for Enterprises": [
+        "iso-20022-for-enterprises"
+      ],
+      "Live Demo": [
+        "live-demo"
+      ],
+      "Meet Stellar Go CLI": [
+        "meet-stellar-go-cli"
+      ],
+      "Office Hours": [
+        "office-hours"
+      ],
+      "Olvis and the Origin of the Project": [
+        "olvis-and-the-origin-of-the-project"
+      ],
+      "Q&A With Olvis": [
+        "q&a-with-olvis"
+      ],
+      "Release 0.8.0 and the Security Assessment": [
+        "release-0-8-0-and-the-security-assessment"
+      ],
+      "Use Cases": [
+        "use-cases"
+      ],
+      "What Stellar Go CLI Is": [
+        "what-stellar-go-cli-is"
       ]
     }
   }

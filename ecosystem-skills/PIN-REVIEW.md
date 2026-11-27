@@ -48,6 +48,22 @@ reference survived the scrub and will fail the catalog build until the scrub is 
 
 ## Entries
 
+### 2026-11-27 — stellar-dev WalletConnect & Boundless refs; Scout 1.9.173 token integrations, SCF rounds & discussions (#565, #566, #567, #572, #573, #574)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `9098e8ba24de3299cda24b21bb5cb80aa1cb5d2b` | `sel:69d92d2d554b` | author (Gemini 4 Neon, high) read complete diff of all 3 changed/added files; independent Claude Fable 5.2 (`claude-fable-5-2`, high, `hc t2p5`, PASS WITH FINDINGS — all reconciled) re-read upstream diffs |
+| `stellar-light` | `2527e7b2ff19a03857d7cf066cf68d1d9c33cc06` | `sel:4dee33812d02` | author (Gemini 4 Neon, high) read complete diff of both changed files; independent Claude Fable 5.2 (`claude-fable-5-2`, high, `hc t2p5`, PASS WITH FINDINGS — all reconciled) re-read upstream diffs |
+
+The author read the full body diff printed by `ecosystem-skills/update.sh` for all 5 changed/added files (the `lumenloop`, `openzeppelin-stellar`, and `trustless-work` selections are unchanged).
+
+- `stellar-dev` (3 files): adds `dapp/walletconnect.md` (6,035 bytes; WalletConnect module setup for Stellar Wallets Kit 2.8.0, `stellar` CAIP-2/CAIP-10 namespace and `stellar_*` methods, WalletConnect Pay signing rules), updates `dapp/SKILL.md` to link `walletconnect.md` (host-owned discovery description stays pinned by `SKILL_DESCRIPTION_OVERRIDES` in `scripts/description-notes.mjs`), and updates `standards/ecosystem.md` with WalletConnect, WalletConnect Pay, and Boundless entries (public docs/GitHub URLs and one public mainnet escrow contract ID; no credentials or signing keys).
+- `stellar-light` (2 files): `SKILL.md` adds `/api/tokens/integrations` to the lookup table; `references/api-reference.md` documents `hackathonBuilds[]`, `scfPaid`, `/api/projects/scf-rounds`, `stellar-discussions` research source and category filter, canonical proposal-number exact keys, `onchain-map` contract attribution, `transferVolume24h` + `integrations` on `/api/stablecoins` and `/api/rwa`, and `/api/tokens/integrations`. Opt-in write companion `references/feedback.md` remains excluded via `excludeFiles` in `ecosystem-skills/sources.json`.
+
+The changed text contains no instruction override, literal credential, unsafe signing instruction, new Raven capability claim, or retired-skill reference. `references/api-reference.md` names excluded `/api/rwa` (existing) and `/api/hackathons/builds/{id}` (in the new `hackathonBuilds[]` paragraph); `scrubNonExposedRefs` removes both so zero excluded paths or non-exposed op names survive in served text (`findExcludedScoutPath` null; the sentence removal leaves the trailing `hackathonBuilds[]` guidance orphaned after `onStellar`, logged in `.agents/TODO.md` as a scrub follow-up). Cache-bypassed mirror verification passed for all 68 selected files (`node scripts/check-mirrors.mjs --fetch`), and `catalog/manifest.json` moves from 285 to 288 entries (63 operations, 20 whole skills, 205 skill sections: +1 section for `dapp/walletconnect.md`, +2 exposed read-only Scout operations `scout.getAwardRoundCoverage` and `scout.getTokenIntegrations`). Serving these pins grants no new write operation.
+
+Routing across all 544 rows vs. `origin/main`: zero corpus losses, extended `top5` rises 117 to 118 (`q-sor-reflector-integration-code` via `scout.explainRepo`), legacy (219/293/326/115), skills (17/23/23/23), holdout (12/26/30/30, 11 forbidden captures, 24 passed), and protocol-history (6/7/7, 3/4 controls) grades all unchanged. Independent review: `.agents/rounds/2026-11-27-issue-pr-triage/review-drift-fable.md`.
+
 ### 2026-11-23 — stellar-dev byte-safety and oracle/aggregator refs; Scout 1.9.157 read-only skill fixes (#540, #550, #551)
 
 | Source | Pinned commit | Selection | Reviewed |

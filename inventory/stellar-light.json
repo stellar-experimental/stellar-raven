@@ -1,14 +1,15 @@
 {
-  "changelogEntryCount": 405,
+  "changelogEntryCount": 428,
   "changelogLatest": {
-    "date": "2026-11-23",
-    "summary": "Correction to the entry below: naming the current SDF skills was itself a fixed list, and goes stale the same way. The Scout skill, its API reference and its examples now name no SDF skill list and no catalog count: `GET /api/skills?source=sdf` gives the current set and `.meta.counts.bySource` the totals; `smart-contracts` is the slug where an example needs one; an agent installs a skill with the entry's own `install` command, never a skills.stellar.org path built from the slug; and `/api/skills/{name}` is described as full SKILL.md content where the source ships one, metadata only otherwise. The Builders directory has no stated size: the `builders` entry in `GET /api/status` gives the current count (`.meta.counts.total` on `/api/builders` counts matches, not the directory). The skill is now read-only: both feedback operations moved to an opt-in companion, `references/feedback.md`, which says up front that it writes to stellarlight.xyz, and the skill, the API reference and the examples name neither. On `/api/skills`, SDF rows gave `homepage` (and `/api/skills/{name}` gave `url`) as `https://skills.stellar.org/skills/{name}/`, which answers 404; both are now the skill's SKILL.md, the page skills.stellar.org itself links.",
+    "date": "2026-11-24",
+    "summary": "scout-mcp 1.10.1: the README names the GitHub Discussions source and its `category` filter in the search_research row, with a tokenomics example. No tool or parameter changes.",
     "surfaces": [
-      "skill"
+      "mcp"
     ],
-    "type": "fixed"
+    "type": "fixed",
+    "version": "scout-mcp@1.10.1"
   },
-  "fetchedAt": "2026-11-23T20:53:47.556Z",
+  "fetchedAt": "2026-11-27T22:04:11.266Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -173,7 +174,24 @@
               "type": "string"
             },
             "severityCounts": {
-              "description": "{critical, high, medium, low, informational} counts, only for formats carrying per-finding severity that agrees with its finding-ID prefix (Certora tables, Code4rena tier headings). null = not extracted, NOT zero.",
+              "description": "{critical, high, medium, low, informational} counts, only for formats carrying per-finding severity that agrees with its finding-ID prefix (Certora tables, Code4rena tier headings). null = not extracted, NOT zero. A severity absent from the object had zero findings.",
+              "properties": {
+                "critical": {
+                  "type": "integer"
+                },
+                "high": {
+                  "type": "integer"
+                },
+                "informational": {
+                  "type": "integer"
+                },
+                "low": {
+                  "type": "integer"
+                },
+                "medium": {
+                  "type": "integer"
+                }
+              },
               "type": [
                 "object",
                 "null"
@@ -240,6 +258,62 @@
             "githubUsername": {
               "description": "Natural key; also the stellarlight.xyz/builders/{githubUsername} page slug.",
               "type": "string"
+            },
+            "hackathonBuilds": {
+              "description": "Stored hackathon builds (the /api/hackathons/builds rows, one per event entered) whose GitHub repo lists this login as a contributor: a human account with commits on the repo's default branch when it was read (GitHub's contributors API; for a fork, the commits its parent does not hold; bots and AI agent accounts left out). QUERY-INDEPENDENT, on every row, newest event first; the order is not a rank. A contributor is not necessarily a team member who entered: commits made after the event count, and a teammate who never committed is missed. It cannot see a build with no repo link, a repo that was never readable (deleted or private), or this person's work under another GitHub account; a build whose repo is held for malware credits no one. [] = none of the read lists names this login; null = the read failed (meta.warnings names it), never 'none'.",
+              "items": {
+                "properties": {
+                  "basis": {
+                    "description": "Why the build is on this row: the login is in the repo's contributor list.",
+                    "enum": [
+                      "contributor"
+                    ],
+                    "type": "string"
+                  },
+                  "contributorCount": {
+                    "description": "Human contributors the repo listed when read: context for how central this person was (1 of 2 is not 1 of 200).",
+                    "type": "integer"
+                  },
+                  "contributorsReadAt": {
+                    "description": "When the repo's contributors were read.",
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "endedAt": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "hackathon": {
+                    "description": "The event's name.",
+                    "type": "string"
+                  },
+                  "hackathonSlug": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "description": "The build's id, as /api/hackathons/builds serves it and /api/hackathons/builds/{id} opens it.",
+                    "type": "string"
+                  },
+                  "isWinner": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "placement": {
+                    "description": "The build's placement in this event as /api/hackathons/builds serves it; null when it placed nowhere or no placement was published.",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "url": {
+                    "description": "The build's own page: its DoraHacks submission, or the list a curated row comes from.",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "nullable": true,
+              "type": "array"
             },
             "isFeatured": {
               "type": "boolean"
@@ -1243,7 +1317,7 @@
                       "type": "integer"
                     },
                     "winnersNote": {
-                      "description": "Why the winners are what they are, so a missing winner or a 0 is explained rather than silent. When hiddenWinners is non-empty: how many winning submissions are not served and why, with each one's placement and award. On an event off DoraHacks: a dated note that its winners are published only in part, not announced upstream, or secondhand (named only by the list its rows come from, which winnerSource gives). When winners carry winnerSource: the page that names them and which named winners are not served. On an ended DoraHacks event with no winner served: DoraHacks' winner_announced flag, from its event listing (refreshed hourly), says not announced upstream, or announced but not recorded here. Not announced is never a claim that no one won. null = nothing to add, or the flag could not be read.",
+                      "description": "Why the winners are what they are, so a missing winner or a 0 is explained rather than silent. When hiddenWinners is non-empty: how many winning submissions are not served and why, with each one's placement and award. On an event off DoraHacks: a dated note that its winners are published only in part, not announced upstream, or secondhand (named only by the list its rows come from, which winnerSource gives); on one that ended with no winner on record and no dated check yet, that its 0 is not a count. When winners carry winnerSource: the page that names them and which named winners are not served. On an ended DoraHacks event with no winner served: DoraHacks' winner_announced flag, from its event listing (refreshed hourly), says not announced upstream, or announced but not recorded here. Not announced is never a claim that no one won. null = nothing to add, or the flag could not be read.",
                       "nullable": true,
                       "type": "string"
                     }
@@ -1529,11 +1603,11 @@
                     "type": "number"
                   },
                   "project": {
-                    "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
+                    "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. Last, a link a person verified against named evidence (basis curated). A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
                     "nullable": true,
                     "properties": {
                       "basis": {
-                        "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. Absent on links stored before the basis was recorded (all by repo).",
+                        "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. curated: a person verified the link against named evidence (the same repo, the team's own accounts, or the project's own page naming the build), never a name alone; served when no rule above finds that project. Absent on links stored before the basis was recorded (all by repo).",
                         "enum": [
                           "repo",
                           "website",
@@ -1541,7 +1615,8 @@
                           "moved-repo",
                           "moved-owner-and-name",
                           "scf-page-and-name",
-                          "submission-links-and-name"
+                          "submission-links-and-name",
+                          "curated"
                         ],
                         "type": "string"
                       },
@@ -1659,6 +1734,21 @@
                 },
                 {
                   "properties": {
+                    "counts": {
+                      "properties": {
+                        "curated": {
+                          "description": "Matching events whose own source is curated, before limit; null when a feed read failed (meta.warnings), unknown and not zero.",
+                          "nullable": true,
+                          "type": "integer"
+                        },
+                        "dorahacks": {
+                          "description": "Matching events whose own source is dorahacks, before limit; null when a feed read failed.",
+                          "nullable": true,
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
                     "fallbackChannels": {
                       "description": "Present when the query returns 0 events: a summary plus live announcement channels to point the user at. NOTE: an OBJECT, not an array.",
                       "properties": {
@@ -1886,6 +1976,13 @@
               "format": "date-time",
               "type": "string"
             },
+            "hints": {
+              "description": "searchProjects, searchRepos, searchResearch and getPartners only, and only when the page is empty or its match is weak: fixed pointers to the endpoint that answers other question kinds ('<question kind> -> <endpoint>'). Absent on a healthy match.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
             "note": {
               "description": "Optional endpoint-specific reading note: semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
               "type": "string"
@@ -1899,7 +1996,7 @@
               "type": "string"
             },
             "warnings": {
-              "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+              "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog, getQualityReport, verifyClaim) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getTokenIntegrations, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
               "items": {
                 "type": "string"
               },
@@ -2197,6 +2294,43 @@
                 },
                 {
                   "properties": {
+                    "advisory": {
+                      "description": "Present only when the page has no rows: says what this index covers, so the empty page is read as a statement about its coverage and not about the ecosystem, and names where to ask instead.",
+                      "properties": {
+                        "scope": {
+                          "description": "getPartners only: what the directory holds.",
+                          "type": "string"
+                        },
+                        "summary": {
+                          "description": "Written for this response from its own filters, so not dated on its own: it describes the page served at meta.generatedAt.",
+                          "type": "string"
+                        },
+                        "tryInstead": {
+                          "items": {
+                            "properties": {
+                              "endpoint": {
+                                "type": "string"
+                              },
+                              "why": {
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "counts": {
+                      "properties": {
+                        "filteredOut": {
+                          "description": "Published partners that pass the structured filters (type, sector, region, ramps, accepting) but not the default quality bar (a tagline and a contact path, not archived), so this page leaves them out; 0 with all=1. q is not applied to it: above 0 beside total 0 does not mean all=1 would match q.",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
                     "matchMode": {
                       "description": "Present only when q was supplied and rows were returned. scored = ranked by the shared partner scorer over structured capability fields. weak = NOTHING matched q and these are fresh/accepting partners shown as a fallback, NOT matches; treat them as candidates, never as an answer to the query.",
                       "enum": [
@@ -2756,7 +2890,226 @@
               "type": "string"
             },
             "onchain": {
-              "description": "On-chain readings for hand-verified contract/asset join keys, from Stellar Index, Horizon and the Soroban RPC. null = not tracked in our registry. NEVER 'no on-chain activity'. contracts[]: {address, label, lastEventAt, activeLedgers, ttlState, createdAt, verifiedRepo}. lastEventAt = the newest event the contract emitted: proof of use on that date. A contract can be called without emitting an event, so a null or old lastEventAt is NOT proof it is unused. activeLedgers = lifetime count of ledgers in which it emitted an event. ttlState = 'live', or 'archived' when the contract's entry has outlived its TTL and must be restored before it can run. createdAt = when the contract was created, kept from the reading that first recorded it; null for a contract joined after 2026-11-03. verifiedRepo = the GitHub repo the contract's code comes from: the deployed WASM is attested to it (its build metadata names the repo and GitHub lists a build attestation for that WASM there), or, for a WASM built without such metadata, a hand-verified seed names it; where the contract's code could not be read this time (a contract archived on chain may leave the live ledger state, or a read failed), the value the row already holds is kept, which for a row first read before 2026-11-06 can be the old explorer's validation; null = none of these, never a claim about the code. Asset-issuer readings: assetHolders = accounts holding a balance now (contracts that hold the asset, such as smart wallets and pools, are not counted); assetTrustlines = open trustlines in every authorization state (reach, always >= assetHolders; do NOT read it as the holder count); assetSupply = units outside the issuer in whole asset units; assetLastMovedAt = the newest transfer, mint, burn or clawback of the asset, classic payments included (null = none among its newest 100 events, or no event on record). assetHoldersDelta = holder change since the previous reading of the same source, with prevAsOf + deltaDays defining the window; null = no comparable prior reading, NOT zero change. source + asOf date every payload. Gone since 1.9.151, because their source went paid and no free source holds them: assetPayments, assetPaymentsAmount, assetPaymentsDelta, assetTrades, and per contract events, eventsDelta, subinvocations, subinvocationsDelta and storageEntries.",
+              "description": "On-chain readings for hand-verified contract/asset join keys, from Stellar Index, Horizon and the Soroban RPC. null = not tracked in our registry. NEVER 'no on-chain activity'. contracts[]: {address, label, lastEventAt, activeLedgers, ttlState, createdAt, verifiedRepo, tier, evidence, sourceUrl, createdLedger, dateBasis, sharedWithinFamily, endedAt}. lastEventAt = the newest event the contract emitted: proof of use on that date. A contract can be called without emitting an event, so a null or old lastEventAt is NOT proof it is unused. activeLedgers = lifetime count of ledgers in which it emitted an event. ttlState = 'live', or 'archived' when the contract's entry has outlived its TTL and must be restored before it can run. createdAt = when the contract was created: found in that ledger's metadata (createdLedger) where dateBasis says so, otherwise kept from the reading that first recorded it; null = neither holds a date. verifiedRepo = the GitHub repo the contract's code comes from: the deployed WASM is attested to it (its build metadata names the repo and GitHub lists a build attestation for that WASM there), or, for a WASM built without such metadata, a hand-verified seed names it; where the contract's code could not be read this time (a contract archived on chain may leave the live ledger state, or a read failed), the value the row already holds is kept, which for a row first read before 2026-11-06 can be the old explorer's validation; null = none of these, never a claim about the code. tier, evidence, sourceUrl, createdLedger, dateBasis and sharedWithinFamily come from the curated on-chain map and are null on a contract it does not hold: tier strong = the directory, a code proof, a protocol registry anchor (Stellar Index, stellarindex.io) or the project's own account; labelled = a stellar-expert/public-directory label (MIT) under the project's own domain, a third party's label and not a verification, or an address an issuer and its tokens share (sharedWithinFamily names them, issuer first). evidence = why, strongest first; sourceUrl = the public page it was read from. endedAt = the day the weekly check first read no contract instance at the address; null = present, or never read absent. accounts[]: the map's accounts for the row, {address, label, createdAt (the current account's opening, proved in that ledger's metadata, not a launch date), tier, evidence, sourceUrl, createdLedger, dateBasis, sharedWithinFamily, endedAt (the day Horizon first answered that the account does not exist: merged or never funded)}; [] = the map links none, never a claim the project has no account. Asset-issuer readings: assetHolders = accounts holding a balance now (contracts that hold the asset, such as smart wallets and pools, are not counted); assetTrustlines = open trustlines in every authorization state (reach, always >= assetHolders; do NOT read it as the holder count); assetSupply = units outside the issuer in whole asset units; assetLastMovedAt = the newest transfer, mint, burn or clawback of the asset, classic payments included (null = none among its newest 100 events, or no event on record). assetHoldersDelta = holder change since the previous reading of the same source, with prevAsOf + deltaDays defining the window; null = no comparable prior reading, NOT zero change. source + asOf date every payload. Gone since 1.9.151, because their source went paid and no free source holds them: assetPayments, assetPaymentsAmount, assetPaymentsDelta, assetTrades, and per contract events, eventsDelta, subinvocations, subinvocationsDelta and storageEntries.",
+              "properties": {
+                "accounts": {
+                  "description": "[] = the map links none.",
+                  "items": {
+                    "properties": {
+                      "address": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "createdLedger": {
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "dateBasis": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "endedAt": {
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "evidence": {
+                        "items": {
+                          "enum": [
+                            "directory",
+                            "own-repo-interface",
+                            "own-wasm-meta",
+                            "own-pages-confirmed",
+                            "own-deployer-confirmed",
+                            "own-account",
+                            "protocol-registry",
+                            "public-directory-label",
+                            "named-on-own-pages",
+                            "same-deployer"
+                          ],
+                          "type": "string"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      },
+                      "label": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "sharedWithinFamily": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      },
+                      "sourceUrl": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "tier": {
+                        "enum": [
+                          "strong",
+                          "labelled"
+                        ],
+                        "nullable": true,
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "asOf": {
+                  "description": "When the readings were taken.",
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "assetCode": {
+                  "description": "The issued asset's code; null when the row tracks no asset.",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "assetHolders": {
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "assetHoldersDelta": {
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "assetLastMovedAt": {
+                  "format": "date-time",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "assetSupply": {
+                  "description": "Whole asset units outside the issuer.",
+                  "nullable": true,
+                  "type": "number"
+                },
+                "assetTrustlines": {
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "contracts": {
+                  "description": "[] when the row holds no contract.",
+                  "items": {
+                    "properties": {
+                      "activeLedgers": {
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "address": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "createdLedger": {
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "dateBasis": {
+                        "description": "How createdAt was dated, in words (for example, creation proved in the ledger); null = undated or not the map's link.",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "endedAt": {
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "evidence": {
+                        "items": {
+                          "enum": [
+                            "directory",
+                            "own-repo-interface",
+                            "own-wasm-meta",
+                            "own-pages-confirmed",
+                            "own-deployer-confirmed",
+                            "own-account",
+                            "protocol-registry",
+                            "public-directory-label",
+                            "named-on-own-pages",
+                            "same-deployer"
+                          ],
+                          "type": "string"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      },
+                      "label": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "lastEventAt": {
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "sharedWithinFamily": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      },
+                      "sourceUrl": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "tier": {
+                        "enum": [
+                          "strong",
+                          "labelled"
+                        ],
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "ttlState": {
+                        "description": "live, or archived (the entry outlived its TTL); null = not read.",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "verifiedRepo": {
+                        "nullable": true,
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "deltaDays": {
+                  "description": "Days between prevAsOf and asOf: the window of assetHoldersDelta.",
+                  "nullable": true,
+                  "type": "number"
+                },
+                "issuer": {
+                  "description": "The asset's issuer account (G...); null with no asset.",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "prevAsOf": {
+                  "format": "date-time",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "source": {
+                  "description": "Where the readings came from.",
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
               "type": [
                 "object",
                 "null"
@@ -3185,6 +3538,127 @@
               },
               "type": "object"
             },
+            "scfPaid": {
+              "description": "SCF's own payment record for the project, read off its SCF project page(s) every week: SCF's awarded and paid totals and, per Build award, the share SCF has paid. A Build award is paid in tranches and the last one is the mainnet launch, so finalTranchePaid true is SCF's own record that the team delivered its mainnet launch, or the final deliverable the award allowed in its place. Legacy awards (rounds before 30) and Liquidity awards were paid in full when awarded, so they say nothing about a launch and are not listed. Null = no paid read is recorded for this row. Dates: the block changes only when a figure changes; a payment came after notSeenAt and by seenBy (per award: paidShareNotSeenAt, paidShareSeenBy). A payment made before the first read (late November 2026) has no date here: notSeenAt is null; web-archive captures of the SCF page can bound it and are not served.",
+              "nullable": true,
+              "properties": {
+                "buildAwards": {
+                  "description": "Each Build award on the page(s). [] = the page has no Build award (Legacy, Liquidity or Public Goods awards only). Order is the page's, not a rank.",
+                  "items": {
+                    "properties": {
+                      "budgetUSD": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "finalTranchePaid": {
+                        "description": "true = SCF paid the award in full, its final (mainnet launch) tranche. false = not yet. null = not known (paidShare null).",
+                        "nullable": true,
+                        "type": "boolean"
+                      },
+                      "paidShare": {
+                        "description": "Share of the budget SCF has paid, under its schedule. Null when the page's paid total does not split exactly (see split): never estimated.",
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "paidShareNotSeenAt": {
+                        "description": "Start of the read before paidShareSeenBy, which showed another share: SCF paid after this. Null when the share was already this at the first read.",
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "paidShareSeenBy": {
+                        "description": "The share was on SCF's page by this time: the first weekly read that showed it. Null with paidShare.",
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "round": {
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "schedule": {
+                        "description": "thirds: rounds 30 to 40, three equal tranches, the third on the mainnet launch. four-tranche: rounds 41 and later, 10% on acceptance, 20% MVP, 30% testnet, 40% mainnet launch (paid shares 0.1, 0.3, 0.6, 1). Null outside those rounds.",
+                        "enum": [
+                          "thirds",
+                          "four-tranche"
+                        ],
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "sourceUrl": {
+                        "description": "The SCF project page the award is on.",
+                        "type": "string"
+                      },
+                      "tranches": {
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "tranchesPaid": {
+                        "description": "Tranches paid, of tranches (e.g. 2 of 3, or 3 of 4 where the acceptance tranche counts as the first). Null with paidShare.",
+                        "nullable": true,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "round",
+                      "sourceUrl",
+                      "budgetUSD",
+                      "schedule",
+                      "paidShare",
+                      "tranchesPaid",
+                      "tranches",
+                      "finalTranchePaid",
+                      "paidShareSeenBy",
+                      "paidShareNotSeenAt"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "notSeenAt": {
+                  "description": "Start of the read before seenBy, which showed other totals: they changed after this. Null when the totals were already these at the first read.",
+                  "format": "date-time",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "seenBy": {
+                  "description": "The totals were on SCF's page by this time: the first weekly read that showed them.",
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "split": {
+                  "description": "Whether the paid total splits into one share per award. exact. ambiguous: more than one split fits, so those shares are null. no-fit: none fits (e.g. more paid than awarded). budgets-differ: the awarded submissions' budgets do not add up to the page's total. no-figures: the page has no paid or awarded total. no-schedule: a Build award outside rounds 30 and later. A row folding two pages reports the first page that does not split.",
+                  "enum": [
+                    "exact",
+                    "ambiguous",
+                    "no-fit",
+                    "budgets-differ",
+                    "no-figures",
+                    "no-schedule"
+                  ],
+                  "type": "string"
+                },
+                "totalAwardedUSD": {
+                  "description": "SCF's own totalAwarded on the page (summed when the row folds two pages). Null when a page lacks it.",
+                  "nullable": true,
+                  "type": "number"
+                },
+                "totalPaidUSD": {
+                  "description": "SCF's own totalPaid on the page (summed when the row folds two pages). Null when a page lacks it.",
+                  "nullable": true,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "totalAwardedUSD",
+                "totalPaidUSD",
+                "seenBy",
+                "notSeenAt",
+                "split",
+                "buildAwards"
+              ],
+              "type": "object"
+            },
             "scfRoundAwards": {
               "description": "The official submission record per AWARD: the reconciling basis for scfTotalAwardedUSD. Each entry: the round number (null for an award SCF does not number), the award's own name (present only on those), the published submission budget in USD (null = award confirmed, budget not published; never guessed), and the official award type (e.g. 'Legacy v5.0 Community Award'). Not every SCF award belongs to a numbered round: a Liquidity Award carries no SCF #N, so a project can hold real award money while scfAwardedRounds is empty; read this array before treating an empty scfAwardedRounds as 'no SCF funding'. scfAwardedRounds stays numeric-only by design. The page-level total can legitimately exceed the sum of these budgets; treat these as the per-award truth and the total as SCF's own aggregate.",
               "items": {
@@ -3204,6 +3678,11 @@
                   "round": {
                     "nullable": true,
                     "type": "integer"
+                  },
+                  "sourceUrl": {
+                    "description": "The official SCF project page this award was read from. A row that combines two SCF pages cites one as scfSourceUrl, so check each award against its own page here. Null = the page was not recorded per award (an award not yet re-read since this field shipped); scfSourceUrl is then the citation.",
+                    "nullable": true,
+                    "type": "string"
                   }
                 },
                 "type": "object"
@@ -3224,6 +3703,8 @@
               "type": "number"
             },
             "shortDescription": {
+              "description": "The one-line description; null when the row holds none.",
+              "nullable": true,
               "type": "string"
             },
             "slug": {
@@ -3586,7 +4067,8 @@
               "type": "boolean"
             },
             "ciPresent": {
-              "description": "CI config present in-tree (.github/workflows, CircleCI, GitLab CI) per the latest code scan. Presence only. NOT a claim CI passes. null = not yet scanned for this fact.",
+              "deprecated": true,
+              "description": "Never served at this level: rows serve it as codeVerified.ciPresent. Kept so typed clients built on it still compile.",
               "type": [
                 "boolean",
                 "null"
@@ -3624,6 +4106,11 @@
               "description": "Code-verified truth from analyzing the repo's ACTUAL source (not stars/topics): the discriminator between 'popular' and 'real, current, deep Soroban code'. Null until the repo has been code-scanned. Use to qualify an answer: prefer a deployable contract on a supported soroban-sdk over tooling that merely uses Stellar.",
               "nullable": true,
               "properties": {
+                "ciPresent": {
+                  "description": "CI config present in-tree (.github/workflows, CircleCI, GitLab CI) per the latest code scan. Presence only. NOT a claim CI passes. null = not yet scanned for this fact.",
+                  "nullable": true,
+                  "type": "boolean"
+                },
                 "codeConfidence": {
                   "description": "Deterministic trust score for the code facts (basis code-scan × freshness of scannedAt). Null when never scanned.",
                   "nullable": true,
@@ -3794,6 +4281,11 @@
                   "description": "Stellar protocol the pinned soroban-sdk MAJOR targets, derived from the maintained sdk→protocol table (dated; the mapping has documented irregularities: 23.x spans P24→P25). ADVISORY, not an attestation: null = unknown major, never guessed.",
                   "nullable": true,
                   "type": "integer"
+                },
+                "testsPresent": {
+                  "description": "Test files/dirs present in-tree (tests/, __tests__, *.test.*, *_test.*) per the latest code scan. Presence only. NOT a coverage or quality claim. null = not yet scanned for this fact.",
+                  "nullable": true,
+                  "type": "boolean"
                 },
                 "versionStatus": {
                   "description": "Combined SDK status: deprecated when EITHER sorobanSdkStatus or jsSdkStatus is deprecated, else sorobanSdkStatus when readable, else jsSdkStatus. Not a soroban-sdk claim on its own: a supported soroban-sdk with a deprecated JS dependency reads deprecated here. 'unknown' never implies staleness.",
@@ -4021,10 +4513,11 @@
               "type": "number"
             },
             "source": {
-              "description": "Discovery provenance: project-link = from the curated directory's github links; ec-taxonomy = from Electric Capital's public crypto-ecosystems list.",
+              "description": "Discovery provenance: project-link = from the curated directory's github links; ec-taxonomy = from Electric Capital's public crypto-ecosystems list; builder-owned = owned by a tracked builder, indexed with no owning directory project.",
               "enum": [
                 "project-link",
-                "ec-taxonomy"
+                "ec-taxonomy",
+                "builder-owned"
               ],
               "type": "string"
             },
@@ -4064,7 +4557,8 @@
               "type": "string"
             },
             "testsPresent": {
-              "description": "Test files/dirs present in-tree (tests/, __tests__, *.test.*, *_test.*) per the latest code scan. Presence only. NOT a coverage or quality claim. null = not yet scanned for this fact.",
+              "deprecated": true,
+              "description": "Never served at this level: rows serve it as codeVerified.testsPresent. Kept so typed clients built on it still compile.",
               "type": [
                 "boolean",
                 "null"
@@ -4240,6 +4734,11 @@
             "content": {
               "type": "string"
             },
+            "discussionCategory": {
+              "description": "source=stellar-discussions only: the discussion's GitHub Discussions category slug (tokenomics, core-advancement-proposals, stellar-ecosystem-proposals, stellar-limits-proposals, general-discussion, announcements), the value the `category` filter takes. Null on every other source.",
+              "nullable": true,
+              "type": "string"
+            },
             "docKind": {
               "description": "Deterministic document class stamped at ingest: spec (canonical; old AND authoritative, e.g. SEPs/CAPs), guide (staleness-sensitive how-to), article, data. Null = not classified. Use it to weigh age: an old spec is still the truth, an old guide may not be.",
               "enum": [
@@ -4262,7 +4761,7 @@
               "type": "string"
             },
             "exactKeys": {
-              "description": "Present only when the query named an exact key (an audit finding id, a CVE or GHSA id, or a repo-qualified release tag): the named keys this row carries verbatim (a release tag by its release title). [] = this row carries none of them: for those keys it is a semantic neighbour, not the record. Absent = the query named no such key, or `fields` left it out.",
+              "description": "Present only when the query named an exact key (an audit finding id, a CVE or GHSA id, a repo-qualified release tag, or a CAP/SEP/SLP proposal number written as an id, e.g. CAP-0077, cap-77 or CAP 77): the named keys this row carries, an id verbatim, a release tag by its release title, a proposal number (canonical form, e.g. SLP-0006) on every chunk of that proposal's own document. [] = this row carries none of them: for those keys it is a semantic neighbour, not the record (a CAP that cites SLP-0006 is not SLP-0006). Absent = the query named no such key, or `fields` left it out.",
               "items": {
                 "type": "string"
               },
@@ -4673,7 +5172,7 @@
           "type": "object"
         },
         "Stablecoin": {
-          "description": "One Stellar stablecoin from /api/stablecoins, measured every 6h from Horizon, Stellar Expert and live peg FX. marketCapUSD is the ONLY cross-row-comparable size metric; `supply` is raw units in the asset's own `peg`. null on any metric = not measured, never 'zero'. Identity is (code, issuer); two live assets can share a ticker (Circle's EURC and MyKobo's EURC are different assets), so never merge or match on `ticker` alone; join on `assetId` or `issuer`.",
+          "description": "One Stellar stablecoin from /api/stablecoins, measured every 6h from Horizon, Soroban RPC and live peg FX. marketCapUSD is the ONLY cross-row-comparable size metric; `supply` is raw units in the asset's own `peg`. null on any metric = not measured, never 'zero'. Identity is (code, issuer); two live assets can share a ticker (Circle's EURC and MyKobo's EURC are different assets), so never merge or match on `ticker` alone; join on `assetId` or `issuer`.",
           "properties": {
             "assetId": {
               "description": "`CODE-<first 8 of issuer>`: the stable natural key, and the safe join key when a ticker is ambiguous.",
@@ -4732,6 +5231,15 @@
               "description": "Trustline holder count.",
               "nullable": true,
               "type": "number"
+            },
+            "integrations": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/TokenIntegrationsBrief"
+                }
+              ],
+              "description": "Which directory projects support this token, per tier and SCF-funded per tier, from the weekly token integrations layer; url leads to every edge. Null when the layer holds no row for the token or could not be read this request: not known, never zero support.",
+              "nullable": true
             },
             "issuer": {
               "description": "Full mainnet issuer account (G…): the universal join key. With `ticker` this IS the asset's identity.",
@@ -4843,6 +5351,16 @@
               "description": "Asset code (USDC, USDY, ARST, …). NOT unique on its own: see assetId.",
               "type": "string"
             },
+            "transferVolume24h": {
+              "description": "Units of the asset, in its own peg, moved in the 24 hours before updatedAt: the sum of the `transfer` events of its token contract (Stellar Asset Contract), read from Soroban RPC. Since protocol 23 every movement of a classic asset emits one: payments, each leg of a path payment or crossed offer, liquidity pool deposits, withdrawals and swaps, claimable balances and contract transfers. Issuer mints and burns (`mint` and `burn` events) are excluded; DEX trade legs are included; gross, so units moved A to B to C count twice. Null = not measured (an unmeasured or hand-checked row, or the read did not complete), never zero; 0 = read in full and nothing moved. Never carried from an earlier run.",
+              "nullable": true,
+              "type": "number"
+            },
+            "transferVolume24hUSD": {
+              "description": "transferVolume24h × priceUSD, comparable across rows (read it with priceBasis: at par on an assumed-peg row). Null when either is null.",
+              "nullable": true,
+              "type": "number"
+            },
             "updatedAt": {
               "description": "When these figures were measured (dated-metrics rule). Always cite it.",
               "format": "date-time",
@@ -4854,7 +5372,7 @@
               "type": "boolean"
             },
             "volume24hUSD": {
-              "description": "24h transfer volume in USD.",
+              "description": "24h SDEX trade volume in USD, read from Stellar Expert until its API became paid on 2026-11-06; null on every row since. Not transfer volume: for value moved on-chain read transferVolume24hUSD.",
               "nullable": true,
               "type": "number"
             },
@@ -4970,6 +5488,281 @@
             "endpoints"
           ],
           "type": "object"
+        },
+        "TokenHolderSweep": {
+          "description": "How completely the holder sweep read a token's contract holders.",
+          "properties": {
+            "archivedHoldings": {
+              "type": "integer"
+            },
+            "coveredPct": {
+              "description": "foundAmountLive as a percentage of Horizon's contract total.",
+              "nullable": true,
+              "type": "number"
+            },
+            "foundAmountLive": {
+              "description": "Exact sum held by the contracts found, live entries only.",
+              "type": "string"
+            },
+            "holdersFound": {
+              "type": "integer"
+            },
+            "horizonContracts": {
+              "description": "Contracts holding the asset per Horizon; null for a contract token.",
+              "nullable": true,
+              "type": "integer"
+            },
+            "horizonContractsAmount": {
+              "nullable": true,
+              "type": "string"
+            },
+            "readAt": {
+              "type": "string"
+            },
+            "sweep": {
+              "description": "complete (the token's whole event history was read), partial, could-not-check, candidates only (history too large to read whole), or skipped (no contract can hold it).",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "TokenIntegrationEdge": {
+          "description": "One token, one project or venue, one kind: a project's support for a token, or a network venue (no project) that holds it.",
+          "properties": {
+            "attributionBasis": {
+              "description": "Why this project (or none). A holder tied by the curated on-chain map names its tier and evidence (`on-chain map strong: own-repo-interface (source)`); a strong link weighs as much as the protocol registry and a labelled one as much as a public directory label, a contract or account the map's weekly check read absent from mainnet is not attributed, and two projects tied by equal evidence leave the holder unattributed.",
+              "type": "string"
+            },
+            "balance": {
+              "description": "Exact decimal: the token held across this edge's pools or holders; null = not read or not applicable.",
+              "nullable": true,
+              "type": "string"
+            },
+            "balanceBasis": {
+              "nullable": true,
+              "type": "string"
+            },
+            "balanceUsd": {
+              "nullable": true,
+              "type": "number"
+            },
+            "bestPool": {
+              "type": "string"
+            },
+            "code": {
+              "nullable": true,
+              "type": "string"
+            },
+            "depthBasis": {
+              "nullable": true,
+              "type": "string"
+            },
+            "depthUsd": {
+              "description": "Priced depth of the best pool (all its priced legs), or this holding's USD value.",
+              "nullable": true,
+              "type": "number"
+            },
+            "endedAt": {
+              "nullable": true,
+              "type": "string"
+            },
+            "endedReason": {
+              "nullable": true,
+              "type": "string"
+            },
+            "events90d": {
+              "description": "Events (Soroban) or operations (classic) in the 90 days before the read, summed over its pools; null = not read.",
+              "nullable": true,
+              "type": "integer"
+            },
+            "events90dBasis": {
+              "nullable": true,
+              "type": "string"
+            },
+            "evidenceUrl": {
+              "type": "string"
+            },
+            "firstDate": {
+              "description": "YYYY-MM-DD of the earliest pool; null when not read (anchors, lists, issuers, classic pools).",
+              "nullable": true,
+              "type": "string"
+            },
+            "firstDateBasis": {
+              "nullable": true,
+              "type": "string"
+            },
+            "holderSweep": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/TokenHolderSweep"
+                }
+              ],
+              "description": "How complete the contract holder sweep was for this token; null on every edge that is not a contract holding (venue account included).",
+              "nullable": true
+            },
+            "homeDomain": {
+              "nullable": true,
+              "type": "string"
+            },
+            "id": {
+              "description": "tokenId|kind|venue|projectSlug",
+              "type": "string"
+            },
+            "issuer": {
+              "description": "Classic issuer account, native for XLM, null for a contract token.",
+              "nullable": true,
+              "type": "string"
+            },
+            "issuerLabel": {
+              "description": "The public directory's label for the issuer (or contract token) with its tags, e.g. a scam tag on a decoy; null when unlabelled.",
+              "nullable": true,
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "dex_pool",
+                "lending_reserve",
+                "vault",
+                "bridge",
+                "oracle_feed",
+                "classic_amm_pool",
+                "anchor_asset",
+                "asset_list",
+                "issuer",
+                "holder",
+                "holder_unattributed"
+              ],
+              "type": "string"
+            },
+            "lastSeenAt": {
+              "description": "Newest event of any of its pools.",
+              "nullable": true,
+              "type": "string"
+            },
+            "method": {
+              "description": "How the edge was read.",
+              "type": "string"
+            },
+            "pools": {
+              "description": "Pools, contracts or documents behind this edge (the edge's tier is its best one's).",
+              "type": "integer"
+            },
+            "poolsByTier": {
+              "$ref": "#/components/schemas/TokenTierCounts"
+            },
+            "projectName": {
+              "nullable": true,
+              "type": "string"
+            },
+            "projectSlug": {
+              "description": "Directory project; null for a network venue or an unattributed holder.",
+              "nullable": true,
+              "type": "string"
+            },
+            "readAt": {
+              "type": "string"
+            },
+            "scfAwarded": {
+              "description": "From the project row at request time; null when the edge has no project. false is not proof SCF never funded it.",
+              "nullable": true,
+              "type": "boolean"
+            },
+            "scfRounds": {
+              "description": "The project's SCF awards (round, award name, budget); null when the edge has no project.",
+              "items": {
+                "properties": {
+                  "amountUSD": {
+                    "nullable": true,
+                    "type": "number"
+                  },
+                  "awardName": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "round": {
+                    "nullable": true,
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              },
+              "nullable": true,
+              "type": "array"
+            },
+            "status": {
+              "enum": [
+                "active",
+                "ended"
+              ],
+              "type": "string"
+            },
+            "tier": {
+              "enum": [
+                "integrated",
+                "used",
+                "available",
+                "unrated"
+              ],
+              "type": "string"
+            },
+            "tierBasis": {
+              "description": "Why this tier, with the numbers read.",
+              "type": "string"
+            },
+            "tokenId": {
+              "description": "The token's contract id (a classic asset's Stellar Asset Contract id). The identity: a code alone identifies nothing.",
+              "type": "string"
+            },
+            "tokenKind": {
+              "description": "Stellar Asset Contract (sac, wrapping classic asset) versus custom contract token (custom); null when unread.",
+              "nullable": true,
+              "type": "string"
+            },
+            "venue": {
+              "description": "Protocol (aquarius, soroswap, sushiswap_v3, blend, ...), publisher (anchor, list or issuer), stellar-classic-amm, holder (a contract holding the token) or account (an account the on-chain map ties to the project holding it).",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "TokenIntegrationsBrief": {
+          "description": "The token integrations layer's compact count for one token, as getTokenIntegrations' summary counts it over the token's active edges: each directory project once, at its best tier, never one blended number. Only integrated and used are support; available and unrated are reported, never counted as support. Network venues and unattributed holders are not projects and are not counted here.",
+          "properties": {
+            "asOf": {
+              "description": "The newest reading among the token's edges.",
+              "nullable": true,
+              "type": "string"
+            },
+            "projectsByTier": {
+              "$ref": "#/components/schemas/TokenTierCounts"
+            },
+            "scfFundedByTier": {
+              "$ref": "#/components/schemas/TokenTierCounts"
+            },
+            "url": {
+              "description": "getTokenIntegrations for this token: every edge with its tier, basis and evidence.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "TokenTierCounts": {
+          "description": "A count per tier.",
+          "properties": {
+            "available": {
+              "type": "integer"
+            },
+            "integrated": {
+              "type": "integer"
+            },
+            "unrated": {
+              "type": "integer"
+            },
+            "used": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
         }
       }
     },
@@ -4986,7 +5779,7 @@
       },
       "summary": "Agent-native data layer for the Stellar ecosystem: projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.9.157"
+      "version": "1.9.173"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -5767,7 +6560,7 @@
                             "type": "array"
                           },
                           "deprecatedTotal": {
-                            "description": "Repos deprecated on EITHER SDK line (= byVersionStatus.deprecated). Not a soroban-sdk count: read bySorobanSdkStatus.deprecated for that, byJsSdkStatus.deprecated for the JS line. A repo deprecated on both counts once here.",
+                            "description": "Repos among measuredRepos (those carrying a soroban-sdk version) deprecated on EITHER SDK line, by our floors: a soroban-sdk major below 21, or a JavaScript Stellar dependency on @stellar/stellar-sdk major below 14 or on stellar-sdk, @stellar/stellar-base, soroban-client at any version (their npm publishers mark them deprecated). Equals byVersionStatus.deprecated. Not a soroban-sdk count: read bySorobanSdkStatus.deprecated for that, byJsSdkStatus.deprecated for the JS line. A repo deprecated on both counts once here.",
                             "type": "integer"
                           },
                           "deprecationRule": {
@@ -6314,6 +7107,15 @@
                           },
                           {
                             "properties": {
+                              "counts": {
+                                "properties": {
+                                  "matched": {
+                                    "description": "Reports that pass every filter, before limit and offset; total is the whole registry.",
+                                    "type": "integer"
+                                  }
+                                },
+                                "type": "object"
+                              },
                               "matchMode": {
                                 "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
                                 "enum": [
@@ -7021,7 +7823,7 @@
                             "type": "object"
                           },
                           "exactMiss": {
-                            "description": "Present ONLY when the query named an exact identifier that no served row carries verbatim: an audit finding id (V-SOR-VUL-002), a CVE id (CVE-2026-24889), a GHSA id (GHSA-96xm-fv9w-pf3f), or a repo-qualified release tag (rs-soroban-sdk v25.0.2, matched on that repo's release title). Before answering, the route looks each one up across every document in the requested source scope and pins any document carrying it, so a listed identifier is one the scope does not hold. One the scope holds but this page leaves out (a limit, or an auditor/protocol/severity filter) is not listed here; meta.warnings names it. A release tag is matched on release titles, so its miss means no release document carries it. If the lookup itself failed, `partial` is true, `failedReads` names \"research exact-identifier lookup\", and the miss is unchecked rather than absent. Each result's `exactKeys` says which named keys that row carries. Vector search never goes empty, so without this an absent identifier returns its nearest neighbours, scored as though they matched. When this is present, do NOT report the identifier as found and do NOT infer its content from the returned rows: they rank similarity, not a match. A miss means this corpus lacks the record, not that the record does not exist.",
+                            "description": "Present ONLY when the query named an exact identifier that no served row carries: an audit finding id (V-SOR-VUL-002), a CVE id (CVE-2026-24889) or a GHSA id (GHSA-96xm-fv9w-pf3f), each carried verbatim; a repo-qualified release tag (rs-soroban-sdk v25.0.2, matched on that repo's release title); or a proposal number written as an id (CAP-0077, cap-77, SEP 10, SLP-0006: a hyphen, or the prefix in capitals and a space; lowercase prose such as \"market cap 100\" is not one), matched on the proposal's own document, so a row that only cites it does not carry it. Before answering, the route looks each one up across every document in the requested source scope and pins any document carrying it, so a listed identifier is one the scope does not hold. One the scope holds but this page leaves out (a limit, or an auditor/protocol/severity filter) is not listed here; meta.warnings names it. A release tag is matched on release titles, so its miss means no release document carries it. If the lookup itself failed, `partial` is true, `failedReads` names \"research exact-identifier lookup\" (for a proposal number, \"research proposal lookup\", which also reads at most 5 named proposals per request), and the miss is unchecked rather than absent. Each result's `exactKeys` says which named keys that row carries. Vector search never goes empty, so without this an absent identifier returns its nearest neighbours, scored as though they matched. When this is present, do NOT report the identifier as found and do NOT infer its content from the returned rows: they rank similarity, not a match. A miss means this corpus lacks the record, not that the record does not exist.",
                             "nullable": true,
                             "properties": {
                               "identifiers": {
@@ -7036,6 +7838,11 @@
                               }
                             },
                             "type": "object"
+                          },
+                          "generatedAt": {
+                            "description": "When this response was built: asOf under the name every other operation uses.",
+                            "format": "date-time",
+                            "type": "string"
                           },
                           "limitPerSurface": {
                             "type": "integer"
@@ -7211,6 +8018,23 @@
                           },
                           {
                             "properties": {
+                              "advisory": {
+                                "description": "Present only when a cluster value filter (key, category, type or q) matched no cluster: what to pass instead.",
+                                "properties": {
+                                  "availableKeys": {
+                                    "description": "Every cluster key: the category clusters, then the types clusters, so a value in both (Infrastructure) appears twice. Order is not a rank.",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "summary": {
+                                    "description": "Written for this response from its filter, so not dated on its own.",
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
                               "dimensions": {
                                 "description": "Every value the dimension param accepts: the live vocabulary for cluster views.",
                                 "items": {
@@ -7219,11 +8043,14 @@
                                 "type": "array"
                               },
                               "notes": {
-                                "description": "Reading notes for the active dimension (counting caveats, taxonomy conventions). May be empty.",
-                                "items": {
-                                  "type": "string"
+                                "description": "Reading notes keyed by topic (an object, not an array).",
+                                "properties": {
+                                  "crowdedness": {
+                                    "description": "How the crowdedness score is computed and read.",
+                                    "type": "string"
+                                  }
                                 },
-                                "type": "array"
+                                "type": "object"
                               },
                               "population": {
                                 "$ref": "#/components/schemas/PopulationScope"
@@ -7310,7 +8137,7 @@
       },
       "/api/contracts": {
         "get": {
-          "description": "Contracts as first-class entities: one row per mainnet contract with VERIFIED evidence; the scanner echo-checked a README-claimed contract id live on-chain, or weekly on-chain enrichment attributed real activity to the repo. Each row joins code truth (stellarProof, codeDepth, interface preview, codeDomains), live usage stats (codeInUse), per-project audit records, and succession. Absence here is NOT a claim a contract doesn't exist; coverage grows as scans reach repos. Most-evidenced first: live usage > verified id > depth. Unknown params 400.",
+          "description": "Contracts as first-class entities: one row per mainnet contract with VERIFIED evidence; the scanner echo-checked a README-claimed contract id live on-chain, weekly on-chain enrichment attributed real activity to the repo, or the curated on-chain map links it to a project. Each row joins code truth (stellarProof, codeDepth, interface preview, codeDomains), live usage stats (codeInUse), per-project audit records, and succession. Absence here is NOT a claim a contract doesn't exist; coverage grows as scans reach repos. Most-evidenced first: live usage > verified id > depth. Unknown params 400.",
           "operationId": "listContracts",
           "parameters": [
             {
@@ -7366,6 +8193,99 @@
                       "contracts": {
                         "items": {
                           "properties": {
+                            "attribution": {
+                              "description": "The curated on-chain map's link of contractId to a project, as the weekly on-chain lane last wrote it on the project row. tier strong = the directory, a code proof (the deployed code's functions are defined in the project's repo, or its build metadata names the repo), a protocol registry anchor (Stellar Index) or the project's own account; labelled = a stellar-expert/public-directory label under the project's own domain (a third party's label, not a verification), or a contract an issuer and its tokens share (sharedWithinFamily, issuer first; served once, under the issuer). The code test was checked on contracts whose owner was known: 1 of 112 other projects' contracts judged own, and it misses about a quarter, so a contract with no attribution is not proof it is not a project's. A contract two projects hold outside one family is attributed to neither. createdAt and createdLedger are the creation found in that ledger's metadata (dateBasis). endedAt = the day the weekly check first read no contract instance at the address; null = present, or never read absent. null = the map holds no link for this contract.",
+                              "nullable": true,
+                              "properties": {
+                                "asOf": {
+                                  "description": "The on-chain reading that last checked the contract (the project's onchain.asOf).",
+                                  "format": "date-time",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "createdAt": {
+                                  "format": "date-time",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "createdLedger": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "dateBasis": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "endedAt": {
+                                  "format": "date-time",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "evidence": {
+                                  "description": "Why the address is the project's, strongest first: directory, own-repo-interface, own-wasm-meta, own-pages-confirmed, own-deployer-confirmed, protocol-registry, public-directory-label (meanings in the on-chain map file, src/data/onchain-map.json).",
+                                  "items": {
+                                    "enum": [
+                                      "directory",
+                                      "own-repo-interface",
+                                      "own-wasm-meta",
+                                      "own-pages-confirmed",
+                                      "own-deployer-confirmed",
+                                      "own-account",
+                                      "protocol-registry",
+                                      "public-directory-label",
+                                      "named-on-own-pages",
+                                      "same-deployer"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "project": {
+                                  "properties": {
+                                    "name": {
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "slug": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "sharedWithinFamily": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true,
+                                  "type": "array"
+                                },
+                                "sourceUrl": {
+                                  "description": "The public page or file the link was read from.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "tier": {
+                                  "enum": [
+                                    "strong",
+                                    "labelled"
+                                  ],
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "project",
+                                "tier",
+                                "evidence",
+                                "sourceUrl",
+                                "createdAt",
+                                "createdLedger",
+                                "dateBasis",
+                                "sharedWithinFamily",
+                                "endedAt",
+                                "asOf"
+                              ],
+                              "type": "object"
+                            },
                             "audits": {
                               "description": "Per-project audit rollup: count + latest auditor/date. Null = none on record at our source, NOT 'unaudited'.",
                               "nullable": true,
@@ -7419,13 +8339,14 @@
                               "type": "object"
                             },
                             "contractBasis": {
-                              "description": "Ownership evidence for contractId. self-validated = the contract's WASM names THIS repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for that WASM. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports, or all of them when it exports fewer than four (a function-name match, not a byte-level build; a GitHub fork never qualifies). sibling-matched = a repo under the same GitHub owner that this repo points to (SEP-55 source_repo, a git submodule, or a README link) defines them. published = not judged yet under that rule (stored before spec 1.9.135, or a scan could not read the repo the source is in); a rescan moves such a row to a judged value where it can decide, and a row judged cited leaves this registry. onchain-attributed = the repo has no such id; the address comes from on-chain enrichment, which recorded stellar.expert naming this repo as the contract's source on the project row. null when contractId is null (a row listed for live usage alone), or for an id recorded before its basis was (not judged yet).",
+                              "description": "Ownership evidence for contractId. self-validated = the contract's WASM names THIS repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for that WASM. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports, or all of them when it exports fewer than four (a function-name match, not a byte-level build; a GitHub fork never qualifies). sibling-matched = a repo under the same GitHub owner that this repo points to (SEP-55 source_repo, a git submodule, or a README link) defines them. published = not judged yet under that rule (stored before spec 1.9.135, or a scan could not read the repo the source is in); a rescan moves such a row to a judged value where it can decide, and a row judged cited leaves this registry. onchain-attributed = the repo has no such id; the address comes from on-chain enrichment, which recorded stellar.expert naming this repo as the contract's source on the project row. onchain-map = no repo row names the contract; the curated on-chain map links it to the project, and `attribution` says why. null when contractId is null (a row listed for live usage alone), or for an id recorded before its basis was (not judged yet).",
                               "enum": [
                                 "self-validated",
                                 "source-matched",
                                 "sibling-matched",
                                 "published",
-                                "onchain-attributed"
+                                "onchain-attributed",
+                                "onchain-map"
                               ],
                               "nullable": true,
                               "type": "string"
@@ -7458,6 +8379,8 @@
                               "type": "object"
                             },
                             "repo": {
+                              "description": "The repo the row comes from. On an onchain-map row, the repo the contract's deployed code is attested to; null when none is attested (not a claim the code has no repo).",
+                              "nullable": true,
                               "properties": {
                                 "fullName": {
                                   "type": "string"
@@ -7515,6 +8438,24 @@
                       },
                       "meta": {
                         "properties": {
+                          "attribution": {
+                            "description": "Credit for the sources behind `attribution`, as their terms ask: Stellar Index (a link when its data is shown publicly) and stellar-expert/public-directory (MIT License).",
+                            "items": {
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "url": {
+                                  "type": "string"
+                                },
+                                "use": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
                           "counts": {
                             "properties": {
                               "returned": {
@@ -7969,11 +8910,11 @@
                                   "type": "string"
                                 },
                                 "project": {
-                                  "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
+                                  "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. Last, a link a person verified against named evidence (basis curated). A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
                                   "nullable": true,
                                   "properties": {
                                     "basis": {
-                                      "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. Absent on links stored before the basis was recorded (all by repo).",
+                                      "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. curated: a person verified the link against named evidence (the same repo, the team's own accounts, or the project's own page naming the build), never a name alone; served when no rule above finds that project. Absent on links stored before the basis was recorded (all by repo).",
                                       "enum": [
                                         "repo",
                                         "website",
@@ -7981,7 +8922,8 @@
                                         "moved-repo",
                                         "moved-owner-and-name",
                                         "scf-page-and-name",
-                                        "submission-links-and-name"
+                                        "submission-links-and-name",
+                                        "curated"
                                       ],
                                       "type": "string"
                                     },
@@ -9742,11 +10684,11 @@
                               "type": "number"
                             },
                             "project": {
-                              "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
+                              "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. Last, a link a person verified against named evidence (basis curated). A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
                               "nullable": true,
                               "properties": {
                                 "basis": {
-                                  "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. Absent on links stored before the basis was recorded (all by repo).",
+                                  "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. curated: a person verified the link against named evidence (the same repo, the team's own accounts, or the project's own page naming the build), never a name alone; served when no rule above finds that project. Absent on links stored before the basis was recorded (all by repo).",
                                   "enum": [
                                     "repo",
                                     "website",
@@ -9754,7 +10696,8 @@
                                     "moved-repo",
                                     "moved-owner-and-name",
                                     "scf-page-and-name",
-                                    "submission-links-and-name"
+                                    "submission-links-and-name",
+                                    "curated"
                                   ],
                                   "type": "string"
                                 },
@@ -10479,11 +11422,11 @@
                             "type": "number"
                           },
                           "project": {
-                            "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
+                            "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. Last, a link a person verified against named evidence (basis curated). A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
                             "nullable": true,
                             "properties": {
                               "basis": {
-                                "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. Absent on links stored before the basis was recorded (all by repo).",
+                                "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. curated: a person verified the link against named evidence (the same repo, the team's own accounts, or the project's own page naming the build), never a name alone; served when no rule above finds that project. Absent on links stored before the basis was recorded (all by repo).",
                                 "enum": [
                                   "repo",
                                   "website",
@@ -10491,7 +11434,8 @@
                                   "moved-repo",
                                   "moved-owner-and-name",
                                   "scf-page-and-name",
-                                  "submission-links-and-name"
+                                  "submission-links-and-name",
+                                  "curated"
                                 ],
                                 "type": "string"
                               },
@@ -12098,11 +13042,11 @@
                                       "type": "string"
                                     },
                                     "project": {
-                                      "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
+                                      "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. Last, a link a person verified against named evidence (basis curated). A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
                                       "nullable": true,
                                       "properties": {
                                         "basis": {
-                                          "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. Absent on links stored before the basis was recorded (all by repo).",
+                                          "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. curated: a person verified the link against named evidence (the same repo, the team's own accounts, or the project's own page naming the build), never a name alone; served when no rule above finds that project. Absent on links stored before the basis was recorded (all by repo).",
                                           "enum": [
                                             "repo",
                                             "website",
@@ -12110,7 +13054,8 @@
                                             "moved-repo",
                                             "moved-owner-and-name",
                                             "scf-page-and-name",
-                                            "submission-links-and-name"
+                                            "submission-links-and-name",
+                                            "curated"
                                           ],
                                           "type": "string"
                                         },
@@ -12484,11 +13429,11 @@
                                 "type": "number"
                               },
                               "project": {
-                                "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
+                                "description": "The directory project this build became, or null when none is found. Linked when a project lists the build's exact GitHub repo; when none does, when the build's demo site is a project's own website; and when neither, when the build's repo sits under the project's GitHub owner and the build carries the project's name (`basis` says which). The two repo rules also read the repo GitHub now redirects githubUrl to, when the team renamed or transferred it. A winner none of those link can still link when its name is the name of exactly one project and a page says so too: the project's SCF page links this build's DoraHacks page, or the build's DoraHacks page lists the project's website or X account. Last, a link a person verified against named evidence (basis curated). A shared GitHub owner alone, a name alone, or a shared platform never counts. Absent = not checked (served from a live DoraHacks read), which is not the same as null.",
                                 "nullable": true,
                                 "properties": {
                                   "basis": {
-                                    "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. Absent on links stored before the basis was recorded (all by repo).",
+                                    "description": "repo: the project lists this exact repo. website: the demo site is the project's website. owner-and-name: the repo sits under the project's GitHub owner and the build's name is the project's name, or starts with it. moved-repo: the repo was renamed or transferred (githubUrl redirects on GitHub), and the project lists the repo it moved to. moved-owner-and-name: owner-and-name, read on the repo it moved to. A repo GitHub could not find is never taken as moved. The last two link winners only, when the build's name (a trailing 'Stellar' aside) is the name or an alias of exactly one project: scf-page-and-name: the project's SCF page (scfSourceUrl on searchProjects) links this build's DoraHacks page. submission-links-and-name: this build's DoraHacks page lists the project's website or X account. curated: a person verified the link against named evidence (the same repo, the team's own accounts, or the project's own page naming the build), never a name alone; served when no rule above finds that project. Absent on links stored before the basis was recorded (all by repo).",
                                     "enum": [
                                       "repo",
                                       "website",
@@ -12496,7 +13441,8 @@
                                       "moved-repo",
                                       "moved-owner-and-name",
                                       "scf-page-and-name",
-                                      "submission-links-and-name"
+                                      "submission-links-and-name",
+                                      "curated"
                                     ],
                                     "type": "string"
                                   },
@@ -14537,6 +15483,34 @@
                           },
                           {
                             "properties": {
+                              "advisory": {
+                                "description": "Present only when the page has no rows: says what this index covers, so the empty page is read as a statement about its coverage and not about the ecosystem, and names where to ask instead.",
+                                "properties": {
+                                  "scope": {
+                                    "description": "getPartners only: what the directory holds.",
+                                    "type": "string"
+                                  },
+                                  "summary": {
+                                    "description": "Written for this response from its own filters, so not dated on its own: it describes the page served at meta.generatedAt.",
+                                    "type": "string"
+                                  },
+                                  "tryInstead": {
+                                    "items": {
+                                      "properties": {
+                                        "endpoint": {
+                                          "type": "string"
+                                        },
+                                        "why": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "type": "array"
+                                  }
+                                },
+                                "type": "object"
+                              },
                               "docKind": {
                                 "description": "Doc class, stamped deterministically at ingest: spec = canonical (CAPs/SEPs/papers/audits; old AND authoritative), guide = staleness-sensitive instructional content, article = dated commentary, data = structured datasets. Null = ingested before 2026-08-13.",
                                 "enum": [
@@ -14843,6 +15817,306 @@
               "a name in an old article or repo matches nothing in the current directory",
               "deciding whether a project was renamed or actually wound down",
               "reconciling an outdated reference before citing it"
+            ]
+          }
+        }
+      },
+      "/api/projects/scf-rounds": {
+        "get": {
+          "description": "Completeness check of THIS directory's SCF award records, one numbered round at a time: how many awards the round's official page lists, how many of them a served project row carries under that award's own project page, and each listed award no row carries, with why. Use it to tell a known gap from a complete round when counting or listing a round's awards from searchProjects. Not for one project's own awards (searchProjects) or funding totals (analyzeEcosystem).",
+          "operationId": "getAwardRoundCoverage",
+          "parameters": [
+            {
+              "description": "One SCF round number. Omitted: every round. A round neither SCF's index nor any row names returns rounds [].",
+              "in": "query",
+              "name": "round",
+              "required": false,
+              "schema": {
+                "minimum": 1,
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "meta": {
+                        "properties": {
+                          "basis": {
+                            "description": "What listed, carried, notCarried and notListed count. Safe to surface to a user.",
+                            "type": "string"
+                          },
+                          "generatedAt": {
+                            "description": "When the project rows were read.",
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "order": {
+                            "type": "string"
+                          },
+                          "scfPaidReadAt": {
+                            "description": "When the SCF sync finished its newest read of SCF's project pages for their paid totals (buildSharesRead, buildFinalTranchePaid). Null = no paid read stored yet.",
+                            "format": "date-time",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "scfReadAt": {
+                            "description": "When the SCF sync finished its newest whole read of SCF's round pages. Null = no read stored yet.",
+                            "format": "date-time",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "scfSource": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "source": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "source",
+                          "generatedAt",
+                          "scfSource",
+                          "scfReadAt",
+                          "scfPaidReadAt",
+                          "basis",
+                          "order"
+                        ],
+                        "type": "object"
+                      },
+                      "rounds": {
+                        "description": "One entry per round, newest first (not a rank). Null when no read is stored; [] = the round asked for is in neither SCF's index nor any row.",
+                        "items": {
+                          "properties": {
+                            "buildFinalTranchePaid": {
+                              "description": "Of buildSharesRead, the Build awards SCF has paid in full: its final tranche, the mainnet launch (or the final deliverable the award allowed in its place), as of meta.scfPaidReadAt. Per award: a project row's scfPaid.buildAwards.",
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "buildSharesRead": {
+                              "description": "Carried awards in the round that are Build awards whose paid share the SCF sync read exactly: SCF's own totalPaid on the award's project page, split by the Build tranche schedule. Null = no paid read stored yet.",
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "carried": {
+                              "description": "Listed awards a served row carries under that award's own SCF page.",
+                              "type": "integer"
+                            },
+                            "carriedOnSeveralRows": {
+                              "description": "Listed awards more than one served row carries: summing those rows counts the award more than once.",
+                              "items": {
+                                "properties": {
+                                  "pageUrl": {
+                                    "type": "string"
+                                  },
+                                  "slugs": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "listed": {
+                              "description": "Awards SCF's round page lists (0 for a round its index does not list).",
+                              "type": "integer"
+                            },
+                            "notCarried": {
+                              "description": "Each listed award no served row carries. [] = every listed award is carried.",
+                              "items": {
+                                "properties": {
+                                  "draftSlugs": {
+                                    "description": "The Draft rows that carry it (draft-row-only); [] otherwise.",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "pageUrl": {
+                                    "description": "The award's SCF project page; null when SCF linked it to none.",
+                                    "nullable": true,
+                                    "type": "string"
+                                  },
+                                  "reason": {
+                                    "description": "no-project-page: SCF links the award to no project page. draft-row-only: only an unpublished (Draft) row carries it. no-row: no row carries the page; it may still match a project under another name.",
+                                    "enum": [
+                                      "no-project-page",
+                                      "draft-row-only",
+                                      "no-row"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "submissionId": {
+                                    "description": "SCF's submission id, set only when pageUrl is null.",
+                                    "nullable": true,
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "notListed": {
+                              "description": "Served rows claiming the round whose SCF page for it the round page does not list. [] = every claim matches a listed award.",
+                              "items": {
+                                "properties": {
+                                  "pageUrls": {
+                                    "description": "The pages the row cites for the round.",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "phase": {
+                              "description": "SCF's phase for the round (e.g. Ended). Null for a round rows claim that SCF's index does not list.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "readAt": {
+                              "description": "When the sync read the round page.",
+                              "format": "date-time",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "round": {
+                              "type": "integer"
+                            },
+                            "roundPageUrl": {
+                              "description": "SCF's own page for the round. Null for a round SCF's index does not list.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "rowsClaiming": {
+                              "description": "Served rows whose scfAwardedRounds hold the round.",
+                              "type": "integer"
+                            },
+                            "undecided": {
+                              "description": "Projects whose submissions in the round are all pending: SCF has not said whether they were awarded.",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      },
+                      "totals": {
+                        "description": "Sums over the rounds returned. Null when no read is stored.",
+                        "nullable": true,
+                        "properties": {
+                          "buildFinalTranchePaid": {
+                            "nullable": true,
+                            "type": "integer"
+                          },
+                          "buildSharesRead": {
+                            "nullable": true,
+                            "type": "integer"
+                          },
+                          "carried": {
+                            "type": "integer"
+                          },
+                          "carriedOnSeveralRows": {
+                            "type": "integer"
+                          },
+                          "listed": {
+                            "type": "integer"
+                          },
+                          "notCarried": {
+                            "type": "integer"
+                          },
+                          "notListed": {
+                            "type": "integer"
+                          },
+                          "rounds": {
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "unavailable": {
+                        "description": "Present only when no read is stored: why rounds is null.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "meta",
+                      "totals",
+                      "rounds"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Round coverage. rounds and totals are null, with unavailable saying why, until the SCF sync has stored a whole read of SCF's round pages."
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "Unknown query param, or round is not a positive integer"
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RetryableError"
+                  }
+                }
+              },
+              "description": "The stored SCF read or the project rows could not be read: an outage, NOT a count. Retry after Retry-After.",
+              "headers": {
+                "Retry-After": {
+                  "description": "Seconds to wait before resending (2).",
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "summary": "Per SCF round: awards SCF's round page lists vs awards Scout's rows carry",
+          "tags": [
+            "Funding"
+          ],
+          "x-routing": {
+            "exampleQuestions": [
+              "Does Scout carry every award SCF lists for round 44?",
+              "Which SCF awards are not on any Scout project row?"
+            ],
+            "keywords": [
+              "scf round coverage",
+              "awards missing from scout",
+              "round page award list",
+              "complete scf round"
+            ],
+            "notFor": [
+              "one project's SCF awards or funding -> searchProjects",
+              "SCF funding totals -> analyzeEcosystem"
+            ],
+            "purpose": "Is this directory's record of an SCF round complete: SCF's round-page award list against the awards Scout's project rows carry.",
+            "useWhen": [
+              "counting or listing one SCF round's awards from Scout: does Scout carry every award SCF's round page lists",
+              "finding which SCF awards Scout's rows do not carry, and why"
             ]
           }
         }
@@ -15322,8 +16596,13 @@
                             "type": "integer"
                           },
                           "byFailureMode": {
+                            "description": "The same five disjoint states per failure mode: open + refresh + blocked + cleared + verified = the mode's rows.",
                             "items": {
                               "properties": {
+                                "blocked": {
+                                  "description": "This mode's open rows a consumer we do not control decides (counted in blockedUpstream).",
+                                  "type": "integer"
+                                },
                                 "cleared": {
                                   "type": "integer"
                                 },
@@ -15331,6 +16610,10 @@
                                   "type": "string"
                                 },
                                 "open": {
+                                  "type": "integer"
+                                },
+                                "refresh": {
+                                  "description": "This mode's open rows that are a refresh, not a defect (counted in refreshQueue).",
                                   "type": "integer"
                                 },
                                 "surface": {
@@ -15650,6 +16933,8 @@
                                   "type": "string"
                                 },
                                 "lessonCount": {
+                                  "description": "Numbered lessons in the write-up; null when it has no countable numbering (not zero lessons).",
+                                  "nullable": true,
                                   "type": "integer"
                                 },
                                 "title": {
@@ -16034,10 +17319,24 @@
                               },
                               "knowledgeNotes": {
                                 "properties": {
+                                  "missing": {
+                                    "description": "Pool repos (owner/name, sorted) with neither a public note nor a triage verdict: the next curation worklist. [] when every pool repo has one.",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  },
                                   "pool": {
                                     "type": "integer"
                                   },
                                   "poolMeans": {
+                                    "type": "string"
+                                  },
+                                  "triaged": {
+                                    "description": "Pool repos with no public note that the curation pass examined and recorded as yielding no durable, source-citable fact.",
+                                    "type": "integer"
+                                  },
+                                  "triagedMeans": {
                                     "type": "string"
                                   },
                                   "withNotes": {
@@ -16137,6 +17436,11 @@
                                   "nullable": true,
                                   "type": "integer"
                                 },
+                                "source": {
+                                  "description": "How the repo entered the index (searchRepos rows' source); null when the row holds none.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
                                 "tier": {
                                   "nullable": true,
                                   "type": "string"
@@ -16214,6 +17518,27 @@
                           "coveragePct": {
                             "type": "integer"
                           },
+                          "deploymentSplit": {
+                            "description": "Scored rows whose deployment network is unknown, split by whether the question applies to the row's types (deploymentApplies).",
+                            "properties": {
+                              "applicableUnknown": {
+                                "description": "Of those, rows with an on-chain product type: a gap.",
+                                "type": "integer"
+                              },
+                              "means": {
+                                "type": "string"
+                              },
+                              "notApplicable": {
+                                "description": "Of those, rows with no on-chain product type: unknown is the correct answer.",
+                                "type": "integer"
+                              },
+                              "unknown": {
+                                "description": "Rows with deployment network unknown.",
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
                           "frame": {
                             "type": "string"
                           },
@@ -16267,15 +17592,85 @@
                             },
                             "type": "array"
                           },
+                          "strongBasisSplit": {
+                            "description": "Row counts over the scored rows (every status, Draft rows and folded duplicates left out). Weak = a status basis outside strongBases. `means` and `populationMeans` say what each count is over.",
+                            "properties": {
+                              "appOnly": {
+                                "description": "Weak rows with no on-chain footprint.",
+                                "type": "integer"
+                              },
+                              "deploymentStrongStatusWeak": {
+                                "description": "Rows whose deployment basis is strong while their status basis is weak.",
+                                "type": "integer"
+                              },
+                              "livePopulation": {
+                                "description": "Scored rows whose status is Live.",
+                                "type": "integer"
+                              },
+                              "means": {
+                                "type": "string"
+                              },
+                              "onchainEligible": {
+                                "description": "Weak rows with an on-chain footprint (hasOnchainFootprint).",
+                                "type": "integer"
+                              },
+                              "population": {
+                                "description": "Every row scored: the denominator of weakLiveRows.",
+                                "type": "integer"
+                              },
+                              "populationMeans": {
+                                "type": "string"
+                              },
+                              "weakLiveOnly": {
+                                "description": "Live rows with a weak status basis.",
+                                "type": "integer"
+                              },
+                              "weakLiveRows": {
+                                "description": "Rows of every status with a weak status basis (the name is historical).",
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
                           "weakestRows": {
                             "description": "The curation queue: each row's slug, evidence score, and exactly which facts are missing.",
                             "items": {
                               "properties": {
+                                "deploymentApplies": {
+                                  "description": "One of the row's types is an on-chain product type (DEX, DeFi, Lending, Derivatives, Oracle, Bridge, Stablecoin, RWA), so an unknown deployment is a gap; false means unknown is the correct answer for this row.",
+                                  "type": "boolean"
+                                },
+                                "deploymentBasis": {
+                                  "description": "The row's deployment.basis; null when the network is unknown.",
+                                  "enum": [
+                                    "human-verified",
+                                    "onchain-activity",
+                                    "mainnet-contract-join",
+                                    "defillama-tvl",
+                                    "rwa-registry",
+                                    "operator-toml"
+                                  ],
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "deploymentNetwork": {
+                                  "description": "The row's deployment.network; unknown when it holds none.",
+                                  "enum": [
+                                    "mainnet",
+                                    "testnet",
+                                    "unknown"
+                                  ],
+                                  "type": "string"
+                                },
                                 "factsPresent": {
                                   "type": "integer"
                                 },
                                 "factsTotal": {
                                   "type": "integer"
+                                },
+                                "hasOnchainFootprint": {
+                                  "description": "The row holds an issued asset code, at least one on-chain contract, or a mainnet or testnet deployment.",
+                                  "type": "boolean"
                                 },
                                 "missing": {
                                   "items": {
@@ -16302,6 +17697,13 @@
                                 "statusBasis": {
                                   "nullable": true,
                                   "type": "string"
+                                },
+                                "types": {
+                                  "description": "The row's types; [] when it holds none.",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array"
                                 }
                               },
                               "type": "object"
@@ -16567,6 +17969,37 @@
                             "nullable": true,
                             "type": "number"
                           },
+                          "codeDomains": {
+                            "description": "Code domains the scan evidenced (as on searchRepos codeVerified.codeDomains); [] when none.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "codeInUse": {
+                            "description": "The stored mainnet usage rollup for contracts attributed to this repo, passed through as stored (searchRepos rows' codeInUse gives the meanings). null when none is stored. {} (no keys) when the stored rollup is empty, which means the same as null: no verified mainnet contract joined.",
+                            "nullable": true,
+                            "properties": {
+                              "activeLedgers": {
+                                "nullable": true,
+                                "type": "integer"
+                              },
+                              "asOf": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "contracts": {
+                                "nullable": true,
+                                "type": "integer"
+                              },
+                              "lastEventAt": {
+                                "format": "date-time",
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
                           "contractInterface": {
                             "items": {
                               "type": "string"
@@ -16674,6 +18107,11 @@
                             "type": "string"
                           },
                           "stellarProof": {
+                            "type": "string"
+                          },
+                          "successorRepo": {
+                            "description": "owner/name of the repo that continues this one, as on searchRepos rows; null when none is recorded.",
+                            "nullable": true,
                             "type": "string"
                           },
                           "symbols": {
@@ -17710,7 +19148,7 @@
               }
             },
             {
-              "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index, strategy, roadmap, service-provider directory, community FAQ), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'slp' for Stellar Limits Proposals, the network configuration votes (Soroban resource limit changes, and the Quorum Freeze of exploit accounts in SLP-0006 and SLP-0008; each row opens with the proposal's number, status and creation date), 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags). Several sources in one call: see `sources` (a comma here is read the same way).",
+              "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index, strategy, roadmap, service-provider directory, community FAQ), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'slp' for Stellar Limits Proposals, the network configuration votes (Soroban resource limit changes, and the Quorum Freeze of exploit accounts in SLP-0006 and SLP-0008; each row opens with the proposal's number, status and creation date), 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags), 'stellar-discussions' for the Stellar org's GitHub Discussions (hosted on stellar/stellar-protocol), where CAPs, SEPs, SLPs and tokenomics are argued in public: one document per discussion, its opening post then every comment and reply signed with author and day; each row opens with the discussion's number, category, title, opening date, the day GitHub last updated it and the CAP/SEP/SLP numbers its title or opening post names; publishedAt is the day it was opened; narrow by `category`. Several sources in one call: see `sources` (a comma here is read the same way).",
               "in": "query",
               "name": "source",
               "schema": {
@@ -17731,7 +19169,24 @@
                   "security-program",
                   "sdf-org",
                   "ec-developer-report",
-                  "release"
+                  "release",
+                  "stellar-discussions"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "description": "GitHub Discussions category of source=stellar-discussions, by slug: tokenomics, core-advancement-proposals (CAP discussions), stellar-ecosystem-proposals (SEP), stellar-limits-proposals (SLP), general-discussion, announcements. Implies source=stellar-discussions and scopes retrieval to that category (an explicit other source or an audit filter is rejected with 400; an unknown category is a 400 listing validCategories). Each row serves it as discussionCategory.",
+              "in": "query",
+              "name": "category",
+              "schema": {
+                "enum": [
+                  "announcements",
+                  "core-advancement-proposals",
+                  "general-discussion",
+                  "stellar-ecosystem-proposals",
+                  "stellar-limits-proposals",
+                  "tokenomics"
                 ],
                 "type": "string"
               }
@@ -17803,7 +19258,8 @@
                     "security-program",
                     "sdf-org",
                     "ec-developer-report",
-                    "release"
+                    "release",
+                    "stellar-discussions"
                   ],
                   "type": "string"
                 },
@@ -17877,7 +19333,8 @@
                                         "security-program",
                                         "sdf-org",
                                         "ec-developer-report",
-                                        "release"
+                                        "release",
+                                        "stellar-discussions"
                                       ],
                                       "type": "string"
                                     },
@@ -17895,6 +19352,32 @@
                                   "type": "object"
                                 },
                                 "type": "array"
+                              },
+                              "mainnetProtocol": {
+                                "description": "Present only on a recency question about the mainnet upgrade (recent mainnet upgrade, latest protocol upgrade): the protocol the Stellar mainnet runs, from the header of the first mainnet ledger carrying it (source, a Horizon ledger), read on asOf. Only that ledger makes an upgrade live on mainnet; a release, a testnet upgrade or an announced vote date does not. Rows whose title names this protocol rank first; a row naming a higher protocol describes an upgrade not voted in as of asOf.",
+                                "properties": {
+                                  "activatedAt": {
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "asOf": {
+                                    "format": "date",
+                                    "type": "string"
+                                  },
+                                  "firstLedger": {
+                                    "type": "integer"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  },
+                                  "protocol": {
+                                    "type": "integer"
+                                  },
+                                  "source": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
                               },
                               "matchMode": {
                                 "description": "vector = similarity ranking over embeddings (conceptual, not literal keyword truth); keyword = vector search unavailable, coarse keyword match over title and content.",
@@ -18017,7 +19500,7 @@
                   }
                 }
               },
-              "description": "The call is wrong: missing q, an unknown source, or audit-only filters on a non-audit source. Fix the call; do not retry it as is."
+              "description": "The call is wrong: missing q, an unknown source or category, audit-only filters on a non-audit source, or a category with a source other than stellar-discussions. Fix the call; do not retry it as is."
             },
             "429": {
               "content": {
@@ -18106,6 +19589,8 @@
               "seps",
               "cap",
               "slp",
+              "github discussions",
+              "tokenomics",
               "standards",
               "dev docs",
               "documentation",
@@ -18714,6 +20199,15 @@
                             "id": {
                               "description": "`CODE-GISSUER` for a classic asset; the `C…` contract id for a Soroban token. The asset's identity: a ticker alone identifies nothing.",
                               "type": "string"
+                            },
+                            "integrations": {
+                              "allOf": [
+                                {
+                                  "$ref": "#/components/schemas/TokenIntegrationsBrief"
+                                }
+                              ],
+                              "description": "Which directory projects support this token, per tier and SCF-funded per tier, from the weekly token integrations layer; url leads to every edge. Null when the layer holds no row for the token or could not be read this request: not known, never zero support.",
+                              "nullable": true
                             },
                             "issuer": {
                               "description": "Mainnet issuer account (classic).",
@@ -19515,6 +21009,34 @@
                           },
                           {
                             "properties": {
+                              "counts": {
+                                "properties": {
+                                  "bySource": {
+                                    "description": "Skills in the whole catalog per source, before the source, kind and q filters (a different denominator from total). A source is null when its read failed, so its count is unknown, not zero: sdf when the registry did not answer, community when that read failed or the registry did not answer.",
+                                    "properties": {
+                                      "community": {
+                                        "nullable": true,
+                                        "type": "integer"
+                                      },
+                                      "external": {
+                                        "type": "integer"
+                                      },
+                                      "lumenloop": {
+                                        "type": "integer"
+                                      },
+                                      "sdf": {
+                                        "nullable": true,
+                                        "type": "integer"
+                                      },
+                                      "stellarlight": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "type": "object"
+                                  }
+                                },
+                                "type": "object"
+                              },
                               "matchMode": {
                                 "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
                                 "enum": [
@@ -19672,6 +21194,10 @@
                       },
                       "skill": {
                         "properties": {
+                          "argumentHint": {
+                            "description": "Registry entries only: the argument hint (e.g. '[payment task]'); absent elsewhere.",
+                            "type": "string"
+                          },
                           "compatibility": {
                             "description": "Agent hosts known to run it.",
                             "items": {
@@ -19705,14 +21231,34 @@
                             "type": "string"
                           },
                           "installAlt": {
-                            "nullable": true,
-                            "type": "string"
+                            "description": "Alternate install commands for other agent runtimes, as on listSkills rows: {label, command} entries. Absent when only the primary install applies.",
+                            "items": {
+                              "properties": {
+                                "command": {
+                                  "type": "string"
+                                },
+                                "label": {
+                                  "description": "The runtime the command is for (e.g. 'Codex'): a name, not dated.",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
                           },
                           "kind": {
                             "description": "skill-md | mcp-server | sdk | cli | agent-kit | tool",
                             "type": "string"
                           },
                           "name": {
+                            "type": "string"
+                          },
+                          "rawUrl": {
+                            "description": "Raw SKILL.md URL for entries skills.stellar.org lists; absent elsewhere.",
+                            "type": "string"
+                          },
+                          "registry": {
+                            "description": "'skills.stellar.org' when SDF's registry lists the entry; absent otherwise (as on listSkills rows).",
                             "type": "string"
                           },
                           "repository": {
@@ -19742,6 +21288,10 @@
                               "type": "string"
                             },
                             "type": "array"
+                          },
+                          "userInvocable": {
+                            "description": "Registry entries only: whether the skill is user-invocable in skills.stellar.org's sense; absent elsewhere.",
+                            "type": "boolean"
                           }
                         },
                         "type": "object"
@@ -20150,11 +21700,11 @@
       },
       "/api/stablecoins": {
         "get": {
-          "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; ARST supply is pesos, mZAR is rand), holders, price, full issuer account, and `basis` (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
+          "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; ARST supply is pesos, mZAR is rand), holders, price, 24h transfer volume, full issuer account, and `basis` (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Soroban RPC and live peg FX; null = not measured, never zero.",
           "operationId": "getStablecoins",
           "parameters": [
             {
-              "description": "Ranking order. marketcap (default, USD-comparable) | supply (raw peg units; comparable only within one peg) | holders | volume. Unrecognized values return 400.",
+              "description": "Ranking order. marketcap (default, USD-comparable) | supply (raw peg units; comparable only within one peg) | holders | volume (transferVolume24hUSD, 24h transfer volume in USD; rows not measured last). Unrecognized values return 400.",
               "in": "query",
               "name": "sort",
               "schema": {
@@ -20361,7 +21911,8 @@
             "notFor": [
               "DeFi protocol TVL -> getLeaderboard sort=tvl",
               "a stablecoin project's full profile/funding/repos -> searchProjects",
-              "non-stablecoin issued assets (governance/utility tokens) -> getLeaderboard sort=supply"
+              "non-stablecoin issued assets (governance/utility tokens) -> getLeaderboard sort=supply",
+              "which apps or protocols support a stablecoin, and where it can be swapped or lent -> getTokenIntegrations"
             ],
             "purpose": "Authoritative USD-comparable stablecoin ranking. Answers 'biggest stablecoin', 'largest issuer', 'total stablecoin market cap' with USD market cap, NOT raw supply, which is denominated in each asset's own peg and not comparable across rows.",
             "useWhen": [
@@ -20428,6 +21979,398 @@
             "useWhen": [
               "how fresh or large is the data ('as of when?', 'how many projects are indexed?')",
               "what endpoints exist / sanity-check the API is up"
+            ]
+          }
+        }
+      },
+      "/api/tokens/integrations": {
+        "get": {
+          "description": "Which projects support any given token across Stellar, and how: edges per token, project/venue and kind, each with its tier (integrated means the project chose the token; used means pools with priced depth and recent trading; available; unrated), pool count, first date with its basis, recent activity, balance, USD depth, evidence, plus SCF awards. Counts stay per tier, never merged into one number. Pass token (contract address, CODE:ISSUER, bare code: several issuers return candidates, never one silent pick) and project (every token that project supports). Refreshed weekly.",
+          "operationId": "getTokenIntegrations",
+          "parameters": [
+            {
+              "description": "The token: a contract id (C...), CODE:ISSUER (or CODE-ISSUER), XLM, or a bare code. A code is matched case-blind among tokens in this layer; when more than one issuer carries it, the response returns `meta.token.candidates` with `edges` and `summary` null, and the caller picks one by issuer. A code is never resolved to one issuer silently.",
+              "in": "query",
+              "name": "token",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "description": "Directory project slug: every token that project supports. An unknown slug answers 400.",
+              "in": "query",
+              "name": "project",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "description": "Only edges of this tier.",
+              "in": "query",
+              "name": "tier",
+              "schema": {
+                "enum": [
+                  "integrated",
+                  "used",
+                  "available",
+                  "unrated"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "description": "Only edges of this kind: dex_pool, lending_reserve, vault, bridge, oracle_feed (protocol contracts), classic_amm_pool (network venue, no project), anchor_asset (an anchor's stellar.toml), asset_list (a SEP-42 list), issuer, holder (a contract, venue holder, or an account, venue account, tied to a project holds it), holder_unattributed.",
+              "in": "query",
+              "name": "kind",
+              "schema": {
+                "enum": [
+                  "dex_pool",
+                  "lending_reserve",
+                  "vault",
+                  "bridge",
+                  "oracle_feed",
+                  "classic_amm_pool",
+                  "anchor_asset",
+                  "asset_list",
+                  "issuer",
+                  "holder",
+                  "holder_unattributed"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "description": "true: only edges whose project row says SCF awarded; false: only edges whose project row does not. Edges with no project (network venues, unattributed holders) match neither. Read from the project row at request time.",
+              "in": "query",
+              "name": "scfAwarded",
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            {
+              "description": "active (default): edges seen at the last read. ended: edges whose evidence the lane later stopped finding, kept with endedAt and endedReason, never deleted. all: both.",
+              "in": "query",
+              "name": "status",
+              "schema": {
+                "default": "active",
+                "enum": [
+                  "active",
+                  "ended",
+                  "all"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "description": "Max edges (default 50, max 200).",
+              "in": "query",
+              "name": "limit",
+              "schema": {
+                "default": 50,
+                "maximum": 200,
+                "type": "integer"
+              }
+            },
+            {
+              "description": "Edges to skip.",
+              "in": "query",
+              "name": "offset",
+              "schema": {
+                "default": 0,
+                "minimum": 0,
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "edges": {
+                        "items": {
+                          "$ref": "#/components/schemas/TokenIntegrationEdge"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      },
+                      "meta": {
+                        "properties": {
+                          "asOf": {
+                            "description": "The newest read behind the matched edges; cite it as the as-of time. null when nothing matched.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "attribution": {
+                            "type": "string"
+                          },
+                          "counts": {
+                            "description": "matched = edges matching every filter, before limit and offset; returned = edges in this response. null when a code was ambiguous.",
+                            "nullable": true,
+                            "properties": {
+                              "matched": {
+                                "type": "integer"
+                              },
+                              "returned": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "coverage": {
+                            "description": "What the layer reads and what it cannot see. Absence of an edge is not proof a project does not support a token.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "filters": {
+                            "description": "Echo of the request parameters, not served facts; null = not applied.",
+                            "properties": {
+                              "kind": {
+                                "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it.",
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "limit": {
+                                "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it.",
+                                "type": "integer"
+                              },
+                              "offset": {
+                                "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it.",
+                                "type": "integer"
+                              },
+                              "project": {
+                                "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it.",
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "scfAwarded": {
+                                "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it.",
+                                "nullable": true,
+                                "type": "boolean"
+                              },
+                              "status": {
+                                "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it.",
+                                "type": "string"
+                              },
+                              "tier": {
+                                "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it.",
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "token": {
+                                "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it.",
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "holderSweeps": {
+                            "additionalProperties": {
+                              "$ref": "#/components/schemas/TokenHolderSweep"
+                            },
+                            "description": "Per token, how complete the holder sweep was (keyed by token contract id); a token not swept has no entry.",
+                            "type": "object"
+                          },
+                          "oldestReadAt": {
+                            "description": "The oldest read behind the matched edges.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "order": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "sources": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "tiers": {
+                            "description": "What each tier means, with the floors in force.",
+                            "properties": {
+                              "available": {
+                                "type": "string"
+                              },
+                              "integrated": {
+                                "type": "string"
+                              },
+                              "unrated": {
+                                "type": "string"
+                              },
+                              "used": {
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "token": {
+                            "description": "How `token` was resolved; null when no token was asked for.",
+                            "nullable": true,
+                            "properties": {
+                              "candidates": {
+                                "description": "Tokens in this layer carrying the code, most integrated plus used projects first; that order is not a verdict on which issuer is genuine. null when the token was given as a contract id or CODE:ISSUER.",
+                                "items": {
+                                  "properties": {
+                                    "code": {
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "homeDomain": {
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "issuer": {
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "issuerLabel": {
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "projectsByTier": {
+                                      "$ref": "#/components/schemas/TokenTierCounts"
+                                    },
+                                    "tokenId": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "nullable": true,
+                                "type": "array"
+                              },
+                              "matchedBy": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "note": {
+                                "type": "string"
+                              },
+                              "query": {
+                                "type": "string"
+                              },
+                              "resolvedTokenId": {
+                                "description": "The contract id the edges are for; null when a code matched no token or several.",
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "summary": {
+                        "description": "Counts over every matched edge (all filters applied, before paging). Never one blended number: a project counts once at its best tier; network venues and unattributed holders are counted apart and are never a project's support. The counts are not dated themselves: each counted edge carries its own readAt, and meta.asOf is the newest.",
+                        "nullable": true,
+                        "properties": {
+                          "networkVenuePoolsByTier": {
+                            "$ref": "#/components/schemas/TokenTierCounts"
+                          },
+                          "projectsByTier": {
+                            "$ref": "#/components/schemas/TokenTierCounts"
+                          },
+                          "scfFundedByTier": {
+                            "$ref": "#/components/schemas/TokenTierCounts"
+                          },
+                          "tokensByTier": {
+                            "$ref": "#/components/schemas/TokenTierCounts"
+                          },
+                          "unattributedHolders": {
+                            "properties": {
+                              "balanceUsd": {
+                                "nullable": true,
+                                "type": "number"
+                              },
+                              "contracts": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "meta",
+                      "summary",
+                      "edges"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Edges, per-tier counts and coverage. When a bare code matches more than one token, `edges`, `summary` and `meta.counts` are null and `meta.token.candidates` lists the tokens."
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "An unknown query parameter, an invalid tier, kind, status or scfAwarded value, a token that is not a contract id, CODE:ISSUER or code, or an unknown project slug; the body names the valid values."
+            },
+            "503": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              },
+              "description": "The store could not be read, or the refresh lane has not written the layer yet. Not a claim about any token."
+            }
+          },
+          "summary": "Which projects support each token on Stellar, how, since when",
+          "tags": [
+            "Ecosystem"
+          ],
+          "x-routing": {
+            "exampleQuestions": [
+              "Which lending protocols and exchanges support this token, and which are SCF-funded?",
+              "Where can I lend, borrow or swap this token on Stellar?",
+              "Which tokens does a lending protocol support?"
+            ],
+            "keywords": [
+              "token support",
+              "supports token",
+              "which apps support",
+              "which protocols support",
+              "token integrations",
+              "integrated",
+              "where can I swap",
+              "where can I lend",
+              "where can I borrow",
+              "lending reserves",
+              "pools holding",
+              "vault assets",
+              "SCF-funded protocols supporting"
+            ],
+            "notFor": [
+              "a stablecoin's market cap, supply, holders or issuer -> getStablecoins",
+              "whether a real-world-asset token is issued and by whom -> getRwaAssets",
+              "a project's profile, status or funding -> searchProjects",
+              "an anchor's ramps, countries and services -> getPartners"
+            ],
+            "purpose": "Token to project support map on Stellar: which apps, protocols, lending markets, vaults, anchors and asset lists carry a token, tiered by evidence, and which tokens a protocol supports.",
+            "useWhen": [
+              "which apps, protocols or SCF-funded projects support a token on Stellar, counted per tier",
+              "where a token can be swapped, lent, borrowed or deposited: the pools, lending reserves and vaults holding it",
+              "which tokens a protocol supports, lists or holds"
             ]
           }
         }
@@ -20724,6 +22667,11 @@
                             "description": "The denominators behind the verdict.",
                             "properties": {
                               "audits": {
+                                "description": "Audit reports searched (audited claims).",
+                                "type": "integer"
+                              },
+                              "stablecoins": {
+                                "description": "Stablecoin registry rows searched, retired assets left out (issued claims).",
                                 "type": "integer"
                               }
                             },
@@ -21320,8 +23268,8 @@
       }
     ]
   },
-  "openapiVersion": "1.9.157",
-  "operationCount": 42,
+  "openapiVersion": "1.9.173",
+  "operationCount": 44,
   "service": "stellar-light",
   "source": {
     "auth": "none (keyless, read-only)",
@@ -21332,7 +23280,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.9.157",
+    "apiVersion": "1.9.173",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",
@@ -21359,6 +23307,7 @@
       "/api/rfps",
       "/api/research",
       "/api/stablecoins",
+      "/api/tokens/integrations",
       "/api/rwa",
       "/api/feedback",
       "/api/skills",
@@ -21375,7 +23324,8 @@
       "/api/hackathon-brief",
       "/api/repos/trust",
       "/api/contracts",
-      "/api/sources/locate"
+      "/api/sources/locate",
+      "/api/projects/scf-rounds"
     ],
     "ok": true,
     "service": "Stellar Scout",
