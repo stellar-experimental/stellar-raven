@@ -55,6 +55,14 @@ Own-repo fixes (adapters, normalizers, catalog, goldens, evals) go to [`.agents/
 
 `improvements/intake.json` resolves target repos per collection and per finding ([`improvements-pipeline`](../.agents/skills/improvements-pipeline/SKILL.md) owns the rules and follow-up loop). Record the exact upstream issue URL in `evidence` when marking `reported-upstream`.
 
+### Draft stellar-docs findings from SDK usage
+
+```sh
+npm run improvements:from-sdk-feed -- --dry-run
+```
+
+Reads a feed that ranks `soroban-sdk` APIs by how many non-fork Soroban repos call them against what the docs show and what the SDK deprecates ([state-of-soroban](https://github.com/devodii/state-of-soroban), regenerated from its database). It writes one `proposed` stellar-docs record per API at or above `--min-repos` (default 300), with an `http-text` probe so `improvements:probes` reports when the docs change. APIs already named in a finding, or already covered by a pinned skill, are skipped. Pass `--feed <path|url>` to use another feed.
+
 ### File a finding
 
 ```sh

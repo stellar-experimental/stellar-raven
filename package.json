@@ -48,6 +48,7 @@
     "eval:playground": "node scripts/run-playground-semantic-eval.mjs",
     "eval:partner-docs": "node scripts/eval-partner-docs.mjs",
     "improvements:lint": "node scripts/improvements-lint.mjs",
+    "improvements:from-sdk-feed": "node scripts/improvements-from-sdk-feed.mjs",
     "improvements:file": "node scripts/improvements-file-issue.mjs",
     "improvements:resolve": "node scripts/improvements-resolve.mjs",
     "improvements:probes": "node scripts/improvements-run-probes.mjs",
