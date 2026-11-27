@@ -614,7 +614,7 @@ describe("searchCatalog — routing quality", () => {
 
     expect(page.hits.map((hit) => hit.id)).toContain("scout.getLeaderboard");
     expect(page.hits.map((hit) => hit.id)).not.toContain("scout.searchProjects");
-    expect(page.hits.filter((hit) => hit.service === "scout")).toHaveLength(1);
+    expect(page.hits.filter((hit) => hit.service === "scout")).toHaveLength(2);
     expect(searchCatalogPage(catalog, {
       query: "top Stellar projects by GitHub activity",
       limit: 5
@@ -1377,6 +1377,7 @@ describe("search-hit signature compaction", () => {
       "scout.analyzeEcosystem",
       "scout.compareHackathons",
       "scout.explainRepo",
+      "scout.getAwardRoundCoverage",
       "scout.getBuilders",
       "scout.getChanges",
       "scout.getClusters",
@@ -1389,6 +1390,7 @@ describe("search-hit signature compaction", () => {
       "scout.getRepoTrust",
       "scout.getRfps",
       "scout.getStablecoins",
+      "scout.getTokenIntegrations",
       "scout.hackathonBrief",
       "scout.listAudits",
       "scout.listContracts",

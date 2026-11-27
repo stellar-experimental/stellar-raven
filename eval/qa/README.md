@@ -97,7 +97,7 @@ The [runner parser](run-qa.mjs) owns the complete flag contract.
 Unknown flags, equals forms, stray arguments, and duplicate required flags fail before a paid call.
 The `--judge-stored` mode rejects `--ids`; use the re-judge tool to select saved rows.
 
-`--surface per-operation` selects a separate 61-operation diagnostic: 18 Lumenloop, 29 Scout, 12 Docs and 2 stellar.org operations.
+`--surface per-operation` selects a separate 63-operation diagnostic: 18 Lumenloop, 31 Scout, 12 Docs and 2 stellar.org operations.
 [plain-operation-harness.mjs](plain-operation-harness.mjs) defines that surface.
 [compare-architecture-ab.mjs](compare-architecture-ab.mjs) compares its results with the two-tool surface.
 

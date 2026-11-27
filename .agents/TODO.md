@@ -225,7 +225,9 @@ The owner adopted the maintenance exception (2026-11-17; rule in
 dated runs keep their narrow scope: a run closes its reopened register entries all or none, and
 closes none when it could not read every member (orchestrator's answer 2 (1) in
 [`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md)). Such an entry stays at
-`reopen`. Count left open so far: 17 (run 2.1, all at `reopen` with no `reSwept` written). Each dated run adds its count here.
+`reopen`. Count left open so far: 20 (17 from run 2.1 plus 3 clusters `cluster-023`, `cluster-053`,
+`cluster-066` reopened 2026-11-27 when `sd-105`/`sd-109` partial caps were lifted; all at `reopen`
+with no `reSwept` written). Each dated run adds its count here.
 
 Next, after round item 2.2c (starts with the 2.2c close-out, no later than 2026-12-11): one
 maintenance lane under the exception reads every member of each left-open entry and closes or
@@ -403,7 +405,8 @@ Held by this item:
   [RESULTS-2](rounds/2026-11-16-next-phase/items/6.3/RESULTS-2.md),
   [7.2 RESULTS](rounds/2026-11-16-next-phase/items/7.2/RESULTS.md); reopen only on `/api/rwa`
   schema change, general mixed-intent routing, or owner product need — never on routine drift, and
-  any re-test needs an owner or orchestrator decision),
+  any re-test needs an owner or orchestrator decision; 2026-11-27 Scout 1.9.173 response-only
+  `assets.items.integrations` addition deferred by orchestrator — stays excluded),
   `GET /api/quality`, `reviewSubmission`, `analyzeHackathonSubmissions`, `getHackathonSubmission`,
   and `locateSource`.
 - **Builder extraction of Scout enums and examples:** `scripts/build-catalog.mjs` turns input-schema
@@ -426,7 +429,7 @@ Held by this item:
   a 2026-11-23 post-deploy assurance probe also observed natural-language `Where can I find SDF quarterly reports?`
   drop from rank 2 to absent).
   Address generally with this repair, never with a per-query patch.
-- **`SKILL_DESCRIPTION_OVERRIDES`** holds `skills.stellar-dev.dapp`'s search text.
+- **`SKILL_DESCRIPTION_OVERRIDES`** holds `skills.stellar-dev.dapp`'s search text (2026-11-27: pinned `stellar-dev@9098e8ba24de` added `dapp/walletconnect.md` and "WalletConnect and WalletConnect Pay" to the upstream description; override keeps WalletConnect out of discovery text until the next override review).
 - **Known test/selector traps from prior rounds:** `test/search.test.ts` (`rfp` case) relies on
   schema-only `scout.getRfps` admission; check 11 is a selector gap in `src/catalog/search.ts`
   (quota replacement cannot fire above quota). Restore legitimate recall before removing spurious
@@ -553,7 +556,12 @@ of `GET /api/quality` or `GET /api/verify` (version-only bumps do not count). `s
 ships only after general Scout routing regressions resolve
 ([review](rounds/2026-09-03-truth-maintenance/final-routing-review-terra.md)). Last fired
 2026-11-16 (Scout 1.9.150): `GET /api/quality` stayed excluded
-([SCOUT-EXPOSURE.md](rounds/2026-11-16-next-phase/items/0.2/SCOUT-EXPOSURE.md)).
+([SCOUT-EXPOSURE.md](rounds/2026-11-16-next-phase/items/0.2/SCOUT-EXPOSURE.md)). On 2026-11-27
+(Scout 1.9.173), response-only schema additions landed on `GET /api/quality` (`weakestRows.*`,
+`deploymentSplit`, `strongBasisSplit`, `knowledgeNotes`, `byFailureMode`) and `GET /api/verify`
+(`meta.searched.stablecoins`) with zero `x-routing` or description changes; candidate re-exposure
+was explicitly deferred by the orchestrator and both stay in `EXCLUDED_SCOUT_OPERATIONS`
+([review](rounds/2026-11-27-issue-pr-triage/review-drift-fable.md) S2).
 
 When triggered: rebuild catalog/surfaces, run exposure tests and `npm run eval:routing -- --gate`
 without changing `eval/gates.json`, and record manifest hash and lane totals.
@@ -581,6 +589,15 @@ Done when: re-exposed via steps 1–4, or owner decides to keep it removed and d
 
 ## Executor and tool surface
 
+### Handle `scout.getTokenIntegrations` candidate disambiguation and `hackathonBuilds[]` scrub wording
+
+Surfaced during 2026-11-27 Scout 1.9.173 drift review ([review](rounds/2026-11-27-issue-pr-triage/review-drift-fable.md) S4, L2, L6):
+
+- **Bare-code candidate envelope (`src/executor/providers.ts`):** Live `GET /api/tokens/integrations?token=USDC` returns HTTP 200 with `edges: null`, `summary: null`, and five `meta.token.candidates`. Because `hasServiceData` skips `meta`, `resultCaveat` emits `caveat: "no-rows"` (identical to an unknown code) and `asOf` falls back to `observed`. Verify through a local Worker `execute` pass (`{token:"USDC"}`, `CODE:ISSUER`, `{project:"blend"}`, `scout.getAwardRoundCoverage({round:44})`), handle `meta.token.candidates` as non-empty actionable data (and check `meta.scfReadAt` on `getAwardRoundCoverage`), and run `npm run test:smoke`.
+- **Scrubbed `hackathonBuilds[]` orphan sentence (`src/skills/scrub.ts`):** Removing the excluded `/api/hackathons/builds/{id}` sentence in `stellar-light` `references/api-reference.md` leaves the following sentences (`"Newest event first; the order is not a rank..."`) orphaned right after `onStellar`. Tighten the scrub boundary in a separate reviewed change so the served prose keeps its subject.
+
+Done when: bare-code `getTokenIntegrations` candidate responses return no spurious `no-rows` caveat (`test:smoke` green) and the scrubbed `hackathonBuilds[]` prose no longer attaches to `onStellar`.
+
 ### Recheck `sd-059` after upstream action on Mintlify Discovery search
 
 `sd-059` ([stellar/stellar-docs#2995](https://github.com/stellar/stellar-docs/issues/2995)):
@@ -606,8 +623,12 @@ while `stellarDocs.search_docs` ranks the page in its top 5 (re-probe 2026-11-20
   both exclude `/docs/build/guides/transactions/*`.
 
 The Custom Account example now passes on both paths. The contract-id derivation miss is Mintlify
-ranking, filed as `sd-114` ([stellar-docs#3170](https://github.com/stellar/stellar-docs/issues/3170),
-open fix PR [#3171](https://github.com/stellar/stellar-docs/pull/3171)).
+ranking, filed as `sd-114` ([stellar-docs#3170](https://github.com/stellar/stellar-docs/issues/3170);
+PR [#3171](https://github.com/stellar/stellar-docs/pull/3171) merged 2026-11-24 and lifted 3/5
+natural queries to ranks #1–#4, but the primary query `"how is a Soroban contract ID derived"`
+still returned 0/40 sections on 2026-11-27; verification reply
+[7229315504](https://github.com/stellar/stellar-docs/issues/3170#issuecomment-7229315504) asks to
+reopen `#3170`, and `sd-114` stays active as `reported-upstream`).
 
 Held: holdout top1, top3 and forbidden captures sit on their gate limits, and per-query exceptions
 are banned. Trigger: the general routing repair ("Preserve structured routing intent across

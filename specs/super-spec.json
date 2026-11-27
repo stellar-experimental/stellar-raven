@@ -220,7 +220,7 @@
     "description": "One spec covering every operation this MCP server can execute, across five services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), stellarOrg (the stellar.org website), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-23T20:59:26Z"
+    "x-generatedAt": "2026-11-27T22:04:23Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1897,6 +1897,88 @@
         }
       }
     },
+    "/scout/getAwardRoundCoverage": {
+      "get": {
+        "description": "Completeness check of THIS directory's SCF award records, one numbered round at a time: how many awards the round's official page lists, how many of them a served project row carries under that award's own project page, and each listed award no row carries, with why. Use it to tell a known gap from a complete round when counting or listing a round's awards from searchProjects. Not for one project's own awards (searchProjects) or funding totals (analyzeEcosystem).",
+        "operationId": "scout.getAwardRoundCoverage",
+        "parameters": [
+          {
+            "description": "One SCF round number. Omitted: every round. A round neither SCF's index nor any row names returns rounds [].",
+            "in": "query",
+            "name": "round",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.getAwardRoundCoverage\") for the full output schema.",
+                  "properties": {
+                    "meta": {},
+                    "rounds": {},
+                    "totals": {},
+                    "unavailable": {}
+                  },
+                  "required": [
+                    "meta",
+                    "totals",
+                    "rounds"
+                  ],
+                  "type": "object",
+                  "x-codemode-describe": "codemode.describe(\"scout.getAwardRoundCoverage\")"
+                }
+              }
+            },
+            "description": "Round coverage. rounds and totals are null, with unavailable saying why, until the SCF sync has stored a whole read of SCF's round pages."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.ErrorResponse"
+                }
+              }
+            },
+            "description": "Unknown query param, or round is not a positive integer"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.RetryableError"
+                }
+              }
+            },
+            "description": "The stored SCF read or the project rows could not be read: an outage, NOT a count. Retry after Retry-After.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before resending (2).",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Per SCF round: awards SCF's round page lists vs awards Scout's rows carry",
+        "tags": [
+          "scout",
+          "Funding"
+        ],
+        "x-execute": "await scout.getAwardRoundCoverage(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/projects/scf-rounds"
+        }
+      }
+    },
     "/scout/getBuilders": {
       "get": {
         "description": "The Stellar PEOPLE directory: builder profiles synced from Stellar Passport (bio, role, location, shipped projects[]), searchable by q/skill and location. Use to find a person to recruit, hire, or collaborate with. Not for the company/product behind a project ('who built X') → use searchProjects. Profiles carry NO populated SCF-tier/award data.\n\nCatalog note: this is a bounded directory-membership surface, not an exhaustive biography or ecosystem-history index. An empty row set means no matching Scout builder record; for an open-world identity or history question, make one broad content or research pass before a wider negative conclusion.",
@@ -3107,6 +3189,10 @@
                     },
                     "skill": {
                       "properties": {
+                        "argumentHint": {
+                          "description": "Registry entries only: the argument hint (e.g. '[payment task]'); absent elsewhere.",
+                          "type": "string"
+                        },
                         "compatibility": {
                           "description": "Agent hosts known to run it.",
                           "items": {
@@ -3140,14 +3226,34 @@
                           "type": "string"
                         },
                         "installAlt": {
-                          "nullable": true,
-                          "type": "string"
+                          "description": "Alternate install commands for other agent runtimes, as on listSkills rows: {label, command} entries. Absent when only the primary install applies.",
+                          "items": {
+                            "properties": {
+                              "command": {
+                                "type": "string"
+                              },
+                              "label": {
+                                "description": "The runtime the command is for (e.g. 'Codex'): a name, not dated.",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
                         },
                         "kind": {
                           "description": "skill-md | mcp-server | sdk | cli | agent-kit | tool",
                           "type": "string"
                         },
                         "name": {
+                          "type": "string"
+                        },
+                        "rawUrl": {
+                          "description": "Raw SKILL.md URL for entries skills.stellar.org lists; absent elsewhere.",
+                          "type": "string"
+                        },
+                        "registry": {
+                          "description": "'skills.stellar.org' when SDF's registry lists the entry; absent otherwise (as on listSkills rows).",
                           "type": "string"
                         },
                         "repository": {
@@ -3177,6 +3283,10 @@
                             "type": "string"
                           },
                           "type": "array"
+                        },
+                        "userInvocable": {
+                          "description": "Registry entries only: whether the skill is user-invocable in skills.stellar.org's sense; absent elsewhere.",
+                          "type": "boolean"
                         }
                       },
                       "type": "object"
@@ -3214,11 +3324,11 @@
     },
     "/scout/getStablecoins": {
       "get": {
-        "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; ARST supply is pesos, mZAR is rand), holders, price, full issuer account, and basis (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
+        "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; ARST supply is pesos, mZAR is rand), holders, price, 24h transfer volume, full issuer account, and basis (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Soroban RPC and live peg FX; null = not measured, never zero.",
         "operationId": "scout.getStablecoins",
         "parameters": [
           {
-            "description": "Ranking order. marketcap (default, USD-comparable) | supply (raw peg units; comparable only within one peg) | holders | volume. Unrecognized values return 400.",
+            "description": "Ranking order. marketcap (default, USD-comparable) | supply (raw peg units; comparable only within one peg) | holders | volume (transferVolume24hUSD, 24h transfer volume in USD; rows not measured last). Unrecognized values return 400.",
             "in": "query",
             "name": "sort",
             "schema": {
@@ -3335,6 +3445,162 @@
         "x-upstream": {
           "method": "GET",
           "path": "/api/status"
+        }
+      }
+    },
+    "/scout/getTokenIntegrations": {
+      "get": {
+        "description": "Which projects support any given token across Stellar, and how: edges per token, project/venue and kind, each with its tier (integrated means the project chose the token; used means pools with priced depth and recent trading; available; unrated), pool count, first date with its basis, recent activity, balance, USD depth, evidence, plus SCF awards. Counts stay per tier, never merged into one number. Pass token (contract address, CODE:ISSUER, bare code: several issuers return candidates, never one silent pick) and project (every token that project supports). Refreshed weekly.",
+        "operationId": "scout.getTokenIntegrations",
+        "parameters": [
+          {
+            "description": "The token: a contract id (C...), CODE:ISSUER (or CODE-ISSUER), XLM, or a bare code. A code is matched case-blind among tokens in this layer; when more than one issuer carries it, the response returns `meta.token.candidates` with `edges` and `summary` null, and the caller picks one by issuer. A code is never resolved to one issuer silently.",
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Directory project slug: every token that project supports. An unknown slug answers 400.",
+            "in": "query",
+            "name": "project",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only edges of this tier.",
+            "in": "query",
+            "name": "tier",
+            "schema": {
+              "enum": [
+                "integrated",
+                "used",
+                "available",
+                "unrated"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only edges of this kind: dex_pool, lending_reserve, vault, bridge, oracle_feed (protocol contracts), classic_amm_pool (network venue, no project), anchor_asset (an anchor's stellar.toml), asset_list (a SEP-42 list), issuer, holder (a contract, venue holder, or an account, venue account, tied to a project holds it), holder_unattributed.",
+            "in": "query",
+            "name": "kind",
+            "schema": {
+              "enum": [
+                "dex_pool",
+                "lending_reserve",
+                "vault",
+                "bridge",
+                "oracle_feed",
+                "classic_amm_pool",
+                "anchor_asset",
+                "asset_list",
+                "issuer",
+                "holder",
+                "holder_unattributed"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "true: only edges whose project row says SCF awarded; false: only edges whose project row does not. Edges with no project (network venues, unattributed holders) match neither. Read from the project row at request time.",
+            "in": "query",
+            "name": "scfAwarded",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "active (default): edges seen at the last read. ended: edges whose evidence the lane later stopped finding, kept with endedAt and endedReason, never deleted. all: both.",
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "default": "active",
+              "enum": [
+                "active",
+                "ended",
+                "all"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Max edges (default 50, max 200).",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Edges to skip.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.getTokenIntegrations\") for the full output schema.",
+                  "properties": {
+                    "edges": {},
+                    "meta": {},
+                    "summary": {}
+                  },
+                  "required": [
+                    "meta",
+                    "summary",
+                    "edges"
+                  ],
+                  "type": "object",
+                  "x-codemode-describe": "codemode.describe(\"scout.getTokenIntegrations\")"
+                }
+              }
+            },
+            "description": "Edges, per-tier counts and coverage. When a bare code matches more than one token, `edges`, `summary` and `meta.counts` are null and `meta.token.candidates` lists the tokens."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.ErrorResponse"
+                }
+              }
+            },
+            "description": "An unknown query parameter, an invalid tier, kind, status or scfAwarded value, a token that is not a contract id, CODE:ISSUER or code, or an unknown project slug; the body names the valid values."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.ErrorResponse"
+                }
+              }
+            },
+            "description": "The store could not be read, or the refresh lane has not written the layer yet. Not a claim about any token."
+          }
+        },
+        "summary": "Which projects support each token on Stellar, how, since when",
+        "tags": [
+          "scout",
+          "Ecosystem"
+        ],
+        "x-execute": "await scout.getTokenIntegrations(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/tokens/integrations"
         }
       }
     },
@@ -3688,7 +3954,7 @@
     },
     "/scout/listContracts": {
       "get": {
-        "description": "Contracts as first-class entities: one row per mainnet contract with VERIFIED evidence; the scanner echo-checked a README-claimed contract id live on-chain, or weekly on-chain enrichment attributed real activity to the repo. Each row joins code truth (stellarProof, codeDepth, interface preview, codeDomains), live usage stats (codeInUse), per-project audit records, and succession. Absence here is NOT a claim a contract doesn't exist; coverage grows as scans reach repos. Most-evidenced first: live usage > verified id > depth. Unknown params 400.",
+        "description": "Contracts as first-class entities: one row per mainnet contract with VERIFIED evidence; the scanner echo-checked a README-claimed contract id live on-chain, weekly on-chain enrichment attributed real activity to the repo, or the curated on-chain map links it to a project. Each row joins code truth (stellarProof, codeDepth, interface preview, codeDomains), live usage stats (codeInUse), per-project audit records, and succession. Absence here is NOT a claim a contract doesn't exist; coverage grows as scans reach repos. Most-evidenced first: live usage > verified id > depth. Unknown params 400.",
         "operationId": "scout.listContracts",
         "parameters": [
           {
@@ -4653,7 +4919,7 @@
             }
           },
           {
-            "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index, strategy, roadmap, service-provider directory, community FAQ), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'slp' for Stellar Limits Proposals, the network configuration votes (Soroban resource limit changes, and the Quorum Freeze of exploit accounts in SLP-0006 and SLP-0008; each row opens with the proposal's number, status and creation date), 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags). Several sources in one call: see `sources` (a comma here is read the same way).",
+            "description": "Optional source filter. A declared source that holds no documents yet answers an empty vector page with meta.sourceEmpty true and meta.sourceDocCount 0 (an empty source, not a miss); every source-scoped call carries meta.sourceDocCount. Use 'scf-proposal' for what an SCF project proposed in its own words (one document per submission on communityfund.stellar.org, every status: the proposal's sections plus round, status, award type and requested budget), 'scf-handbook' for the program's rules, 'audit' for security questions, 'incident' for exploit/post-mortem history, 'security-program' for bug-bounty / vulnerability-disclosure program status (which program is current, where to report), 'sdf-org' for SDF's canonical organizational pages (mandate, legal structure/terms, foundation, team, enterprise fund, quarterly-reports index, strategy, roadmap, service-provider directory, community FAQ), 'ec-developer-report' for ecosystem stats, 'paper' for foundational protocol questions, 'slp' for Stellar Limits Proposals, the network configuration votes (Soroban resource limit changes, and the Quorum Freeze of exploit accounts in SLP-0006 and SLP-0008; each row opens with the proposal's number, status and creation date), 'release' for stellar-core/CLI/SDK release notes (what shipped, when, protocol upgrade tags), 'stellar-discussions' for the Stellar org's GitHub Discussions (hosted on stellar/stellar-protocol), where CAPs, SEPs, SLPs and tokenomics are argued in public: one document per discussion, its opening post then every comment and reply signed with author and day; each row opens with the discussion's number, category, title, opening date, the day GitHub last updated it and the CAP/SEP/SLP numbers its title or opening post names; publishedAt is the day it was opened; narrow by `category`. Several sources in one call: see `sources` (a comma here is read the same way).",
             "in": "query",
             "name": "source",
             "schema": {
@@ -4674,7 +4940,24 @@
                 "security-program",
                 "sdf-org",
                 "ec-developer-report",
-                "release"
+                "release",
+                "stellar-discussions"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "GitHub Discussions category of source=stellar-discussions, by slug: tokenomics, core-advancement-proposals (CAP discussions), stellar-ecosystem-proposals (SEP), stellar-limits-proposals (SLP), general-discussion, announcements. Implies source=stellar-discussions and scopes retrieval to that category (an explicit other source or an audit filter is rejected with 400; an unknown category is a 400 listing validCategories). Each row serves it as discussionCategory.",
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "enum": [
+                "announcements",
+                "core-advancement-proposals",
+                "general-discussion",
+                "stellar-ecosystem-proposals",
+                "stellar-limits-proposals",
+                "tokenomics"
               ],
               "type": "string"
             }
@@ -4746,7 +5029,8 @@
                   "security-program",
                   "sdf-org",
                   "ec-developer-report",
-                  "release"
+                  "release",
+                  "stellar-discussions"
                 ],
                 "type": "string"
               },
@@ -4812,7 +5096,7 @@
                 }
               }
             },
-            "description": "The call is wrong: missing q, an unknown source, or audit-only filters on a non-audit source. Fix the call; do not retry it as is."
+            "description": "The call is wrong: missing q, an unknown source or category, audit-only filters on a non-audit source, or a category with a source other than stellar-discussions. Fix the call; do not retry it as is."
           },
           "429": {
             "content": {
@@ -4971,7 +5255,7 @@
     },
     "/skills/list_skills": {
       "get": {
-        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 20 skills across 5 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light, trustless-work), 204 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
+        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 20 skills across 5 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light, trustless-work), 205 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
         "operationId": "skills.list_skills",
         "responses": {
           "200": {
@@ -5193,7 +5477,8 @@
               "Transaction UX Checklist",
               "file:data-fetching.md",
               "file:react.md",
-              "file:smart-accounts.md"
+              "file:smart-accounts.md",
+              "file:walletconnect.md"
             ],
             "source": "stellar-dev"
           },
@@ -7407,8 +7692,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 285,
-    "generatedAt": "2026-11-23T20:59:26Z"
+    "catalogEntries": 288,
+    "generatedAt": "2026-11-27T22:04:23Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7420,7 +7705,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-11-23T20:53:47.556Z",
+      "fetchedAt": "2026-11-27T22:04:11.266Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -7451,7 +7736,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-11-23T20:59:26Z"
+      "syncedAt": "2026-11-27T22:04:23Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-11-02T00:00:00Z",
