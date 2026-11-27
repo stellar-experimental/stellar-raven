@@ -1,0 +1,103 @@
+{
+  "id": "q-sor-register-contract-in-tests",
+  "question": "My Soroban unit test calls `env.register_contract(None, MyContract)` and `env.register_stellar_asset_contract(admin)`, and the compiler warns that both are deprecated. What do I use instead?",
+  "surface": [
+    "stellarDocs.search_soroban_contract_docs"
+  ],
+  "golden": {
+    "answer": "Use `env.register(MyContract, ())` to register a contract in a test: the second argument is the constructor arguments, and `()` means none. To pin a contract ID, use `env.register_at(&address, MyContract, ())`. Replace `env.register_stellar_asset_contract(admin)` with `env.register_stellar_asset_contract_v2(admin)`, which returns a `StellarAssetContract` helper; call `.address()` on it for the contract address. Both old methods are deprecated in soroban-sdk 30.0.0 but still compile with a warning.",
+    "keyFacts": [
+      "`env.register(Contract, ctor_args)` replaces `env.register_contract(None, Contract)`; pass `()` when the contract has no constructor arguments.",
+      "`env.register_at(&address, Contract, ctor_args)` registers at a chosen contract ID.",
+      "`env.register_stellar_asset_contract_v2(admin)` replaces `register_stellar_asset_contract` and returns a `StellarAssetContract` helper, not an `Address`.",
+      "The old methods are deprecated, not removed: they still compile with a warning."
+    ],
+    "avoid": [
+      "Do NOT say `register_contract` or `register_stellar_asset_contract` were removed from soroban-sdk.",
+      "Do NOT say `register_stellar_asset_contract_v2` returns a bare `Address`."
+    ],
+    "notes": "Accept `register_at` or the `ContractFunctionSet`-style form only if it still names `register` as the replacement."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-27",
+    "reverifyBy": "2027-02-27",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "https://docs.rs/crate/soroban-sdk/30.0.0/source/src/env.rs",
+        "note": "Env::register_contract is #[deprecated(note = \"use `register`\")]; Env::register_stellar_asset_contract is #[deprecated(note = \"use [Env::register_stellar_asset_contract_v2]\")]; register(contract, constructor_args) and register_at(contract_id, contract, constructor_args) exist",
+        "observedAt": "2026-11-27"
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.rs/soroban-sdk/30.0.0/soroban_sdk/struct.Env.html",
+        "note": "method.register_stellar_asset_contract shows 'Deprecated: use Env::register_stellar_asset_contract_v2'; register_contract is marked deprecated",
+        "observedAt": "2026-11-27"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/llms-full.txt",
+        "note": "Stellar Docs examples register contracts with env.register(Contract, (...)) and contain no call to register_contract",
+        "observedAt": "2026-11-27"
+      },
+      {
+        "class": "F",
+        "ref": "cargo test --no-run on a crate using soroban-sdk =30.0.0 with the testutils feature",
+        "note": "rustc warns: use of deprecated method `soroban_sdk::Env::register_contract`: use `register`; and use of deprecated method `soroban_sdk::Env::register_stellar_asset_contract`: use [Env::register_stellar_asset_contract_v2]; the same crate compiles with env.register(HelloContract, ()) and register_stellar_asset_contract_v2(admin) without warnings",
+        "observedAt": "2026-11-27"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "register_contract and register_stellar_asset_contract are deprecated, not removed, in soroban-sdk 30.0.0 and are replaced by register and register_stellar_asset_contract_v2.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://docs.rs/crate/soroban-sdk/30.0.0/source/src/env.rs",
+            "observedAt": "2026-11-27",
+            "note": "#[deprecated] attributes on both methods"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.rs/soroban-sdk/30.0.0/soroban_sdk/struct.Env.html",
+            "observedAt": "2026-11-27",
+            "note": "rendered deprecation notices"
+          },
+          {
+            "class": "F",
+            "ref": "cargo test --no-run, soroban-sdk =30.0.0",
+            "observedAt": "2026-11-27",
+            "note": "compiler deprecation warnings for both, none for the replacements"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-27",
+      "by": "Proposed from the soroban-sdk usage feed in devodii/state-of-soroban (docs/data/raven-feed-soroban-sdk.json): register_contract is called by 2,477 and register_stellar_asset_contract by 651 non-fork Soroban repos, and no existing case covers either.",
+      "evidence": [
+        "Feed entries register_contract and register_stellar_asset_contract in raven-feed-soroban-sdk.json (soroban-sdk 30.0.0, generated 2026-11-27)",
+        "Compiler output from cargo test --no-run on soroban-sdk =30.0.0, 2026-11-27",
+        "docs.rs struct.Env.html for soroban-sdk 30.0.0 fetched 2026-11-27"
+      ],
+      "rootCause": [
+        "freshness-drift"
+      ]
+    },
+    "origin": "proposed from the state-of-soroban sdk feed",
+    "notes": "No battery case covers the register family. Leaf soroban.testing already has one case, so activation needs the maintainers' decision on the leaf target.",
+    "leaf": "soroban.testing"
+  }
+}

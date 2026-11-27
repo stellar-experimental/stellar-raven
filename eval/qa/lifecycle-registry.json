@@ -3,7 +3,7 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 0,
+    "proposed": 1,
     "active": 253,
     "quarantined": 0,
     "retired": 292
@@ -430,6 +430,7 @@
     "q-sor-recurring-escrow-patterns",
     "q-sor-reflector-integration-code",
     "q-sor-reflector-testnet-contract-addresses",
+    "q-sor-register-contract-in-tests",
     "q-sor-require-auth-propagation",
     "q-sor-sac-introspection",
     "q-sor-scval-conversion",
@@ -4109,6 +4110,13 @@
       "tombstoneContentSha256": "0da3c80c8344b938238a56baabdace3ffc03c6cce02d0c189954efd181c4755b",
       "lastCaseContentSha256": "c7e29b16c26c790494b1b7a29248c19275f7c225687732d7dcbcfa851c8cfac0",
       "replacementIds": []
+    },
+    {
+      "id": "q-sor-register-contract-in-tests",
+      "path": "eval/qa/corpus/proposed/soroban/q-sor-register-contract-in-tests.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "24956bc5802e7aa3b1f71c46cfb0acbe218e2ce8606b5cf86d2fe0c638443200"
     },
     {
       "id": "q-sor-require-auth-propagation",
